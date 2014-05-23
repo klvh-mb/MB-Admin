@@ -6,11 +6,6 @@ minibean.controller('CreateArticleController',function($scope,$http, $location, 
 	$scope.article;
 	$scope.submitBtn = "Save";
 	
-	var range = [];
-	for(var i=0;i<100;i++) {
-		  range.push(i);
-	}
-	$scope.targetAge = range;
 	//Refer to http://www.tinymce.com/
 	$scope.tinymceOptions = {
 			selector: "textarea",
@@ -39,6 +34,8 @@ minibean.controller('CreateArticleController',function($scope,$http, $location, 
 					$scope.submitBtn = "Done";
 					$scope.uniqueName = false;
 					$scope.categoryNotChoose = false;
+					$scope.TargetAgeNotSelected = false;
+					$scope.TargetAgeCondition = false;
 					usSpinnerService.stop('loading...');
 					$location.path('/');
 				}).error(function(data, status, headers, config) {
@@ -52,6 +49,17 @@ minibean.controller('CreateArticleController',function($scope,$http, $location, 
 			    		usSpinnerService.stop('loading...');
 			    		$scope.submitBtn = "Try Again";
 			    	}
+			    	if(status == 507){
+			    		$scope.TargetAgeNotSelected = true;
+			    		usSpinnerService.stop('loading...');
+			    		$scope.submitBtn = "Try Again";
+			    	}
+			    	if(status == 508){
+			    		$scope.TargetAgeCondition = true;
+			    		usSpinnerService.stop('loading...');
+			    		$scope.submitBtn = "Try Again";
+			    	}
+
 			    });
 	}
 });
@@ -106,15 +114,14 @@ minibean.controller('ShowArticleController',function($scope, $modal, deleteArtic
 	    });
 	    var msg = getDescriptionService.GetDescription.get({id:id}	, function(data) {
 	    	console.log(data.description);
-	    	$('.modal-body').html(data.description);
+	    	$('#showDescription').html(data.description);
 	    });
 	    
 	  };
 	 
-	  
 	  $scope.deleteArticle = function (id){
 		  deleteArticleService.DeleteArticle.get({id :id}, function(data){
-			  
+			  $('#myModal').modal('hide');
 			  angular.forEach($scope.result, function(request, key){
 					if(request.id == id) {
 						$scope.result.splice($scope.result.indexOf(request),1);
@@ -167,12 +174,20 @@ minibean.controller('EditArticleController',function($scope,$routeParams, $locat
 	}
 	
 	$scope.updateArticleData = function(data) {
+		$scope.TargetAgeCondition = false;
 		usSpinnerService.spin('loading...');
 		return $http.post('/editArticle', $scope.article).success(function(data){
 			$scope.submitBtn = "Done";
 			usSpinnerService.stop('loading...');
 			$location.path('/');
-		});
+		}).error(function(data, status, headers, config) {
+	    	if(status == 509){
+	    		$scope.TargetAgeCondition = true;
+	    		usSpinnerService.stop('loading...');
+	    		$scope.submitBtn = "Try Again";
+	    	}
+
+	    });
 	}
 });
 
