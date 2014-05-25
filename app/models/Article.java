@@ -35,8 +35,11 @@ public class Article extends domain.Entity {
 	
 	public int noOfLikes=0;
 	public int TargetGender;                
-    public int TargetParentGender;      
-    public String TargetDistrict;             
+        public int TargetParentGender;      
+        public String TargetDistrict;             
+
+        @Column(nullable=false)
+	public boolean excludeFromTargeting = false;
     
 	@Formats.DateTime(pattern = "yyyy-MM-dd")
 	public Date publishedDate;
