@@ -11,50 +11,68 @@
 	             				<label>Title: </label>
 	             	</div>
 	             </div>
-	               		
 	             <div class="row">
-	              	<div class="col-md-6">
-	              	{{article.nm}}
-	              	</div>
+	              	<div class="col-md-6"> {{article.nm}} </div>
 	        	</div>
-	         </div>
-	         
-	         <div class="row tm">
-	            <div class="col-md-4">
-	           		<div class="pull-right">
-	             				<!-- <label>Featured: </label> -->
-	             	</div>
-	             </div>
-	               		
-	             <div class="row">
-	              	<div class="col-md-6">
-	              	<div ng-app="myApp">
-	              	 <!-- <input type="checkbox" ng-disabled="true" ng-model="article.frd" class="ng-valid ng-dirty"> -->
-	              	</div>
-	              	</div>
-	              	
-	        	</div>
-	         </div>
-	         
-	         <div class="row tm">
+
 	            <div class="col-md-4">
 	           		<div class="pull-right">
 	             				<label>Category: </label>
 	             	</div>
 	             </div>
-	               		
 	             <div class="row">
 	              	<div class="col-md-6">
 	              		<div class="col-md-10">  {{article.ct.name}} </div>
 	              	</div>
 	        	</div>
+
+	            <div class="col-md-4">
+	           		<div class="pull-right">
+	             				<label>Target Age: </label>
+	             	</div>
+	             </div>
+	             <div class="row">
+	              	<div class="col-md-6">
+	              		<div class="col-md-10">  {{article.tamin}} to {{article.tamax}} months </div>
+	              	</div>
+	        	</div>
+
+	            <div class="col-md-4">
+	           		<div class="pull-right">
+	             				<label>Target Parent: </label>
+	             	</div>
+	             </div>
+	             <div class="row">
+	              	<div class="col-md-6">
+	              		<div class="col-md-10">  {{article.tpg}} </div>
+	              	</div>
+	        	</div>
+
+	            <div class="col-md-4">
+	           		<div class="pull-right">
+	             				<label>Target Gender: </label>
+	             	</div>
+	             </div>
+	             <div class="row">
+	              	<div class="col-md-6">
+	              		<div class="col-md-10">  {{article.tg}} </div>
+	              	</div>
+	        	</div>
+
+	            <div class="col-md-4">
+	           		<div class="pull-right">
+	             				<label>Target District: </label>
+	             	</div>
+	             </div>
+	             <div class="row">
+	              	<div class="col-md-6">
+	              		<div class="col-md-10">  {{article.td}} </div>
+	              	</div>
+	        	</div>
 	         </div>
-			
-			 <div class="row tm"></div>
-		</div> 
+		</div>
+
 		 <div class="col-md-3 col-lg-3">
-		 	
-			
 			<div class="innerAll pull-right border-right ng-scope">
             	<a data-ng-href="#/article/edit/{{article.id}}"><button class="btn btn-primary" ><i class="fa fa-fw  fa-edit"></i> Edit </button></a>
             </div>

@@ -107,7 +107,10 @@ public class ArticleController extends Controller {
 		List<Article> allArticles = Article.getAllArticles();
 		List<ArticleVM> listOfArticles = new ArrayList<>();
 		for(Article article:allArticles) {
-			ArticleVM vm = new ArticleVM(article.category, article.name, article.id);
+			ArticleVM vm = new ArticleVM(article.category,
+                    article.name, article.id,
+                    article.TargetAgeMinMonth, article.TargetAgeMaxMonth,
+                    article.TargetGender, article.TargetParentGender, article.TargetDistrict);
 			listOfArticles.add(vm);
 		}
 		return ok(Json.toJson(listOfArticles));
