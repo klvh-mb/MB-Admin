@@ -4,7 +4,7 @@ import play.Project._
 
 object ApplicationBuild extends Build {
 
-  val appName         = "parent-social"
+  val appName         = "parent-social-admin"
   val appVersion      = "1.0-SNAPSHOT"
 
   val appDependencies = Seq(
@@ -22,7 +22,6 @@ object ApplicationBuild extends Build {
      "org.apache.httpcomponents" % "httpclient" % "4.2.5",
      "net.coobird" % "thumbnailator" % "0.4.7",
      "com.clever-age" % "play2-elasticsearch" % "0.6-SNAPSHOT"
-    
   )
 
   val main = play.Project(appName, appVersion, appDependencies).settings(

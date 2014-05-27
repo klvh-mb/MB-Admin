@@ -3,6 +3,7 @@ package models;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -35,10 +36,10 @@ public class Article extends domain.Entity {
 	
 	public int noOfLikes=0;
 	public int TargetGender;                
-        public int TargetParentGender;      
-        public String TargetDistrict;             
+    public int TargetParentGender;      
+    public String TargetDistrict;             
 
-        @Column(nullable=false)
+    @Column(nullable=false)
 	public boolean excludeFromTargeting = false;
     
 	@Formats.DateTime(pattern = "yyyy-MM-dd")
