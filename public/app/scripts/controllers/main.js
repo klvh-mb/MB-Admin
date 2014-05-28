@@ -118,8 +118,9 @@ minibean.controller('ShowArticleController',function($scope, $modal, deleteArtic
 	    });
 	    
 	  };
-	 
+
 	  $scope.deleteArticle = function (id){
+		  console.log($scope.deleteID);
 		  deleteArticleService.DeleteArticle.get({id :id}, function(data){
 			  $('#myModal').modal('hide');
 			  angular.forEach($scope.result, function(request, key){
@@ -129,6 +130,10 @@ minibean.controller('ShowArticleController',function($scope, $modal, deleteArtic
 				});
 			  
 		  });
+	  }
+	  
+	  $scope.assignDeleteId = function(id) {
+		  $scope.deleteID = id;
 	  }
 	  
 });
