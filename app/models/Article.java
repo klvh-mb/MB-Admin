@@ -31,13 +31,13 @@ public class Article extends domain.Entity {
 	public String description;
 	
 	
-	public int TargetAgeMinMonth;
-	public int TargetAgeMaxMonth;
+	public int targetAgeMinMonth;
+	public int targetAgeMaxMonth;
 	
 	public int noOfLikes=0;
-	public int TargetGender;                
-    public int TargetParentGender;      
-    public String TargetDistrict;             
+	public int targetGender;
+    public int targetParentGender;
+    public String targetDistrict;
 
     @Column(nullable=false)
 	public boolean excludeFromTargeting = false;

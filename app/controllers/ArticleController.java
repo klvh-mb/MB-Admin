@@ -27,14 +27,14 @@ public class ArticleController extends Controller {
 		
 		Article article = articleForm.get();
 		try{
-		article.TargetAgeMinMonth = Integer.parseInt(form.get("TargetAgeMinMonth"));
-		article.TargetAgeMaxMonth = Integer.parseInt(form.get("TargetAgeMaxMonth"));
+		article.targetAgeMinMonth = Integer.parseInt(form.get("TargetAgeMinMonth"));
+		article.targetAgeMaxMonth = Integer.parseInt(form.get("TargetAgeMaxMonth"));
 		}
 		catch(NumberFormatException ne)
 		{
 			return status(507,"PLEASE SELECT TARGET AGE");
 		}
-			if(article.TargetAgeMinMonth>=article.TargetAgeMaxMonth)
+			if(article.targetAgeMinMonth >=article.targetAgeMaxMonth)
 			{
 				return status(508,"TargetAgeMinMonth should be less than TargetAgeMaxMonth");
 			}
@@ -49,15 +49,15 @@ public class ArticleController extends Controller {
 						return status(506, "PLEASE CHOOSE CATEGORY");
 					}
 						try{
-						article.TargetGender = Integer.parseInt(form.get("TargetGender"));
-						article.TargetParentGender = Integer.parseInt(form.get("TargetParentGender"));
+						article.targetGender = Integer.parseInt(form.get("TargetGender"));
+						article.targetParentGender = Integer.parseInt(form.get("TargetParentGender"));
 						}
 						catch(NumberFormatException nfe)
 						{
 							nfe.printStackTrace();
 						}
 						
-					article.TargetDistrict = form.get("TargetDistrict");
+					article.targetDistrict = form.get("TargetDistrict");
 					ArticleCategory ac = ArticleCategory.getCategoryById(category_id);
 					article.category = ac;
 					article.publishedDate = new Date();
@@ -74,15 +74,15 @@ public class ArticleController extends Controller {
 		Long id = Long.parseLong(dataToUpdate.get("id"));
 		Article article = Article.findById(id);
 		article.name = dataToUpdate.get("name");
-		article.TargetAgeMinMonth = Integer.parseInt(dataToUpdate.get("TargetAgeMinMonth"));
-		article.TargetAgeMaxMonth = Integer.parseInt(dataToUpdate.get("TargetAgeMaxMonth"));
-		if(article.TargetAgeMinMonth>=article.TargetAgeMaxMonth)
+		article.targetAgeMinMonth = Integer.parseInt(dataToUpdate.get("TargetAgeMinMonth"));
+		article.targetAgeMaxMonth = Integer.parseInt(dataToUpdate.get("TargetAgeMaxMonth"));
+		if(article.targetAgeMinMonth >=article.targetAgeMaxMonth)
 		{
 			return status(509,"TargetAgeMinMonth should be less than TargetAgeMaxMonth");
 		}
-		article.TargetGender = Integer.parseInt(dataToUpdate.get("TargetGender"));
-		article.TargetParentGender = Integer.parseInt(dataToUpdate.get("TargetParentGender"));
-		article.TargetDistrict = dataToUpdate.get("TargetDistrict");
+		article.targetGender = Integer.parseInt(dataToUpdate.get("TargetGender"));
+		article.targetParentGender = Integer.parseInt(dataToUpdate.get("TargetParentGender"));
+		article.targetDistrict = dataToUpdate.get("TargetDistrict");
 		ArticleCategory ac = ArticleCategory.getCategoryById(Long.parseLong(dataToUpdate.get("category.id")));
 		article.category = ac;
 		article.description = dataToUpdate.get("description");
@@ -109,8 +109,8 @@ public class ArticleController extends Controller {
 		for(Article article:allArticles) {
 			ArticleVM vm = new ArticleVM(article.category,
                     article.name, article.id,
-                    article.TargetAgeMinMonth, article.TargetAgeMaxMonth,
-                    article.TargetGender, article.TargetParentGender, article.TargetDistrict);
+                    article.targetAgeMinMonth, article.targetAgeMaxMonth,
+                    article.targetGender, article.targetParentGender, article.targetDistrict);
 			listOfArticles.add(vm);
 		}
 		return ok(Json.toJson(listOfArticles));
