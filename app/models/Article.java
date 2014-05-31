@@ -45,6 +45,9 @@ public class Article extends domain.Entity {
 	@Formats.DateTime(pattern = "yyyy-MM-dd")
 	public Date publishedDate;
 	
+	
+	public String objectType = "ARTICLE";
+	
 	@ManyToOne
 	public ArticleCategory category;
 	
