@@ -68,24 +68,24 @@ public class ArticleController extends Controller {
 	
 	@Transactional
 	public static Result updateArticle() {
-		Form<String> form = DynamicForm.form(String.class).bindFromRequest();
-		Map<String, String> dataToUpdate = form.data();
+		Form<Article> articleForm = DynamicForm.form(Article.class).bindFromRequest();
+		DynamicForm form = DynamicForm.form().bindFromRequest();
 		
-		Long id = Long.parseLong(dataToUpdate.get("id"));
+		Long id = Long.parseLong(form.get("id"));
 		Article article = Article.findById(id);
-		article.name = dataToUpdate.get("name");
-		article.targetAgeMinMonth = Integer.parseInt(dataToUpdate.get("TargetAgeMinMonth"));
-		article.targetAgeMaxMonth = Integer.parseInt(dataToUpdate.get("TargetAgeMaxMonth"));
-		if(article.targetAgeMinMonth >=article.targetAgeMaxMonth)
+		article.name = form.get("name");
+		article.targetAgeMinMonth = Integer.parseInt(form.get("targetAgeMinMonth"));
+		article.targetAgeMaxMonth = Integer.parseInt(form.get("targetAgeMaxMonth"));
+		if(article.targetAgeMinMonth>=article.targetAgeMaxMonth)
 		{
 			return status(509,"TargetAgeMinMonth should be less than TargetAgeMaxMonth");
 		}
-		article.targetGender = Integer.parseInt(dataToUpdate.get("TargetGender"));
-		article.targetParentGender = Integer.parseInt(dataToUpdate.get("TargetParentGender"));
-		article.targetDistrict = dataToUpdate.get("TargetDistrict");
-		ArticleCategory ac = ArticleCategory.getCategoryById(Long.parseLong(dataToUpdate.get("category.id")));
+		article.targetGender = Integer.parseInt(form.get("targetGender"));
+		article.targetParentGender = Integer.parseInt(form.get("targetParentGender"));
+		article.targetDistrict = form.get("targetDistrict");
+		ArticleCategory ac = ArticleCategory.getCategoryById(Long.parseLong(form.get("category.id")));
 		article.category = ac;
-		article.description = dataToUpdate.get("description");
+		article.description = form.get("description");
 		article.updateById();
 		return ok();
 	}

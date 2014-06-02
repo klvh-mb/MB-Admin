@@ -8,7 +8,7 @@
 		 	</td>
 		 	<td>
 	    		<input type="text" class="form-control ng-pristine ng-invalid ng-invalid-required" data-ng-model="article.name">
-	    		<input type="hidden" data-ng-model="article.id">
+	    		<input type="hidden" data-ng-model="article.id" name="id">
 	    	</td>
 	</tr>
 	<tr>
@@ -18,8 +18,8 @@
 		 	<td>
 		 		<span style="float:left;">From</span>
 		 		<span style="float:left;margin-left: 4%;">
-		 			<select class="form-control" data-ng-model="article.TargetAgeMinMonth">
-		 				<option value=-999>Before Pregnacy</option>
+		 			<select class="form-control" data-ng-model="article.targetAgeMinMonth" name="targetAgeMinMonth">
+		 				<option value=-999>Before Birth</option>
 		 				<option value=-10>Pregnacy 0m</option>
 		 				<option value=-7>Pregnacy 3m</option>
 		 				<option value=-4>Pregnacy 6m</option>
@@ -41,8 +41,8 @@
 				</span>
 				<span style="float:left;margin-left: 4%;">To</span>
 				<span style="float:left;margin-left: 4%;">
-					<select class="form-control" data-ng-model="article.TargetAgeMaxMonth">
-						<option value=-999>Before Pregnacy</option>
+					<select class="form-control" data-ng-model="article.targetAgeMaxMonth" name="targetAgeMaxMonth">
+						<option value=-999>Before Birth</option>
 						<option value=-10>Pregnancy 0m</option>
 		 				<option value=-7>Pregnancy 3m</option>
 		 				<option value=-4>Pregnancy 6m</option>
@@ -74,7 +74,7 @@
 		 			<label> TargetGender	: </label>
 		 		</td>
 		 		<td>
-		 			<select class="form-control" data-ng-model="article.TargetGender" name="TargetGender" style="width: 30%;">
+		 			<select class="form-control" data-ng-model="article.targetGender" name="targetGender" style="width: 30%;">
 		 			<option value=0>Both</option>
 		 			<option value=1>Boy</option>
 		 			<option value=2>Girl</option>
@@ -86,7 +86,7 @@
 		 			<label> TargetParentGender	: </label>
 		 		</td>
 		 		<td>
-		 			<select class="form-control" data-ng-model="article.TargetParentGender" name="TargetParentGender" style="width: 30%;">
+		 			<select class="form-control" data-ng-model="article.targetParentGender" name="targetParentGender" style="width: 30%;">
 		 			<option value=0>Both</option>
 		 			<option value=1>Father</option>
 		 			<option value=2>Mother</option>
@@ -98,7 +98,7 @@
 					<label> TargetDistrict	: </label>
 				</td>
 				<td>
-					<input type="text" class="form-control" data-ng-model="article.TargetDistrict" name="TargetDistrict">
+					<input type="text" class="form-control" data-ng-model="article.targetDistrict" name="targetDistrict">
 				</td>
 			</tr>
 	<tr>
