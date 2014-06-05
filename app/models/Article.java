@@ -30,27 +30,39 @@ public class Article extends domain.Entity {
 	@Lob
 	public String description;
 	
-	
-	public int targetAgeMinMonth;
-	public int targetAgeMaxMonth;
-	
 	public int noOfLikes=0;
-	public int targetGender;
-    public int targetParentGender;
-    public String targetDistrict;
-
-    @Column(nullable=false)
-	public boolean excludeFromTargeting = false;
     
 	@Formats.DateTime(pattern = "yyyy-MM-dd")
 	public Date publishedDate;
-	
 	
 	public String objectType = "ARTICLE";
 	
 	@ManyToOne
 	public ArticleCategory category;
 	
+	// Targeting attributes
+	
+    @Column(nullable=false)
+    public boolean excludeFromTargeting = false;
+    
+    @Column(nullable=false)
+    public String targetingType = "SCORE";
+    
+    @Column(nullable=true)
+    public int targetAgeMinMonth;
+    
+    @Column(nullable=true)
+    public int targetAgeMaxMonth;
+    
+    @Column(nullable=true)
+    public int targetGender;
+    
+    @Column(nullable=true)
+    public int targetParentGender;
+    
+    @ManyToOne
+    public Location targetLocation;
+    
 	@Transactional
 	public static List<Article> getAllArticles() {
 		Query q = JPA.em().createQuery("Select a from Article a order by publishedDate desc");
@@ -69,26 +81,23 @@ public class Article extends domain.Entity {
 		return q.executeUpdate();
 	}
 	
-	public static boolean checkTitleExists(String title)
-	{
+	public static boolean checkTitleExists(String title) {
 		Query q = JPA.em().createQuery("Select a from Article a where a.name = ?1");
 		q.setParameter(1, title);
 		Article article = null;
 		try {
 			article = (Article) q.getSingleResult();
-		}
-		catch(NoResultException nre) {
+		} catch(NoResultException nre) {
 		}
 		
 		return (article == null);
 	}
 	
-	public void updateById()
-	{
+	public void updateById() {
 		this.merge();
 	}
-	public void saveArticle()
-	{
+	
+	public void saveArticle() {
 		this.save();
 	}
 	

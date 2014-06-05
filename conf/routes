@@ -15,6 +15,7 @@ GET     /                           controllers.Application.index
 POST	/createArticle				controllers.ArticleController.addArticle
 POST	/editArticle				controllers.ArticleController.updateArticle
 
+GET     /getAllDistricts            controllers.ArticleController.getAllDistricts
 GET		/getAllArticleCategory		controllers.ArticleController.getAllArticleCategory
 GET     /get-all-Articles			controllers.ArticleController.getAllArticles
 GET		/getDescriptionOdArticle/:id  	controllers.ArticleController.getDescriptionOdArticle(id :Long)

@@ -1,6 +1,7 @@
 package viewmodel;
 
 import models.ArticleCategory;
+import models.Location;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
@@ -13,9 +14,11 @@ public class ArticleVM {
 	@JsonProperty("tamx") public int targetAgeMaxMonth;
 	@JsonProperty("tg") public int targetGender;
 	@JsonProperty("tpg") public int targetParentGender;
-	@JsonProperty("td") public String targetDistrict;
+	@JsonProperty("tl") public Location targetLocation;
 	
-	public ArticleVM(ArticleCategory articleCategory,String name,long id,int targetAgeMinMonth,int targetAgeMaxMonth,int targetGender,int targetParentGender,String targetDistrict) {
+	public ArticleVM(ArticleCategory articleCategory,String name,long id,
+	        int targetAgeMinMonth,int targetAgeMaxMonth,int targetGender,
+	        int targetParentGender,Location targetLocation) {
 		this.category = articleCategory;
 		this.name = name;
 		this.id = id;
@@ -23,7 +26,6 @@ public class ArticleVM {
 		this.targetAgeMaxMonth = targetAgeMaxMonth;
 		this.targetGender = targetGender;
 		this.targetParentGender = targetParentGender;
-		this.targetDistrict = targetDistrict; 
+		this.targetLocation = targetLocation; 
 	}
-
 }

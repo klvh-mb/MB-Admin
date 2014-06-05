@@ -65,7 +65,7 @@
 				</span>
 			</td>
 	</tr>
-	<tr data-ng-show="TargetAgeCondition==true">
+	<tr data-ng-show="targetAgeCondition==true">
 		<td></td>
 		<td><label class="control-label error"  style="color: red;">MinTargetAge should be less than MaxTargetAge.</label></td>
 	</tr>
@@ -95,43 +95,61 @@
 			</tr>
 			<tr>
 				<td>
-					<label> TargetDistrict	: </label>
+					<label> TargetLocation	: </label>
 				</td>
 				<td>
-					<input type="text" class="form-control" data-ng-model="article.targetDistrict" name="targetDistrict">
+					<div class="col-md-8" style="padding: 0 0px;">
+                        <li class="col-md-12 dropdown" style="padding: 0 0px;" validator="[required]" required>
+                            <div class="form-control dropdown-toggle">
+                                <div class="media-body">
+                                    <p class="margin-none pull-left">{{article.targetLocation.district}}</p>
+                                </div>
+                            </div>
+                            <input type="hidden" data-ng-model="article.tl.id">
+                            <ul class="dropdown-menu chat media-list" style="left:2%; width: 96%;">
+                                <li class="media" data-ng-repeat="targetLocation in targetLocations" style="margin-top: 1%;">
+                                    <a href="" data-ng-click="select_targetLocation(targetLocation.id, targetLocation.district)">
+                                        <input type="hidden" data-ng-model="targetLocation.id" >
+                                        <div class="media-body">
+                                            <p class="margin-none pull-left">{{targetLocation.district}}</p>
+                                        </div>                                      
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </div>
 				</td>
 			</tr>
-	<tr>
-			<td>
-		 		<label> Category	: </label>
-		 	</td>
-		 	<td>
-		 		<!-- <input type="text" class="form-control ng-pristine ng-invalid ng-invalid-required" placeholder="Choose Category" data-ng-model="formData.category" name="category"> -->
-			
-				<div class="col-md-8" style="padding: 0 0px;">
-                			<li class="col-md-12 dropdown" style="padding: 0 0px;">
+	        <tr>
+    			<td>
+    		 		<label> Category	: </label>
+    		 	</td>
+    		 	<td>
+    		 		<!-- <input type="text" class="form-control ng-pristine ng-invalid ng-invalid-required" placeholder="Choose Category" data-ng-model="formData.category" name="category"> -->
+    			
+    				<div class="col-md-8" style="padding: 0 0px;">
+            			<li class="col-md-12 dropdown" style="padding: 0 0px;">
                  			<div class="form-control dropdown-toggle">
                  				<div class="media-body">
-						       		<p class="margin-none pull-left">{{article.category.name}}</p>
-						    	</div>
- 							</div>
- 							<input type="hidden" data-ng-model="article.ct.id">
-                  		<ul class="dropdown-menu chat media-list" style="left:2%; width: 96%;">
-							<li class="media" data-ng-repeat="category in articleCategorys" style="margin-top: 1%;">
-						        <a href="" data-ng-click="select_category(category.id, category.name,category.pn)">
-									<input type="hidden" data-ng-model="category.id" >
-									<div class="media-body">
-						            	<p class="margin-none pull-left">{{category.name}}</p>
-						        	</div>							        	
-						        </a>
-							</li>
-				      	</ul>
-				      </li>
-                		</div>
-			
-			</td>
-	</tr>
-</table>
+        				       		<p class="margin-none pull-left">{{article.category.name}}</p>
+        				    	</div>
+        					</div>
+        					<input type="hidden" data-ng-model="article.ct.id">
+                  		    <ul class="dropdown-menu chat media-list" style="left:2%; width: 96%;">
+            					<li class="media" data-ng-repeat="category in articleCategorys" style="margin-top: 1%;">
+            				        <a href="" data-ng-click="select_category(category.id, category.name,category.pn)">
+            							<input type="hidden" data-ng-model="category.id" >
+            							<div class="media-body">
+            				            	<p class="margin-none pull-left">{{category.name}}</p>
+            				        	</div>							        	
+            				        </a>
+            					</li>
+            				</ul>
+        				</li>
+                    </div>
+    			</td>
+	       </tr>
+        </table>
 		<div style=" width: 50%;margin-left: 15%;">
 			<textarea data-ui-tinymce='tinymceOptions' data-ng-model="article.description" style="height: 300px;"></textarea>
 		</div>
