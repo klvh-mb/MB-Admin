@@ -49,6 +49,9 @@ public class Article extends domain.Entity {
     public String targetingType = "SCORE";
     
     @Column(nullable=true)
+    public String targetingInfo;
+    
+    @Column(nullable=true)
     public int targetAgeMinMonth;
     
     @Column(nullable=true)

@@ -49,6 +49,8 @@ public class Location  {
     /* e.g. Pacific Place */
     public String location;
     
+    public String displayName;
+    
     @Enumerated(EnumType.STRING)
     public LocationType locationType;
     
@@ -79,8 +81,13 @@ public class Location  {
     }
     
     public Location(Location parent, String value) {
+        this(parent, value, value);
+    }
+    
+    public Location(Location parent, String value, String displayName) {
         this.parent = parent;
         this.locationCode = parent.locationCode;
+        this.displayName = displayName;
         if (LocationType.COUNTRY.equals(parent.locationType)) {
             this.locationType = LocationType.STATE;
             this.country = parent.country;
@@ -121,27 +128,6 @@ public class Location  {
             this.area = parent.area;
             this.location = value;
         }
-    }
-    
-    @Transactional
-    public void save() {
-        JPA.em().persist(this);
-        JPA.em().flush();
-    }
-      
-    @Transactional
-    public void delete() {
-        JPA.em().remove(this);
-    }
-      
-    @Transactional
-    public void merge() {
-        JPA.em().merge(this);
-    }
-      
-    @Transactional
-    public void refresh() {
-        JPA.em().refresh(this);
     }
     
     public static List<Location> getHongKongDistricts() {
@@ -223,8 +209,8 @@ public class Location  {
     
     @Override
     public  String toString() {
-        return "[" + locationType + "|" + country + "|" + state + 
-                "|" + city + "|" + region + "|" + district + "|" + 
-                area + "|" + location + "]";
+        return "[" + locationCode + "|" + locationType + "|" + country + "|" + 
+                state + "|" + city + "|" + region + "|" + district + "|" + 
+                area + "|" + location + "|" + displayName + "]";
     }
 }
