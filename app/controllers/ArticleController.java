@@ -60,9 +60,10 @@ public class ArticleController extends Controller {
 		try {
             targetLocation_id = Long.parseLong(form.get("targetLocation_id"));
         } catch(NumberFormatException e) {
-            return status(506, "PLEASE CHOOSE TARGET LOCATION");
+            //return status(509, "PLEASE CHOOSE TARGET LOCATION");
+            targetLocation_id = Location.getHongKongCity().id;
         }
-
+		
 		Location location = Location.getLocationById(targetLocation_id);
 		article.targetLocation = location;
 		ArticleCategory ac = ArticleCategory.getCategoryById(category_id);

@@ -14,7 +14,6 @@ import javax.persistence.Query;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
 import play.db.jpa.JPA;
-import play.db.jpa.Transactional;
 
 /*
  * No UI Crud operation for this model. Static Lookup for country.
@@ -129,6 +128,13 @@ public class Location  {
             this.location = value;
         }
     }
+
+    public static Location getHongKongCity() {
+        Query q = JPA.em().createQuery("select l from Location l where locationType = ?1 and locationCode = ?2");
+        q.setParameter(1, LocationType.CITY);
+        q.setParameter(2, LocationCode.HK);
+        return (Location)q.getSingleResult();
+    }
     
     public static List<Location> getHongKongDistricts() {
         Query q = JPA.em().createQuery("select l from Location l where locationType = ?1 and locationCode = ?2");
@@ -160,42 +166,42 @@ public class Location  {
         Query q = JPA.em().createQuery("Select l from Location l where locationType = ?1 and parent_id = ?2");
         q.setParameter(1, LocationType.STATE);
         q.setParameter(2, countryId);
-        return (List<Location>)q.getSingleResult();
+        return (List<Location>)q.getResultList();
     }
 
     public static List<Location> getCitiesByState(long stateId) {
         Query q = JPA.em().createQuery("Select l from Location l where locationType = ?1 and parent_id = ?2");
         q.setParameter(1, LocationType.CITY);
         q.setParameter(2, stateId);
-        return (List<Location>)q.getSingleResult();
+        return (List<Location>)q.getResultList();
     }
     
     public static List<Location> getRegionsByCity(long cityId) {
         Query q = JPA.em().createQuery("Select l from Location l where locationType = ?1 and parent_id = ?2");
         q.setParameter(1, LocationType.REGION);
         q.setParameter(2, cityId);
-        return (List<Location>)q.getSingleResult();
+        return (List<Location>)q.getResultList();
     }
     
     public static List<Location> getDistrictsByRegion(long regionId) {
         Query q = JPA.em().createQuery("Select l from Location l where locationType = ?1 and parent_id = ?2");
         q.setParameter(1, LocationType.DISTRICT);
         q.setParameter(2, regionId);
-        return (List<Location>)q.getSingleResult();
+        return (List<Location>)q.getResultList();
     }
     
     public static List<Location> getAreasByDistrict(long districtId) {
         Query q = JPA.em().createQuery("Select l from Location l where locationType = ?1 and parent_id = ?2");
         q.setParameter(1, LocationType.AREA);
         q.setParameter(2, districtId);
-        return (List<Location>)q.getSingleResult();
+        return (List<Location>)q.getResultList();
     }
     
     public static List<Location> getLocationsByArea(long areaId) {
         Query q = JPA.em().createQuery("Select l from Location l where locationType = ?1 and parent_id = ?2");
         q.setParameter(1, LocationType.LOCATION);
         q.setParameter(2, areaId);
-        return (List<Location>)q.getSingleResult();
+        return (List<Location>)q.getResultList();
     }
     
     @Override

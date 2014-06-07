@@ -40,6 +40,7 @@ minibean.controller('CreateArticleController', function($scope, $http, $location
                 $http.post('/createArticle', $scope.formData).success(function(data){
                     $scope.submitBtn = "Done";
                     $scope.uniqueName = false;
+                    $scope.targetLocationNotChoose = false;
                     $scope.categoryNotChoose = false;
                     $scope.TargetAgeNotSelected = false;
                     $scope.TargetAgeCondition = false;
@@ -66,7 +67,11 @@ minibean.controller('CreateArticleController', function($scope, $http, $location
                         usSpinnerService.stop('loading...');
                         $scope.submitBtn = "Try Again";
                     }
-
+                    if(status == 509){
+                        $scope.targetLocationNotChoose = true;
+                        usSpinnerService.stop('loading...');
+                        $scope.submitBtn = "Try Again";
+                    }
                 });
     }
 });
