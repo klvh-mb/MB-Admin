@@ -1,5 +1,6 @@
 <html>
 <body>
+<link rel="stylesheet" href="../assets/app/custom-css/admin.css">
 <form method="post" ng-submit="submit()">
 <table class="table" style="width: 60%;margin-left: 15%;">
     <tr>
@@ -103,19 +104,19 @@
                         <li class="col-md-12 dropdown" style="padding: 0 0px;" validator="[required]" required>
                             <div class="form-control dropdown-toggle">
                                 <div class="media-body">
-                                    <p class="margin-none pull-left">{{targetLocation_district}}</p>
+                                    <p class="margin-none pull-left">{{targetLocation_name}}</p>
                                 </div>
                                 <div data-ng-if="!isLocationChosen" data-ng-init="isLocationChosen=false">
-                                    Choose Location
+                                    {{targetLocations[0].displayName}}
                                 </div>
                             </div>
                             <p class="margin-none pull-left" style="display: none;">{{targetLocation_id}}</p>
                             <ul class="dropdown-menu chat media-list" style="left:2%; width: 96%;">
                                 <li class="media" data-ng-repeat="targetLocation in targetLocations" style="margin-top: 1%;">
-                                    <a href="" data-ng-click="select_targetLocation(targetLocation.id, targetLocation.district)">
+                                    <a href="" data-ng-click="select_targetLocation(targetLocation.id, targetLocation.displayName)">
                                         <input type="hidden" data-ng-model="formData.targetLocation" >
                                         <div class="media-body">
-                                            <p class="margin-none pull-left">{{targetLocation.district}}</p>
+                                            <p class="margin-none pull-left">{{targetLocation.displayName}}</p>
                                         </div>                                      
                                     </a>
                                 </li>

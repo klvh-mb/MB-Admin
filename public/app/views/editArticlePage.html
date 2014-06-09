@@ -1,5 +1,6 @@
 <html>
 <body>
+<link rel="stylesheet" href="../assets/app/custom-css/admin.css">
 <form method="post" editable-form name="article_data" onaftersave="updateArticleData($data)">
 <table class="table" style="width: 50%;margin-left: 15%;">
 	<tr>
@@ -102,16 +103,16 @@
                         <li class="col-md-12 dropdown" style="padding: 0 0px;" validator="[required]" required>
                             <div class="form-control dropdown-toggle">
                                 <div class="media-body">
-                                    <p class="margin-none pull-left">{{article.targetLocation.district}}</p>
+                                    <p class="margin-none pull-left">{{article.targetLocation.displayName}}</p>
                                 </div>
                             </div>
                             <input type="hidden" data-ng-model="article.tl.id">
                             <ul class="dropdown-menu chat media-list" style="left:2%; width: 96%;">
                                 <li class="media" data-ng-repeat="targetLocation in targetLocations" style="margin-top: 1%;">
-                                    <a href="" data-ng-click="select_targetLocation(targetLocation.id, targetLocation.district)">
+                                    <a href="" data-ng-click="select_targetLocation(targetLocation.id, targetLocation.displayName)">
                                         <input type="hidden" data-ng-model="targetLocation.id" >
                                         <div class="media-body">
-                                            <p class="margin-none pull-left">{{targetLocation.district}}</p>
+                                            <p class="margin-none pull-left">{{targetLocation.displayName}}</p>
                                         </div>                                      
                                     </a>
                                 </li>

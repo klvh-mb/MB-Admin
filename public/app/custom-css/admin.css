@@ -1,0 +1,25 @@
+.location-country {
+    font-weight: bold;
+}
+.location-state {
+    font-weight: bold;
+}
+.location-city {
+    font-weight: bold;
+}
+.location-region {
+    font-weight: bold;
+    margin-left: 5px;
+}
+.location-district {
+    font-weight: normal;
+    margin-left: 10px;
+}
+.location-area {
+    font-weight: normal;
+    margin-left: 15px;
+}
+.location-location {
+    font-weight: normal;
+    margin-left: 20px;
+}

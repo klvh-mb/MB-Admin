@@ -1,5 +1,7 @@
 package models;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -17,6 +19,9 @@ import play.db.jpa.JPA;
 
 /*
  * No UI Crud operation for this model. Static Lookup for country.
+ * 
+ * TODO - keith
+ * Put all locations into local cache.
  */
 @Entity
 public class Location  {
@@ -74,9 +79,14 @@ public class Location  {
     public Location() {}
 
     public Location(LocationCode locationCode, String country) {
+        this(locationCode, country, country);
+    }
+    
+    public Location(LocationCode locationCode, String country, String displayName) {
         this.locationType = LocationType.COUNTRY;
         this.locationCode = locationCode;
         this.country = country;
+        this.displayName = displayName;
     }
     
     public Location(Location parent, String value) {
@@ -129,11 +139,96 @@ public class Location  {
         }
     }
 
+    public String getName() {
+        if (locationType == LocationType.COUNTRY) {
+            return country;
+        } else if (locationType == LocationType.STATE) {
+            return country;
+        } else if (locationType == LocationType.CITY) {
+            return country;
+        } else if (locationType == LocationType.REGION) {
+            return country;
+        } else if (locationType == LocationType.DISTRICT) {
+            return country;
+        } else if (locationType == LocationType.AREA) {
+            return country;
+        } else if (locationType == LocationType.LOCATION) {
+            return country;
+        }
+        throw new RuntimeException("Unknown locationType: " + locationType);
+    }
+    
+    public String getDisplayName() {
+        return displayName;
+    }
+    
     public static Location getHongKongCity() {
-        Query q = JPA.em().createQuery("select l from Location l where locationType = ?1 and locationCode = ?2");
-        q.setParameter(1, LocationType.CITY);
-        q.setParameter(2, LocationCode.HK);
+        return getLocation(LocationCode.HK, LocationType.CITY);
+    }
+    
+    public static Location getLocation(LocationCode code, LocationType type) {
+        Query q = JPA.em().createQuery("select l from Location l where locationCode = ?1 and locationType = ?2");
+        q.setParameter(1, code);
+        q.setParameter(2, type);
         return (Location)q.getSingleResult();
+    }
+    
+    public static List<Location> getHongKongCityRegionsDistricts() {
+        return getLocationsByCountry(getLocation(LocationCode.HK, LocationType.COUNTRY), 
+                new LocationType[] { LocationType.CITY, LocationType.REGION, LocationType.DISTRICT });
+    }
+    
+    /**
+     * Traverse all children and add to the list if flagged.
+     * 
+     * @param country
+     * @param locationTypes
+     * @return
+     */
+    public static List<Location> getLocationsByCountry(Location country, LocationType[] locationTypes) {
+        if (!LocationType.COUNTRY.equals(country.locationType))
+            throw new RuntimeException(country + " is not a country");
+        
+        List<Location> locations = new ArrayList<Location>();
+        List<LocationType> types = Arrays.asList(locationTypes);
+        
+        if (types.contains(LocationType.COUNTRY)) {
+            locations.add(country);
+        }
+
+        List<Location> states = getStatesByCountry(country.id);
+        for (Location state : states) {
+            if (types.contains(LocationType.STATE)) 
+                locations.add(state);
+            
+            List<Location> cities = getCitiesByState(state.id);
+            for (Location city : cities) {
+                if (types.contains(LocationType.CITY)) 
+                    locations.add(city);
+                
+                List<Location> regions = getRegionsByCity(city.id);
+                for (Location region : regions) {
+                    if (types.contains(LocationType.REGION)) 
+                        locations.add(region);
+                    
+                    List<Location> districts = getDistrictsByRegion(region.id);
+                    for (Location district : districts) {
+                        if (types.contains(LocationType.DISTRICT)) 
+                            locations.add(district);
+                        
+                        List<Location> areas = getAreasByDistrict(district.id);
+                        for (Location area : areas) {
+                            if (types.contains(LocationType.AREA)) 
+                                locations.add(area);
+                            
+                            if (types.contains(LocationType.LOCATION))
+                                locations.addAll(getLocationsByArea(area.id));
+                        }
+                    }
+                }
+            }
+        }
+        return locations;
     }
     
     public static List<Location> getHongKongDistricts() {

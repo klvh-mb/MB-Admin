@@ -20,9 +20,9 @@ minibean.controller('CreateArticleController', function($scope, $http, $location
     $scope.articleCategories = articleCategoryService.getAllArticleCategory.get();
     $scope.targetLocations = locationService.getAllDistricts.get();
     
-    $scope.select_targetLocation = function(id, district) {
+    $scope.select_targetLocation = function(id, name) {
         $scope.targetLocation_id = id;
-        $scope.targetLocation_district = district;
+        $scope.targetLocation_name = name;
         $scope.formData.targetLocation_id = id;
         $scope.isLocationChosen = true;
     }
@@ -194,9 +194,9 @@ minibean.controller('EditArticleController',function($scope, $http, $routeParams
             toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
     }
     
-    $scope.select_targetLocation = function(id, district) {
+    $scope.select_targetLocation = function(id, name) {
         $scope.article.targetLocation.id = id;
-        $scope.article.targetLocation.district = district;
+        $scope.article.targetLocation.displayName = name;
         $scope.isLocationChosen = true;
     }
     

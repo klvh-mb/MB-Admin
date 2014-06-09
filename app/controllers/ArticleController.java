@@ -36,7 +36,7 @@ public class ArticleController extends Controller {
 			return status(507,"PLEASE SELECT TARGET AGE");
 		}
 		
-		if (article.targetAgeMinMonth >=article.targetAgeMaxMonth) {
+		if (article.targetAgeMinMonth >= article.targetAgeMaxMonth) {
 			return status(508,"TargetAgeMinMonth should be less than TargetAgeMaxMonth");
 		}
 		
@@ -100,7 +100,8 @@ public class ArticleController extends Controller {
 
    @Transactional
     public static Result getAllDistricts() {
-        List<Location> locations = Location.getHongKongDistricts();  // TODO
+        //List<Location> locations = Location.getHongKongDistricts();  // TODO
+        List<Location> locations = Location.getHongKongCityRegionsDistricts();
         
         List<LocationVM> locationVMs = new ArrayList<>();
         for(Location location : locations) {
