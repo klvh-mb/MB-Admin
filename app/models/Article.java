@@ -37,6 +37,8 @@ public class Article extends domain.Entity {
 	
 	public String objectType = "ARTICLE";
 	
+	public Boolean system = true;
+	
 	@ManyToOne
 	public ArticleCategory category;
 	
