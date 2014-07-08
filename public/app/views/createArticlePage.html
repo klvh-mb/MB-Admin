@@ -160,6 +160,10 @@
                 </td>
            </tr>
         </table>
+        <div data-ng-controller = "EditArticleController">
+	        <input type="file" name="url-photo" ng-file-select="onFileSelect($files)"/>
+	         <p>{{path}}</p>
+         </div>
         <div style="margin-left: 15%;width: 60%">
             <textarea data-ui-tinymce='tinymceOptions' data-ng-model="formData.description"></textarea>
         </div>

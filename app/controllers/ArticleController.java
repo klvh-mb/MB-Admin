@@ -1,6 +1,9 @@
 package controllers;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -9,11 +12,16 @@ import java.util.Map;
 import models.Article;
 import models.ArticleCategory;
 import models.Location;
+
+import org.apache.commons.io.FileUtils;
+
+import play.Play;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.db.jpa.Transactional;
 import play.libs.Json;
 import play.mvc.Controller;
+import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
 import viewmodel.ArticleCategoryVM;
 import viewmodel.ArticleVM;
@@ -155,5 +163,39 @@ public class ArticleController extends Controller {
 	public static Result infoArticle(Long art_id) {
 		Article article = Article.findById(art_id);
 		return ok(Json.toJson(article));
+	}
+	
+	@Transactional
+	public static Result uploadImage() {
+		
+		FilePart picture = request().body().asMultipartFormData().getFile("url-photo0");
+		String fileName = picture.getFilename();
+		System.out.println("URL PHOTO :: "+fileName);
+		Date date = new Date();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+	    File file = picture.getFile();
+	    File fileTo = new File(Play.application().configuration().getString("image.temp")+""+fileName);
+	    try {
+	    	 FileUtils.copyFile(file, new java.io.File(Play.application().configuration().getString("storage.path")+ "/"+ cal.get(Calendar.YEAR) + "/"
+	 				+ cal.get(Calendar.MONTH) + "/" + cal.get(Calendar.DATE) + "/" + fileName));
+	    	FileUtils.copyFile(file, fileTo);
+		} catch (IOException e) {
+			//e.printStackTrace();
+			return status(500);
+		}
+	    Map<String, String> map = new HashMap<>();
+	    map.put("URL","/image/scImageURL" + "/"+ cal.get(Calendar.YEAR) + "/"
+	 				+ cal.get(Calendar.MONTH) + "/" + cal.get(Calendar.DATE) + "/" + fileName);
+		return ok(Json.toJson(map));
+	}
+	
+	
+	@Transactional
+	public static Result getImageUrl(Long year, Long month,Long date,String name) {
+		System.out.println(Play.application().configuration().getString("storage.path")+ "/"+ year + "/"
+	 				+ month + "/" + date + "/" + name);
+		return ok(new File(Play.application().configuration().getString("storage.path")+ "/"+ year + "/"
+	 				+ month + "/" + date + "/" + name));
 	}
 }

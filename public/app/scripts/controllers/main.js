@@ -172,7 +172,7 @@ minibean.service('ArticleService',function($resource){
 });
 
 
-minibean.controller('EditArticleController',function($scope, $http, $routeParams, $location, ArticleService, articleCategoryService, locationService, usSpinnerService){
+minibean.controller('EditArticleController',function($scope, $http, $routeParams, $location, $upload, ArticleService, articleCategoryService, locationService, usSpinnerService){
     $scope.submitBtn = "Save";
     $scope.article = ArticleService.ArticleInfo.get({id:$routeParams.id});
     $scope.articleCategorys = articleCategoryService.getAllArticleCategory.get();
@@ -223,6 +223,51 @@ minibean.controller('EditArticleController',function($scope, $http, $routeParams
 
         });
     }
+    
+    
+    
+    $scope.selectedFiles;
+    $scope.dataUrls;
+    $scope.path;
+    $scope.tempSelectedFiles;
+    $scope.onFileSelect = function($files) {
+        alert($files);
+        if($scope.selectedFiles == 0) {
+            $scope.tempSelectedFiles = 0;
+        }
+        
+        $scope.selectedFiles = $files;
+        $scope.tempSelectedFiles = $files;
+        var $file = $files;
+        if (window.FileReader && $file.type > -1) {
+            var fileReader = new FileReader();
+            fileReader.readAsDataURL($files);
+            var loadFile = function(fileReader, index) {
+                fileReader.onload = function(e) {
+                    $timeout(function() {
+                        $scope.dataUrls = e.target.result;
+                    });
+                }
+            }(fileReader, 0);
+        }
+        $upload.upload({
+            url : '/image/scImage',
+            method: $scope.httpMethod,
+            file: $scope.tempSelectedFiles,
+            fileFormDataName: 'url-photo'
+        }).success(function(data, status, headers, config) {
+            usSpinnerService.stop('loading...');
+            alert("ASDFE :: "+data.URL);
+            $scope.path = data.URL;
+        });
+    }
+    
+   
+        
+        
+    
+    
+    
 });
 
       

@@ -23,3 +23,7 @@ GET		/deleteArticle/:id			controllers.ArticleController.deleteArticle(id :Long)
 GET		/Article/:id				controllers.ArticleController.infoArticle(id :Long)
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+
+POST		/image/scImage				controllers.ArticleController.uploadImage()
+GET		/image/scImageURL/:year/:month/:date/:name			controllers.ArticleController.getImageUrl(year :Long, month :Long, date :Long, name : String)

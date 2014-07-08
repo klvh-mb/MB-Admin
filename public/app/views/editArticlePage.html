@@ -151,6 +151,8 @@
     			</td>
 	       </tr>
         </table>
+                	<input type="file" name="url-photo" ng-file-select="onFileSelect($files)"/>
+                	<p>{{path}}</p>
 		<div style=" width: 50%;margin-left: 15%;">
 			<textarea data-ui-tinymce='tinymceOptions' data-ng-model="article.description" style="height: 300px;"></textarea>
 		</div>
