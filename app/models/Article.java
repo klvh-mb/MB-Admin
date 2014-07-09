@@ -30,7 +30,9 @@ public class Article extends domain.Entity {
 	@Lob
 	public String description;
 	
-	public int noOfLikes=0;
+	public int noOfLikes = 0;
+	
+	public int noOfViews = 0;
     
 	@Formats.DateTime(pattern = "yyyy-MM-dd")
 	public Date publishedDate;
@@ -38,6 +40,8 @@ public class Article extends domain.Entity {
 	public String objectType = "ARTICLE";
 	
 	public Boolean system = true;
+	
+	public Boolean deleted = false;
 	
 	@ManyToOne
 	public ArticleCategory category;
