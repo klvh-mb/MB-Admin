@@ -224,8 +224,6 @@ minibean.controller('EditArticleController',function($scope, $http, $routeParams
         });
     }
     
-    
-    
     $scope.selectedFiles;
     $scope.dataUrls;
     $scope.path;
@@ -251,7 +249,7 @@ minibean.controller('EditArticleController',function($scope, $http, $routeParams
             }(fileReader, 0);
         }
         $upload.upload({
-            url : '/image/scImage',
+            url : '/image/article/upload',
             method: $scope.httpMethod,
             file: $scope.tempSelectedFiles,
             fileFormDataName: 'url-photo'
@@ -261,13 +259,6 @@ minibean.controller('EditArticleController',function($scope, $http, $routeParams
             $scope.path = data.URL;
         });
     }
-    
-   
-        
-        
-    
-    
-    
 });
 
       

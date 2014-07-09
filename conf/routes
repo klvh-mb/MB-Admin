@@ -25,5 +25,5 @@ GET		/Article/:id				controllers.ArticleController.infoArticle(id :Long)
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 
-POST		/image/scImage				controllers.ArticleController.uploadImage()
-GET		/image/scImageURL/:year/:month/:date/:name			controllers.ArticleController.getImageUrl(year :Long, month :Long, date :Long, name : String)
+POST		/image/article/upload				controllers.ArticleController.uploadImage()
+GET		/image/article/:year/:month/:date/:name			controllers.ArticleController.getImage(year :Long, month :Long, date :Long, name : String)

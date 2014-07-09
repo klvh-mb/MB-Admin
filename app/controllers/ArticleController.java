@@ -14,6 +14,7 @@ import models.ArticleCategory;
 import models.Location;
 
 import org.apache.commons.io.FileUtils;
+import org.joda.time.DateTime;
 
 import play.Play;
 import play.data.DynamicForm;
@@ -28,7 +29,11 @@ import viewmodel.ArticleVM;
 import viewmodel.LocationVM;
 
 public class ArticleController extends Controller {
-
+    
+    private static final String STORAGE_PATH = Play.application().configuration().getString("storage.path"); 
+    
+    private static final String IMAGE_TEMP = Play.application().configuration().getString("image.temp");
+    
 	@Transactional
 	public static Result addArticle() {
 		Form<Article> articleForm = DynamicForm.form(Article.class).bindFromRequest();
@@ -170,32 +175,35 @@ public class ArticleController extends Controller {
 		
 		FilePart picture = request().body().asMultipartFormData().getFile("url-photo0");
 		String fileName = picture.getFilename();
-		System.out.println("URL PHOTO :: "+fileName);
-		Date date = new Date();
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(date);
+		System.out.println("URL PHOTO :: " + fileName);
+		DateTime date = new DateTime();
 	    File file = picture.getFile();
-	    File fileTo = new File(Play.application().configuration().getString("image.temp")+""+fileName);
+	    File fileTo = new File(IMAGE_TEMP + fileName);
 	    try {
-	    	 FileUtils.copyFile(file, new java.io.File(Play.application().configuration().getString("storage.path")+ "/"+ cal.get(Calendar.YEAR) + "/"
-	 				+ cal.get(Calendar.MONTH) + "/" + cal.get(Calendar.DATE) + "/" + fileName));
+	        FileUtils.copyFile(file, 
+	                new File(getImageUrl(
+	                        Long.valueOf(date.getYear()), 
+	                        Long.valueOf(date.getMonthOfYear()), 
+	                        Long.valueOf(date.getDayOfMonth()), 
+	                        fileName)));
 	    	FileUtils.copyFile(file, fileTo);
 		} catch (IOException e) {
 			//e.printStackTrace();
 			return status(500);
 		}
 	    Map<String, String> map = new HashMap<>();
-	    map.put("URL","/image/scImageURL" + "/"+ cal.get(Calendar.YEAR) + "/"
-	 				+ cal.get(Calendar.MONTH) + "/" + cal.get(Calendar.DATE) + "/" + fileName);
+	    map.put("URL", "/image/article" + "/" + date.getYear() + "/"
+	 				+ date.getMonthOfYear() + "/" + date.getDayOfMonth() + "/" + fileName);
 		return ok(Json.toJson(map));
 	}
 	
-	
 	@Transactional
-	public static Result getImageUrl(Long year, Long month,Long date,String name) {
-		System.out.println(Play.application().configuration().getString("storage.path")+ "/"+ year + "/"
-	 				+ month + "/" + date + "/" + name);
-		return ok(new File(Play.application().configuration().getString("storage.path")+ "/"+ year + "/"
-	 				+ month + "/" + date + "/" + name));
-	}
+    public static Result getImage(Long year, Long month, Long date, String name) {
+        String path = getImageUrl(year, month, date, name);
+        return ok(new File(path));
+    }
+	
+	public static String getImageUrl(Long year, Long month, Long date, String name) {
+        return STORAGE_PATH + "/article/" + year + "/" + month + "/" + date + "/" + name;
+    }
 }
