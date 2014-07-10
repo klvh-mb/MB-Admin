@@ -229,7 +229,6 @@ minibean.controller('EditArticleController',function($scope, $http, $routeParams
     $scope.path;
     $scope.tempSelectedFiles;
     $scope.onFileSelect = function($files) {
-        alert($files);
         if($scope.selectedFiles == 0) {
             $scope.tempSelectedFiles = 0;
         }
@@ -255,7 +254,6 @@ minibean.controller('EditArticleController',function($scope, $http, $routeParams
             fileFormDataName: 'url-photo'
         }).success(function(data, status, headers, config) {
             usSpinnerService.stop('loading...');
-            alert("ASDFE :: "+data.URL);
             $scope.path = data.URL;
         });
     }
