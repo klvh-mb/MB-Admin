@@ -3,7 +3,6 @@ package controllers;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -192,7 +191,7 @@ public class ArticleController extends Controller {
 			return status(500);
 		}
 	    Map<String, String> map = new HashMap<>();
-	    map.put("URL", "/image/article" + "/" + date.getYear() + "/"
+	    map.put("URL", "http://minibean.com.hk/image/article" + "/" + date.getYear() + "/"
 	 				+ date.getMonthOfYear() + "/" + date.getDayOfMonth() + "/" + fileName);
 		return ok(Json.toJson(map));
 	}
