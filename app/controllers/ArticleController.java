@@ -28,11 +28,14 @@ import viewmodel.ArticleVM;
 import viewmodel.LocationVM;
 
 public class ArticleController extends Controller {
-    
+    private static play.api.Logger logger = play.api.Logger.apply(ArticleController.class);
+
     private static final String STORAGE_PATH = Play.application().configuration().getString("storage.path"); 
-    
-    private static final String IMAGE_TEMP = Play.application().configuration().getString("image.temp");
-    
+
+    private static final String IMAGE_URL_PREFIX =
+            Play.application().configuration().getString("image.url.prefix", "http://minibean.com.hk/image");
+
+
 	@Transactional
 	public static Result addArticle() {
 		Form<Article> articleForm = DynamicForm.form(Article.class).bindFromRequest();
@@ -171,38 +174,43 @@ public class ArticleController extends Controller {
 	
 	@Transactional
 	public static Result uploadImage() {
-		
 		FilePart picture = request().body().asMultipartFormData().getFile("url-photo0");
 		String fileName = picture.getFilename();
-		System.out.println("URL PHOTO :: " + fileName);
+        logger.underlyingLogger().info("uploadImage. fileName=" + fileName);
+
+        // TODO: auto-generate fileName (SC_timestamp).ext
 		DateTime date = new DateTime();
 	    File file = picture.getFile();
-	    File fileTo = new File(IMAGE_TEMP + fileName);
 	    try {
-	        FileUtils.copyFile(file, 
-	                new File(getImageUrl(
-	                        Long.valueOf(date.getYear()), 
-	                        Long.valueOf(date.getMonthOfYear()), 
-	                        Long.valueOf(date.getDayOfMonth()), 
-	                        fileName)));
-	    	FileUtils.copyFile(file, fileTo);
+            String imagePath = getImagePath(Long.valueOf(date.getYear()),
+                    Long.valueOf(date.getMonthOfYear()),
+                    Long.valueOf(date.getDayOfMonth()),
+                    fileName);
+	        FileUtils.copyFile(file, new File(imagePath));
 		} catch (IOException e) {
-			//e.printStackTrace();
+            logger.underlyingLogger().error("Error in uploadImage", e);
 			return status(500);
 		}
+
+        String imageUrl = getImageUrl(date.getYear(), date.getMonthOfYear(), date.getDayOfMonth(), fileName);
+        logger.underlyingLogger().info("uploadImage. imageUrl=" + imageUrl);
+
 	    Map<String, String> map = new HashMap<>();
-	    map.put("URL", "http://minibean.com.hk/image/article" + "/" + date.getYear() + "/"
-	 				+ date.getMonthOfYear() + "/" + date.getDayOfMonth() + "/" + fileName);
+	    map.put("URL", imageUrl);
 		return ok(Json.toJson(map));
 	}
 	
 	@Transactional
     public static Result getImage(Long year, Long month, Long date, String name) {
-        String path = getImageUrl(year, month, date, name);
+        String path = getImagePath(year, month, date, name);
         return ok(new File(path));
     }
 	
-	public static String getImageUrl(Long year, Long month, Long date, String name) {
+	private static String getImagePath(Long year, Long month, Long date, String name) {
         return STORAGE_PATH + "/article/" + year + "/" + month + "/" + date + "/" + name;
+    }
+
+    private static String getImageUrl(int year, int month, int date, String name) {
+        return IMAGE_URL_PREFIX + "/article/" + year + "/" + month + "/" + date + "/" + name;
     }
 }
