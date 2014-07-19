@@ -15,6 +15,8 @@ import models.Location;
 import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
 
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import play.Play;
 import play.data.DynamicForm;
 import play.data.Form;
@@ -35,6 +37,7 @@ public class ArticleController extends Controller {
     private static final String IMAGE_URL_PREFIX =
             Play.application().configuration().getString("image.url.prefix", "http://minibean.com.hk/image");
 
+    private static final DateTimeFormatter timeFormatter = DateTimeFormat.forPattern("HHmmss");
 
 	@Transactional
 	public static Result addArticle() {
@@ -178,39 +181,52 @@ public class ArticleController extends Controller {
 		String fileName = picture.getFilename();
         logger.underlyingLogger().info("uploadImage. fileName=" + fileName);
 
-        // TODO: auto-generate fileName (SC_timestamp).ext
-		DateTime date = new DateTime();
+		DateTime now = new DateTime();
 	    File file = picture.getFile();
 	    try {
-            String imagePath = getImagePath(Long.valueOf(date.getYear()),
-                    Long.valueOf(date.getMonthOfYear()),
-                    Long.valueOf(date.getDayOfMonth()),
-                    fileName);
+            String imagePath = getImagePath(now, fileName);
 	        FileUtils.copyFile(file, new File(imagePath));
 		} catch (IOException e) {
             logger.underlyingLogger().error("Error in uploadImage", e);
 			return status(500);
 		}
 
-        String imageUrl = getImageUrl(date.getYear(), date.getMonthOfYear(), date.getDayOfMonth(), fileName);
+        String imageUrl = getImageUrl(now, fileName);
         logger.underlyingLogger().info("uploadImage. imageUrl=" + imageUrl);
 
 	    Map<String, String> map = new HashMap<>();
 	    map.put("URL", imageUrl);
 		return ok(Json.toJson(map));
 	}
-	
+
+    /**
+     * Ajax call (see routes)
+     * @param year
+     * @param month
+     * @param date
+     * @param name
+     * @return
+     */
 	@Transactional
-    public static Result getImage(Long year, Long month, Long date, String name) {
+    public static Result getImage(Integer year, Integer month, Integer date, String name) {
         String path = getImagePath(year, month, date, name);
         return ok(new File(path));
     }
 	
-	private static String getImagePath(Long year, Long month, Long date, String name) {
+	private static String getImagePath(Integer year, Integer month, Integer date, String name) {
         return STORAGE_PATH + "/article/" + year + "/" + month + "/" + date + "/" + name;
     }
 
-    private static String getImageUrl(int year, int month, int date, String name) {
+    private static String getImagePath(DateTime dateTime, String rawFileName) {
+        String name = timeFormatter.print(dateTime)+"_"+rawFileName;
+        return getImagePath(dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth(), name);
+    }
+
+    private static String getImageUrl(DateTime dateTime, String rawFileName) {
+        int year = dateTime.getYear();
+        int month = dateTime.getMonthOfYear();
+        int date = dateTime.getDayOfMonth();
+        String name = timeFormatter.print(dateTime)+"_"+rawFileName;
         return IMAGE_URL_PREFIX + "/article/" + year + "/" + month + "/" + date + "/" + name;
     }
 }
