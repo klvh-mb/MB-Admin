@@ -1,0 +1,209 @@
+body {font-size:13px;}
+.float {width:100%; float:left; padding:40px 0;}
+
+/*checkbox*/
+.cbox, .cbox-selected {background: url("../images/s-cbox.png") no-repeat scroll left top transparent; float: left; height: 23px; padding:0 3px 0 21px; line-height:25px; cursor:pointer;}
+.cbox input, .cbox-selected input {display: none;}
+.cbox-selected {background-position:url("../images/s-cbox.png") no-repeat left -23px;}
+
+
+/*radio button*/
+.custom-radio { position: relative; float:left; margin-right:5px;}
+.custom-radio input {position: absolute; left: 2px; top: 3px; margin: 0; z-index: 0; }
+.custom-radio label {display: block; position: relative; z-index: 1; padding-right: 1em; padding: .5em 0 .5em 26px; cursor: pointer; margin-left:-2px;}
+.custom-radio label { background: url(../images/radiobutton.gif) no-repeat; }
+.custom-radio label {background-position: -10px -14px;}
+.custom-radio label.checked {background-position: -10px -214px;}
+
+/*select dropdown*/
+.dd-text {position:absolute; text-indent:5px; background:#fff url(../images/arrow.png) no-repeat right center; z-index:0; overflow:hidden; height:16px; padding:6px 20px 6px 0; color:#999; font-size:12px; border-top:1px solid #b1b1b1; border-right:1px solid #c8c8c8; border-bottom:1px solid #c7c7c7; border-left:1px solid #b2b2b2; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius:5px;}
+select.designer {position:relative; z-index:1; height:30px;}
+
+
+/*
+===============
+Blue Theam [Branding site] Checkbox and radio button
+=======================
+*/
+#b-site .cbox, .cbox-selected {background:url("../images/cbox-brand.png") no-repeat 0 0; float: left; height: 23px; padding:0 3px 0 21px; line-height:25px; cursor:pointer;}
+#b-site .cbox input, .cbox-selected input {display:none;}
+#b-site .cbox-selected {background:url("../images/cbox-brand.png") no-repeat left -23px;}
+/*radio button */
+#b-site .custom-radio {position:relative; float:left; margin-right:5px;}
+#b-site .custom-radio input {position: absolute; left:5px; top:7px; margin:0; z-index:0; }
+#b-site .custom-radio label {display: block; position:relative; z-index:1; padding-right: 1em; padding:.5em 0 .5em 26px; cursor:pointer; margin-left:-2px;}
+#b-site .custom-radio label {background:url(../images/btn-radio-brand.png) no-repeat -10px -14px;}
+#b-site .custom-radio label.checked {background:url(../images/btn-radio-brand.png) no-repeat -10px -214px;}
+
+/*
+===============
+Light Green Theam [ Buyer's section] Checkbox and radio button
+=======================
+*/
+/*Checkbox inharite for doctor's section [Orange Theam]*/
+#buy-site .cbox, .cbox-selected {background:url("../images/cbox-buy.png") no-repeat left top; float: left; height: 23px; padding:0 3px 0 21px; line-height:25px; cursor:pointer;}
+#buy-site .cbox input, .cbox-selected input {display:none;}
+#buy-site .cbox-selected {background:url("../images/cbox-buy.png") no-repeat left -23px;}
+/*radio button*/
+#buy-site .custom-radio {position: relative; float:left; margin-right:5px;}
+#buy-site .custom-radio input {position: absolute; left: 2px; top: 3px; margin: 0; z-index: 0; display:none;}
+#buy-site .custom-radio label {display: block; position: relative; z-index: 1; padding-right: 1em; padding: .5em 0 .5em 26px; cursor: pointer; margin-left:-2px;}
+#buy-site .custom-radio label {background:url("../images/btn-radio-buy.png") no-repeat -10px -14px;}
+#buy-site .custom-radio label.checked {background:url("../images/btn-radio-buy.png") no-repeat -10px -214px;}
+
+/*
+===============
+Blue Theam [ Clinic's section] Checkbox and radio button
+=======================
+*/
+/*Clinic checkbox*/
+#clinic-site .cbox, .cbox-selected {background:url("../images/cbox-clinic.png") no-repeat left top; float: left; height:23px; padding:0 3px 0 21px; line-height:25px; cursor:pointer;}
+#clinic-site .cbox input, .cbox-selected input {display:none;}
+#clinic-site .cbox-selected {background:url("../images/cbox-clinic.png") no-repeat left -23px;}
+/*radio button*/
+#clinic-site .custom-radio { position: relative; float:left; margin-right:5px;}
+#clinic-site .custom-radio input {position:absolute; left:2px; top:3px; margin:0; z-index:0;}
+#clinic-site .custom-radio label {display:block; position:relative; z-index:1; padding-right:1em; padding:.5em 0 .5em 26px; cursor:pointer; margin-left:-2px;}
+#clinic-site .custom-radio label { background: url(../images/radiobutton-clinic.gif) no-repeat; }
+#clinic-site .custom-radio label {background:url("../images/btn-radio-clinic.png") no-repeat -10px -14px;}
+#clinic-site .custom-radio label.checked {background:url("../images/btn-radio-clinic.png") no-repeat -10px -214px;}
+
+/*
+===============
+Orange Theam [ doctor's section] Checkbox and radio button
+=======================
+*/
+/*Checkbox inharite for doctor's section [Orange Theam]*/
+#doc-site .cbox, .cbox-selected {background:url("../images/cbox-doc.png") no-repeat left top; float:left; height:23px; padding:0 3px 0 21px; line-height:25px; cursor:pointer;}
+#doc-site .cbox input, .cbox-selected input {display: none;}
+#doc-site .cbox-selected {background:url("../images/cbox-doc.png") no-repeat left -23px;}
+/*radio button*/
+#doc-site .custom-radio {position: relative; float:left; margin-right:5px;}
+#doc-site .custom-radio input {position:absolute; left:2px; top:3px; margin:0; z-index:0;}
+#doc-site .custom-radio label {display:block; position:relative; z-index:1; padding-right:1em; padding:.5em 0 .5em 26px; cursor:pointer; margin-left:-2px;}
+#doc-site .custom-radio label { background:url("../images/btn-radio-doc.png") no-repeat -10px -14px;}
+#doc-site .custom-radio label.checked {background:url("../images/btn-radio-doc.png") no-repeat -10px -214px;}
+
+/*
+===============
+Green Theme [Patient's section] Checkbox and radio button
+=======================
+*/
+/*Checkbox inharite for doctor's section [Orange Theam]*/
+#pat-site .cbox, .cbox-selected {background:url("../images/cbox-pat.png") no-repeat left top; float:left; height:23px; padding:0 3px 0 21px; line-height:25px; cursor:pointer;}
+#pat-site .cbox input, .cbox-selected input {display: none;}
+#pat-site .cbox-selected {background:url("../images/cbox-pat.png") no-repeat left -23px;}
+/*radio button*/
+#pat-site .custom-radio {position:relative; float:left; margin-right:5px;}
+#pat-site .custom-radio input {position:absolute; left:2px; top:3px; margin:0; z-index:0;}
+#pat-site .custom-radio label {display:block; position:relative; z-index:1; padding-right:1em; padding:.5em 0 .5em 26px; cursor:pointer; margin-left:-2px;}
+#pat-site .custom-radio label { background:url("../images/btn-radio-pat.png") no-repeat -10px -14px;}
+#pat-site .custom-radio label.checked {background:url("../images/btn-radio-pat.png") no-repeat -10px -214px;}
+
+/*
+===============
+Green Theme [ Support staff's section] Checkbox and radio button
+=======================
+*/
+/*Checkbox inharite for doctor's section [Orange Theam]*/
+#sup-site .cbox, .cbox-selected {background:url("../images/cbox-sup.png") no-repeat left top; float:left; height:23px; padding:0 3px 0 21px; line-height:25px; cursor:pointer;}
+#sup-site .cbox input, .cbox-selected input {display:none;}
+#sup-site .cbox-selected {background:url("../images/cbox-sup.png") no-repeat left -23px;}
+/*radio button*/
+#sup-site .custom-radio {position: relative; float:left; margin-right:5px;}
+#sup-site .custom-radio input {position:absolute; left:2px; top:3px; margin:0; z-index:0;}
+#sup-site .custom-radio label {display:block; position:relative; z-index:1; padding-right:1em; padding:.5em 0 .5em 26px; cursor:pointer; margin-left:-2px;}
+#sup-site .custom-radio label { background:url("../images/btn-radio-sup.png") no-repeat -10px -14px;}
+#sup-site .custom-radio label.checked {background:url("../images/btn-radio-sup.png") no-repeat -10px -214px;}
+
+
+/*select dropdown*/
+.oth-info .dd-text {background:#fff url(../images/select-plus.png) no-repeat right center; padding-right:30px;}
+.visit-info .dd-text {background:#fff url(../images/arrow-brown.png) no-repeat right center;}
+.prescribe-med .dd-text{background:#fff url(../images/visit-icon02.png) no-repeat right -319px;}
+.prescrb-grid tbody tr td .dd-text {background:#fff url(../images/arrow-brown.png) no-repeat right center;}
+.mrfl-fld .dd-text {background:#fff url(../images/arrow-brown.png) no-repeat right center;}
+#sup-site .visit-info .dd-text {background-image:url(../images/arrow-green.png);}
+#sup-site .mrfl-fld .dd-text {background:#fff url(../images/arrow-green.png) no-repeat right center;}
+#pat-site .visit-info .dd-text {background-image:url(../images/arrow-brownd.png);}
+#pat-site .mrfl-fld .dd-text {background:#fff url(../images/arrow-brownd.png) no-repeat right center;}
+
+
+/*  Designer form css add by jitendra   */
+.full-container .field, .jpopup .field { position: relative; float:left; width:100%; font-size:12px; }
+.full-container .infield { position: absolute; opacity: 1; margin:12px 8px; color:#999; cursor:text; top:0!important; left:0 !important; }
+.full-container .inner-content .field, .login-full-in .field { position: relative; float:left; width:100%; font-size:12px; }
+.full-container .inner-content .infield, .jpopup .infield { position: absolute; opacity: 1; margin:10px 8px; color:#999; cursor:text; top:0!important; left:0 !important; font-family:'VarelaRegular'; }
+.full-container .inner-content .textfield, .jpopup .textfield, .login-full-in .textfield  { float:left; width:275px; background:#fff; border:1px solid #ccc; box-shadow:0 0px 8px rgba(0, 0, 0, .1); -moz-box-shadow:0 0px 8px rgba(0, 0, 0, .1); -webkit-box-shadow:0 0px 8px rgba(0, 0, 0, .1); padding:8px 6px 9px; font-size:12px; border-radius:0; margin:0;  color:#666; font-family:'VarelaRegular';}
+.full-container .inner-content .textfield.clndr, .jpopup .textfield.clndr {background:url(../images/clndr-blue.png) no-repeat right center #fff; cursor:pointer;}
+.full-container .inner-content .textfield.errfield, .jpopup .textfield.errfield {border-color:#cc0000;}
+.full-container .inner-content .textfield:focus, .jpopup .textfield:focus { outline:none; border-color:#037CA9; box-shadow:0 0px 8px rgba(0, 0, 0, .1), inset 0 0px 3px rgba(0, 0, 0, .2); }
+.full-container .inner-content textarea.textfield { height:70px; resize:none; overflow:auto;}
+
+.full-container .dd-text, .jselect .dd-text{position:absolute;  z-index:0; overflow:hidden; float:left; width:275px; background:url(../images/select-arrow.png) no-repeat 97% center #fff; border:1px solid #ccc; box-shadow:0 0px 8px rgba(0, 0, 0, .1); -moz-box-shadow:0 0px 8px rgba(0, 0, 0, .1); -webkit-box-shadow:0 0px 8px rgba(0, 0, 0, .1); padding:8px 6px 8px;  border-radius:0; margin:0; font-size:12px; color:#666; font-family:'VarelaRegular'; text-indent:0; }
+.full-container select.designer, .jselect select.designer {position:relative; z-index:1; margin:0; padding:0; height:34px; width:290px; font-family:'VarelaRegular'; *margin-top:10px; *height:24px; -webkit-appearance: menulist-button; }
+.jselect select.designer {width:100%;}
+.full-container .dd-text.focus, .jselect .dd-texts.focus { border-color:#037CA9; box-shadow:0 0px 8px rgba(0, 0, 0, .1), inset 0 0px 3px rgba(0, 0, 0, .2);}
+
+
+/*  Designer Radio button*/
+.full-container .custom-radio { position: relative; float:left; margin:0 50px 0 0; }
+.full-container .custom-radio input { position: absolute; left: 2px; top: 1px; margin: 0; z-index: 0; outline:none; opacity:0; filter:alpha(opacity=0); }
+.full-container .custom-radio label { display: block; position: relative; z-index: 1; padding: 4px 0 3px 25px; cursor: pointer; line-height:1; background:url(../images/radio-btns.png) no-repeat 0px 0px; outline:none; margin:0;}
+.full-container .custom-radio label.checked { background-position: 0px -20px; }
+/*  Designer Radio ends  */
+
+/*  Designer Check box  */
+.full-container .cbox, .full-container .cbox-selected, .jpopup .cbox, .jpopup .cbox-selected { background:url(../images/checkbox.png)  no-repeat scroll left -21px transparent; float: left; height: 21px; padding:0 0 0 25px; line-height:22px;  margin-right:50px; cursor:pointer; }
+.full-container .cbox input, .full-container .cbox-selected input, .jpopup .cbox input, .jpopup .cbox-selected input { display: none; }
+.full-container .cbox-selected, .jpopup .cbox-selected  { background-position: left 0; }
+/*  Designer Checkbox ends  */
+
+/*  Browse Button  */
+.browseBtn { float:left; width:386px; position:relative;  }
+.browse { float:left; background:url(../images/browse.png) no-repeat 0 0; width:100%; height:40px; cursor:pointer; overflow:hidden; position:relative; }
+.browse:hover { background-position:0 -40px; }
+.browse input[type=text] { margin:5px 0 0 5px; padding:5px 2px; width:275px; border:0 none; background:none; color:#999; height:22px; line-height:22px; font-size:12px; }
+.browse input[type=file] { font-size:22px; opacity:0; position:absolute; right:0; top:0; xwidth:100%; cursor:pointer; margin:0; filter: alpha(opacity=0); }
+
+.browseBtn.b-small {width:292px;}
+.browseBtn.b-small .browse {background-image:url(../images/browse-small.png);} 
+.browseBtn.b-small .browse input[type=text] {width:190px;}
+
+/*   Orange Theme Designer elements   */
+#OrngSec .full-container .inner-content .textfield:focus, #OrngSec .jpopup .textfield:focus, #OrngSec .full-container .dd-text.focus  {border-color:#cc6600;}
+#OrngSec .full-container .dd-text, #OrngSec .jselect .dd-text {background-image:url(../images/select-arrow-o.png);}
+#OrngSec .full-container .inner-content .textfield.clndr {background-image:url(../images/clndr-orng.png);}
+#OrngSec .full-container .custom-radio label {background-image:url(../images/radio-btns-o.png);}
+
+/*   Green Theme Designer elements   */
+#GrnSec .full-container .inner-content .textfield:focus, .jpopup .textfield:focus{border-color:#5AA3A5;}
+#GrnSec .dd-text {background-image:url(../images/select-arrow-g.png) !important;}
+#GrnSec .full-container .inner-content .textfield.clndr {background-image:url(../images/clndr-grn.png);}
+#GrnSec .full-container .custom-radio label {background-image:url(../images/radio-btns-g.png);}
+
+/*   Yellow Theme Designer elements   */
+#YlwSec .full-container .inner-content .textfield:focus, #YlwSec .jpopup .textfield:focus, #YlwSec .full-container .dd-text.focus  {border-color:#A78943;}
+#YlwSec .full-container .dd-text {background-image:url(../images/select-arrow-y.png);}
+#YlwSec .full-container .inner-content .textfield.clndr {background-image:url(../images/clndr-y.png);}
+#YlwSec .full-container .custom-radio label {background-image:url(../images/radio-btns-y.png);}
+
+
+/*  Dashboard Login   */
+#buy-site .login-full-in .cbox-selected, #buy-site .login-full-in .cbox  { background:url(../images/dash-check.png)  no-repeat scroll left -24px transparent; float: left; height: 24px; padding:0 0 0 28px; line-height:25px;  margin-right:50px; cursor:pointer; }
+#buy-site .login-full-in .cbox-selected input, #buy-site .login-full-in .cbox input { display: none; }
+#buy-site .login-full-in .cbox-selected  { background-position: left 0; }
+
+.full-container .inner-content .infield.checklabel, .jpopup .infield.checklabel{position:relative; float:left; margin:0; line-height:18px; padding:3px 0 0 3px; color:#000; cursor:pointer;}
+.nomargin-cbox .cbox, .nomargin-cbox .cbox-selected{margin-right:0 !important;}
+
+
+/* CSS aded by Jitendra for new pages */ 
+#OrngSec .full-container .cbox, #OrngSec .full-container .cbox-selected, #OrngSec .jpopup .cbox, #OrngSec .jpopup .cbox-selected {background-image:url(../images/checkbox-o.png);}
+#OrngSec .full-container .inner-content .textfield.clndr, .jpopup .textfield.clndr{background-image:url(../images/clndr-orng.png);}
+#OrngSec .full-container .dd-text.focus, #OrngSec .jselect .dd-texts.focus { border-color:#CC6600;}
+
+/* CSS aded by Jitendra for new pages */ 
+#GrnSec .full-container .cbox, #GrnSec .full-container .cbox-selected, #GrnSec .jpopup .cbox, #GrnSec .jpopup .cbox-selected {background-image:url(../images/checkbox-g.png);}
+#GrnSec .full-container .inner-content .textfield.clndr, .jpopup .textfield.clndr{background-image:url(../images/clndr-grn.png);}
+#GrnSec .full-container .dd-text.focus, #GrnSec .jselect .dd-texts.focus { border-color:#5AA3A5;}

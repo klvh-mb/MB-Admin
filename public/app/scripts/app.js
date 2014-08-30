@@ -37,6 +37,42 @@ angular.module('minibean', [
     	templateUrl: '/assets/app/views/showArticlesPage.html',
     	controller : 'ShowArticleController'  
       })
+      .when('/manageAnnouncement',{
+    	templateUrl: '/assets/app/views/manageAnnouncements.html',
+    	controller : 'ShowAnnouncementController'  
+      })
+      .when('/managePosts',{
+    	templateUrl: '/assets/app/views/managePosts.html',
+    	controller : 'ManagePostsController'  
+      })
+      .when('/manageQuestions',{
+    	templateUrl: '/assets/app/views/manageQuestions.html',
+    	controller : 'ManageQuestionsController'  
+      })
+      .when('/manageComments',{
+    	templateUrl: '/assets/app/views/manageComments.html',
+    	controller : 'ManageCommentsController'  
+      })
+      .when('/manageAnswers',{
+    	templateUrl: '/assets/app/views/manageAnswers.html',
+    	controller : 'ManageAnswersController'  
+      })
+      .when('/manageCommunities',{
+    	templateUrl: '/assets/app/views/manageCommunities.html',
+    	controller : 'ManageCommunitiesController'  
+      })
+      .when('/manageUsers',{
+    	templateUrl: '/assets/app/views/manageUsers.html',
+    	controller : 'ManageUsersController'  
+      })
+      .when('/manageUsers2',{
+    	templateUrl: '/assets/app/views/manageUsers2.html',
+    	controller : 'ManageUsers2Controller'  
+      })
+      .when('/manageOperations',{
+    	templateUrl: '/assets/app/views/operations.html',
+    	controller : 'ManageOperationsController'  
+      })
       .otherwise({
           redirectTo: '/'
       });

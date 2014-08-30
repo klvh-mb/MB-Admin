@@ -1,0 +1,329 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Titillium+Web' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Rationale' rel='stylesheet' type='text/css'>
+	<link href="../assets/app/custom-css/style-admin.css" rel="stylesheet" type="text/css" />
+	<link href="../assets/app/custom-css/form-element-style.css" rel="stylesheet" type="text/css" /> <!-CSS sheet for designers form element->
+	<link href="../assets/app/custom-css/main-syle.css" rel="stylesheet" type="text/css" />
+	<link href="../assets/app/custom-css/jquery.jscrollpane.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="../assets/app/bower_components/angular-bootstrap-datetimepicker/src/css/datetimepicker.css"></script>
+	<script type="text/javascript" src="../assets/app/bower_components/angular-bootstrap-datetimepicker/src/js/datetimepicker.js"></script>
+	<div data-ng-include data-src="'../assets/app/views/header.html'"></div>
+</head>
+
+<body ng-init="searchAnnouncements()">
+   <!--container begin-->
+    <section id="container">
+    	<section class="contentpanel">
+        	<h4>Manage Announcements</h4>
+            <!--Advance search fildes begin-->
+        	<section class="dadsrch">
+            	<section class="heading"><h2></h2></section>
+                <section class="dadsrchdiv">
+                	<input name="title" type="text" ng-model="title" class="" style="height:1%;" ng-keyup="$event.keyCode == 13 ? searchAnnouncements(1) : null"><input name="" type="button" class="btngray" value="Search" ng-click="searchAnnouncements(1)">
+                </section>
+            </section>
+            <!--Advance search fildes end-->
+             <section class="dactperform">
+                <section class="left">
+             		<input name="" type="button" value="Create" class="btnblue" ng-click="setDates()" data-toggle="modal" data-target="#myModal" />
+           		</section>
+           	</section>	
+            <!--grid begin-->
+        	<section class="dgridinfo dactcln">
+                <table ng-table="tableParams">
+                	<thead>
+                    	<tr>
+                            <th><a>Announcement Type</a></th>
+                            <th><a>Description</a></th>
+                            <th><a>From Date</a></th>
+                            <th><a>Title</a></th>
+                            <th><a>To Date</a></th>
+                            <th><a>Update</a></th>
+                            <th><a>Delete</a></th>
+                        <tr>
+                    </thead>
+                	<tbody>
+                    	<tr ng-repeat="ancmt in announcements.results">
+                            <td>{{ancmt.ty}}</td>
+                            <td>{{ancmt.d}}</td>
+                            <td>{{ancmt.fd}}</td>
+                            <td>{{ancmt.t}}</td>
+                            <td>{{ancmt.td}}</td>
+                            <td> <input name="" type="button" value="Update" ng-click="setData(ancmt)" data-toggle="modal" data-target="#myModal2" /></td>
+                            <td><input name="" type="button" value="Delete" ng-click="setDeleteId(ancmt)" data-toggle="modal" data-target="#myModal3" /></td>
+                        </tr>
+                    	</tbody>
+                </table>
+        	</section>
+            <!--grid end-->
+            
+            <section class="dpaging">
+            	<h4>{{pageNumber}}/{{pageSize}}</h4>
+            	<span class="dpagingright">
+                	<a href="" class="dpagingprv" ng-click="onPrev()">Prev</a>
+                	<a href="" class="dpagingnxt" ng-click="onNext()">Next</a>
+                </span>
+            </section>
+        </div>     
+        </section>
+    </section>
+    <!--container end-->
+  </div>
+		  <!-- Create Modal -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		        <h4 class="modal-title" id="myModalLabel">Create Announcement</h4>
+		      </div>
+		      <form method="post" ng-submit="saveAnnouncement()">
+		      <div class="modal-body">
+		      <table>
+			        <tr>
+			        	<td><label>Announcement Type</label></td>
+			        	<td style="height: 60px;">
+			        		<select name="announcementType" data-ng-model="formData.announcementType" style="width:100%;">
+			        			<option selected="selected" disabled="true">--Select--</option>
+			        			<option value="GENERAL">GENERAL</option>
+			        			<option value="ALERT">ALERT</option>
+			        			<option value="PROMOTIONS">PROMOTIONS</option>
+			        		</select>
+			        	</td>
+			        </tr>
+			        <tr>
+			        <td></td>
+			        <td></td>
+			        </tr>
+			        <tr>
+			        	<td><label>Description</label></td>
+			        	<td style="height: 60px;"><textarea type="text" name="description" style="width:200%;" data-ng-model="formData.description"></textarea></td>
+			        </tr>
+			        <tr>
+			        	<td><label>From Date</label></td>
+			        	<td style="height: 60px;">
+			        		<div class="form-group dropdown">
+                               <input type="text" name="fromDate"
+                                       class="input-sm form-control dropdown-toggle textStyle"
+                                       data-toggle="dropdown"
+                                       value="{{searchForm.from | date:'MMMM-dd-yyyy' || 'To'}}"
+                                       placeholder="To">
+                               <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                       <datetimepicker data-ng-model="searchForm.from"
+                                               data-datetimepicker-config="{ dropdownSelector: '.dropdown-toggle',minView: 'day' }"></datetimepicker>
+                               </ul>
+                       		</div>
+			        	</td>
+			        </tr>
+			        <tr>
+			        	<td><label>To Date</label></td>
+			        	<td style="height: 60px;">
+			        		<div class="form-group dropdown">
+                               <input type="text" name="toDate"
+                                       class="input-sm form-control dropdown-toggle textStyle"
+                                       data-toggle="dropdown"
+                                       value="{{searchForm.to | date:'MMMM-dd-yyyy' || 'To'}}"
+                                       placeholder="To">
+                               <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                       <datetimepicker data-ng-model="searchForm.to"
+                                               data-datetimepicker-config="{ dropdownSelector: '.dropdown-toggle',minView: 'day' }"></datetimepicker>
+                               </ul>
+                       		</div>
+			        	</td>
+			        </tr>
+			        <tr>
+			        	<td><label>Icon</label></td>
+			        	<td style="height: 60px;"><!-- <input type="text" name="icon" style="width:200%;" data-ng-model="formData.icon"> -->
+			        	
+			        	<div class="col-md-12" style="padding: 0 0px;width: 170%;">
+                        <li class="col-md-12 dropdown" style="padding: 0 0px;" required>
+                            <div class="form-control dropdown-toggle">
+                                <div class="media-body">
+                                    <p class="margin-none pull-left">{{icon_name}}</p>
+                                    <p class="margin-none pull-right"><img src="{{icon_url}}" style="height:25px;"/></p>
+                               
+                               		<div data-ng-if="!isChosen" data-ng-init="isChosen=false">
+                                    	Choose Category
+                                	</div>
+                                </div>
+                            </div>
+                            <ul class="dropdown-menu chat media-list" style="left:2%; width: 96%;">
+                                <li class="media" data-ng-repeat="icon in Icons" style="margin-top: 1%;">
+                                    <a href="" data-ng-click="select_icon(icon.id, icon.name,icon.url)">
+                                        <input type="hidden" name="icon" data-ng-model="formData.icon" >
+                                        <div class="media-body">
+                                            <p class="margin-none pull-left">{{icon.name}}</p>
+                                            <p class="margin-none pull-right"><img src="{{icon.url}}" style="height:30px;"/></p>
+                                        </div>                                      
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <label class="control-label error" data-ng-show="categoryNotChoose==true" style="color: red;">Please select a category.</label>
+                    </div>
+			        	
+			        	</td>
+			        </tr>
+			        <tr>
+			        	<td><label>Title</label></td>
+			        	<td style="height: 60px;"><input type="text" name="title" style="width:200%;" data-ng-model="formData.title"></td>
+			        </tr>
+			        <tr>
+			        	<td><label>Location</label></td>
+			        	<td style="height: 60px;">
+			        		<select name="location" data-ng-model="formData.location" style="width:100%;">
+			        			<option selected="selected" disabled="true">--Select--</option>
+			        			<option ng-repeat="location in locations" value="{{location.id}}">{{location.displayName}}</option>
+			        		</select>
+			        	</td>
+			        </tr>
+		        </table>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        <button type="submit" class="btn btn-primary">Save</button>
+		      </div>
+		     </form>
+		    </div>
+		  </div>
+		</div>
+		
+		<!-- Update Modal -->
+		<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+		        <h4 class="modal-title" id="myModalLabel">Update Announcement</h4>
+		      </div>
+		      <form method="post" ng-submit="updateAnnouncement()">
+		      <div class="modal-body">
+		      <table>
+			        <tr>
+			        	<td><label>Announcement Type</label></td>
+			        	<td style="height: 60px;">
+			        		<select name="announcementType" data-ng-model="ancmtData.ty" style="width:100%;">
+			        			<option selected="selected">choose</option>
+			        			<option value="GENERAL">GENERAL</option>
+			        			<option value="ALERT">ALERT</option>
+			        			<option value="PROMOTIONS">PROMOTIONS</option>
+			        		</select>
+			        	</td>
+			        </tr>
+			        <tr>
+			        <td></td>
+			        <td></td>
+			        </tr>
+			        <tr>
+			        	<td><label>Description</label></td>
+			        	<td style="height: 60px;"><textarea type="text" name="description" style="width:200%;" data-ng-model="ancmtData.d"></textarea></td>
+			        </tr>
+			        <tr>
+			        	<td><label>From Date</label></td>
+			        	<td style="height: 60px;">
+			        		<div class="form-group dropdown">
+                               <input type="text" name="fromDate"
+                                       class="input-sm form-control dropdown-toggle textStyle"
+                                       data-toggle="dropdown"
+                                       value="{{searchForm.from | date:'MMMM-dd-yyyy' || 'To'}}"
+                                       placeholder="To">
+                               <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                       <datetimepicker data-ng-model="searchForm.from"
+                                               data-datetimepicker-config="{ dropdownSelector: '.dropdown-toggle',minView: 'day' }"></datetimepicker>
+                               </ul>
+                       		</div>
+			        	</td>
+			        </tr>
+			        <tr>
+			        	<td><label>To Date</label></td>
+			        	<td style="height: 60px;">
+			        		<div class="form-group dropdown">
+                               <input type="text" name="toDate"
+                                       class="input-sm form-control dropdown-toggle textStyle"
+                                       data-toggle="dropdown"
+                                       value="{{searchForm.to | date:'MMMM-dd-yyyy' || 'To'}}"
+                                       placeholder="To">
+                               <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                       <datetimepicker data-ng-model="searchForm.to"
+                                               data-datetimepicker-config="{ dropdownSelector: '.dropdown-toggle',minView: 'day' }"></datetimepicker>
+                               </ul>
+                       		</div>
+			        	</td>
+			        </tr>
+			        <tr>
+			        	<td><label>Icon</label></td>
+			        	<td style="height: 60px;"><!-- <input type="text" name="icon" style="width:200%;" data-ng-model="ancmtData.ic"> -->
+			        	
+			        	<div class="col-md-12" style="padding: 0 0px;width: 170%;">
+                        <li class="col-md-12 dropdown" style="padding: 0 0px;" required>
+                            <div class="form-control dropdown-toggle">
+                                <div class="media-body">
+                                    <p class="margin-none pull-left">{{icon_name}}</p>
+                                    <p class="margin-none pull-right"><img src="{{icon_url}}" style="height:25px;"/></p>
+                                </div>
+                            </div>
+                            <ul class="dropdown-menu chat media-list" style="left:2%; width: 96%;">
+                                <li class="media" data-ng-repeat="icon in Icons" style="margin-top: 1%;">
+                                    <a href="" data-ng-click="select_icon(icon.id, icon.name,icon.url)">
+                                        <input type="hidden" name="icon" data-ng-model="ancmtData.ic.id" >
+                                        <div class="media-body">
+                                            <p class="margin-none pull-left">{{icon.name}}</p>
+                                            <p class="margin-none pull-right"><img src="{{icon.url}}" style="height:30px;"/></p>
+                                        </div>                                      
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </div>
+			        	
+			        	</td>
+			        </tr>
+			        <tr>
+			        	<td><label>Title</label></td>
+			        	<td style="height: 60px;"><input type="text" name="title" style="width:200%;" data-ng-model="ancmtData.t"></td>
+			        </tr>
+			        <tr>
+			        	<td><label>Location</label></td>
+			        	<td style="height: 60px;">
+			        		<select name="location" data-ng-model="ancmtData.location" style="width:100%;">
+			        			<option selected="selected">choose</option>
+			        			<option ng-repeat="location in locations" value="{{location.id}}">{{location.displayName}}</option>
+			        		</select>
+			        	</td>
+			        </tr>
+		        </table>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        <button type="submit" class="btn btn-primary">Update</button>
+		      </div>
+		     </form>
+		    </div>
+		  </div>
+		</div>
+		
+		<!-- Delete Modal -->
+		<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		        <h4 class="modal-title" id="myModalLabel">Announcement Delete</h4>
+		      </div>
+		      <div class="modal-body" id="deleteArticleBody">
+		        Are you sure you want to delete?
+		      </div>
+		      <div class="modal-footer">
+		      	<button type="button" class="btn btn-primary" data-ng-click="deleteAnnouncement(deleteId)">Yes</button>
+		        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		
+  </body>
+  </html>

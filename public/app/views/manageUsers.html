@@ -1,0 +1,77 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Titillium+Web' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Rationale' rel='stylesheet' type='text/css'>
+	<link href="../assets/app/custom-css/style-admin.css" rel="stylesheet" type="text/css" />
+	<link href="../assets/app/custom-css/form-element-style.css" rel="stylesheet" type="text/css" /> <!-CSS sheet for designers form element->
+	<link href="../assets/app/custom-css/main-syle.css" rel="stylesheet" type="text/css" />
+	<link href="../assets/app/custom-css/jquery.jscrollpane.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="../assets/app/bower_components/angular-bootstrap-datetimepicker/src/css/datetimepicker.css"></script>
+	<script type="text/javascript" src="../assets/app/bower_components/angular-bootstrap-datetimepicker/src/js/datetimepicker.js"></script>
+	<div data-ng-include data-src="'../assets/app/views/header.html'"></div>
+</head>
+
+<body>
+   <!--container begin-->
+    <section id="container">
+    	<section class="contentpanel">
+        	
+            <!--Advance search fildes begin-->
+        	<section class="dadsrch">
+            	<section class="heading"><h2>Search</h2></section>
+                <section class="dadsrchdiv">
+                <div>
+                	<label>Status</label>
+                	<select name="userStatus" data-ng-model="userStatus">
+			        	<option selected="selected" value="-1">--Select--</option>
+			        	<option value="0">SUSPENDED</option>
+			        	<option value="1">ACTIVE</option>
+			        </select>
+                </div>
+			        <input name="title" type="text" ng-model="title" class="" style="height:1%;width:40%;" ng-keyup="$event.keyCode == 13 ? searchUsers(1) : null"><input name="" type="button" class="btngray" value="Search" ng-click="searchUsers(1)">
+                </section>
+            </section>
+            <!--Advance search fildes end-->
+             <section class="dactperform">
+                <section class="left">
+           		</section>
+           	</section>	
+            <!--grid begin-->
+        	<section class="dgridinfo dactcln">
+                <table ng-table="tableParams">
+                	<thead>
+                    	<tr>
+                            <th><a>Display Name</a></th>
+                            <th><a>Email</a></th>
+                            <th><a>Action</a></th>
+                        <tr>
+                    </thead>
+                	<tbody>
+                    	<tr ng-repeat="user in usersData.results">
+                            <td>{{user.displayName}}</td>
+                            <td>{{user.email}}</td>
+                            <td> <input name="" type="button" value="Suspend" ng-show="{{user.active == true}}" ng-click="suspendUser(user)" />
+                            <input name="" type="button" value="Activate" ng-show="{{user.active == false}}" ng-click="activateUser(user)" /></td>
+                        </tr>
+                    	</tbody>
+                </table>
+        	</section>
+            <!--grid end-->
+            
+            <section class="dpaging">
+            	<h4>{{pageNumber}}/{{pageSize}}</h4>
+            	<span class="dpagingright">
+                	<a href="" class="dpagingprv" ng-click="onPrev()">Prev</a>
+                	<a href="" class="dpagingnxt" ng-click="onNext()">Next</a>
+                </span>
+            </section>
+        </div>     
+        </section>
+    </section>
+    <!--container end-->
+  </div>
+  </body>
+  </html>

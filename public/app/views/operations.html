@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<link href="../assets/app/custom-css/bootstrap.css" rel="stylesheet">
+	<link href="../assets/app/custom-css/bootstrap.min.css" rel="stylesheet">
+	<script src="../assets/app/custom-js/bootstrap.js"></script>
+	<script src="../assets/app/custom-js/bootstrap.min.js"></script>
+</head>
+<body>
+	<ul class="nav nav-tabs" role="tablist" id="myTab">
+		  <li class="active"><a data-target="#announcements" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Announcements</a></li>
+		  <li><a data-target="#posts" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Posts</a></li>
+		  <li><a data-target="#users" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Users</a></li>
+	</ul>
+	<div class="tab-content">
+		  <div class="tab-pane active" id="announcements">
+		  	<div data-ng-include data-src="'../assets/app/views/manageAnnouncements.html'" ng-controller="ShowAnnouncementController"></div>
+		  </div>
+		  <div class="tab-pane" id="posts">
+		  	<div data-ng-include data-src="'../assets/app/views/managePosts.html'" ng-controller="ManagePostsController"></div>
+		  </div>
+		  <div class="tab-pane" id="users">
+		  	<div data-ng-include data-src="'../assets/app/views/manageUsers.html'" ng-controller="ManageUsersController"></div>
+		  </div>
+	</div>	
+</body>
+</html>
