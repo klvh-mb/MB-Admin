@@ -11,6 +11,14 @@ public class LocationVM {
     @JsonProperty("name") public String name;
     @JsonProperty("displayName") public String displayName;
 	
+    public LocationVM() {
+    	
+    }
+    public LocationVM(Location l) {
+		this.id = l.id;
+		this.displayName = l.displayName;
+	}
+    
 	public static LocationVM locationVM(Location location) {
 	    LocationVM locationVM = new LocationVM();
 	    locationVM.id = location.id;
