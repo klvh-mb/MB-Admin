@@ -14,9 +14,9 @@ import models.Location;
 
 import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
-
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+
 import play.Play;
 import play.data.DynamicForm;
 import play.data.Form;
@@ -208,18 +208,18 @@ public class ArticleController extends Controller {
      * @return
      */
 	@Transactional
-    public static Result getImage(Integer year, Integer month, Integer date, String name) {
+    public static Result getImage(Long year, Long month, Long date, String name) {
         String path = getImagePath(year, month, date, name);
         return ok(new File(path));
     }
 	
-	private static String getImagePath(Integer year, Integer month, Integer date, String name) {
+	private static String getImagePath(Long year, Long month, Long date, String name) {
         return STORAGE_PATH + "/article/" + year + "/" + month + "/" + date + "/" + name;
     }
 
     private static String getImagePath(DateTime dateTime, String rawFileName) {
         String name = timeFormatter.print(dateTime)+"_"+rawFileName;
-        return getImagePath(dateTime.getYear(), dateTime.getMonthOfYear(), dateTime.getDayOfMonth(), name);
+        return getImagePath(Long.valueOf(dateTime.getYear()), Long.valueOf(dateTime.getMonthOfYear()), Long.valueOf(dateTime.getDayOfMonth()), name);
     }
 
     private static String getImageUrl(DateTime dateTime, String rawFileName) {
