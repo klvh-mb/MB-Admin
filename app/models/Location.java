@@ -17,11 +17,11 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 
 import play.db.jpa.JPA;
 
-/*
+/**
  * No UI Crud operation for this model. Static Lookup for country.
  * 
  * TODO - keith
- * Put all locations into local cache.
+ * Put all locations into local cache. (May need to clear cache when locations update)
  */
 @Entity
 public class Location  {
@@ -232,6 +232,11 @@ public class Location  {
         return (List<Location>)q.getResultList();
     }
     
+    public static List<Location> getAllLocations() {
+        Query q = JPA.em().createQuery("Select l from Location l");
+        return (List<Location>)q.getResultList();
+    }
+    
     @Override
     public boolean equals(Object o) {
         if (o != null && o instanceof Location) {
@@ -255,9 +260,9 @@ public class Location  {
         return (List<Location>)q.getResultList();
     }
     
-    public static List<Location> getHongKongAreas() {
+    public static List<Location> getHongKongRegions() {
         Query q = JPA.em().createQuery("select l from Location l where locationType = ?1 and locationCode = ?2");
-        q.setParameter(1, LocationType.AREA);
+        q.setParameter(1, LocationType.REGION);
         q.setParameter(2, LocationCode.HK);
         return (List<Location>)q.getResultList();
     }

@@ -8,9 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import models.Announcement;
 import models.Article;
 import models.ArticleCategory;
 import models.Location;
+import models.User;
 
 import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
@@ -25,9 +27,12 @@ import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
+import services.UserService;
+import viewmodel.AnnouncementVM;
 import viewmodel.ArticleCategoryVM;
 import viewmodel.ArticleVM;
 import viewmodel.LocationVM;
+import viewmodel.UserVM;
 
 public class ArticleController extends Controller {
     private static play.api.Logger logger = play.api.Logger.apply(ArticleController.class);
@@ -128,7 +133,20 @@ public class ArticleController extends Controller {
         }
         return ok(Json.toJson(locationVMs));
     }
-	   
+   
+   @Transactional
+   public static Result getAllUsers() {
+       //List<Location> locations = Location.getHongKongDistricts();  // TODO
+       List<User> users = UserService.getAllUsers();
+    		   
+       
+       List<UserVM> userVMs = new ArrayList<>();
+       for(User user : users) {
+    	   UserVM vm = new UserVM(user);
+    	   userVMs.add(vm);
+       }
+       return ok(Json.toJson(userVMs));
+   }   
 	@Transactional
 	public static Result getAllArticleCategory() {
 		List<ArticleCategory> articleCategorys = ArticleCategory.getAllCategory();
