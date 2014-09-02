@@ -5,6 +5,8 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -53,6 +55,7 @@ public class Resource extends SocialObject {
 	@OneToMany(cascade = CascadeType.REMOVE)
 	public Set<Comment> comments;
 	
+	@Enumerated(EnumType.STRING)
 	public SocialObjectType objectType;
 
 	public Resource(SocialObjectType objectType) {
@@ -171,7 +174,7 @@ public class Resource extends SocialObject {
 	}
 	
 	public static Resource findAllResourceOfFolder(Long id) {
-		Query q = JPA.em().createQuery("SELECT r FROM Resource r where folder.id = ?1");
+		Query q = JPA.em().createQuery("SELECT r FROM Resource r where r.folder.id = ?1");
 		q.setParameter(1, id);
 		return (Resource) q.getSingleResult();
 	}

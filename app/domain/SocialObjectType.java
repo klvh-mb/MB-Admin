@@ -7,9 +7,21 @@ public enum  SocialObjectType {
      POST,
      FORUM,
      FORUM_POST,
-     PHOTO,
+     PROFILE_PHOTO,
+     COVER_PHOTO,
+     POST_PHOTO,
+     COMMENT_PHOTO,
+     PRIVATE_PHOTO,
      ALBUMN,
      VEDIO,
      CONTEST,
-     MESSAGE, FOLDER, QUESTION,COMMENT,ANSWER;
+     MESSAGE, 
+     FOLDER, 
+     PHOTO,
+     QUESTION,
+     ARTICLE,
+     COMMENT,
+     ANSWER;
+     
+     
 }

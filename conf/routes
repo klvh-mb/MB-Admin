@@ -37,7 +37,7 @@ GET		/suspendUser/:id			controllers.UserController.suspendUser(id: Long)
 GET		/activateUser/:id			controllers.UserController.activateUser(id: Long)
 GET		/getReportedPosts/:currentPage			controllers.ReportsController.getReportedPosts(currentPage: Integer)
 GET		/deleteReportedObject/:id/:postId		controllers.ReportsController.deleteReportedObject(id: Long,postId :Long)
-GET		/getDeletedPosts/:currentPage			controllers.ReportsController.getDeletedPosts(currentPage: Integer)
+GET		/getDeletedPosts/:currentPage/:communityId			controllers.ReportsController.getDeletedPosts(currentPage: Integer,communityId: String)
 GET		/deletedInfoUnDelete/:id/:postId		controllers.ReportsController.deletedInfoUnDelete(id: Long,postId :Long)
 
 
@@ -55,7 +55,7 @@ GET		/unDeleteComment/:id					controllers.ReportsController.setUnDeleteComment(i
 
 GET		/getReportedQuestions/:currentPage		controllers.ReportsController.getReportedQuestions(currentPage: Integer)
 GET		/deleteReportedObjectQuestion/:id/:questionId		controllers.ReportsController.deleteReportedObjectQuestion(id: Long,questionId :Long)
-GET		/getDeletedQuestions/:currentPage		controllers.ReportsController.getDeletedQuestions(currentPage: Integer)
+GET		/getDeletedQuestions/:currentPage/:communityId		controllers.ReportsController.getDeletedQuestions(currentPage: Integer,communityId: String)
 GET		/deleteQuestion/:id						controllers.ReportsController.setDeleteQuestion(id: Long)
 GET		/unDeleteQuestion/:id					controllers.ReportsController.setUnDeleteQuestion(id: Long)
 GET		/getAllQuestions/:currentPage/:title	controllers.ReportsController.getAllQuestions(currentPage: Integer,title: String)
@@ -80,3 +80,4 @@ GET		/getDeletedUsers/:currentPage			controllers.ReportsController.getDeletedUse
 GET		/deleteUser/:id							controllers.ReportsController.setDeleteUser(id: Long)
 GET		/unDeleteUser/:id						controllers.ReportsController.setUnDeleteUser(id: Long)
 GET		/getAllUsers/:currentPage/:title		controllers.ReportsController.getAllUsers(currentPage: Integer,title: String)
+GET 	/image/get-post-image-by-id/:id 	controllers.ReportsController.getPostImageById(id : Long)

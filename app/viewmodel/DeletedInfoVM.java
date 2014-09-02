@@ -40,7 +40,7 @@ public class DeletedInfoVM {
 	public int numChildren;
 	public String parentType;
 	public List<UserChildVM> userChildVms = new ArrayList<>();
-	//public Long image;
+	public Long image;
 
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 	public DeletedInfoVM(DeletedInfo deletedInfo,Post post) {
@@ -54,8 +54,8 @@ public class DeletedInfoVM {
 		this.postBody = post.body;
 		this.postTitle = post.title;
 		this.deleted = post.deleted;
-		/*Resource resource = Resource.findAllResourceOfFolder(post.folder.getId());
-		this.image = resource.id;*/
+		Resource resource = Resource.findAllResourceOfFolder(post.folder.id);
+		this.image = resource.id;
 	}
 	
 	public DeletedInfoVM(DeletedInfo deletedInfo,Comment comment) {
@@ -68,6 +68,8 @@ public class DeletedInfoVM {
 		this.reportedDate = formatter.format(deletedInfo.reportedDate);
 		this.commentBody = comment.body;
 		this.deleted = comment.deleted;
+		Resource resource = Resource.findAllResourceOfFolder(comment.folder.id);
+		this.image = resource.id;
 	}
 	
 	public DeletedInfoVM(DeletedInfo deletedInfo,Community community) {
@@ -83,6 +85,8 @@ public class DeletedInfoVM {
 		this.createdDate = formatter.format(community.createDate);
 		this.owner = community.owner.displayName;
 		this.posts = Post.getPosts(community.id);
+		Resource resource = Resource.findAllResourceOfFolder(community.albumPhotoProfile.id);
+		this.image = resource.id;
 	}
 	
 	public DeletedInfoVM(DeletedInfo deletedInfo,User user) {
@@ -106,6 +110,8 @@ public class DeletedInfoVM {
 			UserChildVM vm = new UserChildVM(u);
 			this.userChildVms.add(vm);
 		}
+		Resource resource = Resource.findAllResourceOfFolder(user.albumPhotoProfile.id);
+		this.image = resource.id;
 	}
 	
 	public String getObjectType() {

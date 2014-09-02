@@ -56,6 +56,9 @@
 				                            	Comment : {{community.comment}}
 				                            </div>
 				                            <div>
+				                            	Community Image : <div><img data-ng-src="/image/get-post-image-by-id/{{community.image}}" style="height:200px;width:300px;"/></div>
+				                            </div>
+				                            <div>
 				                            	Community Name : {{community.communityName}}
 				                            </div>
 				                            <div>
@@ -115,6 +118,9 @@
 				                            	Comment : {{community.comment}}
 				                            </div>
 				                            <div>
+				                            	Community Image : <div><img data-ng-src="/image/get-post-image-by-id/{{community.image}}" style="height:200px;width:300px;"/></div>
+				                            </div>
+				                            <div>
 				                            	Community Name : {{community.communityName}}
 				                            </div>
 				                            <div>
@@ -160,6 +166,9 @@
 			                	<tbody>
 			                    	<tr ng-repeat="community in allCommunities.results">
 			                            <td>
+			                            	<div>
+				                            	Community Image : <div><img data-ng-src="/image/get-post-image-by-id/{{community.image}}" style="height:200px;width:300px;"/></div>
+				                            </div>
 				                            <div>
 				                            	Community Name : {{community.communityName}}
 				                            	<button class="margin-none pull-right" ng-click="setCommunityData(community)" data-toggle="modal" data-target="#myModal5" ng-show="community.deleted == true">UnDelete</button>

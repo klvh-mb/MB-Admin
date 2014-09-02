@@ -58,6 +58,9 @@
 				                            <div>
 				                            	Comment Body : {{comment.commentBody}}
 				                            </div>
+				                            <div>
+				                            	Comment Image : <div><img data-ng-src="/image/get-post-image-by-id/{{comment.image}}" style="height:200px;width:300px;"/></div>
+				                            </div>
 			                            </td>
 			                        </tr>
 			                    	</tbody>
@@ -104,7 +107,9 @@
 				                            <div>
 				                            	Comment Body : {{comment.commentBody}}
 				                            </div>
-				                            
+				                            <div>
+				                            	Comment Image : <div><img data-ng-src="/image/get-post-image-by-id/{{comment.image}}" style="height:200px;width:300px;"/></div>
+				                            </div>
 			                            </td>
 			                        </tr>
 			                    	</tbody>
@@ -142,7 +147,7 @@
 				                            	<button class="margin-none pull-right" ng-click="setCommentData(comment)" data-toggle="modal" data-target="#myModal6" ng-show="comment.deleted == false">Delete</button>
 				                            </div>
 				                            <div>
-				                            	Comment Image : <!-- <img class="post-title-user-image" data-ng-src="/image/get-mini-image-by-id/{{post.image}}"/> -->
+				                            	Comment Image : <div><img data-ng-src="/image/get-post-image-by-id/{{comment.image}}" style="height:200px;width:300px;"/></div>
 				                            </div>
 			                            </td>
 			                        </tr>

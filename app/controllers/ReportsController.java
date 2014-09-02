@@ -66,10 +66,10 @@ public class ReportsController extends Controller {
 	}
 	
 	@Transactional
-	public static Result getDeletedPosts(int currentPage) {
-		long totalPages = DeletedInfo.getAllPostsTotal(3);
+	public static Result getDeletedPosts(int currentPage,String communityId) {
+		long totalPages = DeletedInfo.getAllPostsTotal(3,communityId);
 		long size = DeletedInfo.getSize();
-		List<DeletedInfo> deletedInfos = DeletedInfo.getAllDeletedPosts(currentPage, 3, totalPages);
+		List<DeletedInfo> deletedInfos = DeletedInfo.getAllDeletedPosts(currentPage, 3, totalPages, communityId);
 		List<DeletedInfoVM> deletedInfoVMs = new ArrayList<>();
 		Post post = new Post();
 		for (DeletedInfo d:deletedInfos) {
@@ -280,10 +280,10 @@ public class ReportsController extends Controller {
 	}
 	
 	@Transactional
-	public static Result getDeletedQuestions(int currentPage) {
-		long totalPages = DeletedInfo.getAllQuestionsTotal(3);
+	public static Result getDeletedQuestions(int currentPage, String communityId) {
+		long totalPages = DeletedInfo.getAllQuestionsTotal(3,communityId);
 		long size = DeletedInfo.getQuestionSize();
-		List<DeletedInfo> deletedInfos = DeletedInfo.getAllDeletedQuestions(currentPage, 3, totalPages);
+		List<DeletedInfo> deletedInfos = DeletedInfo.getAllDeletedQuestions(currentPage, 3, totalPages, communityId);
 		List<DeletedInfoVM> deletedInfoVMs = new ArrayList<>();
 		Post post = new Post();
 		for (DeletedInfo d:deletedInfos) {
@@ -639,11 +639,10 @@ public class ReportsController extends Controller {
 		return ok(Json.toJson(map));
 	}
 	
-	/*@Transactional
+	@Transactional
     public static Result getPostImageById(Long id) {
     	response().setHeader("Cache-Control", "max-age=604800");
     	System.out.println("IMAGE.................................");
-        return ok(Resource.findById(id).getThumbnailFile());
-        GET 	/image/get-post-image-by-id/:id 	controllers.ReportsController.getPostImageById(id : Long)
-    }*/
+        return ok(Resource.findById(id).getRealFile());
+    }
 }

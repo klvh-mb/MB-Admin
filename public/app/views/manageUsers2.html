@@ -44,7 +44,7 @@
 				                            	<button class="margin-none pull-right" ng-click="setData(user)" data-toggle="modal" data-target="#myModal3">Delete</button>
 				                            </div>
 				                            <div>	
-				                            	Category : {{user.category}}
+				                            	Category : <b>{{user.category}}</b>
 				                            </div>
 				                            <div>	
 				                            	Reported On : {{user.reportedDate}}
@@ -53,39 +53,42 @@
 				                            	Reported By : {{user.reportedBy}}
 				                            </div>
 				                            <div>	
-				                            	Comment : {{user.comment}}
+				                            	Comments : {{user.comment}}
 				                            </div>
 				                            <div>
-				                            	User Name : {{user.userName}}
+				                            	 <div><img class="img-rounded" data-ng-src="/image/get-post-image-by-id/{{user.image}}" style="height:50px;width:50px;"/></div>
 				                            </div>
 				                            <div>
-				                            	ID : {{user.socialObjectID}}
+				                            	<b>{{user.userName}}</b> 
 				                            </div>
 				                            <div>
-				                            	Created On : 
+				                            	<b>ID : {{user.socialObjectID}}</b>
 				                            </div>
 				                            <div>
-				                            	Last Login : {{user.lastLogin}}
+				                            	<b>Created On : </b>
 				                            </div>
 				                            <div>
-				                            	User Info : 
+				                            	<b>Last Login : {{user.lastLogin}}</b>
+				                            </div>
+				                            <div>
+				                            	<b>User Info :</b> 
 				                            	<div>
-						                            		<div>About Me : {{user.aboutMe}}</div>
-						                            		<div>Birth Year : {{user.birthYear}}</div>
-						                            		<div>Location : {{user.location}}</div>
-						                            		<div>Num Children : {{user.numChildren}}</div>
-						                            		<div>Parent Type : {{user.parentType}}</div>
+						                            		<div><b>About Me : {{user.aboutMe}}</b></div>
+						                            		<div><b>Birth Year : {{user.birthYear}}</b></div>
+						                            		<div><b>Location :</b> {{user.location}}</div>
+						                            		<div><b>Num Children : {{user.numChildren}}</b></div>
+						                            		<div><b>Parent Type : {{user.parentType}}</b></div>
 				                            	</div>
 				                            </div>
 				                            <div>
-				                            	User Child Info : 
+				                            	<b>User Child Info : </b>
 				                            	<div>
 				                            		<table border=0 ng-table="abc">
 						                            	<tr ng-repeat="child in user.userChildVms">
-						                            		<td>Birth Day : {{child.birthDay}}</td>
-						                            		<td>Birth Month : {{child.birthMonth}}</td>
-						                            		<td>Birth Year : {{child.birthYear}}</td>
-						                            		<td>Gender : {{child.gender}}</td>
+						                            		<td><b>Birth Day :</b> {{child.birthDay}}</td>
+						                            		<td><b>Birth Month :</b> {{child.birthMonth}}</td>
+						                            		<td><b>Birth Year :</b> {{child.birthYear}}</td>
+						                            		<td><b>Gender :</b> {{child.gender}}</td>
 						                            	</tr>
 					                            	</table>
 				                            	</div>
@@ -133,6 +136,9 @@
 				                            </div>
 				                            <div>	
 				                            	Comment : {{user.comment}}
+				                            </div>
+				                            <div>
+				                            	 <div><img class="img-rounded" data-ng-src="/image/get-post-image-by-id/{{user.image}}" style="height:50px;width:50px;"/></div>
 				                            </div>
 				                            <div>
 				                            	User Name : {{user.userName}}
@@ -200,6 +206,9 @@
 			                	<tbody>
 			                    	<tr ng-repeat="user in allUsers.results">
 			                            <td>
+			                            	<div>
+				                            	 <div><img class="img-rounded" data-ng-src="/image/get-post-image-by-id/{{user.image}}" style="height:50px;width:50px;"/></div>
+				                            </div>
 				                            <div>
 				                            	User Name : {{user.userName}}
 				                            	<button class="margin-none pull-right" ng-click="setUserData(user)" data-toggle="modal" data-target="#myModal5" ng-show="user.deleted == true">UnDelete</button>

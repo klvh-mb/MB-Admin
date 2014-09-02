@@ -462,6 +462,7 @@ minibean.controller('ManagePostsController',function($scope, $modal, $http, $fil
 	var currentPage2 = 1;
 	var totalPages2;
 	$scope.title = " ";
+	$scope.searchByCommunity = " ";
 	$scope.pageNumber3;
 	$scope.pageSize3;
 	var currentPage3 = 1;
@@ -480,7 +481,7 @@ minibean.controller('ManagePostsController',function($scope, $modal, $http, $fil
 		}
 	});
 	
-	$scope.deletedPosts = deletedPostsService.getPosts.get({currentPage:currentPage2},function(response) {
+	$scope.deletedPosts = deletedPostsService.getPosts.get({currentPage:currentPage2,communityId: $scope.searchByCommunity},function(response) {
 		console.log($scope.deletedPosts);
 		totalPages2 = $scope.deletedPosts.totalPages;
 		currentPage2 = $scope.deletedPosts.currentPage;
@@ -495,7 +496,11 @@ minibean.controller('ManagePostsController',function($scope, $modal, $http, $fil
 	
 	$scope.getDeletedInfoPosts = function(page) {
 		currentPage2 = page;
-		$scope.deletedPosts = deletedPostsService.getPosts.get({currentPage:currentPage2},function(response) {
+		if(angular.isUndefined($scope.searchByCommunity) || $scope.searchByCommunity=="") {
+			console.log('inside function');
+			$scope.searchByCommunity = " ";
+		}
+		$scope.deletedPosts = deletedPostsService.getPosts.get({currentPage:currentPage2, communityId: $scope.searchByCommunity},function(response) {
 			console.log($scope.deletedPosts);
 			totalPages2 = $scope.deletedPosts.totalPages;
 			currentPage2 = $scope.deletedPosts.currentPage;
@@ -697,7 +702,7 @@ minibean.service('deleteReportedObjectService',function($resource){
 
 minibean.service('deletedPostsService',function($resource){
     this.getPosts = $resource(
-            '/getDeletedPosts/:currentPage',
+            '/getDeletedPosts/:currentPage/:communityId',
             {alt:'json',callback:'JSON_CALLBACK'},
             {
                 get: {method:'get'}
@@ -727,6 +732,7 @@ minibean.controller('ManageQuestionsController',function($scope, $http, $routePa
 	var currentPage2 = 1;
 	var totalPages2;
 	
+	$scope.searchByCommunity = " ";
 	$scope.title = " ";
 	$scope.pageNumber3;
 	$scope.pageSize3;
@@ -775,7 +781,7 @@ minibean.controller('ManageQuestionsController',function($scope, $http, $routePa
 		});
 	};
 	
-	$scope.deletedQuestions = deletedQuestionsService.getQuestions.get({currentPage:currentPage2},function(response) {
+	$scope.deletedQuestions = deletedQuestionsService.getQuestions.get({currentPage:currentPage2,communityId:$scope.searchByCommunity},function(response) {
 		console.log($scope.deletedQuestions);
 		totalPages2 = $scope.deletedQuestions.totalPages;
 		currentPage2 = $scope.deletedQuestions.currentPage;
@@ -790,8 +796,11 @@ minibean.controller('ManageQuestionsController',function($scope, $http, $routePa
 	
 	$scope.getDeletedInfoQuestions = function(page) {
 		currentPage2 = page;
-		
-		$scope.deletedQuestions = deletedQuestionsService.getQuestions.get({currentPage:currentPage2},function(response) {
+		if(angular.isUndefined($scope.searchByCommunity) || $scope.searchByCommunity=="") {
+			console.log('inside function');
+			$scope.searchByCommunity = " ";
+		}
+		$scope.deletedQuestions = deletedQuestionsService.getQuestions.get({currentPage:currentPage2,communityId:$scope.searchByCommunity},function(response) {
 			console.log($scope.deletedQuestions);
 			totalPages2 = $scope.deletedQuestions.totalPages;
 			currentPage2 = $scope.deletedQuestions.currentPage;
@@ -930,7 +939,7 @@ minibean.service('deleteReportedObjectQuestionService',function($resource){
 
 minibean.service('deletedQuestionsService',function($resource){
     this.getQuestions = $resource(
-            '/getDeletedQuestions/:currentPage',
+            '/getDeletedQuestions/:currentPage/:communityId',
             {alt:'json',callback:'JSON_CALLBACK'},
             {
                 get: {method:'get'}

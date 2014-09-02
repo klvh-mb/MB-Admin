@@ -149,10 +149,16 @@ public class DeletedInfo {
 	}
 	
 	@Transactional
-    public static long getAllPostsTotal(int rowsPerPage) {
+    public static long getAllPostsTotal(int rowsPerPage, String communityId) {
 		long totalPages = 0, size;
-		size = (long) JPA.em().createQuery("Select count(*) from DeletedInfo d where d.objectType = 'POST'").getSingleResult();
+		String sql="";
+    	if(communityId.trim().equals("")) {
+    		sql = "Select count(*) from DeletedInfo d where d.objectType = 'POST'";
+    	} else {
+    		sql = "Select count(*) from DeletedInfo d,Post p where d.objectType = 'POST' AND  d.socialObjectID = p.id AND p.community.id = "+Long.parseLong(communityId)+"";
+    	}
 		
+    	size = (long) JPA.em().createQuery(sql).getSingleResult();
 		totalPages = size/rowsPerPage;
 		
     	if(size % rowsPerPage > 0) {
@@ -163,9 +169,15 @@ public class DeletedInfo {
 	}
 	
 	@Transactional
-    public static long getAllQuestionsTotal(int rowsPerPage) {
+    public static long getAllQuestionsTotal(int rowsPerPage, String communityId) {
 		long totalPages = 0, size;
-		size = (long) JPA.em().createQuery("Select count(*) from DeletedInfo d where d.objectType = 'QUESTION'").getSingleResult();
+		String sql="";
+    	if(communityId.trim().equals("")) {
+    		sql = "Select count(*) from DeletedInfo d where d.objectType = 'QUESTION'";
+    	} else {
+    		sql = "Select count(*) from DeletedInfo d,Post p where d.objectType = 'QUESTION' AND  d.socialObjectID = p.id AND p.community.id = "+Long.parseLong(communityId)+"";
+    	}
+		size = (long) JPA.em().createQuery(sql).getSingleResult();
 		
 		totalPages = size/rowsPerPage;
 		
@@ -233,9 +245,9 @@ public class DeletedInfo {
 	}
 	
 	@Transactional
-	public static List<DeletedInfo> getAllDeletedPosts(int currentPage, int rowsPerPage, long totalPages) {
+	public static List<DeletedInfo> getAllDeletedPosts(int currentPage, int rowsPerPage, long totalPages, String communityId) {
 		int  start=0;
-		
+		String sql = "";
 		if(currentPage >= 1 && currentPage <= totalPages) {
 			start = (currentPage*rowsPerPage)-rowsPerPage;
 		}
@@ -243,15 +255,22 @@ public class DeletedInfo {
 			currentPage--;
 			start = (int) ((totalPages*rowsPerPage)-rowsPerPage); 
 		}
-		
-		Query q = JPA.em().createQuery("Select d from DeletedInfo d where d.objectType = 'POST'").setFirstResult(start).setMaxResults(rowsPerPage);
+		if(communityId.trim().equals("")) {
+			sql = "Select d from DeletedInfo d where d.objectType = 'POST'";
+    	} else {
+    		sql = "Select d from DeletedInfo d,Post p where d.objectType = 'POST' AND  d.socialObjectID = p.id AND p.community.id = ?2";
+    	}
+		Query q = JPA.em().createQuery(sql).setFirstResult(start).setMaxResults(rowsPerPage);
+		if(!communityId.trim().equals("")) {
+			q.setParameter(2, Long.parseLong(communityId));
+		}
 		return (List<DeletedInfo>)q.getResultList();
 	}
 	
 	@Transactional
-	public static List<DeletedInfo> getAllDeletedQuestions(int currentPage, int rowsPerPage, long totalPages) {
+	public static List<DeletedInfo> getAllDeletedQuestions(int currentPage, int rowsPerPage, long totalPages, String communityId) {
 		int  start=0;
-		
+		String sql = "";
 		if(currentPage >= 1 && currentPage <= totalPages) {
 			start = (currentPage*rowsPerPage)-rowsPerPage;
 		}
@@ -259,8 +278,15 @@ public class DeletedInfo {
 			currentPage--;
 			start = (int) ((totalPages*rowsPerPage)-rowsPerPage); 
 		}
-		
-		Query q = JPA.em().createQuery("Select d from DeletedInfo d where d.objectType = 'QUESTION'").setFirstResult(start).setMaxResults(rowsPerPage);
+		if(communityId.trim().equals("")) {
+			sql = "Select d from DeletedInfo d where d.objectType = 'QUESTION'";
+    	} else {
+    		sql = "Select d from DeletedInfo d,Post p where d.objectType = 'QUESTION' AND  d.socialObjectID = p.id AND p.community.id = ?2";
+    	}
+		Query q = JPA.em().createQuery(sql).setFirstResult(start).setMaxResults(rowsPerPage);
+		if(!communityId.trim().equals("")) {
+			q.setParameter(2, Long.parseLong(communityId));
+		}
 		return (List<DeletedInfo>)q.getResultList();
 	}
 	

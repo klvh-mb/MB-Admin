@@ -61,6 +61,9 @@
 				                            <div>
 				                            	Question Body : {{question.postBody}}
 				                            </div>
+				                            <div>
+				                            	Question Image : <div><img data-ng-src="/image/get-post-image-by-id/{{question.image}}" style="height:200px;width:300px;"/></div>
+				                            </div>
 			                            </td>
 			                        </tr>
 			                    	</tbody>
@@ -79,6 +82,12 @@
 		  <div class="tab-pane" id="deleted">
 		  		<section id="container">
 			    	<section class="contentpanel" style="width:625px;">
+			    		<section class="dadsrch" style="width:600px;">
+			            	<section class="heading"><h2>Question Search</h2></section>
+			                <section class="dadsrchdiv">
+			                	<input name="searchByCommunity" type="text" ng-model="searchByCommunity" class="" style="height:1%;width:50%;" ng-keyup="$event.keyCode == 13 ? getDeletedInfoQuestions(1) : null"><input name="" type="button" class="btngray" value="Search" ng-click="getDeletedInfoQuestions(1)">
+			                </section>
+			            </section>
 			             <section class="dactperform">
 			                <section class="left">
 			           		</section>
@@ -111,7 +120,9 @@
 				                            <div>
 				                            	Question Body : {{question.postBody}}
 				                            </div>
-				                            
+				                            <div>
+				                            	Question Image : <div><img data-ng-src="/image/get-post-image-by-id/{{question.image}}" style="height:200px;width:300px;"/></div>
+				                            </div>
 			                            </td>
 			                        </tr>
 			                    	</tbody>
@@ -152,7 +163,7 @@
 				                            	<button class="margin-none pull-right" ng-click="setQuestionData(question)" data-toggle="modal" data-target="#myModal6" ng-show="question.deleted == false">Delete</button>
 				                            </div>
 				                            <div>
-				                            	Question Image : <!-- <img class="post-title-user-image" data-ng-src="/image/get-mini-image-by-id/{{post.image}}"/> -->
+				                            	Question Image : <div><img data-ng-src="/image/get-post-image-by-id/{{question.image}}" style="height:200px;width:300px;"/></div>
 				                            </div>
 			                            </td>
 			                        </tr>

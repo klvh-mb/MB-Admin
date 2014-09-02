@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import models.Location;
+import models.Resource;
 import models.User;
 import models.UserChild;
 
@@ -15,6 +16,7 @@ public class UserVM {
 	public String email;
 	public boolean active;
 	public Long id;
+	public Long image;
 	
 	public boolean deleted;
 	public String userName;
@@ -49,7 +51,8 @@ public class UserVM {
 			UserChildVM vm = new UserChildVM(u);
 			this.userChildVms.add(vm);
 		}
-		
+		Resource resource = Resource.findAllResourceOfFolder(user.albumPhotoProfile.id);
+		this.image = resource.id;
 	}
 	
 	
