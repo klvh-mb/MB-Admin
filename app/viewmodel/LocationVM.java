@@ -22,7 +22,9 @@ public class LocationVM {
 	public static LocationVM locationVM(Location location) {
 	    LocationVM locationVM = new LocationVM();
 	    locationVM.id = location.id;
-	    locationVM.type = location.locationType.toString();
+	    if(location.locationType != null) {
+	    	locationVM.type = location.locationType.toString();
+	    }
 	    locationVM.name = location.getName();
 	    locationVM.displayName = location.getDisplayName();
 		return locationVM;

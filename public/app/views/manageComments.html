@@ -29,37 +29,33 @@
 		<div class="tab-content">
 		  <div class="tab-pane active" id="reported">
 		  		<section id="container">
-			    	<section class="contentpanel" style="width:625px;">
-			             <section class="dactperform">
-			                <section class="left">
-			           		</section>
-			           	</section>	
+			    	<section class="" style="width:625px;margin-left: 26%;">
 			        	<section class="dgridinfo dactcln">
 			                <table ng-table="tableParams">
 			                	<tbody>
-			                    	<tr ng-repeat="comment in comments.results">
+			                    	<tr ng-repeat="comment in comments.results" class="row tm bg-white border-bottom">
 			                            <td>
 				                            <div>
-				                            	Type : {{comment.objectType}}
+				                            	<b>Type :</b> {{comment.objectType}}
 				                            	<button class="margin-none pull-right" ng-click="setData(comment)" data-toggle="modal" data-target="#myModal3">Delete</button>
 				                            </div>
 				                            <div>	
-				                            	Category : {{comment.category}}
+				                            	<b>Category :</b> {{comment.category}}
 				                            </div>
 				                            <div>	
-				                            	Reported On : {{comment.reportedDate}}
+				                            	<b>Reported On :</b> {{comment.reportedDate}}
 				                            </div>
 				                            <div>	
-				                            	Reported By : {{comment.reportedBy}}
+				                            	<b>Reported By :</b> {{comment.reportedBy}}
 				                            </div>
 				                            <div>	
-				                            	Comment : {{comment.comment}}
+				                            	<b>Comment :</b> {{comment.comment}}
 				                            </div>
 				                            <div>
-				                            	Comment Body : {{comment.commentBody}}
+				                            	<b>Comment Body :</b> {{comment.commentBody}}
 				                            </div>
 				                            <div>
-				                            	Comment Image : <div><img data-ng-src="/image/get-post-image-by-id/{{comment.image}}" style="height:200px;width:300px;"/></div>
+				                            	<b>Comment Image :</b> <div><img data-ng-src="/image/get-post-image-by-id/{{comment.image}}" style="height:200px;width:300px;"/></div>
 				                            </div>
 			                            </td>
 			                        </tr>
@@ -78,37 +74,40 @@
 		  </div>
 		  <div class="tab-pane" id="deleted">
 		  		<section id="container">
-			    	<section class="contentpanel" style="width:625px;">
-			             <section class="dactperform">
-			                <section class="left">
-			           		</section>
-			           	</section>	
+			    	<section class="" style="width:625px;margin-left: 26%;">
+			    		<section class="dadsrch" style="width:625px;">
+			            	<section class="heading"><h2>Comment Search</h2></section>
+			                <section class="dadsrchdiv">
+			                	<input name="searchByCommunity" type="text" ng-model="searchByCommunity" class="" style="height:1%;width:50%;" ng-keyup="$event.keyCode == 13 ? getDeletedComments(1) : null"><input name="" type="button" class="btngray" value="Search" ng-click="getDeletedComments(1)">
+			                </section>
+			            </section>
 			        	<section class="dgridinfo dactcln">
 			                <table ng-table="tableParams">
 			                	<tbody>
-			                    	<tr ng-repeat="comment in deletedComments.results">
+			                    	<tr ng-repeat="comment in deletedComments.results" class="row tm bg-white border-bottom">
 			                            <td>
 				                            <div>
-				                            	Type : {{comment.objectType}}
-				                            	<!-- <button class="margin-none pull-right" ng-click="setDeletedInfoData(post)" data-toggle="modal" data-target="#myModal4">UnDelete</button> -->
+				                            	<b>Type :</b> {{comment.objectType}}
+				                            	<button class="margin-none pull-right" ng-click="setDeletedInfoData(comment)" data-toggle="modal" data-target="#myModal5" ng-show="comment.deleted == true">UnDelete</button>
+				                            	<button class="margin-none pull-right" ng-click="setDeletedInfoData(comment)" data-toggle="modal" data-target="#myModal6" ng-show="comment.deleted == false">Delete</button>
 				                            </div>
 				                            <div>	
-				                            	Category : {{comment.category}}
+				                            	<b>Category :</b> {{comment.category}}
 				                            </div>
 				                            <div>	
-				                            	Reported On : {{comment.reportedDate}}
+				                            	<b>Reported On :</b> {{comment.reportedDate}}
 				                            </div>
 				                            <div>	
-				                            	Reported By : {{comment.reportedBy}}
+				                            	<b>Reported By :</b> {{comment.reportedBy}}
 				                            </div>
 				                            <div>	
-				                            	Comment : {{comment.comment}}
+				                            	<b>Comment :</b> {{comment.comment}}
 				                            </div>
 				                            <div>
-				                            	Comment Body : {{comment.commentBody}}
+				                            	<b>Comment Body :</b> {{comment.commentBody}}
 				                            </div>
 				                            <div>
-				                            	Comment Image : <div><img data-ng-src="/image/get-post-image-by-id/{{comment.image}}" style="height:200px;width:300px;"/></div>
+				                            	<b>Comment Image :</b> <div><img data-ng-src="/image/get-post-image-by-id/{{comment.image}}" style="height:200px;width:300px;"/></div>
 				                            </div>
 			                            </td>
 			                        </tr>
@@ -128,8 +127,8 @@
 		  <div class="tab-pane" id="search">
 			    
 			    <section id="container">
-			    	<section class="contentpanel">
-			        	<section class="dadsrch">
+			    	<section class="" style="width:625px;margin-left: 26%;">
+			        	<section class="dadsrch" style="width:625px;">
 			            	<section class="heading"><h2>Comment Search</h2></section>
 			                <section class="dadsrchdiv">
 			                	<input name="title" type="text" ng-model="title" class="" style="height:1%;" ng-keyup="$event.keyCode == 13 ? searchComments(1) : null"><input name="" type="button" class="btngray" value="Search" ng-click="searchComments(1)">
@@ -139,15 +138,15 @@
 			        	<section class="dgridinfo dactcln">
 			                <table ng-table="tableParams">
 			                	<tbody>
-			                    	<tr ng-repeat="comment in allComments.results">
+			                    	<tr ng-repeat="comment in allComments.results" class="row tm bg-white border-bottom">
 			                            <td>
 				                            <div>
-				                            	Comment Body : {{comment.body}}
+				                            	<b>Comment Body :</b> {{comment.body}}
 				                            	<button class="margin-none pull-right" ng-click="setCommentData(comment)" data-toggle="modal" data-target="#myModal5" ng-show="comment.deleted == true">UnDelete</button>
 				                            	<button class="margin-none pull-right" ng-click="setCommentData(comment)" data-toggle="modal" data-target="#myModal6" ng-show="comment.deleted == false">Delete</button>
 				                            </div>
 				                            <div>
-				                            	Comment Image : <div><img data-ng-src="/image/get-post-image-by-id/{{comment.image}}" style="height:200px;width:300px;"/></div>
+				                            	<b>Comment Image :</b> <div><img data-ng-src="/image/get-post-image-by-id/{{comment.image}}" style="height:200px;width:300px;"/></div>
 				                            </div>
 			                            </td>
 			                        </tr>

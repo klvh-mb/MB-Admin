@@ -1,9 +1,14 @@
 package controllers;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import domain.categoryType;
+import domain.SocialObjectType;
 
 import models.Announcement;
 import models.Comment;
@@ -96,8 +101,6 @@ public class ReportsController extends Controller {
 		post.deleted = false;
 		System.out.println("::::::::::"+post.body);
 		post.merge();
-		//DeletedInfo deletedInfo = DeletedInfo.findById(id);
-		//deletedInfo.delete();
 		return ok();
 	}
 	
@@ -179,15 +182,23 @@ public class ReportsController extends Controller {
 	}
 	
 	@Transactional
-    public static Result getDeletedComments(int currentPage) {
-		long totalPages = DeletedInfo.getAllCommentsTotal(3);
+    public static Result getDeletedComments(int currentPage,String communityId) {
+		long totalPages = DeletedInfo.getAllCommentsTotal(3,communityId);
 		long size = DeletedInfo.getCommentsSize();
-		List<DeletedInfo> deletedInfos = DeletedInfo.getAllDeletedComments(currentPage, 3, totalPages);
+		List<Object[]> deletedInfos = DeletedInfo.getAllDeletedComments(currentPage, 3, totalPages,communityId);
 		List<DeletedInfoVM> deletedInfoVMs = new ArrayList<>();
 		Comment comment = new Comment();
-		for (DeletedInfo d:deletedInfos) {
-			comment = Comment.findById(d.socialObjectID);
-			DeletedInfoVM vm = new DeletedInfoVM(d,comment);
+		for (Object[] d:deletedInfos) {
+			comment = Comment.findById(((BigInteger)d[5]).longValue());
+			DeletedInfo deletedInfo = new DeletedInfo();
+			deletedInfo.setCategory(categoryType.valueOf(d[2].toString()));
+			deletedInfo.Comment = d[1].toString();
+			deletedInfo.setObjectType(SocialObjectType.valueOf(d[3].toString()));
+			deletedInfo.id = ((BigInteger)d[0]).longValue();
+			deletedInfo.socialObjectID = ((BigInteger)d[5]).longValue();
+			deletedInfo.reportedBy = d[4].toString();
+			deletedInfo.reportedDate = (Date)d[6];
+			DeletedInfoVM vm = new DeletedInfoVM(deletedInfo,comment);
 			deletedInfoVMs.add(vm);
 		}
 		
@@ -379,15 +390,23 @@ public class ReportsController extends Controller {
 	}
 	
 	@Transactional
-    public static Result getDeletedAnswers(int currentPage) {
-		long totalPages = DeletedInfo.getAllAnswersTotal(3);
+    public static Result getDeletedAnswers(int currentPage,String communityId) {
+		long totalPages = DeletedInfo.getAllAnswersTotal(3,communityId);
 		long size = DeletedInfo.getAnswersSize();
-		List<DeletedInfo> deletedInfos = DeletedInfo.getAllDeletedAnswers(currentPage, 3, totalPages);
+		List<Object[]> deletedInfos = DeletedInfo.getAllDeletedAnswers(currentPage, 3, totalPages,communityId);
 		List<DeletedInfoVM> deletedInfoVMs = new ArrayList<>();
 		Comment comment = new Comment();
-		for (DeletedInfo d:deletedInfos) {
-			comment = Comment.findById(d.socialObjectID);
-			DeletedInfoVM vm = new DeletedInfoVM(d,comment);
+		for (Object[] d:deletedInfos) {
+			comment = Comment.findById(((BigInteger)d[5]).longValue());
+			DeletedInfo deletedInfo = new DeletedInfo();
+			deletedInfo.setCategory(categoryType.valueOf(d[2].toString()));
+			deletedInfo.Comment = d[1].toString();
+			deletedInfo.setObjectType(SocialObjectType.valueOf(d[3].toString()));
+			deletedInfo.id = ((BigInteger)d[0]).longValue();
+			deletedInfo.socialObjectID = ((BigInteger)d[5]).longValue();
+			deletedInfo.reportedBy = d[4].toString();
+			deletedInfo.reportedDate = (Date)d[6];
+			DeletedInfoVM vm = new DeletedInfoVM(deletedInfo,comment);
 			deletedInfoVMs.add(vm);
 		}
 		

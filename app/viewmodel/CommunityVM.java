@@ -27,10 +27,14 @@ public class CommunityVM {
 		this.deleted = community.deleted;
 		this.communityName = community.name;
 		this.createdDate = formatter.format(community.createDate);
-		this.owner = community.owner.displayName;
+		if(community.owner != null) {
+			this.owner = community.owner.displayName;
+		}
 		this.posts = Post.getPosts(community.id);
-		Resource resource = Resource.findAllResourceOfFolder(community.albumPhotoProfile.id);
-		this.image = resource.id;
+		if(community.albumPhotoProfile != null) {
+			Resource resource = Resource.findAllResourceOfFolder(community.albumPhotoProfile.id);
+			this.image = resource.id;
+		}
 	}
 	
 }

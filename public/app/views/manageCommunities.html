@@ -29,49 +29,45 @@
 		<div class="tab-content">
 		  <div class="tab-pane active" id="reported">
 		  		<section id="container">
-			    	<section class="contentpanel" style="width:625px;">
-			             <section class="dactperform">
-			                <section class="left">
-			           		</section>
-			           	</section>	
+			    	<section class="" style="width:625px;margin-left: 26%;">
 			        	<section class="dgridinfo dactcln">
 			                <table ng-table="tableParams">
 			                	<tbody>
-			                    	<tr ng-repeat="community in communities.results">
+			                    	<tr ng-repeat="community in communities.results" class="row tm bg-white border-bottom">
 			                            <td>
 				                            <div>
-				                            	Type : {{community.objectType}}
+				                            	<b>Type :</b> {{community.objectType}}
 				                            	<button class="margin-none pull-right" ng-click="setData(community)" data-toggle="modal" data-target="#myModal3">Delete</button>
 				                            </div>
 				                            <div>	
-				                            	Category : {{community.category}}
+				                            	<b>Category :</b> {{community.category}}
 				                            </div>
 				                            <div>	
-				                            	Reported On : {{community.reportedDate}}
+				                            	<b>Reported On :</b> {{community.reportedDate}}
 				                            </div>
 				                            <div>	
-				                            	Reported By : {{community.reportedBy}}
+				                            	<b>Reported By :</b> {{community.reportedBy}}
 				                            </div>
 				                            <div>	
-				                            	Comment : {{community.comment}}
+				                            	<b>Comment :</b> {{community.comment}}
 				                            </div>
 				                            <div>
-				                            	Community Image : <div><img data-ng-src="/image/get-post-image-by-id/{{community.image}}" style="height:200px;width:300px;"/></div>
+				                            	<b>Community Image :</b> <div><img class="img-rounded" data-ng-src="/image/get-post-image-by-id/{{community.image}}" style="height:80px;width:80px;"/></div>
 				                            </div>
 				                            <div>
 				                            	Community Name : {{community.communityName}}
 				                            </div>
 				                            <div>
-				                            	ID : {{community.socialObjectID}}
+				                            	<b>ID :</b> {{community.socialObjectID}}
 				                            </div>
 				                            <div>
-				                            	Created On : {{community.createdDate}}
+				                            	<b>Created On :</b> {{community.createdDate}}
 				                            </div>
 				                            <div>
-				                            	Owner : {{community.owner}}
+				                            	<b>Owner :</b> {{community.owner}}
 				                            </div>
 				                            <div>
-				                            	Posts : {{community.posts}}
+				                            	<b>Posts :</b> {{community.posts}}
 				                            </div>
 			                            </td>
 			                        </tr>
@@ -90,50 +86,46 @@
 		  </div>
 		  <div class="tab-pane" id="deleted">
 		  		<section id="container">
-			    	<section class="contentpanel" style="width:625px;">
-			             <section class="dactperform">
-			                <section class="left">
-			           		</section>
-			           	</section>	
+			    	<section class="" style="width:625px;margin-left: 26%;">
 			        	<section class="dgridinfo dactcln">
 			                <table ng-table="tableParams">
 			                	<tbody>
-			                    	<tr ng-repeat="community in deletedCommunities.results">
+			                    	<tr ng-repeat="community in deletedCommunities.results" class="row tm bg-white border-bottom">
 			                            <td>
 				                            <div>
-				                            	Type : {{community.objectType}}
+				                            	<b>Type :</b> {{community.objectType}}
 				                            	<button class="margin-none pull-right" ng-click="setDeletedInfoData(community)" data-toggle="modal" data-target="#myModal5" ng-show="community.deleted == true">UnDelete</button>
 				                            	<button class="margin-none pull-right" ng-click="setDeletedInfoData(community)" data-toggle="modal" data-target="#myModal6" ng-show="community.deleted == false">Delete</button>
 				                            </div>
 				                            <div>	
-				                            	Category : {{community.category}}
+				                            	<b>Category :</b> {{community.category}}
 				                            </div>
 				                            <div>	
-				                            	Reported On : {{community.reportedDate}}
+				                            	<b>Reported On :</b> {{community.reportedDate}}
 				                            </div>
 				                            <div>	
-				                            	Reported By : {{community.reportedBy}}
+				                            	<b>Reported By :</b> {{community.reportedBy}}
 				                            </div>
 				                            <div>	
-				                            	Comment : {{community.comment}}
+				                            	<b>Comment :</b> {{community.comment}}
 				                            </div>
 				                            <div>
-				                            	Community Image : <div><img data-ng-src="/image/get-post-image-by-id/{{community.image}}" style="height:200px;width:300px;"/></div>
+				                            	<b>Community Image :</b> <div><img class="img-rounded" data-ng-src="/image/get-post-image-by-id/{{community.image}}" style="height:80px;width:80px;"/></div>
 				                            </div>
 				                            <div>
-				                            	Community Name : {{community.communityName}}
+				                            	<b>Community Name :</b> {{community.communityName}}
 				                            </div>
 				                            <div>
-				                            	ID : {{community.socialObjectID}}
+				                            	<b>ID :</b> {{community.socialObjectID}}
 				                            </div>
 				                            <div>
-				                            	Created On : {{community.createdDate}}
+				                            	<b>Created On :</b> {{community.createdDate}}
 				                            </div>
 				                            <div>
-				                            	Owner : {{community.owner}}
+				                            	<b>Owner :</b> {{community.owner}}
 				                            </div>
 				                            <div>
-				                            	Posts : {{community.posts}}
+				                            	<b>Posts :</b> {{community.posts}}
 				                            </div>
 			                            </td>
 			                        </tr>
@@ -153,8 +145,8 @@
 		  <div class="tab-pane" id="search">
 			    
 			    <section id="container">
-			    	<section class="contentpanel">
-			        	<section class="dadsrch">
+			    	<section class="" style="width:625px;margin-left: 26%;">
+			        	<section class="dadsrch" style="width:625px;">
 			            	<section class="heading"><h2>Community Search</h2></section>
 			                <section class="dadsrchdiv">
 			                	<input name="title" type="text" ng-model="title" class="" style="height:1%;" ng-keyup="$event.keyCode == 13 ? searchCommunities(1) : null"><input name="" type="button" class="btngray" value="Search" ng-click="searchCommunities(1)">
@@ -164,27 +156,27 @@
 			        	<section class="dgridinfo dactcln">
 			                <table ng-table="tableParams">
 			                	<tbody>
-			                    	<tr ng-repeat="community in allCommunities.results">
+			                    	<tr ng-repeat="community in allCommunities.results" class="row tm bg-white border-bottom">
 			                            <td>
 			                            	<div>
-				                            	Community Image : <div><img data-ng-src="/image/get-post-image-by-id/{{community.image}}" style="height:200px;width:300px;"/></div>
+				                            	<b>Community Image :</b> <div><img class="img-rounded" data-ng-src="/image/get-post-image-by-id/{{community.image}}" style="height:80px;width:80px;"/></div>
 				                            </div>
 				                            <div>
-				                            	Community Name : {{community.communityName}}
+				                            	<b>Community Name :</b> {{community.communityName}}
 				                            	<button class="margin-none pull-right" ng-click="setCommunityData(community)" data-toggle="modal" data-target="#myModal5" ng-show="community.deleted == true">UnDelete</button>
 				                            	<button class="margin-none pull-right" ng-click="setCommunityData(community)" data-toggle="modal" data-target="#myModal6" ng-show="community.deleted == false">Delete</button>
 				                            </div>
 				                            <div>
-				                            	ID : {{community.id}}
+				                            	<b>ID :</b> {{community.id}}
 				                            </div>
 				                            <div>
-				                            	Created On : {{community.createdDate}}
+				                            	<b>Created On :</b> {{community.createdDate}}
 				                            </div>
 				                            <div>
-				                            	Owner : {{community.owner}}
+				                            	<b>Owner :</b> {{community.owner}}
 				                            </div>
 				                            <div>
-				                            	Posts : {{community.posts}}
+				                            	<b>Posts :</b> {{community.posts}}
 				                            </div>
 			                            </td>
 			                        </tr>

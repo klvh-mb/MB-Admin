@@ -29,40 +29,36 @@
 		<div class="tab-content">
 		  <div class="tab-pane active" id="reported">
 		  		<section id="container">
-			    	<section class="contentpanel" style="width:625px;">
-			             <section class="dactperform">
-			                <section class="left">
-			           		</section>
-			           	</section>	
+			    	<section class="" style="width:625px;margin-left: 26%;">
 			        	<section class="dgridinfo dactcln">
 			                <table ng-table="tableParams">
 			                	<tbody>
-			                    	<tr ng-repeat="question in questions.results">
+			                    	<tr ng-repeat="question in questions.results" class="row tm bg-white border-bottom">
 			                            <td>
 				                            <div>
-				                            	Type : {{question.objectType}}
+				                            	<b>Type :</b> {{question.objectType}}
 				                            	<button class="margin-none pull-right" ng-click="setData(question)" data-toggle="modal" data-target="#myModal3">Delete</button>
 				                            </div>
 				                            <div>	
-				                            	Category : {{question.category}}
+				                            	<b>Category :</b> {{question.category}}
 				                            </div>
 				                            <div>	
-				                            	Reported On : {{question.reportedDate}}
+				                            	<b>Reported On :</b> {{question.reportedDate}}
 				                            </div>
 				                            <div>	
-				                            	Reported By : {{question.reportedBy}}
+				                            	<b>Reported By :</b> {{question.reportedBy}}
 				                            </div>
 				                            <div>	
-				                            	Comment : {{question.comment}}
+				                            	<b>Comment :</b> {{question.comment}}
 				                            </div>
 				                            <div>
-				                            	Question Title : {{question.postTitle}}
+				                            	<b>Question Title :</b> {{question.postTitle}}
 				                            </div>
 				                            <div>
-				                            	Question Body : {{question.postBody}}
+				                            	<b>Question Body :</b> {{question.postBody}}
 				                            </div>
 				                            <div>
-				                            	Question Image : <div><img data-ng-src="/image/get-post-image-by-id/{{question.image}}" style="height:200px;width:300px;"/></div>
+				                            	<b>Question Image :</b> <div><img data-ng-src="/image/get-post-image-by-id/{{question.image}}" style="height:200px;width:300px;"/></div>
 				                            </div>
 			                            </td>
 			                        </tr>
@@ -81,47 +77,43 @@
 		  </div>
 		  <div class="tab-pane" id="deleted">
 		  		<section id="container">
-			    	<section class="contentpanel" style="width:625px;">
-			    		<section class="dadsrch" style="width:600px;">
+			    	<section class="" style="width:625px;margin-left: 26%;">
+			    		<section class="dadsrch" style="width:625px;">
 			            	<section class="heading"><h2>Question Search</h2></section>
 			                <section class="dadsrchdiv">
 			                	<input name="searchByCommunity" type="text" ng-model="searchByCommunity" class="" style="height:1%;width:50%;" ng-keyup="$event.keyCode == 13 ? getDeletedInfoQuestions(1) : null"><input name="" type="button" class="btngray" value="Search" ng-click="getDeletedInfoQuestions(1)">
 			                </section>
 			            </section>
-			             <section class="dactperform">
-			                <section class="left">
-			           		</section>
-			           	</section>	
 			        	<section class="dgridinfo dactcln">
 			                <table ng-table="tableParams">
 			                	<tbody>
-			                    	<tr ng-repeat="question in deletedQuestions.results">
+			                    	<tr ng-repeat="question in deletedQuestions.results" class="row tm bg-white border-bottom">
 			                            <td>
 				                            <div>
-				                            	Type : {{question.objectType}}
+				                            	<b>Type :</b> {{question.objectType}}
 				                            	<button class="margin-none pull-right" ng-click="setDeletedInfoData(question)" data-toggle="modal" data-target="#myModal5" ng-show="question.deleted == true">UnDelete</button>
 				                            	<button class="margin-none pull-right" ng-click="setDeletedInfoData(question)" data-toggle="modal" data-target="#myModal6" ng-show="question.deleted == false">Delete</button>
 				                            </div>
 				                            <div>	
-				                            	Category : {{question.category}}
+				                            	<b>Category :</b> {{question.category}}
 				                            </div>
 				                            <div>	
-				                            	Reported On : {{question.reportedDate}}
+				                            	<b>Reported On :</b> {{question.reportedDate}}
 				                            </div>
 				                            <div>	
-				                            	Reported By : {{question.reportedBy}}
+				                            	<b>Reported By :</b> {{question.reportedBy}}
 				                            </div>
 				                            <div>	
-				                            	Comment : {{question.comment}}
+				                            	<b>Comment :</b> {{question.comment}}
 				                            </div>
 				                            <div>
-				                            	Question Title : {{question.postTitle}}
+				                            	<b>Question Title :</b> {{question.postTitle}}
 				                            </div>
 				                            <div>
-				                            	Question Body : {{question.postBody}}
+				                            	<b>Question Body :</b> {{question.postBody}}
 				                            </div>
 				                            <div>
-				                            	Question Image : <div><img data-ng-src="/image/get-post-image-by-id/{{question.image}}" style="height:200px;width:300px;"/></div>
+				                            	<b>Question Image :</b> <div><img data-ng-src="/image/get-post-image-by-id/{{question.image}}" style="height:200px;width:300px;"/></div>
 				                            </div>
 			                            </td>
 			                        </tr>
@@ -141,8 +133,8 @@
 		  <div class="tab-pane" id="search">
 			    
 			    <section id="container">
-			    	<section class="contentpanel">
-			        	<section class="dadsrch">
+			    	<section class="" style="width:625px;margin-left: 26%;">
+			        	<section class="dadsrch" style="width:625px;">
 			            	<section class="heading"><h2>Question Search</h2></section>
 			                <section class="dadsrchdiv">
 			                	<input name="title" type="text" ng-model="title" class="" style="height:1%;" ng-keyup="$event.keyCode == 13 ? searchQuestions(1) : null"><input name="" type="button" class="btngray" value="Search" ng-click="searchQuestions(1)">
@@ -152,18 +144,18 @@
 			        	<section class="dgridinfo dactcln">
 			                <table ng-table="tableParams">
 			                	<tbody>
-			                    	<tr ng-repeat="question in allQuestions.results">
+			                    	<tr ng-repeat="question in allQuestions.results" class="row tm bg-white border-bottom">
 			                            <td>
 			                            	 <div>
-				                            	Question Title : {{question.title}}
+				                            	<b>Question Title :</b> {{question.title}}
 				                            </div>
 				                            <div>
-				                            	Question Body : {{question.body}}
+				                            	<b>Question Body :</b> {{question.body}}
 				                            	<button class="margin-none pull-right" ng-click="setQuestionData(question)" data-toggle="modal" data-target="#myModal5" ng-show="question.deleted == true">UnDelete</button>
 				                            	<button class="margin-none pull-right" ng-click="setQuestionData(question)" data-toggle="modal" data-target="#myModal6" ng-show="question.deleted == false">Delete</button>
 				                            </div>
 				                            <div>
-				                            	Question Image : <div><img data-ng-src="/image/get-post-image-by-id/{{question.image}}" style="height:200px;width:300px;"/></div>
+				                            	<b>Question Image :</b> <div><img data-ng-src="/image/get-post-image-by-id/{{question.image}}" style="height:200px;width:300px;"/></div>
 				                            </div>
 			                            </td>
 			                        </tr>

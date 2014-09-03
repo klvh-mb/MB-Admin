@@ -20,8 +20,11 @@ public class CommentVM {
 			this.id = comment.id;
 			this.body = comment.body;
 			this.deleted = comment.deleted;
-			Resource resource = Resource.findAllResourceOfFolder(comment.folder.id);
-			this.image = resource.id;
+			if(comment.folder != null) {
+				Resource resource = Resource.findAllResourceOfFolder(comment.folder.id);
+				this.image = resource.id;
+			}
+			
 		}
 		catch(NullPointerException e) {
 			e.printStackTrace();

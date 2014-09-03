@@ -2,7 +2,7 @@
 
 var minibean = angular.module('minibean');
 
-minibean.controller('CreateArticleController', function($scope, $http, $location, articleCategoryService, locationService, usSpinnerService){
+minibean.controller('CreateArticleController', function($scope, $http, $location, articleCategoryService, usSpinnerService){
     $scope.article;
     $scope.submitBtn = "Save";
     
@@ -75,7 +75,7 @@ minibean.controller('CreateArticleController', function($scope, $http, $location
     }
 });
 
-minibean.service('locationService',function($resource){
+/*minibean.service('locationService',function($resource){
     this.getAllDistricts = $resource(
             '/getAllDistricts',
             {alt:'json',callback:'JSON_CALLBACK'},
@@ -83,7 +83,7 @@ minibean.service('locationService',function($resource){
                 get: {method:'get' ,isArray:true}
             }
     );
-});
+});*/
 
 minibean.service('articleCategoryService',function($resource){
     this.getAllArticleCategory = $resource(
@@ -182,13 +182,14 @@ minibean.service('ArticleService',function($resource){
     );
 });
 
-minibean.controller('ShowAnnouncementController',function($scope, $modal, $http, $filter, AnnouncementsService, LocationService, deleteAnnouncementService, announcementIconService){
+minibean.controller('ShowAnnouncementController',function($scope, $modal, $http, $filter, AnnouncementsService, deleteAnnouncementService, announcementIconService){
 	$scope.title = " ";
 	$scope.pageNumber;
 	$scope.pageSize;
 	$scope.formData = "";
 	var currentPage = 1;
 	var totalPages;
+	$scope.isChosen = false;
 	
 	$scope.searchForm= {
             from : new Date(),
@@ -204,8 +205,8 @@ minibean.controller('ShowAnnouncementController',function($scope, $modal, $http,
         $scope.icon_url = url;
         $scope.icon_name = name;
         $scope.formData.icon = id;
-        $scope.ancmtData.ic.id = id;
         $scope.isChosen = true;
+        $scope.ancmtData.ic.id = id;
     }
 	
 	$scope.announcements = AnnouncementsService.AnnouncementInfo.get({title:$scope.title,currentPage:currentPage},function(response) {
@@ -218,8 +219,8 @@ minibean.controller('ShowAnnouncementController',function($scope, $modal, $http,
 		}
 	});
 	
-	$scope.locations = LocationService.LocationInfo.get();
-	console.log($scope.locations);
+	//$scope.locations = LocationService.LocationInfo.get();
+	//console.log($scope.locations);
 		$scope.searchAnnouncements = function(page) {
 		if(angular.isUndefined($scope.title) || $scope.title=="") {
 			console.log('inside function');
@@ -270,6 +271,7 @@ minibean.controller('ShowAnnouncementController',function($scope, $modal, $http,
 		console.log($scope.formData);
 		$http.post('/saveAnnouncement', $scope.formData).success(function(data){
 			console.log('success');
+			$scope.searchAnnouncements(currentPage);
 			$('#myModal').modal('hide');
 		}).error(function(data, status, headers, config) {
 			console.log('ERROR');
@@ -282,6 +284,7 @@ minibean.controller('ShowAnnouncementController',function($scope, $modal, $http,
 		console.log($scope.ancmtData);
 		$http.post('/updateAnnouncement', $scope.ancmtData).success(function(data){
 			console.log('success');
+			$scope.searchAnnouncements(currentPage);
 			$('#myModal2').modal('hide');
 		}).error(function(data, status, headers, config) {
 			console.log('ERROR');
@@ -454,6 +457,7 @@ minibean.controller('ManagePostsController',function($scope, $modal, $http, $fil
 	$scope.searchByCommunity = " ";
 	$scope.pageNumber3;
 	$scope.pageSize3;
+	$scope.deletePostData;
 	var currentPage3 = 1;
 	var totalPages3;
 	
@@ -526,6 +530,7 @@ minibean.controller('ManagePostsController',function($scope, $modal, $http, $fil
 			console.log('success');
 			$('#myModal3').modal('hide');
 			$scope.getPosts(currentPage);
+			$scope.getDeletedInfoPosts(currentPage2);
 		});
 	};
 
@@ -585,16 +590,19 @@ minibean.controller('ManagePostsController',function($scope, $modal, $http, $fil
 	}
 	
 	$scope.unDeletePostStatus = function() {
-		deletePostsStatusService.unDeletePosts.get({id: $scope.deletePostData},function(response) {
+		deletePostsStatusService.unDeletePosts.get({id: $scope.InfoPostId},function(response) {
 			$scope.searchPosts(currentPage3);
+			$scope.getDeletedInfoPosts(currentPage2);
 			$('#myModal5').modal('hide');
 			console.log('success');
 		});
 	}
 	
 	$scope.deletePostStatus = function() {
-		deletePostsStatusService.deletePosts.get({id: $scope.deletePostData},function(response) {
+		console.log($scope.InfoPostId);
+		deletePostsStatusService.deletePosts.get({id: $scope.InfoPostId},function(response) {
 			$scope.searchPosts(currentPage3);
+			$scope.getDeletedInfoPosts(currentPage2);
 			$('#myModal6').modal('hide');
 			console.log('success');
 		});
@@ -767,6 +775,7 @@ minibean.controller('ManageQuestionsController',function($scope, $http, $routePa
 			console.log('success');
 			$('#myModal3').modal('hide');
 			$scope.getQuestions(currentPage);
+			$scope.getDeletedInfoQuestions(currentPage2);
 		});
 	};
 	
@@ -976,6 +985,7 @@ minibean.controller('ManageCommentsController',function($scope, $http, $routePar
 	var currentPage2 = 1;
 	var totalPages2;
 	
+	$scope.searchByCommunity = " ";
 	$scope.title = " ";
 	$scope.pageNumber3;
 	$scope.pageSize3;
@@ -995,7 +1005,7 @@ minibean.controller('ManageCommentsController',function($scope, $http, $routePar
 		}
 	});
 	
-	$scope.deletedComments = deletedCommentsService.getComments.get({currentPage:currentPage2},function(response) {
+	$scope.deletedComments = deletedCommentsService.getComments.get({currentPage:currentPage2,communityId:$scope.searchByCommunity},function(response) {
 		console.log($scope.deletedComments);
 		totalPages2 = $scope.deletedComments.totalPages;
 		currentPage2 = $scope.deletedComments.currentPage;
@@ -1010,7 +1020,11 @@ minibean.controller('ManageCommentsController',function($scope, $http, $routePar
 	
 	$scope.getDeletedComments = function(page) {
 		currentPage2 = page;
-		$scope.deletedComments = deletedCommentsService.getComments.get({currentPage:currentPage2},function(response) {
+		if(angular.isUndefined($scope.searchByCommunity) || $scope.searchByCommunity=="") {
+			console.log('inside function');
+			$scope.searchByCommunity = " ";
+		}
+		$scope.deletedComments = deletedCommentsService.getComments.get({currentPage:currentPage2,communityId:$scope.searchByCommunity},function(response) {
 			console.log($scope.deletedComments);
 			totalPages2 = $scope.deletedComments.totalPages;
 			currentPage2 = $scope.deletedComments.currentPage;
@@ -1083,9 +1097,14 @@ minibean.controller('ManageCommentsController',function($scope, $http, $routePar
 		$scope.deleteCommentData = comment.id;
 	}
 	
+	$scope.setDeletedInfoData = function(comment) {
+		$scope.deleteCommentData = comment.socialObjectID;
+	}
+	
 	$scope.unDeleteCommentStatus = function() {
 		deleteCommentsStatusService.unDeleteComment.get({id: $scope.deleteCommentData},function(response) {
 			$scope.searchComments(currentPage3);
+			$scope.getDeletedComments(currentPage2);
 			$('#myModal5').modal('hide');
 			console.log('success');
 		});
@@ -1094,6 +1113,7 @@ minibean.controller('ManageCommentsController',function($scope, $http, $routePar
 	$scope.deleteCommentStatus = function() {
 		deleteCommentsStatusService.deleteComment.get({id: $scope.deleteCommentData},function(response) {
 			$scope.searchComments(currentPage3);
+			$scope.getDeletedComments(currentPage2);
 			$('#myModal6').modal('hide');
 			console.log('success');
 		});
@@ -1104,6 +1124,7 @@ minibean.controller('ManageCommentsController',function($scope, $http, $routePar
 			console.log('success');
 			$('#myModal3').modal('hide');
 			$scope.getComments(currentPage);
+			$scope.getDeletedComments(currentPage2);
 		});
 	};
 	
@@ -1170,7 +1191,7 @@ minibean.service('deleteReportedObjectCommentService',function($resource){
 
 minibean.service('deletedCommentsService',function($resource){
     this.getComments = $resource(
-            '/getDeletedComments/:currentPage',
+            '/getDeletedComments/:currentPage/:communityId',
             {alt:'json',callback:'JSON_CALLBACK'},
             {
                 get: {method:'get'}
@@ -1213,6 +1234,7 @@ minibean.controller('ManageAnswersController',function($scope, $http, $routePara
 	var currentPage = 1;
 	var totalPages;
 	
+	$scope.searchByCommunity = " ";
 	$scope.pageNumber2;
 	$scope.pageSize2;
 	var currentPage2 = 1;
@@ -1264,10 +1286,11 @@ minibean.controller('ManageAnswersController',function($scope, $http, $routePara
 			console.log('success');
 			$('#myModal3').modal('hide');
 			$scope.getAnswers(currentPage);
+			$scope.getDeletedAnswers(currentPage2);
 		});
 	};
 	
-	$scope.deletedAnswers = deletedAnswersService.getAnswers.get({currentPage:currentPage2},function(response) {
+	$scope.deletedAnswers = deletedAnswersService.getAnswers.get({currentPage:currentPage2,communityId: $scope.searchByCommunity},function(response) {
 		console.log($scope.deletedAnswers);
 		totalPages2 = $scope.deletedAnswers.totalPages;
 		currentPage2 = $scope.deletedAnswers.currentPage;
@@ -1282,7 +1305,11 @@ minibean.controller('ManageAnswersController',function($scope, $http, $routePara
 	
 	$scope.getDeletedAnswers = function(page) {
 		currentPage2 = page;
-		$scope.deletedAnswers = deletedAnswersService.getAnswers.get({currentPage:currentPage2},function(response) {
+		if(angular.isUndefined($scope.searchByCommunity) || $scope.searchByCommunity=="") {
+			console.log('inside function');
+			$scope.searchByCommunity = " ";
+		}
+		$scope.deletedAnswers = deletedAnswersService.getAnswers.get({currentPage:currentPage2,communityId: $scope.searchByCommunity},function(response) {
 			console.log($scope.deletedAnswers);
 			totalPages2 = $scope.deletedAnswers.totalPages;
 			currentPage2 = $scope.deletedAnswers.currentPage;
@@ -1421,7 +1448,7 @@ minibean.service('deleteReportedObjectAnswerService',function($resource){
 
 minibean.service('deletedAnswersService',function($resource){
     this.getAnswers = $resource(
-            '/getDeletedAnswers/:currentPage',
+            '/getDeletedAnswers/:currentPage/:communityId',
             {alt:'json',callback:'JSON_CALLBACK'},
             {
                 get: {method:'get'}
@@ -1550,6 +1577,7 @@ minibean.controller('ManageCommunitiesController',function($scope, $http, $route
 			console.log('success');
 			$('#myModal3').modal('hide');
 			$scope.getCommunities(currentPage);
+			$scope.getDeletedCommunities(currentPage2);
 		});
 	};
 	
@@ -1836,6 +1864,7 @@ minibean.controller('ManageUsers2Controller',function($scope, $http, $routeParam
 			console.log('success');
 			$('#myModal3').modal('hide');
 			$scope.getReportedUsers(currentPage);
+			$scope.getDeletedUsers(currentPage2);
 		});
 	};
 	
@@ -1959,7 +1988,7 @@ minibean.service('getAllUsersService',function($resource){
 
 
 
-minibean.controller('EditArticleController',function($scope, $http, $routeParams, $location, $upload, ArticleService, articleCategoryService, locationService, usSpinnerService){
+minibean.controller('EditArticleController',function($scope, $http, $routeParams, $location, $upload, ArticleService, articleCategoryService, usSpinnerService){
     $scope.submitBtn = "Save";
     $scope.article = ArticleService.ArticleInfo.get({id:$routeParams.id});
     $scope.articleCategorys = articleCategoryService.getAllArticleCategory.get();

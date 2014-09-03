@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import domain.AuditFields;
+
 import models.Location;
 import models.Resource;
 import models.User;
@@ -26,6 +28,7 @@ public class UserVM {
 	public String birthYear;
 	public String location;
 	public int numChildren;
+	public String createdOn;
 	public String parentType;
 	public List<UserChildVM> userChildVms = new ArrayList<>();
 	
@@ -41,11 +44,21 @@ public class UserVM {
 		this.deleted = user.deleted;
 		this.userName = user.displayName;
 		this.lastLogin = formatter.format(user.lastLogin);
-		this.aboutMe = user.userInfo.aboutMe;
-		this.birthYear = user.userInfo.birthYear;
-		this.location = user.userInfo.location.displayName;
-		this.numChildren = user.userInfo.numChildren;
-		this.parentType = user.userInfo.parentType.name();
+		if(user.userInfo != null) {
+			this.aboutMe = user.userInfo.aboutMe;
+			this.birthYear = user.userInfo.birthYear;
+			this.numChildren = user.userInfo.numChildren;
+		}
+		
+		if(user.userInfo.parentType != null) {
+			this.parentType = user.userInfo.parentType.name();
+		}
+		
+		if(user.userInfo.location != null) {
+			this.location = user.userInfo.location.displayName;
+		}
+		
+		this.createdOn = formatter.format(user.auditFields.getCreatedDate());
 		List<UserChild> userChilds = UserChild.findListById(user.id);
 		for (UserChild u:userChilds) {
 			UserChildVM vm = new UserChildVM(u);

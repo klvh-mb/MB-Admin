@@ -100,11 +100,16 @@ public class DeletedInfoVM {
 		this.deleted = user.deleted;
 		this.userName = user.displayName;
 		this.lastLogin = formatter.format(user.lastLogin);
-		this.aboutMe = user.userInfo.aboutMe;
-		this.birthYear = user.userInfo.birthYear;
-		this.location = user.userInfo.location.displayName;
-		this.numChildren = user.userInfo.numChildren;
-		this.parentType = user.userInfo.parentType.name();
+		if(user.userInfo != null) {
+			this.aboutMe = user.userInfo.aboutMe;
+			this.birthYear = user.userInfo.birthYear;
+			this.location = user.userInfo.location.displayName;
+			this.numChildren = user.userInfo.numChildren;
+		}
+		if(user.userInfo.parentType != null) {
+			this.parentType = user.userInfo.parentType.name();
+		}
+		this.createdDate = formatter.format(user.auditFields.getCreatedDate());
 		List<UserChild> userChilds = UserChild.findListById(user.id);
 		for (UserChild u:userChilds) {
 			UserChildVM vm = new UserChildVM(u);

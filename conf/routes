@@ -47,7 +47,7 @@ GET		/unDeletePosts/:id						controllers.ReportsController.setUnDeletePost(id: L
 
 GET		/getReportedComments/:currentPage		controllers.ReportsController.getReportedComments(currentPage: Integer)
 GET		/deleteReportedObjectComment/:id/:commentId		controllers.ReportsController.deleteReportedObjectComment(id: Long,commentId :Long)	
-GET		/getDeletedComments/:currentPage		controllers.ReportsController.getDeletedComments(currentPage: Integer)
+GET		/getDeletedComments/:currentPage/:communityId		controllers.ReportsController.getDeletedComments(currentPage: Integer,communityId:String)
 GET		/getAllComments/:currentPage/:title		controllers.ReportsController.getAllComments(currentPage: Integer,title: String)
 GET		/deleteComment/:id						controllers.ReportsController.setDeleteComment(id: Long)
 GET		/unDeleteComment/:id					controllers.ReportsController.setUnDeleteComment(id: Long)
@@ -61,7 +61,7 @@ GET		/getAllQuestions/:currentPage/:title	controllers.ReportsController.getAllQu
 
 GET		/getReportedAnswers/:currentPage		controllers.ReportsController.getReportedAnswers(currentPage: Integer)
 GET		/deleteReportedObjectAnswer/:id/:answerId	controllers.ReportsController.deleteReportedObjectAnswer(id: Long,answerId :Long)
-GET		/getDeletedAnswers/:currentPage			controllers.ReportsController.getDeletedAnswers(currentPage: Integer)
+GET		/getDeletedAnswers/:currentPage/:communityId			controllers.ReportsController.getDeletedAnswers(currentPage: Integer,communityId: String)
 GET		/deleteAnswer/:id						controllers.ReportsController.setDeleteAnswer(id: Long)
 GET		/unDeleteAnswer/:id						controllers.ReportsController.setUnDeleteAnswer(id: Long)
 GET		/getAllAnswers/:currentPage/:title		controllers.ReportsController.getAllAnswers(currentPage: Integer,title: String)

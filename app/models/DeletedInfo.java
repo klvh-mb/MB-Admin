@@ -1,5 +1,6 @@
 package models;
 
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +16,6 @@ import javax.persistence.TemporalType;
 
 import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
-
 import domain.SocialObjectType;
 import domain.categoryType;
 
@@ -203,13 +203,20 @@ public class DeletedInfo {
 	}
 	
 	@Transactional
-    public static long getAllCommentsTotal(int rowsPerPage) {
-		long totalPages = 0, size;
-		size = (long) JPA.em().createQuery("Select count(*) from DeletedInfo d where d.objectType = 'COMMENT'").getSingleResult();
+    public static long getAllCommentsTotal(int rowsPerPage,String communityId) {
+		long totalPages = 0;
+		String sql="";
+    	if(communityId.trim().equals("")) {
+    		sql = "Select count(*) from DeletedInfo d where d.objectType = 'COMMENT'";
+    	} else {
+    		sql = "select count(*) from deletedinfo di where di.objectType = 'COMMENT' and di.socialObjectID in (select pc.comments_id from post p, post_comment pc where p.community_id = "+Long.parseLong(communityId)+"  and p.id = pc.Post_id)";
+    	}
 		
-		totalPages = size/rowsPerPage;
+    	BigInteger size = (BigInteger) JPA.em().createNativeQuery(sql).getSingleResult();
+    	
+		totalPages = size.longValue()/rowsPerPage;
 		
-    	if(size % rowsPerPage > 0) {
+    	if(size.longValue() % rowsPerPage > 0) {
 			totalPages++;
 		}
     	System.out.println("total pages ::"+totalPages);
@@ -217,13 +224,20 @@ public class DeletedInfo {
 	}
 	
 	@Transactional
-    public static long getAllAnswersTotal(int rowsPerPage) {
-		long totalPages = 0, size;
-		size = (long) JPA.em().createQuery("Select count(*) from DeletedInfo d where d.objectType = 'ANSWER'").getSingleResult();
+    public static long getAllAnswersTotal(int rowsPerPage,String communityId) {
+		long totalPages = 0;
+		String sql="";
+    	if(communityId.trim().equals("")) {
+    		sql = "Select count(*) from deletedinfo d where d.objectType = 'ANSWER'";
+    	} else {
+    		sql = "select count(*) from deletedinfo di where di.objectType = 'ANSWER' and di.socialObjectID in (select pc.comments_id from post p, post_comment pc where p.community_id = "+Long.parseLong(communityId)+"  and p.id = pc.Post_id)";
+    	}
 		
-		totalPages = size/rowsPerPage;
+    	BigInteger size = (BigInteger) JPA.em().createNativeQuery(sql).getSingleResult();
+    	
+		totalPages = size.longValue()/rowsPerPage;
 		
-    	if(size % rowsPerPage > 0) {
+    	if(size.longValue() % rowsPerPage > 0) {
 			totalPages++;
 		}
     	System.out.println("total pages ::"+totalPages);
@@ -307,7 +321,7 @@ public class DeletedInfo {
 	}
 	
 	@Transactional
-	public static List<DeletedInfo> getAllDeletedComments(int currentPage, int rowsPerPage, long totalPages) {
+	public static List<Object[]> getAllDeletedComments(int currentPage, int rowsPerPage, long totalPages,String communityId) {
 		int  start=0;
 		
 		if(currentPage >= 1 && currentPage <= totalPages) {
@@ -317,13 +331,19 @@ public class DeletedInfo {
 			currentPage--;
 			start = (int) ((totalPages*rowsPerPage)-rowsPerPage); 
 		}
-		
-		Query q = JPA.em().createQuery("Select d from DeletedInfo d where d.objectType = 'COMMENT'").setFirstResult(start).setMaxResults(rowsPerPage);
-		return (List<DeletedInfo>)q.getResultList();
+		String sql="";
+    	if(communityId.trim().equals("")) {
+    		sql = "Select * from deletedinfo d where d.objectType = 'COMMENT'";
+    	} else {
+    		sql = "select * from deletedinfo di where di.objectType = 'COMMENT' and di.socialObjectID in (select pc.comments_id from post p, post_comment pc where p.community_id = "+Long.parseLong(communityId)+" and p.id = pc.Post_id)";
+    	}
+    	
+		Query q = JPA.em().createNativeQuery(sql).setFirstResult(start).setMaxResults(rowsPerPage);
+		return (List<Object[]>)q.getResultList();
 	}
 	
 	@Transactional
-	public static List<DeletedInfo> getAllDeletedAnswers(int currentPage, int rowsPerPage, long totalPages) {
+	public static List<Object[]> getAllDeletedAnswers(int currentPage, int rowsPerPage, long totalPages,String communityId) {
 		int  start=0;
 		
 		if(currentPage >= 1 && currentPage <= totalPages) {
@@ -334,8 +354,15 @@ public class DeletedInfo {
 			start = (int) ((totalPages*rowsPerPage)-rowsPerPage); 
 		}
 		
-		Query q = JPA.em().createQuery("Select d from DeletedInfo d where d.objectType = 'ANSWER'").setFirstResult(start).setMaxResults(rowsPerPage);
-		return (List<DeletedInfo>)q.getResultList();
+		String sql="";
+    	if(communityId.trim().equals("")) {
+    		sql = "Select * from deletedinfo d where d.objectType = 'ANSWER'";
+    	} else {
+    		sql = "select * from deletedinfo di where di.objectType = 'ANSWER' and di.socialObjectID in (select pc.comments_id from post p, post_comment pc where p.community_id = "+Long.parseLong(communityId)+" and p.id = pc.Post_id)";
+    	}
+    	
+		Query q = JPA.em().createNativeQuery(sql).setFirstResult(start).setMaxResults(rowsPerPage);
+		return (List<Object[]>)q.getResultList();
 	}
 	
 	@Transactional

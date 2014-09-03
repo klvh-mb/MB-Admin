@@ -29,55 +29,51 @@
 		<div class="tab-content">
 		  <div class="tab-pane active" id="reported">
 		  		<section id="container">
-			    	<section class="contentpanel" style="width:625px;">
-			             <section class="dactperform">
-			                <section class="left">
-			           		</section>
-			           	</section>	
+			    	<section class="" style="width:625px;margin-left: 26%;">
 			        	<section class="dgridinfo dactcln">
 			                <table ng-table="tableParams">
 			                	<tbody>
-			                    	<tr ng-repeat="user in users.results">
+			                    	<tr ng-repeat="user in users.results" class="row tm bg-white border-bottom">
 			                            <td>
 				                            <div>
-				                            	Type : {{user.objectType}}
+				                            	<b>Type :</b> {{user.objectType}}
 				                            	<button class="margin-none pull-right" ng-click="setData(user)" data-toggle="modal" data-target="#myModal3">Delete</button>
 				                            </div>
 				                            <div>	
-				                            	Category : <b>{{user.category}}</b>
+				                            	<b>Category : {{user.category}}</b>
 				                            </div>
 				                            <div>	
-				                            	Reported On : {{user.reportedDate}}
+				                            	<b>Reported On :</b> {{user.reportedDate}}
 				                            </div>
 				                            <div>	
-				                            	Reported By : {{user.reportedBy}}
+				                            	<b>Reported By :</b> {{user.reportedBy}}
 				                            </div>
 				                            <div>	
-				                            	Comments : {{user.comment}}
+				                            	<b>Comments :</b> {{user.comment}}
 				                            </div>
 				                            <div>
-				                            	 <div><img class="img-rounded" data-ng-src="/image/get-post-image-by-id/{{user.image}}" style="height:50px;width:50px;"/></div>
+				                            	 <div><img class="img-rounded" data-ng-src="/image/get-post-image-by-id/{{user.image}}" style="height:80px;width:80px;"/></div>
 				                            </div>
 				                            <div>
-				                            	<b>{{user.userName}}</b> 
+				                            	<b>User Name :{{user.userName}}</b> 
 				                            </div>
 				                            <div>
 				                            	<b>ID : {{user.socialObjectID}}</b>
 				                            </div>
 				                            <div>
-				                            	<b>Created On : </b>
+				                            	<b>Created On : </b> {{user.createdDate}}
 				                            </div>
 				                            <div>
-				                            	<b>Last Login : {{user.lastLogin}}</b>
+				                            	<b>Last Login :</b> {{user.lastLogin}}
 				                            </div>
 				                            <div>
 				                            	<b>User Info :</b> 
 				                            	<div>
-						                            		<div><b>About Me : {{user.aboutMe}}</b></div>
-						                            		<div><b>Birth Year : {{user.birthYear}}</b></div>
+						                            		<div><b>About Me :</b> {{user.aboutMe}}</div>
+						                            		<div><b>Birth Year :</b> {{user.birthYear}}</div>
 						                            		<div><b>Location :</b> {{user.location}}</div>
-						                            		<div><b>Num Children : {{user.numChildren}}</b></div>
-						                            		<div><b>Parent Type : {{user.parentType}}</b></div>
+						                            		<div><b>Num Children :</b> {{user.numChildren}}</div>
+						                            		<div><b>Parent Type :</b> {{user.parentType}}</div>
 				                            	</div>
 				                            </div>
 				                            <div>
@@ -110,67 +106,63 @@
 		  </div>
 		  <div class="tab-pane" id="deleted">
 		  		<section id="container">
-			    	<section class="contentpanel" style="width:625px;">
-			             <section class="dactperform">
-			                <section class="left">
-			           		</section>
-			           	</section>	
+			    	<section class="" style="width:625px;margin-left: 26%;">
 			        	<section class="dgridinfo dactcln">
 			                <table ng-table="tableParams">
 			                	<tbody>
-			                    	<tr ng-repeat="user in deletedUsers.results">
+			                    	<tr ng-repeat="user in deletedUsers.results" class="row tm bg-white border-bottom">
 			                            <td>
 				                            <div>
-				                            	Type : {{user.objectType}}
+				                            	<b>Type :</b> {{user.objectType}}
 				                            	<button class="margin-none pull-right" ng-click="setDeletedInfoData(user)" data-toggle="modal" data-target="#myModal5" ng-show="user.deleted == true">UnDelete</button>
 				                            	<button class="margin-none pull-right" ng-click="setDeletedInfoData(user)" data-toggle="modal" data-target="#myModal6" ng-show="user.deleted == false">Delete</button>
 				                            </div>
 				                            <div>	
-				                            	Category : {{user.category}}
+				                            	<b>Category : {{user.category}}</b>
 				                            </div>
 				                            <div>	
-				                            	Reported On : {{user.reportedDate}}
+				                            	<b>Reported On :</b> {{user.reportedDate}}
 				                            </div>
 				                            <div>	
-				                            	Reported By : {{user.reportedBy}}
+				                            	<b>Reported By :</b> {{user.reportedBy}}
 				                            </div>
 				                            <div>	
-				                            	Comment : {{user.comment}}
+				                            	<b>Comment :</b> {{user.comment}}
 				                            </div>
 				                            <div>
-				                            	 <div><img class="img-rounded" data-ng-src="/image/get-post-image-by-id/{{user.image}}" style="height:50px;width:50px;"/></div>
+				                            	 <div><img class="img-rounded" data-ng-src="/image/get-post-image-by-id/{{user.image}}" style="height:80px;width:80px;"/></div>
 				                            </div>
 				                            <div>
-				                            	User Name : {{user.userName}}
+				                            	<b>User Name : {{user.userName}}</b>
 				                            </div>
 				                            <div>
-				                            	ID : {{user.socialObjectID}}
+				                            	<b>ID : {{user.socialObjectID}}</b>
 				                            </div>
 				                            <div>
-				                            	Created On : 
+				                            	<b>Created On :</b> {{user.createdDate}}
 				                            </div>
 				                            <div>
-				                            	Last Login : {{user.lastLogin}}
+				                            	<b>Last Login :</b> {{user.lastLogin}}
 				                            </div>
 				                            <div>
-				                            	User Info : 
+				                            	<b>User Info : </b>
 				                            	<div>
-						                            		<div>About Me : {{user.aboutMe}}</div>
-						                            		<div>Birth Year : {{user.birthYear}}</div>
-						                            		<div>Location : {{user.location}}</div>
-						                            		<div>Num Children : {{user.numChildren}}</div>
-						                            		<div>Parent Type : {{user.parentType}}</div>
+						                            		<div><b>About Me :</b> {{user.aboutMe}}</div>
+						                            		<div><b>Birth Year :</b> {{user.birthYear}}</div>
+						                            		<div><b>Location :</b> {{user.location}}</div>
+						                            		<div><b>Num Children :</b> {{user.numChildren}}</div>
+						                            		<div><b>Parent Type :</b> {{user.parentType}}</div>
 				                            	</div>
 				                            </div>
 				                            <div>
-				                            	User Child Info : 
+				                            	<b>User Child Info :</b> 
 				                            	<div>
 				                            		<table border=0 ng-table="abcd">
 						                            	<tr ng-repeat="child in user.userChildVms">
-						                            		<td>Birth Day : {{child.birthDay}}</td>
-						                            		<td>Birth Month : {{child.birthMonth}}</td>
-						                            		<td>Birth Year : {{child.birthYear}}</td>
-						                            		<td>Gender : {{child.gender}}</td>
+						                            		<td><b>Birth Day :</b> {{child.birthDay}}</td>
+						                            		<td><b>Birth Month :</b> {{child.birthMonth}}</td>
+						                            		<td><b>Birth Year :</b> {{child.birthYear}}</td>
+						                            		<td><b>Gender :</b> {{child.gender}}</td>
 						                            	</tr>
 					                            	</table>
 				                            	</div>
@@ -193,8 +185,8 @@
 		  <div class="tab-pane" id="search">
 			    
 			    <section id="container">
-			    	<section class="contentpanel">
-			        	<section class="dadsrch">
+			    	<section class="" style="width:625px;margin-left: 26%;">
+			        	<section class="dadsrch" style="width:625px;">
 			            	<section class="heading"><h2>User Search</h2></section>
 			                <section class="dadsrchdiv">
 			                	<input name="title" type="text" ng-model="title" class="" style="height:1%;" ng-keyup="$event.keyCode == 13 ? searchUsers(1) : null"><input name="" type="button" class="btngray" value="Search" ng-click="searchUsers(1)">
@@ -204,44 +196,44 @@
 			        	<section class="dgridinfo dactcln">
 			                <table ng-table="tableParams">
 			                	<tbody>
-			                    	<tr ng-repeat="user in allUsers.results">
+			                    	<tr ng-repeat="user in allUsers.results" class="row tm bg-white border-bottom">
 			                            <td>
 			                            	<div>
-				                            	 <div><img class="img-rounded" data-ng-src="/image/get-post-image-by-id/{{user.image}}" style="height:50px;width:50px;"/></div>
+				                            	 <div><img class="img-rounded" data-ng-src="/image/get-post-image-by-id/{{user.image}}" style="height:80px;width:80px;"/></div>
 				                            </div>
 				                            <div>
-				                            	User Name : {{user.userName}}
+				                            	<b>User Name : {{user.userName}}</b>
 				                            	<button class="margin-none pull-right" ng-click="setUserData(user)" data-toggle="modal" data-target="#myModal5" ng-show="user.deleted == true">UnDelete</button>
 				                            	<button class="margin-none pull-right" ng-click="setUserData(user)" data-toggle="modal" data-target="#myModal6" ng-show="user.deleted == false">Delete</button>
 				                            </div>
 				                            <div>
-				                            	ID : {{user.socialObjectID}}
+				                            	<b>ID : {{user.id}}</b>
 				                            </div>
 				                            <div>
-				                            	Created On : 
+				                            	<b>Created On :</b> {{user.createdOn}}
 				                            </div>
 				                            <div>
-				                            	Last Login : {{user.lastLogin}}
+				                            	<b>Last Login :</b> {{user.lastLogin}}
 				                            </div>
 				                            <div>
-				                            	User Info : 
+				                            	<b>User Info :</b> 
 				                            	<div>
-						                            		<div>About Me : {{user.aboutMe}}</div>
-						                            		<div>Birth Year : {{user.birthYear}}</div>
-						                            		<div>Location : {{user.location}}</div>
-						                            		<div>Num Children : {{user.numChildren}}</div>
-						                            		<div>Parent Type : {{user.parentType}}</div>
+						                            		<div><b>About Me :</b> {{user.aboutMe}}</div>
+						                            		<div><b>Birth Year :</b> {{user.birthYear}}</div>
+						                            		<div><b>Location :</b> {{user.location}}</div>
+						                            		<div><b>Num Children :</b> {{user.numChildren}}</div>
+						                            		<div><b>Parent Type :</b> {{user.parentType}}</div>
 				                            	</div>
 				                            </div>
 				                            <div>
-				                            	User Child Info : 
+				                            	<b>User Child Info : </b>
 				                            	<div>
 				                            		<table border=0 ng-table="abcd">
 						                            	<tr ng-repeat="child in user.userChildVms">
-						                            		<td>Birth Day : {{child.birthDay}}</td>
-						                            		<td>Birth Month : {{child.birthMonth}}</td>
-						                            		<td>Birth Year : {{child.birthYear}}</td>
-						                            		<td>Gender : {{child.gender}}</td>
+						                            		<td><b>Birth Day :</b> {{child.birthDay}}</td>
+						                            		<td><b>Birth Month :</b> {{child.birthMonth}}</td>
+						                            		<td><b>Birth Year :</b> {{child.birthYear}}</td>
+						                            		<td><b>Gender :</b> {{child.gender}}</td>
 						                            	</tr>
 					                            	</table>
 				                            	</div>

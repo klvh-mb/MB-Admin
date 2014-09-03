@@ -29,7 +29,7 @@
 		<div class="tab-content">
 		  <div class="tab-pane active" id="reported">
 		  		<section id="container">
-			    	<section class="contentpanel" style="width:625px;">
+			    	<section class="" style="width:625px;margin-left: 26%;">
 			             <section class="dactperform">
 			                <section class="left">
 			           		</section>
@@ -37,32 +37,34 @@
 			        	<section class="dgridinfo dactcln">
 			                <table ng-table="tableParams">
 			                	<tbody>
-			                    	<tr ng-repeat="post in posts.results">
-			                            <td>
-				                            <div>
-				                            	Type : {{post.objectType}}
-				                            	<button class="margin-none pull-right" ng-click="setData(post)" data-toggle="modal" data-target="#myModal3">Delete</button>
-				                            </div>
-				                            <div>	
-				                            	Category : {{post.category}}
-				                            </div>
-				                            <div>	
-				                            	Reported On : {{post.reportedDate}}
-				                            </div>
-				                            <div>	
-				                            	Reported By : {{post.reportedBy}}
-				                            </div>
-				                            <div>	
-				                            	Comment : {{post.comment}}
-				                            </div>
-				                            <div>
-				                            	Post Title : {{post.postTitle}}
-				                            </div>
-				                            <div>
-				                            	Post Body : {{post.postBody}}
+			                    	<tr ng-repeat="post in posts.results" class="row tm bg-white border-bottom">
+			                            <td style="border: 1px solid;border-color: rgb(209, 205, 200);">
+			                            	<div style="background-color: #f3f3f3;border: 1px solid;border-color: rgb(209, 205, 200);margin-right: 5px;">
+					                            <div>
+					                            	<b>Type :</b> {{post.objectType}}
+					                            	<button class="margin-none pull-right" ng-click="setData(post)" data-toggle="modal" data-target="#myModal3">Delete</button>
+					                            </div>
+					                            <div>	
+					                            	<b>Category :</b> {{post.category}}
+					                            </div>
+					                            <div>	
+					                            	<b>Reported On :</b> {{post.reportedDate}}
+					                            </div>
+					                            <div>	
+					                            	<b>Reported By :</b> {{post.reportedBy}}
+					                            </div>
+					                            <div>	
+					                            	<b>Comment :</b> {{post.comment}}
+					                            </div>
 				                            </div>
 				                            <div>
-				                            	Post Image : <div><img data-ng-src="/image/get-post-image-by-id/{{post.image}}" style="height:200px;width:300px;"/></div>
+				                            	<b>Post Title :</b> {{post.postTitle}}
+				                            </div>
+				                            <div>
+				                            	<b>Post Body :</b> {{post.postBody}}
+				                            </div>
+				                            <div>
+				                            	<b>Post Image :</b> <div><img data-ng-src="/image/get-post-image-by-id/{{post.image}}" style="height:200px;width:300px;"/></div>
 				                            </div>
 			                            </td>
 			                        </tr>
@@ -81,46 +83,45 @@
 		  </div>
 		  <div class="tab-pane" id="deleted">
 		  		<section id="container">
-			    	<section class="contentpanel" style="width:625px;">
-			    		<section class="dadsrch" style="width:600px;">
+			    	<section class="" style="width:625px;margin-left: 26%;">
+			    		<section class="dadsrch" style="width:625px;">
 			            	<section class="heading"><h2>Post Search</h2></section>
 			                <section class="dadsrchdiv">
 			                	<input name="searchByCommunity" type="text" ng-model="searchByCommunity" class="" style="height:1%;width:50%;" ng-keyup="$event.keyCode == 13 ? getDeletedInfoPosts(1) : null"><input name="" type="button" class="btngray" value="Search" ng-click="getDeletedInfoPosts(1)">
 			                </section>
 			            </section>
-			             <section class="dactperform">
-			                <section class="left">
-			           		</section>
-			           	</section>	
 			        	<section class="dgridinfo dactcln">
 			                <table ng-table="tableParams">
 			                	<tbody>
-			                    	<tr ng-repeat="post in deletedPosts.results">
-			                            <td>
-				                            <div>
-				                            	Type : {{post.objectType}}
-				                            	<button class="margin-none pull-right" ng-click="setDeletedInfoData(post)" data-toggle="modal" data-target="#myModal4" ng-show="post.deleted == true">UnDelete</button>
-				                            </div>
-				                            <div>	
-				                            	Category : {{post.category}}
-				                            </div>
-				                            <div>	
-				                            	Reported On : {{post.reportedDate}}
-				                            </div>
-				                            <div>	
-				                            	Reported By : {{post.reportedBy}}
-				                            </div>
-				                            <div>	
-				                            	Comment : {{post.comment}}
-				                            </div>
-				                            <div>
-				                            	Post Title : {{post.postTitle}}
-				                            </div>
-				                            <div>
-				                            	Post Body : {{post.postBody}}
+			                    	<tr ng-repeat="post in deletedPosts.results" class="row tm bg-white border-bottom">
+			                            <td style="border: 1px solid;border-color: rgb(209, 205, 200);">
+			                            	<div style="background-color: #f3f3f3;border: 1px solid;border-color: rgb(209, 205, 200);margin-right: 5px;">
+					                            <div>
+					                            	<b>Type :</b> {{post.objectType}}
+					                            	<button class="margin-none pull-right" ng-click="setDeletedInfoData(post)" data-toggle="modal" data-target="#myModal5" ng-show="post.deleted == true">UnDelete</button>
+					                            	<button class="margin-none pull-right" ng-click="setDeletedInfoData(post)" data-toggle="modal" data-target="#myModal6" ng-show="post.deleted == false">Delete</button>
+					                            </div>
+					                            <div>	
+					                            	<b>Category :</b> {{post.category}}
+					                            </div>
+					                            <div>	
+					                            	<b>Reported On :</b> {{post.reportedDate}}
+					                            </div>
+					                            <div>	
+					                            	<b>Reported By :</b> {{post.reportedBy}}
+					                            </div>
+					                            <div>	
+					                            	<b>Comment :</b> {{post.comment}}
+					                            </div>
 				                            </div>
 				                            <div>
-				                            	Post Image : <div><img data-ng-src="/image/get-post-image-by-id/{{post.image}}" style="height:200px;width:300px;"/></div>
+				                            	<b>Post Title :</b> {{post.postTitle}}
+				                            </div>
+				                            <div>
+				                            	<b>Post Body :</b> {{post.postBody}}
+				                            </div>
+				                            <div>
+				                            	<b>Post Image :</b> <div><img data-ng-src="/image/get-post-image-by-id/{{post.image}}" style="height:200px;width:300px;"/></div>
 				                            </div>
 			                            </td>
 			                        </tr>
@@ -138,31 +139,30 @@
 			    </section>
 		  </div>
 		  <div class="tab-pane" id="search">
-			    
 			    <section id="container">
-			    	<section class="contentpanel">
-			        	<section class="dadsrch">
+			    	<section class="" style="width:625px;margin-left: 26%;">
+			        	<section class="dadsrch" style="width:625px;">
 			            	<section class="heading"><h2>Post Search</h2></section>
 			                <section class="dadsrchdiv">
-			                	<input name="title" type="text" ng-model="title" class="" style="height:1%;" ng-keyup="$event.keyCode == 13 ? searchPosts(1) : null"><input name="" type="button" class="btngray" value="Search" ng-click="searchPosts(1)">
+			                	<input name="title" type="text" ng-model="title" class="" style="height:1%;width:50%;" ng-keyup="$event.keyCode == 13 ? searchPosts(1) : null"><input name="" type="button" class="btngray" value="Search" ng-click="searchPosts(1)">
 			                </section>
 			            </section>
 			             
 			        	<section class="dgridinfo dactcln">
 			                <table ng-table="tableParams">
 			                	<tbody>
-			                    	<tr ng-repeat="post in allPosts.results">
-			                            <td>
+			                    	<tr ng-repeat="post in allPosts.results" class="row tm bg-white border-bottom">
+			                            <td style="border: 1px solid;border-color: rgb(209, 205, 200);">
 				                            <div>
-				                            	Post Title : {{post.title}}
+				                            	<b>Post Title :</b> {{post.title}}
 				                            	<button class="margin-none pull-right" ng-click="setPostData(post)" data-toggle="modal" data-target="#myModal5" ng-show="post.deleted == true">UnDelete</button>
 				                            	<button class="margin-none pull-right" ng-click="setPostData(post)" data-toggle="modal" data-target="#myModal6" ng-show="post.deleted == false">Delete</button>
 				                            </div>
 				                            <div>
-				                            	Post Body : {{post.body}}
+				                            	<b>Post Body :</b> {{post.body}}
 				                            </div>
 				                            <div>
-				                            	Post Image : <div><img data-ng-src="/image/get-post-image-by-id/{{post.image}}" style="height:200px;width:300px;"/></div>
+				                            	<b>Post Image :</b> <div><img data-ng-src="/image/get-post-image-by-id/{{post.image}}" style="height:200px;width:300px;"/></div>
 				                            </div>
 			                            </td>
 			                        </tr>
@@ -253,7 +253,7 @@
 		        Are you sure you want to Delete?
 		      </div>
 		      <div class="modal-footer">
-		      	<button type="button" class="btn btn-primary" data-ng-click="deletePostStatus()">Yes</button>
+		      	<button type="button" class="btn btn-primary" data-ng-click="deletePostStatus(deletePostData)">Yes</button>
 		        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
 		      </div>
 		    </div>
