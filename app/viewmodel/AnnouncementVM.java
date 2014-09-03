@@ -15,7 +15,6 @@ public class AnnouncementVM {
     @JsonProperty("ty") public String type;
     @JsonProperty("fd") public String fromDate;
     @JsonProperty("td") public String toDate;
-    @JsonProperty("location") public Long location;
 
     SimpleDateFormat formatter = new SimpleDateFormat("MMMM-dd-yyyy");
     public AnnouncementVM(Announcement announcement) {
@@ -26,7 +25,6 @@ public class AnnouncementVM {
         this.icon = announcement.icon;
         this.fromDate = formatter.format(announcement.fromDate);
         this.toDate = formatter.format(announcement.toDate);
-        this.location = announcement.location.id;
     }
     
 	public AnnouncementVM(Long id, String title, String description, Icon icon, String type) {

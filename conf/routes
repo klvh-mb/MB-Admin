@@ -29,7 +29,6 @@ POST		/updateAnnouncement		controllers.AnnouncementController.updateAnnouncement
 
 GET		/get-all-Users				controllers.ArticleController.getAllUsers
 GET		/getAnnouncements/:title/:currentPage			controllers.AnnouncementController.getAnnouncements(title :String,currentPage :Integer)
-GET		/getLocations				controllers.AnnouncementController.getLocations			
 GET		/deleteAnnouncement/:id		controllers.AnnouncementController.deleteAnnouncement(id :Long)
 GET		/getAllAnnouncementIcons	controllers.AnnouncementController.getAllAnnouncementIcons
 GET		/getUsers/:title/:userStatus/:currentPage		controllers.UserController.getUsers(title :String,userStatus :String,currentPage :Integer)

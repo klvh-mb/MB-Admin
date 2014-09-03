@@ -10,23 +10,18 @@ import java.util.Map;
 
 import models.Announcement;
 import models.Announcement.AnnouncementType;
-import models.Article;
 import models.Icon;
-import models.Location;
 import play.data.DynamicForm;
-import play.data.Form;
 import play.db.jpa.Transactional;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 import viewmodel.AnnouncementVM;
-import viewmodel.LocationVM;
 
 public class AnnouncementController extends Controller{
 
 	@Transactional
 	public static Result getAnnouncements(String title,int currentPage) {
-		System.out.println("::::::::::::::::AAAAAAAAAAAAAAAA"+title+"Current Page ::"+currentPage);
 		long totalPages = Announcement.getAllAnnouncementsTotal(title, 10);
 		List<Announcement> allAnnouncements = Announcement.getAllAnnouncements(title, currentPage, 10, totalPages);
 		
@@ -46,17 +41,6 @@ public class AnnouncementController extends Controller{
 	}
 	
 	@Transactional
-	public static Result getLocations() {
-		List<Location> locations = Location.getAllLocations();
-		List<LocationVM> locationVms = new ArrayList<>();
-		for(Location l : locations) {
-			LocationVM vm = new LocationVM(l);
-			locationVms.add(vm);
-		}
-		return ok(Json.toJson(locationVms));
-	}
-	
-	@Transactional
 	public static Result saveAnnouncement() {
 		DynamicForm form = DynamicForm.form().bindFromRequest();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -71,7 +55,6 @@ public class AnnouncementController extends Controller{
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		announcement.location = Location.getLocationById(Long.parseLong(form.get("location")));
 		System.out.println("From Date :::::::"+announcement.icon.name);
 		announcement.save();
 		return ok();
@@ -99,7 +82,6 @@ public class AnnouncementController extends Controller{
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		announcement.location = Location.getLocationById(Long.parseLong(form.get("location")));
 		announcement.merge();
 		System.out.println("INSIDE UPDATE"+form.get("ic.id"));
 		return ok();

@@ -90,8 +90,9 @@
 			        		<select name="announcementType" data-ng-model="formData.announcementType" style="width:100%;">
 			        			<option selected="selected" disabled="true">--Select--</option>
 			        			<option value="GENERAL">GENERAL</option>
-			        			<option value="ALERT">ALERT</option>
-			        			<option value="PROMOTIONS">PROMOTIONS</option>
+			        			<option value="TOP_INFO">TOP_INFO</option>
+			        			<option value="TOP_ALERT">TOP_ALERT</option>
+			        			<option value="PROMOTION">PROMOTION</option>
 			        		</select>
 			        	</td>
 			        </tr>
@@ -171,15 +172,6 @@
 			        <tr>
 			        	<td><label>Title</label></td>
 			        	<td style="height: 60px;"><input type="text" name="title" style="width:200%;" data-ng-model="formData.title"></td>
-			        </tr>
-			        <tr>
-			        	<td><label>Location</label></td>
-			        	<td style="height: 60px;">
-			        		<select name="location" data-ng-model="formData.location" style="width:100%;">
-			        			<option selected="selected" disabled="true">--Select--</option>
-			        			<option ng-repeat="location in locations" value="{{location.id}}">{{location.displayName}}</option>
-			        		</select>
-			        	</td>
 			        </tr>
 		        </table>
 		      </div>

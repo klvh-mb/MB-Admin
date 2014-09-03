@@ -18,7 +18,6 @@ minibean.controller('CreateArticleController', function($scope, $http, $location
     }
     
     $scope.articleCategories = articleCategoryService.getAllArticleCategory.get();
-    $scope.targetLocations = locationService.getAllDistricts.get();
     
     $scope.select_targetLocation = function(id, name) {
         $scope.targetLocation_id = id;
@@ -318,16 +317,6 @@ minibean.service('AnnouncementsService',function($resource){
             {alt:'json',callback:'JSON_CALLBACK'},
             {
                 get: {method:'get'}
-            }
-    );
-});
-
-minibean.service('LocationService',function($resource){
-    this.LocationInfo = $resource(
-            '/getLocations',
-            {alt:'json',callback:'JSON_CALLBACK'},
-            {
-                get: {method:'get', isArray:true}
             }
     );
 });
@@ -1974,7 +1963,6 @@ minibean.controller('EditArticleController',function($scope, $http, $routeParams
     $scope.submitBtn = "Save";
     $scope.article = ArticleService.ArticleInfo.get({id:$routeParams.id});
     $scope.articleCategorys = articleCategoryService.getAllArticleCategory.get();
-    $scope.targetLocations = locationService.getAllDistricts.get();
     
     var range = [];
     for(var i=0;i<100;i++) {
