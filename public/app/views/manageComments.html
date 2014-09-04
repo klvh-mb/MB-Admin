@@ -14,7 +14,16 @@
 	
 	<script src="../assets/app/custom-js/bootstrap.js"></script>
 	<script src="../assets/app/custom-js/bootstrap.min.js"></script>
-	<div data-ng-include data-src="'../assets/app/views/header.html'"></div>
+	<ul class="nav nav-tabs" role="tablist" id="myTab">
+		  <li><a href="/#/" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Articles</a></li>
+		  <li><a href="/#/manageAnnouncement" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Announcements</a></li>
+		  <li><a href="/#/managePosts" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Posts</a></li>
+		  <li class="active"><a href="/#/manageComments" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Comments</a></li>
+		  <li><a href="/#/manageQuestions" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Questions</a></li>
+		  <li><a href="/#/manageAnswers" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Answers</a></li>
+		  <li><a href="/#/manageCommunities" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Communities</a></li>
+		  <li><a href="/#/manageUsers2" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Users</a></li>
+	</ul>
 </head>
   <body>
   		<h4>Manage Comments</h4>
@@ -34,22 +43,24 @@
 			                <table ng-table="tableParams">
 			                	<tbody>
 			                    	<tr ng-repeat="comment in comments.results" class="row tm bg-white border-bottom">
-			                            <td>
-				                            <div>
-				                            	<b>Type :</b> {{comment.objectType}}
-				                            	<button class="margin-none pull-right" ng-click="setData(comment)" data-toggle="modal" data-target="#myModal3">Delete</button>
-				                            </div>
-				                            <div>	
-				                            	<b>Category :</b> {{comment.category}}
-				                            </div>
-				                            <div>	
-				                            	<b>Reported On :</b> {{comment.reportedDate}}
-				                            </div>
-				                            <div>	
-				                            	<b>Reported By :</b> {{comment.reportedBy}}
-				                            </div>
-				                            <div>	
-				                            	<b>Comment :</b> {{comment.comment}}
+			                            <td style="border: 1px solid;border-color: rgb(209, 205, 200);">
+			                            	<div style="background-color: #f3f3f3;border: 1px solid;border-color: rgb(209, 205, 200);margin-right: 5px;">
+					                            <div>
+					                            	<b>Type :</b> {{comment.objectType}}
+					                            	<button class="margin-none pull-right" ng-click="setData(comment)" data-toggle="modal" data-target="#myModal3">Delete</button>
+					                            </div>
+					                            <div>	
+					                            	<b>Category :</b> {{comment.category}}
+					                            </div>
+					                            <div>	
+					                            	<b>Reported On :</b> {{comment.reportedDate}}
+					                            </div>
+					                            <div>	
+					                            	<b>Reported By :</b> {{comment.reportedBy}}
+					                            </div>
+					                            <div>	
+					                            	<b>Comment :</b> {{comment.comment}}
+					                            </div>
 				                            </div>
 				                            <div>
 				                            	<b>Comment Body :</b> {{comment.commentBody}}
@@ -85,7 +96,8 @@
 			                <table ng-table="tableParams">
 			                	<tbody>
 			                    	<tr ng-repeat="comment in deletedComments.results" class="row tm bg-white border-bottom">
-			                            <td>
+			                            <td style="border: 1px solid;border-color: rgb(209, 205, 200);">
+			                            <div style="background-color: #f3f3f3;border: 1px solid;border-color: rgb(209, 205, 200);margin-right: 5px;">
 				                            <div>
 				                            	<b>Type :</b> {{comment.objectType}}
 				                            	<button class="margin-none pull-right" ng-click="setDeletedInfoData(comment)" data-toggle="modal" data-target="#myModal5" ng-show="comment.deleted == true">UnDelete</button>
@@ -103,6 +115,7 @@
 				                            <div>	
 				                            	<b>Comment :</b> {{comment.comment}}
 				                            </div>
+				                        </div>
 				                            <div>
 				                            	<b>Comment Body :</b> {{comment.commentBody}}
 				                            </div>
@@ -131,7 +144,7 @@
 			        	<section class="dadsrch" style="width:625px;">
 			            	<section class="heading"><h2>Comment Search</h2></section>
 			                <section class="dadsrchdiv">
-			                	<input name="title" type="text" ng-model="title" class="" style="height:1%;" ng-keyup="$event.keyCode == 13 ? searchComments(1) : null"><input name="" type="button" class="btngray" value="Search" ng-click="searchComments(1)">
+			                	<input name="title" type="text" ng-model="title" class="" style="height:1%;width:50%;" ng-keyup="$event.keyCode == 13 ? searchComments(1) : null"><input name="" type="button" class="btngray" value="Search" ng-click="searchComments(1)">
 			                </section>
 			            </section>
 			             
@@ -139,7 +152,7 @@
 			                <table ng-table="tableParams">
 			                	<tbody>
 			                    	<tr ng-repeat="comment in allComments.results" class="row tm bg-white border-bottom">
-			                            <td>
+			                            <td style="border: 1px solid;border-color: rgb(209, 205, 200);">
 				                            <div>
 				                            	<b>Comment Body :</b> {{comment.body}}
 				                            	<button class="margin-none pull-right" ng-click="setCommentData(comment)" data-toggle="modal" data-target="#myModal5" ng-show="comment.deleted == true">UnDelete</button>

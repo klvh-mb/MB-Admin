@@ -11,7 +11,17 @@
 	<link href="../assets/app/custom-css/jquery.jscrollpane.css" rel="stylesheet" type="text/css" media="all" />
 	<link href="../assets/app/bower_components/angular-bootstrap-datetimepicker/src/css/datetimepicker.css"></script>
 	<script type="text/javascript" src="../assets/app/bower_components/angular-bootstrap-datetimepicker/src/js/datetimepicker.js"></script>
-	<div data-ng-include data-src="'../assets/app/views/header.html'"></div>
+	<!-- <div data-ng-include data-src="'../assets/app/views/header.html'"></div> -->
+	<ul class="nav nav-tabs" role="tablist" id="myTab">
+		  <li><a href="/#/" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Articles</a></li>
+		  <li class="active"><a href="/#/manageAnnouncement" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Announcements</a></li>
+		  <li><a href="/#/managePosts" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Posts</a></li>
+		  <li><a href="/#/manageComments" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Comments</a></li>
+		  <li><a href="/#/manageQuestions" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Questions</a></li>
+		  <li><a href="/#/manageAnswers" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Answers</a></li>
+		  <li><a href="/#/manageCommunities" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Communities</a></li>
+		  <li><a href="/#/manageUsers2" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Users</a></li>
+	</ul>
 </head>
 
 <body ng-init="searchAnnouncements()">
@@ -87,8 +97,8 @@
 			        <tr>
 			        	<td><label>Announcement Type</label></td>
 			        	<td style="height: 60px;">
-			        		<select name="announcementType" data-ng-model="formData.announcementType" style="width:100%;">
-			        			<option selected="selected" disabled="true">--Select--</option>
+			        		<select name="announcementType" data-ng-model="formData.announcementType" style="width:100%;" required>
+			        			<option disabled="true" value="">--Select--</option>
 			        			<option value="GENERAL">GENERAL</option>
 			        			<option value="TOP_INFO">TOP_INFO</option>
 			        			<option value="TOP_ALERT">TOP_ALERT</option>
@@ -102,7 +112,7 @@
 			        </tr>
 			        <tr>
 			        	<td><label>Description</label></td>
-			        	<td style="height: 60px;"><textarea type="text" name="description" style="width:200%;" data-ng-model="formData.description"></textarea></td>
+			        	<td style="height: 60px;"><textarea type="text" name="description" style="width:200%;" data-ng-model="formData.description" required></textarea></td>
 			        </tr>
 			        <tr>
 			        	<td><label>From Date</label></td>
@@ -140,15 +150,15 @@
 			        	<td><label>Icon</label></td>
 			        	<td style="height: 60px;"><!-- <input type="text" name="icon" style="width:200%;" data-ng-model="formData.icon"> -->
 			        	
-			        	<div class="col-md-12" style="padding: 0 0px;width: 170%;">
-                        <li class="col-md-12 dropdown" style="padding: 0 0px;" required>
+			        	<div class="col-md-12" data-toggle="dropdown" style="padding: 0 0px;width: 170%;">
+                        <li class="col-md-12 dropdown" style="padding: 0 0px;">
                             <div class="form-control dropdown-toggle">
                                 <div class="media-body">
                                     <p class="margin-none pull-left">{{icon_name}}</p>
                                     <p class="margin-none pull-right"><img src="{{icon_url}}" style="height:25px;"/></p>
                                
                                		<div data-ng-if="!isChosen" data-ng-init="isChosen=false">
-                                    	Choose Category
+                                    	Choose Icon
                                 	</div>
                                 </div>
                             </div>
@@ -171,7 +181,7 @@
 			        </tr>
 			        <tr>
 			        	<td><label>Title</label></td>
-			        	<td style="height: 60px;"><input type="text" name="title" style="width:200%;" data-ng-model="formData.title"></td>
+			        	<td style="height: 60px;"><input type="text" name="title" style="width:200%;" data-ng-model="formData.title" required></td>
 			        </tr>
 		        </table>
 		      </div>
@@ -199,9 +209,10 @@
 			        	<td><label>Announcement Type</label></td>
 			        	<td style="height: 60px;">
 			        		<select name="announcementType" data-ng-model="ancmtData.ty" style="width:100%;">
-			        			<option selected="selected">choose</option>
+			        			<option disabled="true" value="">--Select--</option>
 			        			<option value="GENERAL">GENERAL</option>
-			        			<option value="ALERT">ALERT</option>
+			        			<option value="TOP_INFO">TOP_INFO</option>
+			        			<option value="TOP_ALERT">TOP_ALERT</option>
 			        			<option value="PROMOTIONS">PROMOTIONS</option>
 			        		</select>
 			        	</td>
@@ -250,8 +261,8 @@
 			        	<td><label>Icon</label></td>
 			        	<td style="height: 60px;"><!-- <input type="text" name="icon" style="width:200%;" data-ng-model="ancmtData.ic"> -->
 			        	
-			        	<div class="col-md-12" style="padding: 0 0px;width: 170%;">
-                        <li class="col-md-12 dropdown" style="padding: 0 0px;" required>
+			        	<div class="col-md-12" data-toggle="dropdown" style="padding: 0 0px;width: 170%;">
+                        <li class="col-md-12 form-group dropdown" style="padding: 0 0px;">
                             <div class="form-control dropdown-toggle">
                                 <div class="media-body">
                                     <p class="margin-none pull-left">{{icon_name}}</p>
