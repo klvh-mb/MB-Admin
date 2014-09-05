@@ -2,9 +2,11 @@
 
 var minibean = angular.module('minibean');
 
-minibean.controller('CreateArticleController', function($scope, $http, $location, articleCategoryService, usSpinnerService){
+minibean.controller('CreateArticleController', function($scope, $http, $location, articleCategoryService, locationService, usSpinnerService){
     $scope.article;
     $scope.submitBtn = "Save";
+    
+    $scope.targetLocations = locationService.getAllDistricts.get();
     
     //Refer to http://www.tinymce.com/
     $scope.tinymceOptions = {
@@ -75,7 +77,7 @@ minibean.controller('CreateArticleController', function($scope, $http, $location
     }
 });
 
-/*minibean.service('locationService',function($resource){
+minibean.service('locationService',function($resource){
     this.getAllDistricts = $resource(
             '/getAllDistricts',
             {alt:'json',callback:'JSON_CALLBACK'},
@@ -83,7 +85,7 @@ minibean.controller('CreateArticleController', function($scope, $http, $location
                 get: {method:'get' ,isArray:true}
             }
     );
-});*/
+});
 
 minibean.service('articleCategoryService',function($resource){
     this.getAllArticleCategory = $resource(

@@ -51,7 +51,7 @@ public class Community extends TargetingSocialObject {
     public static enum CommunityType {
 		OPEN,
 		CLOSE,
-		PRIVATE
+		BUSINESS
 	}
 
 	@OneToMany(cascade=CascadeType.REMOVE, fetch = FetchType.LAZY)
@@ -66,8 +66,6 @@ public class Community extends TargetingSocialObject {
 	
 	@Column(length=2000)
 	public String description;
-	
-	public String tagetDistrict;
 	
 	@Formats.DateTime(pattern = "yyyy-MM-dd")
 	public Date createDate;
@@ -126,14 +124,6 @@ public class Community extends TargetingSocialObject {
 
 	public void setAlbumPhotoProfile(Folder albumPhotoProfile) {
 		this.albumPhotoProfile = albumPhotoProfile;
-	}
-
-	public String getTagetDistrict() {
-		return tagetDistrict;
-	}
-
-	public void setTagetDistrict(String tagetDistrict) {
-		this.tagetDistrict = tagetDistrict;
 	}
 
 	public Date getCreateDate() {
