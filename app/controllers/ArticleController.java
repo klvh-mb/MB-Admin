@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import models.Announcement;
 import models.Article;
 import models.ArticleCategory;
 import models.Location;
@@ -28,7 +27,6 @@ import play.mvc.Controller;
 import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
 import services.UserService;
-import viewmodel.AnnouncementVM;
 import viewmodel.ArticleCategoryVM;
 import viewmodel.ArticleVM;
 import viewmodel.LocationVM;
@@ -40,7 +38,7 @@ public class ArticleController extends Controller {
     private static final String STORAGE_PATH = Play.application().configuration().getString("storage.path"); 
 
     private static final String IMAGE_URL_PREFIX =
-            Play.application().configuration().getString("image.url.prefix", "http://minibean.com.hk/image");
+            Play.application().configuration().getString("image.url.prefix", "/image");
 
     private static final DateTimeFormatter timeFormatter = DateTimeFormat.forPattern("HHmmss");
 
