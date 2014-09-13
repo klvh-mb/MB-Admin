@@ -134,7 +134,6 @@ public class User extends SocialObject {
 	    	if(size % rowsPerPage > 0) {
 				totalPages++;
 			}
-	    	System.out.println("total pages ::"+totalPages);
 	    	return totalPages;
 	    }
     
@@ -207,7 +206,6 @@ public class User extends SocialObject {
 	    	if(size % rowsPerPage > 0) {
 				totalPages++;
 			}
-	    	System.out.println("total pages ::"+totalPages);
 	    	return totalPages;
 		}
 	    
@@ -236,8 +234,8 @@ public class User extends SocialObject {
 	        } catch (NoResultException nre) {
 	            return null;
 	        }
-	    }
 	    
+	    }
 	    @Transactional
 	    public void merge() {
 	        JPA.em().merge(this);

@@ -173,10 +173,10 @@ public class Resource extends SocialObject {
 		return (Resource) q.getSingleResult();
 	}
 	
-	public static Resource findAllResourceOfFolder(Long id) {
+	public static List<Resource> findAllResourceOfFolder(Long id) {
 		Query q = JPA.em().createQuery("SELECT r FROM Resource r where r.folder.id = ?1");
 		q.setParameter(1, id);
-		return (Resource) q.getSingleResult();
+		return (List<Resource>) q.getResultList();
 	}
 
 	public Folder getFolder() {

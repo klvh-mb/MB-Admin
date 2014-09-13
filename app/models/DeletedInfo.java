@@ -164,7 +164,6 @@ public class DeletedInfo {
     	if(size % rowsPerPage > 0) {
 			totalPages++;
 		}
-    	System.out.println("total pages ::"+totalPages);
     	return totalPages;
 	}
 	
@@ -184,7 +183,6 @@ public class DeletedInfo {
     	if(size % rowsPerPage > 0) {
 			totalPages++;
 		}
-    	System.out.println("total pages ::"+totalPages);
     	return totalPages;
 	}
 	
@@ -198,7 +196,6 @@ public class DeletedInfo {
     	if(size % rowsPerPage > 0) {
 			totalPages++;
 		}
-    	System.out.println("total pages ::"+totalPages);
     	return totalPages;
 	}
 	
@@ -219,7 +216,6 @@ public class DeletedInfo {
     	if(size.longValue() % rowsPerPage > 0) {
 			totalPages++;
 		}
-    	System.out.println("total pages ::"+totalPages);
     	return totalPages;
 	}
 	
@@ -240,7 +236,6 @@ public class DeletedInfo {
     	if(size.longValue() % rowsPerPage > 0) {
 			totalPages++;
 		}
-    	System.out.println("total pages ::"+totalPages);
     	return totalPages;
 	}
 	
@@ -254,7 +249,6 @@ public class DeletedInfo {
     	if(size % rowsPerPage > 0) {
 			totalPages++;
 		}
-    	System.out.println("total pages ::"+totalPages);
     	return totalPages;
 	}
 	

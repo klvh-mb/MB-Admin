@@ -1,5 +1,7 @@
 package viewmodel;
 
+import java.util.List;
+
 import models.Comment;
 import models.Post;
 import models.Resource;
@@ -19,10 +21,12 @@ public class CommentVM {
 		try {
 			this.id = comment.id;
 			this.body = comment.body;
-			this.deleted = comment.deleted;
+			if(comment.deleted != null) {
+				this.deleted = comment.deleted;
+			}
 			if(comment.folder != null) {
-				Resource resource = Resource.findAllResourceOfFolder(comment.folder.id);
-				this.image = resource.id;
+				List<Resource> resource = Resource.findAllResourceOfFolder(comment.folder.id);
+				this.image = resource.get(0).id;
 			}
 			
 		}

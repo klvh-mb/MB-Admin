@@ -78,7 +78,6 @@ public class Post extends SocialObject {
     	if(size % rowsPerPage > 0) {
 			totalPages++;
 		}
-    	System.out.println("total pages ::"+totalPages);
     	return totalPages;
 	}
 	
@@ -179,7 +178,6 @@ public class Post extends SocialObject {
     	if(size % rowsPerPage > 0) {
 			totalPages++;
 		}
-    	System.out.println("total pages ::"+totalPages);
     	return totalPages;
 	}
 	

@@ -183,7 +183,6 @@ public class Community extends TargetingSocialObject {
     	if(size % rowsPerPage > 0) {
 			totalPages++;
 		}
-    	System.out.println("total pages ::"+totalPages);
     	return totalPages;
 	}
     

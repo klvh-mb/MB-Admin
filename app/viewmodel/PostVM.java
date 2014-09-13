@@ -1,5 +1,7 @@
 package viewmodel;
 
+import java.util.List;
+
 import models.Post;
 import models.Resource;
 
@@ -19,8 +21,12 @@ public class PostVM {
 		this.id = post.id;
 		this.title = post.title;
 		this.body = post.body;
-		this.deleted = post.deleted;
-		Resource resource = Resource.findAllResourceOfFolder(post.folder.id);
-		this.image = resource.id;
+		if(post.deleted != null) {
+			this.deleted = post.deleted;
+		}
+		if(post.folder != null) {
+			List<Resource> resource = Resource.findAllResourceOfFolder(post.folder.id);
+			this.image = resource.get(0).id;
+		}	
 	}
 }

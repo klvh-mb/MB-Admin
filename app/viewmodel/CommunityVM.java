@@ -1,6 +1,7 @@
 package viewmodel;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import models.Community;
 import models.Post;
@@ -24,16 +25,20 @@ public class CommunityVM {
 	
 	public CommunityVM(Community community) {
 		this.id = community.id;
-		this.deleted = community.deleted;
+		if(community.deleted != null) {
+			this.deleted = community.deleted;
+		}
 		this.communityName = community.name;
-		this.createdDate = formatter.format(community.createDate);
+		if(community.auditFields.getCreatedDate() != null) {
+			this.createdDate = formatter.format(community.auditFields.getCreatedDate());
+		}	
 		if(community.owner != null) {
 			this.owner = community.owner.displayName;
 		}
 		this.posts = Post.getPosts(community.id);
 		if(community.albumPhotoProfile != null) {
-			Resource resource = Resource.findAllResourceOfFolder(community.albumPhotoProfile.id);
-			this.image = resource.id;
+			List<Resource> resource = Resource.findAllResourceOfFolder(community.albumPhotoProfile.id);
+			this.image = resource.get(0).id;
 		}
 	}
 	

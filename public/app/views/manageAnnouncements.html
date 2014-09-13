@@ -141,7 +141,8 @@
                                        placeholder="To">
                                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                        <datetimepicker data-ng-model="searchForm.to"
-                                               data-datetimepicker-config="{ dropdownSelector: '.dropdown-toggle',minView: 'day' }"></datetimepicker>
+                                               data-datetimepicker-config="{ dropdownSelector: '.dropdown-toggle',minView: 'day' }">
+                                       </datetimepicker>
                                </ul>
                        		</div>
 			        	</td>
@@ -173,7 +174,8 @@
                                     </a>
                                 </li>
                             </ul>
-                        </li>
+                          </li>  
+                            
                         <label class="control-label error" data-ng-show="categoryNotChoose==true" style="color: red;">Please select a category.</label>
                     </div>
 			        	
@@ -213,7 +215,7 @@
 			        			<option value="GENERAL">GENERAL</option>
 			        			<option value="TOP_INFO">TOP_INFO</option>
 			        			<option value="TOP_ALERT">TOP_ALERT</option>
-			        			<option value="PROMOTIONS">PROMOTIONS</option>
+			        			<option value="PROMOTION">PROMOTION</option>
 			        		</select>
 			        	</td>
 			        </tr>

@@ -138,6 +138,7 @@ minibean.service('deleteArticleService',function($resource){
     );
 });
 
+
 minibean.controller('ShowArticleController',function($scope, $modal, deleteArticleService, allUsersService, allArticlesService, getDescriptionService){
     $scope.result = allArticlesService.AllArticles.get();
     
@@ -148,14 +149,12 @@ minibean.controller('ShowArticleController',function($scope, $modal, deleteArtic
           templateUrl: 'myModalContent.html',
         });
         var msg = getDescriptionService.GetDescription.get({id:id}  , function(data) {
-            console.log(data.description);
             $('#showDescription').html(data.description);
         });
         
       };
 
       $scope.deleteArticle = function (id){
-          console.log($scope.deleteID);
           deleteArticleService.DeleteArticle.get({id :id}, function(data){
               $('#myModal').modal('hide');
               angular.forEach($scope.result, function(request, key){
@@ -199,8 +198,16 @@ minibean.controller('ShowAnnouncementController',function($scope, $modal, $http,
 
 	}
 	
+	// this is workaround to close the dropdown
+	$scope.$watch('searchForm.to', function(){
+		$("li.dropdown").removeClass('open');
+	});
+	
+	$scope.$watch('searchForm.from', function(){
+		$("li.dropdown").removeClass('open');
+	});
+	
 	$scope.Icons = announcementIconService.getAllIcons.get();
-	console.log($scope.Icons);
 	
 	$scope.select_icon = function(id, name, url) {
         $scope.icon_id = id;
@@ -221,18 +228,12 @@ minibean.controller('ShowAnnouncementController',function($scope, $modal, $http,
 		}
 	});
 	
-	//$scope.locations = LocationService.LocationInfo.get();
-	//console.log($scope.locations);
 		$scope.searchAnnouncements = function(page) {
 		if(angular.isUndefined($scope.title) || $scope.title=="") {
-			console.log('inside function');
 			$scope.title = " ";
 		}
 		currentPage = page;
-		console.log($scope.title);
-		console.log(currentPage);
 		$scope.announcements = AnnouncementsService.AnnouncementInfo.get({title:$scope.title,currentPage:currentPage},function(response) {
-			console.log($scope.announcements.totalPages);
 			totalPages = $scope.announcements.totalPages;
 			currentPage = $scope.announcements.currentPage;
 			$scope.pageNumber = $scope.announcements.currentPage;
@@ -241,11 +242,7 @@ minibean.controller('ShowAnnouncementController',function($scope, $modal, $http,
 				$scope.pageNumber = 0;
 			}
 		});
-	    console.log($scope.announcements);
 	};
-	console.log($scope.title);
-	console.log($scope.announcements);
-	console.log('mfjfjfjfjf');
 	
 	$scope.setData = function(ancmt) {
 		$scope.ancmtData = ancmt;
@@ -253,7 +250,6 @@ minibean.controller('ShowAnnouncementController',function($scope, $modal, $http,
         $scope.icon_name = ancmt.ic.name;
 		$scope.searchForm.from = $filter('date')(new Date(ancmt.fd),'MMMM-dd-yyyy');
 		$scope.searchForm.to = $filter('date')(new  Date(ancmt.td),'MMMM-dd-yyyy');
-		console.log($scope.ancmtData);
 	};
 	$scope.setDates = function() {
 		$scope.searchForm.from = new Date();
@@ -270,33 +266,25 @@ minibean.controller('ShowAnnouncementController',function($scope, $modal, $http,
 	$scope.saveAnnouncement = function() {
 		$scope.formData.fromDate = $filter('date')(new Date($scope.searchForm.from),'yyyy-MM-dd');
 		$scope.formData.toDate = $filter('date')(new Date($scope.searchForm.to),'yyyy-MM-dd');
-		console.log($scope.formData);
 		$http.post('/saveAnnouncement', $scope.formData).success(function(data){
-			console.log('success');
 			$scope.searchAnnouncements(currentPage);
 			$('#myModal').modal('hide');
 		}).error(function(data, status, headers, config) {
-			console.log('ERROR');
 		});
 	};
 	
 	$scope.updateAnnouncement = function() {
 		$scope.ancmtData.fd = $filter('date')(new Date($scope.searchForm.from),'yyyy-MM-dd');
 		$scope.ancmtData.td = $filter('date')(new Date($scope.searchForm.to),'yyyy-MM-dd');
-		console.log($scope.ancmtData);
 		$http.post('/updateAnnouncement', $scope.ancmtData).success(function(data){
-			console.log('success');
 			$scope.searchAnnouncements(currentPage);
 			$('#myModal2').modal('hide');
 		}).error(function(data, status, headers, config) {
-			console.log('ERROR');
 		});
 	};
 	
 	$scope.deleteAnnouncement = function(idData) {
-		console.log(idData);
 		deleteAnnouncementService.DeleteAnnouncement.get({id :idData.id}, function(data){
-			//$scope.announcements.results.splice($scope.announcements.results.indexOf(idData),1);
 			$scope.searchAnnouncements(currentPage);
             $('#myModal3').modal('hide');
 		});    
@@ -355,7 +343,6 @@ minibean.controller('ManageUsersController',function($scope, $modal, $http, $fil
 	var totalPages;
 	
 	$scope.usersData = ManageUsersService.UserInfo.get({title: $scope.title,userStatus: $scope.userStatus,currentPage :currentPage},function(response) {
-		console.log($scope.usersData);
 		totalPages = $scope.usersData.totalPages;
 		currentPage = $scope.usersData.currentPage;
 		$scope.pageNumber = $scope.usersData.currentPage;
@@ -370,12 +357,10 @@ minibean.controller('ManageUsersController',function($scope, $modal, $http, $fil
 	$scope.searchUsers = function(page) {
 		currentPage = page;
 		if(angular.isUndefined($scope.title) || $scope.title=="") {
-			console.log('inside function');
 			$scope.title = " ";
 		}
 		
 		$scope.usersData = ManageUsersService.UserInfo.get({title: $scope.title,userStatus: $scope.userStatus,currentPage :currentPage},function(response) {
-			console.log($scope.usersData);
 			totalPages = $scope.usersData.totalPages;
 			currentPage = $scope.usersData.currentPage;
 			$scope.pageNumber = $scope.usersData.currentPage;
@@ -464,7 +449,6 @@ minibean.controller('ManagePostsController',function($scope, $modal, $http, $fil
 	var totalPages3;
 	
 	$scope.posts = reportedPostsService.getPosts.get({currentPage: currentPage},function(response) {
-		console.log($scope.posts);
 		totalPages = $scope.posts.totalPages;
 		currentPage = $scope.posts.currentPage;
 		$scope.pageNumber = $scope.posts.currentPage;
@@ -477,7 +461,6 @@ minibean.controller('ManagePostsController',function($scope, $modal, $http, $fil
 	});
 	
 	$scope.deletedPosts = deletedPostsService.getPosts.get({currentPage:currentPage2,communityId: $scope.searchByCommunity},function(response) {
-		console.log($scope.deletedPosts);
 		totalPages2 = $scope.deletedPosts.totalPages;
 		currentPage2 = $scope.deletedPosts.currentPage;
 		$scope.pageNumber2 = $scope.deletedPosts.currentPage;
@@ -492,11 +475,9 @@ minibean.controller('ManagePostsController',function($scope, $modal, $http, $fil
 	$scope.getDeletedInfoPosts = function(page) {
 		currentPage2 = page;
 		if(angular.isUndefined($scope.searchByCommunity) || $scope.searchByCommunity=="") {
-			console.log('inside function');
 			$scope.searchByCommunity = " ";
 		}
 		$scope.deletedPosts = deletedPostsService.getPosts.get({currentPage:currentPage2, communityId: $scope.searchByCommunity},function(response) {
-			console.log($scope.deletedPosts);
 			totalPages2 = $scope.deletedPosts.totalPages;
 			currentPage2 = $scope.deletedPosts.currentPage;
 			$scope.pageNumber2 = $scope.deletedPosts.currentPage;
@@ -521,7 +502,6 @@ minibean.controller('ManagePostsController',function($scope, $modal, $http, $fil
 	
 	$scope.UnDeletePost = function() {
 		deletedInfoDeleteService.DeleteInfo.get({id: $scope.deletedInfoId,postId: $scope.InfoPostId},function(response) {
-			console.log('success');
 			$('#myModal4').modal('hide');
 			$scope.getDeletedInfoPosts(currentPage2);
 		});
@@ -529,7 +509,6 @@ minibean.controller('ManagePostsController',function($scope, $modal, $http, $fil
 	
 	$scope.deletePost = function() {
 		deleteReportedObjectService.DeleteReportedObject.get({id: $scope.reportObjectId,postId: $scope.postId},function(response) {
-			console.log('success');
 			$('#myModal3').modal('hide');
 			$scope.getPosts(currentPage);
 			$scope.getDeletedInfoPosts(currentPage2);
@@ -540,7 +519,6 @@ minibean.controller('ManagePostsController',function($scope, $modal, $http, $fil
 	$scope.getPosts = function(page) {
 		currentPage = page;
 		$scope.posts = reportedPostsService.getPosts.get({currentPage: currentPage},function(response) {
-			console.log($scope.posts);
 			totalPages = $scope.posts.totalPages;
 			currentPage = $scope.posts.currentPage;
 			$scope.pageNumber = $scope.posts.currentPage;
@@ -554,7 +532,6 @@ minibean.controller('ManagePostsController',function($scope, $modal, $http, $fil
 	};
 	
 	$scope.allPosts = getAllPostsService.getPosts.get({currentPage: currentPage3,title: $scope.title},function(response) {
-		console.log($scope.allPosts);
 		totalPages3 = $scope.allPosts.totalPages;
 		currentPage3 = $scope.allPosts.currentPage;
 		$scope.pageNumber3 = $scope.allPosts.currentPage;
@@ -569,11 +546,9 @@ minibean.controller('ManagePostsController',function($scope, $modal, $http, $fil
 	$scope.searchPosts = function(page) {
 		currentPage3 = page;
 		if(angular.isUndefined($scope.title) || $scope.title=="") {
-			console.log('inside function');
 			$scope.title = " ";
 		}
 		$scope.allPosts = getAllPostsService.getPosts.get({currentPage: currentPage3,title: $scope.title},function(response) {
-			console.log($scope.allPosts);
 			totalPages3 = $scope.allPosts.totalPages;
 			currentPage3 = $scope.allPosts.currentPage;
 			$scope.pageNumber3 = $scope.allPosts.currentPage;
@@ -596,17 +571,14 @@ minibean.controller('ManagePostsController',function($scope, $modal, $http, $fil
 			$scope.searchPosts(currentPage3);
 			$scope.getDeletedInfoPosts(currentPage2);
 			$('#myModal5').modal('hide');
-			console.log('success');
 		});
 	}
 	
 	$scope.deletePostStatus = function() {
-		console.log($scope.InfoPostId);
 		deletePostsStatusService.deletePosts.get({id: $scope.InfoPostId},function(response) {
 			$scope.searchPosts(currentPage3);
 			$scope.getDeletedInfoPosts(currentPage2);
 			$('#myModal6').modal('hide');
-			console.log('success');
 		});
 	}
 	
@@ -739,7 +711,6 @@ minibean.controller('ManageQuestionsController',function($scope, $http, $routePa
 	var totalPages3;
 	
 	$scope.questions = reportedQuestionsService.getQuestions.get({currentPage: currentPage},function(response) {
-		console.log($scope.questions);
 		totalPages = $scope.questions.totalPages;
 		currentPage = $scope.questions.currentPage;
 		$scope.pageNumber = $scope.questions.currentPage;
@@ -754,7 +725,6 @@ minibean.controller('ManageQuestionsController',function($scope, $http, $routePa
 	$scope.getQuestions = function(page) {
 		currentPage = page
 		$scope.questions = reportedQuestionsService.getQuestions.get({currentPage: currentPage},function(response) {
-			console.log($scope.questions);
 			totalPages = $scope.questions.totalPages;
 			currentPage = $scope.questions.currentPage;
 			$scope.pageNumber = $scope.questions.currentPage;
@@ -774,7 +744,6 @@ minibean.controller('ManageQuestionsController',function($scope, $http, $routePa
 	
 	$scope.deleteQuestion = function() {
 		deleteReportedObjectQuestionService.DeleteReportedObjectQuestion.get({id: $scope.reportObjectId,questionId: $scope.questionId},function(response) {
-			console.log('success');
 			$('#myModal3').modal('hide');
 			$scope.getQuestions(currentPage);
 			$scope.getDeletedInfoQuestions(currentPage2);
@@ -782,7 +751,6 @@ minibean.controller('ManageQuestionsController',function($scope, $http, $routePa
 	};
 	
 	$scope.deletedQuestions = deletedQuestionsService.getQuestions.get({currentPage:currentPage2,communityId:$scope.searchByCommunity},function(response) {
-		console.log($scope.deletedQuestions);
 		totalPages2 = $scope.deletedQuestions.totalPages;
 		currentPage2 = $scope.deletedQuestions.currentPage;
 		$scope.pageNumber2 = $scope.deletedQuestions.currentPage;
@@ -797,11 +765,9 @@ minibean.controller('ManageQuestionsController',function($scope, $http, $routePa
 	$scope.getDeletedInfoQuestions = function(page) {
 		currentPage2 = page;
 		if(angular.isUndefined($scope.searchByCommunity) || $scope.searchByCommunity=="") {
-			console.log('inside function');
 			$scope.searchByCommunity = " ";
 		}
 		$scope.deletedQuestions = deletedQuestionsService.getQuestions.get({currentPage:currentPage2,communityId:$scope.searchByCommunity},function(response) {
-			console.log($scope.deletedQuestions);
 			totalPages2 = $scope.deletedQuestions.totalPages;
 			currentPage2 = $scope.deletedQuestions.currentPage;
 			$scope.pageNumber2 = $scope.deletedQuestions.currentPage;
@@ -828,7 +794,6 @@ minibean.controller('ManageQuestionsController',function($scope, $http, $routePa
 			$scope.getDeletedInfoQuestions(currentPage2);
 			$scope.searchQuestions(currentPage3);
 			$('#myModal5').modal('hide');
-			console.log('success');
 		});
 	}
 	
@@ -837,13 +802,11 @@ minibean.controller('ManageQuestionsController',function($scope, $http, $routePa
 			$scope.getDeletedInfoQuestions(currentPage2);
 			$scope.searchQuestions(currentPage3);
 			$('#myModal6').modal('hide');
-			console.log('success');
 		});
 	}
 	
 	
 	$scope.allQuestions = getAllQuestionsService.getAllQuestions.get({currentPage: currentPage3,title: $scope.title},function(response) {
-		console.log($scope.allQuestions);
 		totalPages3 = $scope.allQuestions.totalPages;
 		currentPage3 = $scope.allQuestions.currentPage;
 		$scope.pageNumber3 = $scope.allQuestions.currentPage;
@@ -858,11 +821,9 @@ minibean.controller('ManageQuestionsController',function($scope, $http, $routePa
 	$scope.searchQuestions = function(page) {
 		currentPage3 = page;
 		if(angular.isUndefined($scope.title) || $scope.title=="") {
-			console.log('inside function');
 			$scope.title = " ";
 		}
 		$scope.allQuestions = getAllQuestionsService.getAllQuestions.get({currentPage: currentPage3,title: $scope.title},function(response) {
-			console.log($scope.allQuestions);
 			totalPages3 = $scope.allQuestions.totalPages;
 			currentPage3 = $scope.allQuestions.currentPage;
 			$scope.pageNumber3 = $scope.allQuestions.currentPage;
@@ -995,7 +956,6 @@ minibean.controller('ManageCommentsController',function($scope, $http, $routePar
 	var totalPages3;
 	
 	$scope.comments = reportedCommentsService.getComments.get({currentPage: currentPage},function(response) {
-		console.log($scope.comments);
 		totalPages = $scope.comments.totalPages;
 		currentPage = $scope.comments.currentPage;
 		$scope.pageNumber = $scope.comments.currentPage;
@@ -1008,7 +968,6 @@ minibean.controller('ManageCommentsController',function($scope, $http, $routePar
 	});
 	
 	$scope.deletedComments = deletedCommentsService.getComments.get({currentPage:currentPage2,communityId:$scope.searchByCommunity},function(response) {
-		console.log($scope.deletedComments);
 		totalPages2 = $scope.deletedComments.totalPages;
 		currentPage2 = $scope.deletedComments.currentPage;
 		$scope.pageNumber2 = $scope.deletedComments.currentPage;
@@ -1023,11 +982,9 @@ minibean.controller('ManageCommentsController',function($scope, $http, $routePar
 	$scope.getDeletedComments = function(page) {
 		currentPage2 = page;
 		if(angular.isUndefined($scope.searchByCommunity) || $scope.searchByCommunity=="") {
-			console.log('inside function');
 			$scope.searchByCommunity = " ";
 		}
 		$scope.deletedComments = deletedCommentsService.getComments.get({currentPage:currentPage2,communityId:$scope.searchByCommunity},function(response) {
-			console.log($scope.deletedComments);
 			totalPages2 = $scope.deletedComments.totalPages;
 			currentPage2 = $scope.deletedComments.currentPage;
 			$scope.pageNumber2 = $scope.deletedComments.currentPage;
@@ -1043,7 +1000,6 @@ minibean.controller('ManageCommentsController',function($scope, $http, $routePar
 	$scope.getComments = function(page) {
 		currentPage = page;
 		$scope.comments = reportedCommentsService.getComments.get({currentPage: currentPage},function(response) {
-			console.log($scope.comments);
 			totalPages = $scope.comments.totalPages;
 			currentPage = $scope.comments.currentPage;
 			$scope.pageNumber = $scope.comments.currentPage;
@@ -1057,7 +1013,6 @@ minibean.controller('ManageCommentsController',function($scope, $http, $routePar
 	};
 	
 	$scope.allComments = getAllCommentsService.getAllComments.get({currentPage: currentPage3,title: $scope.title},function(response) {
-		console.log($scope.allComments);
 		totalPages3 = $scope.allComments.totalPages;
 		currentPage3 = $scope.allComments.currentPage;
 		$scope.pageNumber3 = $scope.allComments.currentPage;
@@ -1072,11 +1027,9 @@ minibean.controller('ManageCommentsController',function($scope, $http, $routePar
 	$scope.searchComments = function(page) {
 		currentPage3 = page;
 		if(angular.isUndefined($scope.title) || $scope.title=="") {
-			console.log('inside function');
 			$scope.title = " ";
 		}
 		$scope.allComments = getAllCommentsService.getAllComments.get({currentPage: currentPage3,title: $scope.title},function(response) {
-			console.log($scope.allComments);
 			totalPages3 = $scope.allComments.totalPages;
 			currentPage3 = $scope.allComments.currentPage;
 			$scope.pageNumber3 = $scope.allComments.currentPage;
@@ -1108,7 +1061,6 @@ minibean.controller('ManageCommentsController',function($scope, $http, $routePar
 			$scope.searchComments(currentPage3);
 			$scope.getDeletedComments(currentPage2);
 			$('#myModal5').modal('hide');
-			console.log('success');
 		});
 	}
 	
@@ -1117,13 +1069,11 @@ minibean.controller('ManageCommentsController',function($scope, $http, $routePar
 			$scope.searchComments(currentPage3);
 			$scope.getDeletedComments(currentPage2);
 			$('#myModal6').modal('hide');
-			console.log('success');
 		});
 	}
 	
 	$scope.deleteComment = function() {
 		deleteReportedObjectCommentService.DeleteReportedObject.get({id: $scope.reportObjectId,commentId: $scope.commentId},function(response) {
-			console.log('success');
 			$('#myModal3').modal('hide');
 			$scope.getComments(currentPage);
 			$scope.getDeletedComments(currentPage2);
@@ -1249,7 +1199,6 @@ minibean.controller('ManageAnswersController',function($scope, $http, $routePara
 	var totalPages3;
 
 	$scope.answers = reportedAnswersService.getAnswers.get({currentPage: currentPage},function(response) {
-		console.log($scope.answers);
 		totalPages = $scope.answers.totalPages;
 		currentPage = $scope.answers.currentPage;
 		$scope.pageNumber = $scope.answers.currentPage;
@@ -1264,7 +1213,6 @@ minibean.controller('ManageAnswersController',function($scope, $http, $routePara
 	$scope.getAnswers = function(page) {
 		currentPage = page;
 		$scope.answers = reportedAnswersService.getAnswers.get({currentPage: currentPage},function(response) {
-			console.log($scope.answers);
 			totalPages = $scope.answers.totalPages;
 			currentPage = $scope.answers.currentPage;
 			$scope.pageNumber = $scope.answers.currentPage;
@@ -1285,7 +1233,6 @@ minibean.controller('ManageAnswersController',function($scope, $http, $routePara
 	
 	$scope.deleteAnswer = function() {
 		deleteReportedObjectAnswerService.DeleteReportedObject.get({id: $scope.reportObjectId,answerId: $scope.answerId},function(response) {
-			console.log('success');
 			$('#myModal3').modal('hide');
 			$scope.getAnswers(currentPage);
 			$scope.getDeletedAnswers(currentPage2);
@@ -1293,7 +1240,6 @@ minibean.controller('ManageAnswersController',function($scope, $http, $routePara
 	};
 	
 	$scope.deletedAnswers = deletedAnswersService.getAnswers.get({currentPage:currentPage2,communityId: $scope.searchByCommunity},function(response) {
-		console.log($scope.deletedAnswers);
 		totalPages2 = $scope.deletedAnswers.totalPages;
 		currentPage2 = $scope.deletedAnswers.currentPage;
 		$scope.pageNumber2 = $scope.deletedAnswers.currentPage;
@@ -1308,11 +1254,9 @@ minibean.controller('ManageAnswersController',function($scope, $http, $routePara
 	$scope.getDeletedAnswers = function(page) {
 		currentPage2 = page;
 		if(angular.isUndefined($scope.searchByCommunity) || $scope.searchByCommunity=="") {
-			console.log('inside function');
 			$scope.searchByCommunity = " ";
 		}
 		$scope.deletedAnswers = deletedAnswersService.getAnswers.get({currentPage:currentPage2,communityId: $scope.searchByCommunity},function(response) {
-			console.log($scope.deletedAnswers);
 			totalPages2 = $scope.deletedAnswers.totalPages;
 			currentPage2 = $scope.deletedAnswers.currentPage;
 			$scope.pageNumber2 = $scope.deletedAnswers.currentPage;
@@ -1339,7 +1283,6 @@ minibean.controller('ManageAnswersController',function($scope, $http, $routePara
 			$scope.getDeletedAnswers(currentPage2);
 			$scope.searchAllAnswers(currentPage3);
 			$('#myModal5').modal('hide');
-			console.log('success');
 		});
 	}
 	
@@ -1348,12 +1291,10 @@ minibean.controller('ManageAnswersController',function($scope, $http, $routePara
 			$scope.getDeletedAnswers(currentPage2);
 			$scope.searchAllAnswers(currentPage3);
 			$('#myModal6').modal('hide');
-			console.log('success');
 		});
 	}
 	
 	$scope.allAnswers = getAllAnswersService.getAllAnswers.get({currentPage: currentPage3,title: $scope.title},function(response) {
-		console.log($scope.allAnswers);
 		totalPages3 = $scope.allAnswers.totalPages;
 		currentPage3 = $scope.allAnswers.currentPage;
 		$scope.pageNumber3 = $scope.allAnswers.currentPage;
@@ -1369,11 +1310,9 @@ minibean.controller('ManageAnswersController',function($scope, $http, $routePara
 	$scope.searchAllAnswers = function(page) {
 		currentPage3 = page;
 		if(angular.isUndefined($scope.title) || $scope.title=="") {
-			console.log('inside function');
 			$scope.title = " ";
 		}
 		$scope.allAnswers = getAllAnswersService.getAllAnswers.get({currentPage: currentPage3,title: $scope.title},function(response) {
-			console.log($scope.allAnswers);
 			totalPages3 = $scope.allAnswers.totalPages;
 			currentPage3 = $scope.allAnswers.currentPage;
 			$scope.pageNumber3 = $scope.allAnswers.currentPage;
@@ -1504,7 +1443,6 @@ minibean.controller('ManageCommunitiesController',function($scope, $http, $route
 	var totalPages3;
 	
 	$scope.communities = reportedCommunitiesService.getCommunities.get({currentPage: currentPage},function(response) {
-		console.log($scope.communities);
 		totalPages = $scope.communities.totalPages;
 		currentPage = $scope.communities.currentPage;
 		$scope.pageNumber = $scope.communities.currentPage;
@@ -1519,7 +1457,6 @@ minibean.controller('ManageCommunitiesController',function($scope, $http, $route
 	$scope.getCommunities = function(page) {
 		currentPage = page;
 		$scope.communities = reportedCommunitiesService.getCommunities.get({currentPage: currentPage},function(response) {
-			console.log($scope.communities);
 			totalPages = $scope.communities.totalPages;
 			currentPage = $scope.communities.currentPage;
 			$scope.pageNumber = $scope.communities.currentPage;
@@ -1533,7 +1470,6 @@ minibean.controller('ManageCommunitiesController',function($scope, $http, $route
 	};
 	
 	$scope.allCommunities = getAllCommunitiesService.getAllCommunities.get({currentPage: currentPage3,title: $scope.title},function(response) {
-		console.log($scope.allCommunities);
 		totalPages3 = $scope.allCommunities.totalPages;
 		currentPage3 = $scope.allCommunities.currentPage;
 		$scope.pageNumber3 = $scope.allCommunities.currentPage;
@@ -1548,11 +1484,9 @@ minibean.controller('ManageCommunitiesController',function($scope, $http, $route
 	$scope.searchCommunities = function(page) {
 		currentPage3 = page;
 		if(angular.isUndefined($scope.title) || $scope.title=="") {
-			console.log('inside function');
 			$scope.title = " ";
 		}
 		$scope.allCommunities = getAllCommunitiesService.getAllCommunities.get({currentPage: currentPage3,title: $scope.title},function(response) {
-			console.log($scope.allCommunities);
 			totalPages3 = $scope.allCommunities.totalPages;
 			currentPage3 = $scope.allCommunities.currentPage;
 			$scope.pageNumber3 = $scope.allCommunities.currentPage;
@@ -1576,7 +1510,6 @@ minibean.controller('ManageCommunitiesController',function($scope, $http, $route
 	
 	$scope.deleteCommunity = function() {
 		deleteReportedObjectCommunityService.DeleteReportedObject.get({id: $scope.reportObjectId,communityId: $scope.communityId},function(response) {
-			console.log('success');
 			$('#myModal3').modal('hide');
 			$scope.getCommunities(currentPage);
 			$scope.getDeletedCommunities(currentPage2);
@@ -1584,7 +1517,6 @@ minibean.controller('ManageCommunitiesController',function($scope, $http, $route
 	};
 	
 	$scope.deletedCommunities = deletedCommunitiesService.getCommunities.get({currentPage:currentPage2},function(response) {
-		console.log($scope.deletedCommunities);
 		totalPages2 = $scope.deletedCommunities.totalPages;
 		currentPage2 = $scope.deletedCommunities.currentPage;
 		$scope.pageNumber2 = $scope.deletedCommunities.currentPage;
@@ -1600,7 +1532,6 @@ minibean.controller('ManageCommunitiesController',function($scope, $http, $route
 		
 		currentPage2 = page;
 		$scope.deletedCommunities = deletedCommunitiesService.getCommunities.get({currentPage:currentPage2},function(response) {
-			console.log($scope.deletedCommunities);
 			totalPages2 = $scope.deletedCommunities.totalPages;
 			currentPage2 = $scope.deletedCommunities.currentPage;
 			$scope.pageNumber2 = $scope.deletedCommunities.currentPage;
@@ -1622,7 +1553,6 @@ minibean.controller('ManageCommunitiesController',function($scope, $http, $route
 			$scope.getDeletedCommunities(currentPage2);
 			$scope.searchCommunities(currentPage3);
 			$('#myModal5').modal('hide');
-			console.log('success');
 		});
 	}
 	
@@ -1631,7 +1561,6 @@ minibean.controller('ManageCommunitiesController',function($scope, $http, $route
 			$scope.getDeletedCommunities(currentPage2);
 			$scope.searchCommunities(currentPage3);
 			$('#myModal6').modal('hide');
-			console.log('success');
 		});
 	}
 	
@@ -1754,7 +1683,6 @@ minibean.controller('ManageUsers2Controller',function($scope, $http, $routeParam
 	var totalPages3;
 	
 	$scope.users = reportedUsersService.getUsers.get({currentPage: currentPage},function(response) {
-		console.log($scope.users);
 		totalPages = $scope.users.totalPages;
 		currentPage = $scope.users.currentPage;
 		$scope.pageNumber = $scope.users.currentPage;
@@ -1769,7 +1697,6 @@ minibean.controller('ManageUsers2Controller',function($scope, $http, $routeParam
 	$scope.getReportedUsers = function(page) {
 		currentPage = page;
 		$scope.users = reportedUsersService.getUsers.get({currentPage: currentPage},function(response) {
-			console.log($scope.users);
 			totalPages = $scope.users.totalPages;
 			currentPage = $scope.users.currentPage;
 			$scope.pageNumber = $scope.users.currentPage;
@@ -1785,7 +1712,6 @@ minibean.controller('ManageUsers2Controller',function($scope, $http, $routeParam
 	};
 	
 	$scope.deletedUsers = deletedUsersService.getUsers.get({currentPage:currentPage2},function(response) {
-		console.log($scope.deletedUsers);
 		totalPages2 = $scope.deletedUsers.totalPages;
 		currentPage2 = $scope.deletedUsers.currentPage;
 		$scope.pageNumber2 = $scope.deletedUsers.currentPage;
@@ -1800,7 +1726,6 @@ minibean.controller('ManageUsers2Controller',function($scope, $http, $routeParam
 	$scope.getDeletedUsers = function(page) {
 		currentPage2 = page;
 		$scope.deletedUsers = deletedUsersService.getUsers.get({currentPage:currentPage2},function(response) {
-			console.log($scope.deletedUsers);
 			totalPages2 = $scope.deletedUsers.totalPages;
 			currentPage2 = $scope.deletedUsers.currentPage;
 			$scope.pageNumber2 = $scope.deletedUsers.currentPage;
@@ -1828,7 +1753,6 @@ minibean.controller('ManageUsers2Controller',function($scope, $http, $routeParam
 	}
 	
 	$scope.allUsers = getAllUsersService.getAllUsers.get({currentPage: currentPage3,title: $scope.title},function(response) {
-		console.log($scope.allUsers);
 		totalPages3 = $scope.allUsers.totalPages;
 		currentPage3 = $scope.allUsers.currentPage;
 		$scope.pageNumber3 = $scope.allUsers.currentPage;
@@ -1843,11 +1767,9 @@ minibean.controller('ManageUsers2Controller',function($scope, $http, $routeParam
 	$scope.searchUsers = function(page) {
 		currentPage3 = page;
 		if(angular.isUndefined($scope.title) || $scope.title=="") {
-			console.log('inside function');
 			$scope.title = " ";
 		}
 		$scope.allUsers = getAllUsersService.getAllUsers.get({currentPage: currentPage3,title: $scope.title},function(response) {
-			console.log($scope.allUsers);
 			totalPages3 = $scope.allUsers.totalPages;
 			currentPage3 = $scope.allUsers.currentPage;
 			$scope.pageNumber3 = $scope.allUsers.currentPage;
@@ -1863,7 +1785,6 @@ minibean.controller('ManageUsers2Controller',function($scope, $http, $routeParam
 	
 	$scope.deleteUser = function() {
 		deleteReportedObjectUserService.DeleteReportedObject.get({id: $scope.reportObjectId,userId: $scope.userId},function(response) {
-			console.log('success');
 			$('#myModal3').modal('hide');
 			$scope.getReportedUsers(currentPage);
 			$scope.getDeletedUsers(currentPage2);
@@ -1876,7 +1797,6 @@ minibean.controller('ManageUsers2Controller',function($scope, $http, $routeParam
 			$scope.getDeletedUsers(currentPage2);
 			$scope.searchUsers(currentPage3);
 			$('#myModal5').modal('hide');
-			console.log('success');
 		});
 	}
 	
@@ -1885,7 +1805,6 @@ minibean.controller('ManageUsers2Controller',function($scope, $http, $routeParam
 			$scope.getDeletedUsers(currentPage2);
 			$scope.searchUsers(currentPage3);
 			$('#myModal6').modal('hide');
-			console.log('success');
 		});
 	}
 	

@@ -41,7 +41,9 @@ public class UserVM {
 		this.email = user.email;
 		this.active = user.active;
 		this.id = user.id;
-		this.deleted = user.deleted;
+		if(user.deleted != null) {
+			this.deleted = user.deleted;
+		}
 		this.userName = user.displayName;
 		this.lastLogin = formatter.format(user.lastLogin);
 		if(user.userInfo != null) {
@@ -64,8 +66,11 @@ public class UserVM {
 			UserChildVM vm = new UserChildVM(u);
 			this.userChildVms.add(vm);
 		}
-		Resource resource = Resource.findAllResourceOfFolder(user.albumPhotoProfile.id);
-		this.image = resource.id;
+		if(user.albumPhotoProfile != null) {
+			List<Resource> resource = Resource.findAllResourceOfFolder(user.albumPhotoProfile.id);
+			this.image = resource.get(0).id;
+		}
+		
 	}
 	
 	

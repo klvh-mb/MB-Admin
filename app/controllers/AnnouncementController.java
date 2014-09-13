@@ -55,7 +55,6 @@ public class AnnouncementController extends Controller{
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		System.out.println("From Date :::::::"+announcement.icon.name);
 		announcement.save();
 		return ok();
 	}
@@ -83,7 +82,6 @@ public class AnnouncementController extends Controller{
 			e.printStackTrace();
 		}
 		announcement.merge();
-		System.out.println("INSIDE UPDATE"+form.get("ic.id"));
 		return ok();
 	}
 	

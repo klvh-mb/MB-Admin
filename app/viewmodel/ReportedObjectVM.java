@@ -62,9 +62,13 @@ public class ReportedObjectVM {
 		this.reportedDate = formatter.format(reportedObject.reportedDate);
 		this.postBody = post.body;
 		this.postTitle = post.title;
-		this.deleted = post.deleted;
-		Resource resource = Resource.findAllResourceOfFolder(post.folder.id);
-			this.image = resource.id;
+		if(post.deleted != null) {
+			this.deleted = post.deleted;
+		}
+		if(post.folder != null) {
+			List<Resource> resource = Resource.findAllResourceOfFolder(post.folder.id);
+			this.image = resource.get(0).id;
+		}	
 	}
 	
 	public ReportedObjectVM(ReportedObject reportedObject,Comment comment) {
@@ -76,9 +80,14 @@ public class ReportedObjectVM {
 		this.reportedBy = reportedObject.reportedBy;
 		this.reportedDate = formatter.format(reportedObject.reportedDate);
 		this.commentBody = comment.body;
-		this.deleted = comment.deleted;
-		Resource resource = Resource.findAllResourceOfFolder(comment.folder.id);
-		this.image = resource.id;
+		if(comment.deleted != null) {
+			this.deleted = comment.deleted;
+		}
+		if(comment.folder != null) {
+			List<Resource> resource = Resource.findAllResourceOfFolder(comment.folder.id);
+			this.image = resource.get(0).id;
+		}
+		
 	}
 	
 	public ReportedObjectVM(ReportedObject reportedObject,Community community) {
@@ -89,13 +98,21 @@ public class ReportedObjectVM {
 		this.socialObjectID = reportedObject.socialObjectID;
 		this.reportedBy = reportedObject.reportedBy;
 		this.reportedDate = formatter.format(reportedObject.reportedDate);
-		this.deleted = community.deleted;
+		if(community.deleted != null) {
+			this.deleted = community.deleted;
+		}
 		this.communityName = community.name;
-		this.createdDate = formatter.format(community.createDate);
-		this.owner = community.owner.displayName;
+		if(community.auditFields.getCreatedDate() != null) {
+			this.createdDate = formatter.format(community.auditFields.getCreatedDate());
+		}
+		if(community.owner != null) {
+			this.owner = community.owner.displayName;
+		}
 		this.posts = Post.getPosts(community.id);
-		Resource resource = Resource.findAllResourceOfFolder(community.albumPhotoProfile.id);
-		this.image = resource.id;
+		if(community.albumPhotoProfile != null) {
+			List<Resource> resource = Resource.findAllResourceOfFolder(community.albumPhotoProfile.id);
+			this.image = resource.get(0).id;
+		}
 	}
 	
 	public ReportedObjectVM(ReportedObject reportedObject,User user) {
@@ -106,13 +123,17 @@ public class ReportedObjectVM {
 		this.socialObjectID = reportedObject.socialObjectID;
 		this.reportedBy = reportedObject.reportedBy;
 		this.reportedDate = formatter.format(reportedObject.reportedDate);
-		this.deleted = user.deleted;
+		if(user.deleted != null) {
+			this.deleted = user.deleted;
+		}
 		this.userName = user.displayName;
 		this.lastLogin = formatter.format(user.lastLogin);
 		if(user.userInfo != null) {
 			this.aboutMe = user.userInfo.aboutMe;
 			this.birthYear = user.userInfo.birthYear;
-			this.location = user.userInfo.location.displayName;
+			if(user.userInfo.location != null) {
+				this.location = user.userInfo.location.displayName;
+			}
 			this.numChildren = user.userInfo.numChildren;
 		}
 		if(user.userInfo.parentType != null) {
@@ -124,8 +145,10 @@ public class ReportedObjectVM {
 			UserChildVM vm = new UserChildVM(u);
 			this.userChildVms.add(vm);
 		}
-		Resource resource = Resource.findAllResourceOfFolder(user.albumPhotoProfile.id);
-		this.image = resource.id;
+		if(user.albumPhotoProfile != null) {
+			List<Resource> resource = Resource.findAllResourceOfFolder(user.albumPhotoProfile.id);
+			this.image = resource.get(0).id;
+		}
 	}
 	
 	

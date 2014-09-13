@@ -82,7 +82,6 @@ public class Comment extends SocialObject {
     	if(size % rowsPerPage > 0) {
 			totalPages++;
 		}
-    	System.out.println("total pages ::"+totalPages);
     	return totalPages;
 	}
     
@@ -111,7 +110,6 @@ public class Comment extends SocialObject {
     	if(size % rowsPerPage > 0) {
 			totalPages++;
 		}
-    	System.out.println("total pages ::"+totalPages);
     	return totalPages;
 	}
     

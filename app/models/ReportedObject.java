@@ -43,6 +43,9 @@ public class ReportedObject {
 	
 	public String reportedBy;
 	
+	@Temporal(TemporalType.TIMESTAMP)
+	public Date reportedDate;
+	
 	public ReportedObject(DeletedInfo deletedInfo) {
 		this.Comment = deletedInfo.Comment;
 		this.category = deletedInfo.category;
@@ -108,10 +111,6 @@ public class ReportedObject {
 		this.reportedDate = reportedDate;
 	}
 
-
-	@Temporal(TemporalType.TIMESTAMP)
-	public Date reportedDate;
-
 	@Transactional
     public static long getSize() {
 		long size = (long) JPA.em().createQuery("Select count(*) from ReportedObject r where r.objectType = 'POST'").getSingleResult();
@@ -158,7 +157,6 @@ public class ReportedObject {
     	if(size % rowsPerPage > 0) {
 			totalPages++;
 		}
-    	System.out.println("total pages ::"+totalPages);
     	return totalPages;
 	}
 	
@@ -172,7 +170,6 @@ public class ReportedObject {
     	if(size % rowsPerPage > 0) {
 			totalPages++;
 		}
-    	System.out.println("total pages ::"+totalPages);
     	return totalPages;
 	}
 	
@@ -186,7 +183,6 @@ public class ReportedObject {
     	if(size % rowsPerPage > 0) {
 			totalPages++;
 		}
-    	System.out.println("total pages ::"+totalPages);
     	return totalPages;
 	}
 	
@@ -200,7 +196,6 @@ public class ReportedObject {
     	if(size % rowsPerPage > 0) {
 			totalPages++;
 		}
-    	System.out.println("total pages ::"+totalPages);
     	return totalPages;
 	}
 	
@@ -214,7 +209,6 @@ public class ReportedObject {
     	if(size % rowsPerPage > 0) {
 			totalPages++;
 		}
-    	System.out.println("total pages ::"+totalPages);
     	return totalPages;
 	}
 	
@@ -228,7 +222,6 @@ public class ReportedObject {
     	if(size % rowsPerPage > 0) {
 			totalPages++;
 		}
-    	System.out.println("total pages ::"+totalPages);
     	return totalPages;
 	}
 	

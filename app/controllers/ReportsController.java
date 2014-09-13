@@ -58,10 +58,8 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result deleteReportedObject(Long id,Long postId) {
-		System.out.println(":::::::"+id+"::::"+postId);
 		Post post = Post.findById(postId);
 		post.deleted = true;
-		System.out.println("::::::::::"+post.body);
 		post.merge();
 		ReportedObject reportedObject = ReportedObject.findById(id);
 		DeletedInfo deletedInfo = new DeletedInfo(reportedObject);
@@ -96,10 +94,8 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result deletedInfoUnDelete(Long id,Long postId) {
-		System.out.println(":::::::"+id+"::::"+postId);
 		Post post = Post.findById(postId);
 		post.deleted = false;
-		System.out.println("::::::::::"+post.body);
 		post.merge();
 		return ok();
 	}
@@ -169,10 +165,8 @@ public class ReportsController extends Controller {
 	
 	@Transactional
     public static Result deleteReportedObjectComment(Long id,Long commentId) {
-		System.out.println("delete:::::::"+id+"::::"+commentId);
 		Comment comment = Comment.findById(commentId);
 		comment.deleted = true;
-		System.out.println("::::::::::"+comment.body);
 		comment.merge();
 		ReportedObject reportedObject = ReportedObject.findById(id);
 		DeletedInfo deletedInfo = new DeletedInfo(reportedObject);
@@ -189,15 +183,15 @@ public class ReportsController extends Controller {
 		List<DeletedInfoVM> deletedInfoVMs = new ArrayList<>();
 		Comment comment = new Comment();
 		for (Object[] d:deletedInfos) {
-			comment = Comment.findById(((BigInteger)d[5]).longValue());
+			comment = Comment.findById(((BigInteger)d[6]).longValue());
 			DeletedInfo deletedInfo = new DeletedInfo();
 			deletedInfo.setCategory(categoryType.valueOf(d[2].toString()));
 			deletedInfo.Comment = d[1].toString();
 			deletedInfo.setObjectType(SocialObjectType.valueOf(d[3].toString()));
 			deletedInfo.id = ((BigInteger)d[0]).longValue();
-			deletedInfo.socialObjectID = ((BigInteger)d[5]).longValue();
+			deletedInfo.socialObjectID = ((BigInteger)d[6]).longValue();
 			deletedInfo.reportedBy = d[4].toString();
-			deletedInfo.reportedDate = (Date)d[6];
+			deletedInfo.reportedDate = (Date)d[5];
 			DeletedInfoVM vm = new DeletedInfoVM(deletedInfo,comment);
 			deletedInfoVMs.add(vm);
 		}
@@ -278,10 +272,8 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result deleteReportedObjectQuestion(Long id,Long questionId) {
-		System.out.println(":::::::"+id+"::::"+questionId);
 		Post post = Post.findById(questionId);
 		post.deleted = true;
-		System.out.println("::::::::::"+post.body);
 		post.merge();
 		ReportedObject reportedObject = ReportedObject.findById(id);
 		DeletedInfo deletedInfo = new DeletedInfo(reportedObject);
@@ -397,15 +389,15 @@ public class ReportsController extends Controller {
 		List<DeletedInfoVM> deletedInfoVMs = new ArrayList<>();
 		Comment comment = new Comment();
 		for (Object[] d:deletedInfos) {
-			comment = Comment.findById(((BigInteger)d[5]).longValue());
+			comment = Comment.findById(((BigInteger)d[6]).longValue());
 			DeletedInfo deletedInfo = new DeletedInfo();
 			deletedInfo.setCategory(categoryType.valueOf(d[2].toString()));
 			deletedInfo.Comment = d[1].toString();
 			deletedInfo.setObjectType(SocialObjectType.valueOf(d[3].toString()));
 			deletedInfo.id = ((BigInteger)d[0]).longValue();
-			deletedInfo.socialObjectID = ((BigInteger)d[5]).longValue();
+			deletedInfo.socialObjectID = ((BigInteger)d[6]).longValue();
 			deletedInfo.reportedBy = d[4].toString();
-			deletedInfo.reportedDate = (Date)d[6];
+			deletedInfo.reportedDate = (Date)d[5];
 			DeletedInfoVM vm = new DeletedInfoVM(deletedInfo,comment);
 			deletedInfoVMs.add(vm);
 		}
@@ -661,7 +653,6 @@ public class ReportsController extends Controller {
 	@Transactional
     public static Result getPostImageById(Long id) {
     	response().setHeader("Cache-Control", "max-age=604800");
-    	System.out.println("IMAGE.................................");
         return ok(Resource.findById(id).getRealFile());
     }
 }
