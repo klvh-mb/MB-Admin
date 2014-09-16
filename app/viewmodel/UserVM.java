@@ -3,6 +3,7 @@ package viewmodel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.math.BigInteger;
 
 import domain.AuditFields;
 
@@ -33,6 +34,12 @@ public class UserVM {
 	public List<UserChildVM> userChildVms = new ArrayList<>();
 	
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+	
+	public UserVM(Object[] obj) {
+		this.id = ((BigInteger)obj[0]).longValue();
+		this.displayName = obj[12].toString();
+		this.email = obj[13].toString();
+	}
 	
 	public UserVM(User user) {
 		this.firstName = user.firstName;

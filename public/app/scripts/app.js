@@ -73,6 +73,10 @@ angular.module('minibean', [
     	templateUrl: '/assets/app/views/operations.html',
     	controller : 'ManageOperationsController'  
       })
+      .when('/manageSubscriptions',{
+    	templateUrl: '/assets/app/views/manageSubscription.html',
+    	controller : 'ManageSubscriptionsController'  
+      })
       .otherwise({
           redirectTo: '/'
       });
