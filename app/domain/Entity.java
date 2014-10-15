@@ -38,7 +38,14 @@ public class Entity
     this.auditFields.setUpdatedDate(updatedDate);
   }
   
- 
+  public Date getCreatedDate() {
+	  return this.auditFields.getCreatedDate();
+  }
+  
+  public Date getUpdatedDate() {
+	  return this.auditFields.getUpdatedDate();
+  }
+  
   
   @Transactional
   public void save() {

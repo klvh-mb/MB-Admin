@@ -2113,3 +2113,51 @@ minibean.service('sendEmailsToSubscribedUsersService',function($resource){
             }
     );
 });
+
+////////////// Manage Game Account //////////////////
+
+minibean.service('getUserGameAccountService',function($resource){
+    this.getAllUsers = $resource(
+            '/getGameAccountAllUsers',
+            {alt:'json',callback:'JSON_CALLBACK'},
+            {
+                get: {method:'get',isArray:true}
+            }
+    );
+});
+
+minibean.controller('ManageGameAccountController',function($scope, $http, $routeParams, getUserGameAccountService){
+	$scope.pageNumber;
+	$scope.pageSize;
+	var currentPage = 1;
+	var totalPages;
+	$scope.userIds;
+	
+	$scope.allUsers = getUserGameAccountService.getAllUsers.get(function(response) {
+		console.log(response);
+		if(totalPages == 0) {
+			$scope.pageNumber = 0;
+		}
+	});
+	
+	$scope.setUserData = function(user) {
+		$scope.addPointsUser = user;
+	}
+	
+	$scope.addBonus = function(user) {
+		console.log(user);
+		$http.post('/addbonus', user).success(function(data){
+			$('#addBonus').modal('hide');
+		}).error(function(data, status, headers, config) {
+		});
+	}
+	
+	$scope.addPenalty = function(user) {
+		console.log(user);
+		$http.post('/addPenalty', user).success(function(data){
+			$('#addPenalty').modal('hide');
+		}).error(function(data, status, headers, config) {
+		});
+	}
+});
+
