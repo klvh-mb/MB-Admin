@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Query;
 import javax.persistence.NoResultException;
 
+import domain.DefaultValues;
 import play.data.format.Formats;
 import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
@@ -75,6 +76,7 @@ public class Article extends domain.Entity {
 	@Transactional
 	public static List<Article> getAllArticles() {
 		Query q = JPA.em().createQuery("Select a from Article a order by publishedDate desc");
+		q.setMaxResults(DefaultValues.MAX_ARTICLES_COUNT);
 		return (List<Article>)q.getResultList();
 	}
 	
