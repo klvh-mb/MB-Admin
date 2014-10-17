@@ -13,6 +13,7 @@ import models.Comment;
 import models.Community;
 import models.DeletedInfo;
 import models.GameAccount;
+import models.GameRedemption;
 import models.Location;
 import models.Post;
 import models.ReportedObject;
@@ -29,6 +30,7 @@ import viewmodel.CommentVM;
 import viewmodel.CommunityVM;
 import viewmodel.DeletedInfoVM;
 import viewmodel.GameAccountVM;
+import viewmodel.GameRedemptionVM;
 import viewmodel.LocationVM;
 import viewmodel.PostVM;
 import viewmodel.ReportedObjectVM;
@@ -766,5 +768,24 @@ public class ReportsController extends Controller {
 	    System.out.println("id :::: "+id+"\n bonus :::: "+bonus+"\n detail ::::: "+detail+"\n uId :::::"+uId);
         return ok();
     }
+	
+	@Transactional
+    public static Result getRedemptionRequests() {
+		List<GameRedemption> redemptions = GameRedemption.getAllGameRedemption();
+		List<GameRedemptionVM> redemptionVMs = new ArrayList<>();
+		for(GameRedemption r : redemptions) {
+			GameRedemptionVM vm = new GameRedemptionVM(r);
+			redemptionVMs.add(vm);
+		}
+		return ok(Json.toJson(redemptionVMs));
+	}
+	
+	@Transactional
+    public static Result confirmRedemptionRequests() {
+		DynamicForm form = DynamicForm.form().bindFromRequest();
+	    String id = form.get("id");
+	    GameRedemption.confirmRedemptionRequest(id);
+		return ok();
+	}
 	
 }

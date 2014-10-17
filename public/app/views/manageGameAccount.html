@@ -9,6 +9,7 @@
     <li><a href="/#/manageUsers2" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Users</a></li>
     <li><a href="/#/manageSubscriptions" role="tab" data-toggle="tab" style="cursor: pointer;">Subscriptions</a></li>
     <li class="active"><a href="/#/manageGameAccount" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Game Account</a></li>
+	<li><a href="/#/manageRedemption" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Redemption</a></li>
 </ul>
 
 <h4>Manage Game Account</h4>
@@ -20,16 +21,16 @@
 	    <section id="container">
 	    	<section class="" style="width:625px;margin-left: 26%;">
 	        	<section class="dadsrch" style="width:625px;">
-	            	<section class="heading"><h2>User Search By id</h2></section>
+			            	<section class="heading"><h2>User Search By name</h2></section>
 	                <section class="dadsrchdiv">
-	                	<input name="title" type="text" ng-model="title" class="" style="height:1%;width:50%;" ng-keyup="$event.keyCode == 13 ? searchUsers(1) : null"><input name="" type="button" class="btngray" value="Search" ng-click="searchUsers(1)">
+			                	<input name="search" type="text" ng-model="query" class="" style="height:1%;width:50%;" >
 	                </section>
 	            </section>
 	             
 	        	<section class="dgridinfo dactcln">
 	                <table ng-table="tableParams">
 	                	<tbody>
-	                    	<tr ng-repeat="user in allUsers" class="row tm bg-white border-bottom">
+			                    	<tr ng-repeat="user in allUsers| filter: query" class="row tm bg-white border-bottom">
 	                            <td style="border: 1px solid;border-color: rgb(209, 205, 200);">
 		                            <div>
 		                            	<b>User Name : {{user.nm}}</b>

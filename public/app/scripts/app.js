@@ -81,6 +81,10 @@ angular.module('minibean', [
     	templateUrl: '/assets/app/views/manageGameAccount.html',
     	controller : 'ManageGameAccountController'  
       })
+      .when('/manageRedemption',{
+    	templateUrl: '/assets/app/views/manageRedemption.html',
+    	controller : 'ManageRedemptionController'  
+      })
       .otherwise({
           redirectTo: '/'
       });
