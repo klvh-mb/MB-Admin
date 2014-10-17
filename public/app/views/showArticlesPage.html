@@ -110,38 +110,6 @@
 </div>
 
 
-<section class="dgridinfo dactcln">
-       <table ng-table="tableParams">
-	       	<thead>
-	           	<tr>
-                   <th class="widgrd1">&nbsp;</th>
-                   <th><a href="javascript:void(0);">Facility Name</a></th>
-                   <th><a href="javascript:void(0);">Facility URL</a></th>
-                   <th><a href="javascript:void(0);">Contact Name</a></th>
-                   <th><a href="javascript:void(0);">Contact Email</a></th>
-                   <th><a href="javascript:void(0);">Address</a></th>
-                   <th><a href="javascript:void(0);">Action</a></th>
-               <tr>
-           </thead>
-       	<tbody>
-           		<tr ng-repeat="user in userResult">
-                   <td><input name="" type="checkbox" value="{{user.id}}" ng-model="facilityId" ng-change="selectedItem({{user.id}},facilityId)"/></td>
-                   <td>{{user.firstName}}</td>
-                   <td>{{user.lastName}}</td>
-                   <td>{{user.displayName}}</td>
-                   <td>{{user.email}}</td>
-                   <td><input name="" type="button" value="Approve" class="btnblue" ng-click="approveFacilities()" />
-                    <input name="" type="button" value="Reject" class="btngray" ng-click="rejectFacilities()" />
-                    <input name="" type="button" value="Suspend" class="btngray" ng-click="suspendFacilities()" /></td>
-                   
-               </tr>
-           	
-        </tbody>
-    </table>
-</section>
-
-
-
 	<script type="text/ng-template" id="myModalContent.html">
 	    	<div class="modal-header">
 		        <h4 class="modal-title" id="myModalLabel">Article Description</h4>

@@ -80,3 +80,15 @@ GET		/deleteUser/:id							controllers.ReportsController.setDeleteUser(id: Long)
 GET		/unDeleteUser/:id						controllers.ReportsController.setUnDeleteUser(id: Long)
 GET		/getAllUsers/:currentPage/:title		controllers.ReportsController.getAllUsers(currentPage: Integer,title: String)
 GET 	/image/get-post-image-by-id/:id 	controllers.ReportsController.getPostImageById(id : Long)
+
+#Subscription
+GET		/getAllLocations						controllers.ReportsController.getAllLocations
+GET		/getAllSubscription						controllers.ReportsController.getAllSubscription
+GET		/getAllSubscribedUsers/:currentPage/:title/:gender/:location/:subscription		controllers.ReportsController.getAllSubscribedUsers(currentPage: Integer,title: String,gender: String,location: String,subscription: String)
+GET		/sendEmailsToSubscribedUsers/:userIds	controllers.ReportsController.sendEmailsToSubscribedUsers(userIds: String)
+
+#Game Account
+GET		/getGameAccountAllUsers					controllers.ReportsController.getGameAccountAllUsers
+POST	/addbonus								controllers.ReportsController.addBonus
+POST	/addPenalty								controllers.ReportsController.addPenalty
+

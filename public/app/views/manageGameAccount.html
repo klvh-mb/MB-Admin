@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Titillium+Web' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Rationale' rel='stylesheet' type='text/css'>
+	<link href="../assets/app/custom-css/style-admin.css" rel="stylesheet" type="text/css" />
+	<link href="../assets/app/custom-css/form-element-style.css" rel="stylesheet" type="text/css" /> <!-CSS sheet for designers form element->
+	<link href="../assets/app/custom-css/main-syle.css" rel="stylesheet" type="text/css" />
+	<link href="../assets/app/custom-css/jquery.jscrollpane.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="../assets/app/custom-css/bootstrap.css" rel="stylesheet">
+	<link href="../assets/app/custom-css/bootstrap.min.css" rel="stylesheet">
+	
+	<script src="../assets/app/custom-js/bootstrap.js"></script>
+	<script src="../assets/app/custom-js/bootstrap.min.js"></script>
+	<ul class="nav nav-tabs" role="tablist" id="myTab">
+		  <li><a href="/#/" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Articles</a></li>
+		  <li><a href="/#/manageAnnouncement" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Announcements</a></li>
+		  <li><a href="/#/managePosts" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Posts</a></li>
+		  <li><a href="/#/manageComments" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Comments</a></li>
+		  <li><a href="/#/manageQuestions" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Questions</a></li>
+		  <li><a href="/#/manageAnswers" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Answers</a></li>
+		  <li><a href="/#/manageCommunities" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Communities</a></li>
+		  <li><a href="/#/manageUsers2" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Users</a></li>
+		  <li><a href="/#/manageSubscriptions" role="tab" data-toggle="tab" style="cursor: pointer;">Subscriptions</a></li>
+		  <li class="active"><a href="/#/manageGameAccount" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Game Account</a></li>
+	</ul>
+</head>
+  <body>
+  		<h4>Manage Game Account</h4>
+		<!-- Nav tabs -->
+		
+		<!-- Tab panes -->
+		  <div class="tab-pane" id="search">
+			    
+			    <section id="container">
+			    	<section class="" style="width:625px;margin-left: 26%;">
+			        	<section class="dadsrch" style="width:625px;">
+			            	<section class="heading"><h2>User Search By id</h2></section>
+			                <section class="dadsrchdiv">
+			                	<input name="title" type="text" ng-model="title" class="" style="height:1%;width:50%;" ng-keyup="$event.keyCode == 13 ? searchUsers(1) : null"><input name="" type="button" class="btngray" value="Search" ng-click="searchUsers(1)">
+			                </section>
+			            </section>
+			             
+			        	<section class="dgridinfo dactcln">
+			                <table ng-table="tableParams">
+			                	<tbody>
+			                    	<tr ng-repeat="user in allUsers" class="row tm bg-white border-bottom">
+			                            <td style="border: 1px solid;border-color: rgb(209, 205, 200);">
+				                            <div>
+				                            	<b>User Name : {{user.nm}}</b>
+				                            	<button class="margin-none pull-right" ng-click="setUserData(user)" data-toggle="modal" data-target="#addBonus" >Add Bonus</button>
+				                            	<button class="margin-none pull-right" ng-click="setUserData(user)" data-toggle="modal" data-target="#addPenalty" >Add Penalty</button>
+				                            </div>
+				                            <div>
+				                            	<b>User ID : {{user.uId}}</b>
+				                            </div>
+				                            <div>
+				                            	<b>Total Points :</b> {{user.tp}}
+				                            </div>
+			                            </td>
+			                            
+			                            
+			                        </tr>
+			                    	</tbody>
+			                </table>
+			        	</section>
+			        </section>
+			    </section>
+			  
+			  </div>
+		
+		<!-- Add Bonus Modal  -->
+		<div class="modal fade" id="addBonus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		        <h4 class="modal-title" id="myModalLabel">Add Bonus</h4>
+		      </div>
+		      <div class="modal-body" >
+				<div>
+                   	<b>User Name : {{addPointsUser.nm}}</b>
+                </div>
+                <div>
+                   	<b>User ID : {{addPointsUser.uId}}</b>
+                </div>
+                <div>
+                   	<b>Total Points :</b> {{addPointsUser.tp}}
+                </div>
+                <div>
+                   	<b>Bonus Points :</b> <input name="title" type="text" ng-model="addPointsUser.bonus" class="" style="height:1%;width:50%;">
+                </div>
+                <div>
+                   	<b>Transaction Detail :</b> <input name="title" type="text" ng-model="addPointsUser.detail" class="" style="height:1%;width:50%;" >
+                </div>
+		      </div>
+		      <div class="modal-footer">
+		      	<button type="button" class="btn btn-primary" ng-disabled="addPointsUser.bonus != ''" data-toggle="modal" data-target="#confermation" >Save</button>
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		
+		<!-- Add Penalty Model -->
+		<div class="modal fade" id="addPenalty" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		        <h4 class="modal-title" id="myModalLabel">User UnDelete</h4>
+		      </div>
+		      <div class="modal-body" >
+				<div>
+                   	<b>User Name : {{addPointsUser.nm}}</b>
+                </div>
+                <div>
+                   	<b>User ID : {{addPointsUser.uId}}</b>
+                </div>
+                <div>
+                   	<b>Total Points :</b> {{addPointsUser.tp}}
+                </div>
+                <div>
+                   	<b>Penalty Points :</b> <input name="title" type="text" ng-model="addPointsUser.penalty" class="" style="height:1%;width:50%;">
+                </div>
+                <div>
+                   	<b>Transaction Detail :</b> <input name="title" type="text" ng-model="addPointsUser.detail" class="" style="height:1%;width:50%;" >
+                </div>
+		      </div>
+		      <div class="modal-footer">
+		      	<button type="button" class="btn btn-primary" ng-disabled="addPointsUser.penalty != ''" data-toggle="modal" data-target="#confermationPenalty" >Save</button>
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		
+		<!-- Add Bonus Confermataiion Model -->
+		<div class="modal fade" style="background-color: rgba(0, 0, 0, 0.4);" id="confermation" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		        <h4 class="modal-title" id="myModalLabel">Alert</h4>
+		      </div>
+		      <div class="modal-body" >
+		        Are you sure, you want to Proceed?
+		      </div>
+		      <div class="modal-footer">
+		      	<button type="button" class="btn btn-primary" data-ng-click="addBonus(addPointsUser)">Yes</button>
+		        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+		      </div>
+		    </div>
+		  </div>
+		  </div>
+		  
+		  <!-- Add Penalty Confermataiion Model -->
+		<div class="modal fade" style="background-color: rgba(0, 0, 0, 0.4);" id="confermationPenalty" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		        <h4 class="modal-title" id="myModalLabel">Alert</h4>
+		      </div>
+		      <div class="modal-body" >
+		        Are you sure, you want to Proceed?
+		      </div>
+		      <div class="modal-footer">
+		      	<button type="button" class="btn btn-primary" data-ng-click="addPenalty(addPointsUser)">Yes</button>
+		        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+		      </div>
+		    </div>
+		  </div>
+		  </div>
+		
+  </body>
+  
+  </html>

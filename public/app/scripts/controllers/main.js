@@ -1996,7 +1996,168 @@ minibean.controller('EditArticleController',function($scope, $http, $routeParams
 });
 
       
+minibean.controller('ManageSubscriptionsController',function($scope, $http, $routeParams, getAlllLocationsService, getAllSubscriptionService, getAllSubscribedUsersService, sendEmailsToSubscribedUsersService){
+	$scope.pageNumber;
+	$scope.pageSize;
+	var currentPage = 1;
+	var totalPages;
+	$scope.userIds;
+	$scope.title = " ";
+	$scope.gender = " ";
+	$scope.location = " ";
+	$scope.subscription = " ";
+	$scope.isMailSent = false;
+	
+	$scope.allLocations = getAlllLocationsService.getAllLocations.get();
+	$scope.allSubscriptions = getAllSubscriptionService.getAllSubscription.get();
+	
+	
+	$scope.allUsers = getAllSubscribedUsersService.getAllUsers.get({currentPage: currentPage,title: $scope.title,gender: $scope.gender,location: $scope.location,subscription:$scope.subscription},function(response) {
+		totalPages = $scope.allUsers.totalPages;
+		currentPage = $scope.allUsers.currentPage;
+		$scope.pageNumber = $scope.allUsers.currentPage;
+		$scope.pageSize = $scope.allUsers.totalPages;
+		$scope.userIds = $scope.allUsers.ids;
+		if(totalPages == 0) {
+			$scope.pageNumber = 0;
+		}
+	});
+	
+	$scope.searchSubscriptions = function(page) {
+		currentPage = page;
+		$scope.isMailSent = false;
+		if(angular.isUndefined($scope.title) || $scope.title=="") {
+			$scope.title = " ";
+		}
+		if(angular.isUndefined($scope.gender) || $scope.gender=="") {
+			$scope.gender = " ";
+		}
+		if(angular.isUndefined($scope.location) || $scope.location=="") {
+			$scope.location = " ";
+		}
+		if(angular.isUndefined($scope.subscription) || $scope.subscription=="") {
+			$scope.subscription = " ";
+		}
+		$scope.allUsers = getAllSubscribedUsersService.getAllUsers.get({currentPage: currentPage,title: $scope.title,gender: $scope.gender,location: $scope.location,subscription:$scope.subscription},function(response) {
+			totalPages = $scope.allUsers.totalPages;
+			currentPage = $scope.allUsers.currentPage;
+			$scope.pageNumber = $scope.allUsers.currentPage;
+			$scope.pageSize = $scope.allUsers.totalPages;
+			$scope.userIds = $scope.allUsers.ids;
+			if(totalPages == 0) {
+				$scope.pageNumber = 0;
+			}
+		});
+		
+		
+	}
+	
+	$scope.sendEmails = function() {
+		sendEmailsToSubscribedUsersService.sendEmailTo.get({userIds : $scope.userIds},function(response){
+			console.log('success');
+			$scope.isMailSent = true;
+		});
+	}
+	
+	$scope.onNext = function() {
+		if(currentPage < totalPages) {
+			currentPage++;
+			$scope.searchSubscriptions(currentPage);
+		}
+	};
+	$scope.onPrev = function() {
+		if(currentPage > 1) {
+			currentPage--;
+			$scope.searchSubscriptions(currentPage);
+		}
+	};
+	
+});
 
+minibean.service('getAlllLocationsService',function($resource){
+    this.getAllLocations = $resource(
+            '/getAllLocations',
+            {alt:'json',callback:'JSON_CALLBACK'},
+            {
+                get: {method:'get',isArray:true}
+            }
+    );
+});
 
+minibean.service('getAllSubscriptionService',function($resource){
+    this.getAllSubscription = $resource(
+            '/getAllSubscription',
+            {alt:'json',callback:'JSON_CALLBACK'},
+            {
+                get: {method:'get',isArray:true}
+            }
+    );
+});
 
+minibean.service('getAllSubscribedUsersService',function($resource){
+    this.getAllUsers = $resource(
+            '/getAllSubscribedUsers/:currentPage/:title/:gender/:location/:subscription',
+            {alt:'json',callback:'JSON_CALLBACK'},
+            {
+                get: {method:'get'}
+            }
+    );
+});
+
+minibean.service('sendEmailsToSubscribedUsersService',function($resource){
+    this.sendEmailTo = $resource(
+            '/sendEmailsToSubscribedUsers/:userIds',
+            {alt:'json',callback:'JSON_CALLBACK'},
+            {
+                get: {method:'get'}
+            }
+    );
+});
+
+////////////// Manage Game Account //////////////////
+
+minibean.service('getUserGameAccountService',function($resource){
+    this.getAllUsers = $resource(
+            '/getGameAccountAllUsers',
+            {alt:'json',callback:'JSON_CALLBACK'},
+            {
+                get: {method:'get',isArray:true}
+            }
+    );
+});
+
+minibean.controller('ManageGameAccountController',function($scope, $http, $routeParams, getUserGameAccountService){
+	$scope.pageNumber;
+	$scope.pageSize;
+	var currentPage = 1;
+	var totalPages;
+	$scope.userIds;
+	
+	$scope.allUsers = getUserGameAccountService.getAllUsers.get(function(response) {
+		console.log(response);
+		if(totalPages == 0) {
+			$scope.pageNumber = 0;
+		}
+	});
+	
+	$scope.setUserData = function(user) {
+		$scope.addPointsUser = user;
+	}
+	
+	$scope.addBonus = function(user) {
+		console.log(user);
+		$http.post('/addbonus', user).success(function(data){
+			$('#addBonus').modal('hide');
+		}).error(function(data, status, headers, config) {
+		});
+	}
+	
+	$scope.addPenalty = function(user) {
+		console.log(user);
+		$http.post('/addPenalty', user).success(function(data){
+			$('#addPenalty').modal('hide');
+		}).error(function(data, status, headers, config) {
+		});
+	}
+});
 

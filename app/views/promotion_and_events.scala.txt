@@ -1,0 +1,7 @@
+@(name: String, email: String)Hi @name, 
+
+
+	Promotion and Events @name.
+
+Le saluda,
+El equipo de PlayAuthenticate.
