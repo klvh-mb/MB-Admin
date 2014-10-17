@@ -1,16 +1,3 @@
-@charset "utf-8";
-body {font-family:'VarelaRegular'; margin:0; padding:0; font-size:13px;}
-img {border:none;}
-:focus, a{outline:none;}
-ul{padding:0; margin:0;}
-li{list-style-type:none;}
-p{line-height:18px; padding:0; margin:0;}
-a{text-decoration:none; cursor:pointer; color:#5686ba; outline:none;}
-a:focus {outline:none; outline-style:none;}
-a:hover{text-decoration:none; color:#4473A6;}
-h1, h2, h3, h4, h5, h6{padding:0; margin:0;}
-h1, h2, h3, h4, h5, h6{font-weight:normal;}
-
 /*--------------------------------------- Fonts : Start */
 /*Museo sans*/
 @font-face {
