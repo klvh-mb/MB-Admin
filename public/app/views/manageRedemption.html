@@ -33,7 +33,7 @@
 			                            <td style="border: 1px solid;border-color: rgb(209, 205, 200);">
 				                            <div>
 				                            	<b>User Name : {{user.nm}}</b>
-				                            	<button class="margin-none pull-right" ng-click="setResult(user)"data-toggle="modal" data-target="#confermation" >Confirm</button>
+				                            	<button ng-show="user.rs == 'InProgress'"class="margin-none pull-right" ng-click="setResult(user)"data-toggle="modal" data-target="#confermation" >Confirm</button>
 				                            </div>
 				                            <div>
 				                            	<b>User ID : {{user.uId}}</b>
