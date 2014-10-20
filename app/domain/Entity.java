@@ -6,6 +6,8 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Embedded;
 import javax.persistence.MappedSuperclass;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
 
@@ -38,10 +40,12 @@ public class Entity
     this.auditFields.setUpdatedDate(updatedDate);
   }
   
+  @JsonIgnore
   public Date getCreatedDate() {
 	  return this.auditFields.getCreatedDate();
   }
   
+  @JsonIgnore
   public Date getUpdatedDate() {
 	  return this.auditFields.getUpdatedDate();
   }

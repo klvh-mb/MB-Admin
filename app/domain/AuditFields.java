@@ -6,6 +6,8 @@ import javax.persistence.Embeddable;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 @Embeddable
 public class AuditFields {
 	private String createdBy;
@@ -35,6 +37,7 @@ public class AuditFields {
 		return createdDate;
 	}
 	
+	@JsonIgnore
 	public Date getUpdatedDate() {
 		return updatedDate;
 	}
