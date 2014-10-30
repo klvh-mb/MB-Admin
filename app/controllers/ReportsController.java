@@ -36,8 +36,8 @@ import viewmodel.PostVM;
 import viewmodel.ReportedObjectVM;
 import viewmodel.SubscriptionVM;
 import viewmodel.UserVM;
+import domain.ReportType;
 import domain.SocialObjectType;
-import domain.categoryType;
 import email.EDMUtility;
 
 public class ReportsController extends Controller {
@@ -196,8 +196,8 @@ public class ReportsController extends Controller {
 		for (Object[] d:deletedInfos) {
 			comment = Comment.findById(((BigInteger)d[6]).longValue());
 			DeletedInfo deletedInfo = new DeletedInfo();
-			deletedInfo.setCategory(categoryType.valueOf(d[2].toString()));
-			deletedInfo.Comment = d[1].toString();
+			deletedInfo.setReportType(ReportType.valueOf(d[2].toString()));
+			deletedInfo.comment = d[1].toString();
 			deletedInfo.setObjectType(SocialObjectType.valueOf(d[3].toString()));
 			deletedInfo.id = ((BigInteger)d[0]).longValue();
 			deletedInfo.socialObjectID = ((BigInteger)d[6]).longValue();
@@ -403,8 +403,8 @@ public class ReportsController extends Controller {
 		for (Object[] d:deletedInfos) {
 			comment = Comment.findById(((BigInteger)d[6]).longValue());
 			DeletedInfo deletedInfo = new DeletedInfo();
-			deletedInfo.setCategory(categoryType.valueOf(d[2].toString()));
-			deletedInfo.Comment = d[1].toString();
+			deletedInfo.setReportType(ReportType.valueOf(d[2].toString()));
+			deletedInfo.comment = d[1].toString();
 			deletedInfo.setObjectType(SocialObjectType.valueOf(d[3].toString()));
 			deletedInfo.id = ((BigInteger)d[0]).longValue();
 			deletedInfo.socialObjectID = ((BigInteger)d[6]).longValue();

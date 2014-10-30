@@ -16,8 +16,8 @@ import javax.persistence.TemporalType;
 
 import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
+import domain.ReportType;
 import domain.SocialObjectType;
-import domain.categoryType;
 
 @Entity
 public class DeletedInfo {
@@ -31,11 +31,10 @@ public class DeletedInfo {
 	
 	public Long socialObjectID;
 
-	public String Comment;
-	
+	public String comment;
 	
 	@Enumerated(EnumType.STRING)
-	public categoryType category;
+	public ReportType reportType;
 	
 	public String reportedBy;
 	
@@ -47,8 +46,8 @@ public class DeletedInfo {
 	}
 	
 	public DeletedInfo(ReportedObject reportedObject) {
-		this.Comment = reportedObject.Comment;
-		this.category = reportedObject.category;
+		this.comment = reportedObject.comment;
+		this.reportType = reportedObject.reportType;
 		this.objectType = reportedObject.objectType;
 		this.reportedBy = reportedObject.reportedBy;
 		this.reportedDate = reportedObject.reportedDate;
@@ -81,19 +80,19 @@ public class DeletedInfo {
 	}
 
 	public String getComment() {
-		return Comment;
+		return comment;
 	}
 
 	public void setComment(String comment) {
-		Comment = comment;
+	    this.comment = comment;
 	}
 
-	public categoryType getCategory() {
-		return category;
+	public ReportType getReportType() {
+		return reportType;
 	}
 
-	public void setCategory(categoryType category) {
-		this.category = category;
+	public void setReportType(ReportType reportType) {
+		this.reportType = reportType;
 	}
 
 	public String getReportedBy() {

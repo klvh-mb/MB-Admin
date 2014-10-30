@@ -2,13 +2,7 @@ package viewmodel;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import models.Community;
 import models.Post;
@@ -16,20 +10,15 @@ import models.Comment;
 import models.ReportedObject;
 import models.Resource;
 import models.User;
-import models.SocialObject;
 import models.UserChild;
-import domain.categoryType;
-import domain.SocialObjectType;
-import domain.Entity;
-import domain.AuditFields;
 
 public class ReportedObjectVM {
 
 	public Long id;
 	public String objectType;
 	public Long socialObjectID;
-	public String Comment;
-	public String category;
+	public String comment;
+	public String reportType;
 	public String reportedBy;
 	public String reportedDate;
 	public String postTitle;
@@ -53,8 +42,8 @@ public class ReportedObjectVM {
 
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 	public ReportedObjectVM(ReportedObject reportedObject,Post post) {
-		this.category = reportedObject.category.name();
-		this.Comment = reportedObject.Comment;
+		this.reportType = reportedObject.reportType.name();
+		this.comment = reportedObject.comment;
 		this.objectType = reportedObject.objectType.name();
 		this.id = reportedObject.id;
 		this.socialObjectID = reportedObject.socialObjectID;
@@ -72,8 +61,8 @@ public class ReportedObjectVM {
 	}
 	
 	public ReportedObjectVM(ReportedObject reportedObject,Comment comment) {
-		this.category = reportedObject.category.name();
-		this.Comment = reportedObject.Comment;
+		this.reportType = reportedObject.reportType.name();
+		this.comment = reportedObject.comment;
 		this.objectType = reportedObject.objectType.name();
 		this.id = reportedObject.id;
 		this.socialObjectID = reportedObject.socialObjectID;
@@ -91,8 +80,8 @@ public class ReportedObjectVM {
 	}
 	
 	public ReportedObjectVM(ReportedObject reportedObject,Community community) {
-		this.category = reportedObject.category.name();
-		this.Comment = reportedObject.Comment;
+		this.reportType = reportedObject.reportType.name();
+		this.comment = reportedObject.comment;
 		this.objectType = reportedObject.objectType.name();
 		this.id = reportedObject.id;
 		this.socialObjectID = reportedObject.socialObjectID;
@@ -116,8 +105,8 @@ public class ReportedObjectVM {
 	}
 	
 	public ReportedObjectVM(ReportedObject reportedObject,User user) {
-		this.category = reportedObject.category.name();
-		this.Comment = reportedObject.Comment;
+		this.reportType = reportedObject.reportType.name();
+		this.comment = reportedObject.comment;
 		this.objectType = reportedObject.objectType.name();
 		this.id = reportedObject.id;
 		this.socialObjectID = reportedObject.socialObjectID;
@@ -162,13 +151,13 @@ public class ReportedObjectVM {
 	}
 
 
-	public String getCategory() {
-		return category;
+	public String getReportType() {
+		return reportType;
 	}
 
 
-	public void setCategory(String category) {
-		this.category = category;
+	public void setReportType(String reportType) {
+		this.reportType = reportType;
 	}
 
 	public Long getId() {
@@ -188,11 +177,11 @@ public class ReportedObjectVM {
 	}
 
 	public String getComment() {
-		return Comment;
+		return comment;
 	}
 
 	public void setComment(String comment) {
-		Comment = comment;
+	    this.comment = comment;
 	}
 
 	public String getReportedBy() {

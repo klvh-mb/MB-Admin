@@ -8,7 +8,6 @@ import models.Community;
 import models.DeletedInfo;
 import models.Post;
 import models.Comment;
-import models.ReportedObject;
 import models.Resource;
 import models.User;
 import models.UserChild;
@@ -18,8 +17,8 @@ public class DeletedInfoVM {
 	public Long id;
 	public String objectType;
 	public Long socialObjectID;
-	public String Comment;
-	public String category;
+	public String comment;
+	public String reportType;
 	public String reportedBy;
 	public String reportedDate;
 	public String postTitle;
@@ -44,8 +43,8 @@ public class DeletedInfoVM {
 
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 	public DeletedInfoVM(DeletedInfo deletedInfo,Post post) {
-		this.category = deletedInfo.category.name();
-		this.Comment = deletedInfo.Comment;
+		this.reportType = deletedInfo.reportType.name();
+		this.comment = deletedInfo.comment;
 		if(post.objectType != null) {
 			this.objectType = deletedInfo.objectType.name();
 		}
@@ -66,8 +65,8 @@ public class DeletedInfoVM {
 	}
 	
 	public DeletedInfoVM(DeletedInfo deletedInfo,Comment comment) {
-		this.category = deletedInfo.category.name();
-		this.Comment = deletedInfo.Comment;
+		this.reportType = deletedInfo.reportType.name();
+		this.comment = deletedInfo.comment;
 		if(comment.objectType != null) {
 			this.objectType = deletedInfo.objectType.name();
 		}
@@ -87,8 +86,8 @@ public class DeletedInfoVM {
 	}
 	
 	public DeletedInfoVM(DeletedInfo deletedInfo,Community community) {
-		this.category = deletedInfo.category.name();
-		this.Comment = deletedInfo.Comment;
+		this.reportType = deletedInfo.reportType.name();
+		this.comment = deletedInfo.comment;
 		this.objectType = deletedInfo.objectType.name();
 		this.id = deletedInfo.id;
 		this.socialObjectID = deletedInfo.socialObjectID;
@@ -111,8 +110,8 @@ public class DeletedInfoVM {
 	}
 	
 	public DeletedInfoVM(DeletedInfo deletedInfo,User user) {
-		this.category = deletedInfo.category.name();
-		this.Comment = deletedInfo.Comment;
+		this.reportType = deletedInfo.reportType.name();
+		this.comment = deletedInfo.comment;
 		this.objectType = deletedInfo.objectType.name();
 		this.id = deletedInfo.id;
 		this.socialObjectID = deletedInfo.socialObjectID;
@@ -157,13 +156,13 @@ public class DeletedInfoVM {
 	}
 
 
-	public String getCategory() {
-		return category;
+	public String getReportType() {
+		return reportType;
 	}
 
 
-	public void setCategory(String category) {
-		this.category = category;
+	public void setReportType(String reportType) {
+		this.reportType = reportType;
 	}
 
 	public Long getId() {
@@ -183,11 +182,11 @@ public class DeletedInfoVM {
 	}
 
 	public String getComment() {
-		return Comment;
+		return comment;
 	}
 
 	public void setComment(String comment) {
-		Comment = comment;
+		this.comment = comment;
 	}
 
 	public String getReportedBy() {
