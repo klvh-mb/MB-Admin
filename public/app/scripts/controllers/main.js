@@ -100,7 +100,7 @@ minibean.service('articleCategoryService',function($resource){
 
 minibean.service('allArticlesService',function($resource){
     this.AllArticles = $resource(
-            '/get-all-Articles',
+            '/get-all-Articles/:id/:name',
             {alt:'json',callback:'JSON_CALLBACK'},
             {
                 get: {method:'get' ,isArray:true}
@@ -139,8 +139,12 @@ minibean.service('deleteArticleService',function($resource){
 });
 
 
-minibean.controller('ShowArticleController',function($scope, $modal, deleteArticleService, allUsersService, allArticlesService, getDescriptionService){
-    $scope.result = allArticlesService.AllArticles.get();
+
+minibean.controller('ShowArticleController',function($scope, $modal, deleteArticleService, allUsersService, allArticlesService, getDescriptionService, logoutService){
+	$scope.searchById = " ";
+    $scope.searchByName = " ";
+    
+	$scope.result = allArticlesService.AllArticles.get({id:$scope.searchById,name:$scope.searchByName});
     
     //$scope.userResult = allUsersService.AllUsers.get();
     
@@ -154,6 +158,21 @@ minibean.controller('ShowArticleController',function($scope, $modal, deleteArtic
         
       };
 
+      $scope.searchArticles = function(searchById,searchByName) {
+    	  $scope.searchById = searchById;
+    	  $scope.searchByName = searchByName;
+    	  
+    	  if(angular.isUndefined($scope.searchById) || $scope.searchById=="") {
+  			$scope.searchById = " ";
+  		  }
+    	  
+    	  if(angular.isUndefined($scope.searchByName) || $scope.searchByName=="") {
+    			$scope.searchByName = " ";
+    	  }
+    	  
+    	  $scope.result = allArticlesService.AllArticles.get({id:$scope.searchById,name:$scope.searchByName});
+      };
+      
       $scope.deleteArticle = function (id){
           deleteArticleService.DeleteArticle.get({id :id}, function(data){
               $('#myModal').modal('hide');
@@ -2053,7 +2072,7 @@ minibean.controller('ManageSubscriptionsController',function($scope, $http, $rou
 	}
 	
 	$scope.sendEmails = function() {
-		sendEmailsToSubscribedUsersService.sendEmailTo.get({userIds : $scope.userIds},function(response){
+		sendEmailsToSubscribedUsersService.sendEmailTo.get({userIds : $scope.userIds,subscription: $scope.subscription},function(response){
 			console.log('success');
 			$scope.isMailSent = true;
 		});
@@ -2106,7 +2125,7 @@ minibean.service('getAllSubscribedUsersService',function($resource){
 
 minibean.service('sendEmailsToSubscribedUsersService',function($resource){
     this.sendEmailTo = $resource(
-            '/sendEmailsToSubscribedUsers/:userIds',
+            '/sendEmailsToSubscribedUsers/:userIds/:subscription',
             {alt:'json',callback:'JSON_CALLBACK'},
             {
                 get: {method:'get'}
@@ -2201,3 +2220,37 @@ minibean.controller('ManageRedemptionController',function($scope, $http, $routeP
 	}
 	
 });
+
+minibean.controller('ManagePhotoUploadController',function($scope, $http, $routeParams, $upload){
+
+	$scope.formData = {};
+	$scope.selectedFiles =[];
+	$scope.isUpload = false;
+	$scope.onFileSelect = function($files) {
+		$scope.selectedFiles = $files;
+		$scope.formData.photo = 'cover-photo';
+	}
+	
+	$scope.uploadPhoto = function() {
+		
+		$upload.upload({
+			url: '/photoUpload',
+			method: 'POST',
+			file: $scope.selectedFiles[0],
+			data: $scope.formData,
+			fileFormDataName: 'cover-photo'
+		}).progress(function(evt) {
+			
+	    }).success(function(data, status, headers, config) {
+	    	$scope.path = data.URL;
+	    	$scope.isUpload = true;
+	    }).error(function(data, status, headers, config) {
+	    	
+	    });
+		
+	}
+	
+	
+});
+
+

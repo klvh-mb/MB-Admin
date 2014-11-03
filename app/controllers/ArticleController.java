@@ -44,6 +44,10 @@ public class ArticleController extends Controller {
 
     @Transactional
     public static Result addArticle() {
+    	final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
         Form<Article> articleForm = DynamicForm.form(Article.class).bindFromRequest();
         DynamicForm form = DynamicForm.form().bindFromRequest();
         Long category_id;
@@ -97,6 +101,10 @@ public class ArticleController extends Controller {
     
     @Transactional
     public static Result updateArticle() {
+    	final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
         Form<Article> articleForm = DynamicForm.form(Article.class).bindFromRequest();
         DynamicForm form = DynamicForm.form().bindFromRequest();
         
@@ -121,6 +129,10 @@ public class ArticleController extends Controller {
 
    @Transactional
     public static Result getAllDistricts() {
+	   final String value = session().get("NAME");
+       if (value == null) {
+       	return ok(views.html.login.render());
+       }
         //List<Location> locations = Location.getHongKongDistricts();  // TODO
         List<Location> locations = Location.getHongKongCityRegionsDistricts();
         
@@ -134,6 +146,10 @@ public class ArticleController extends Controller {
    
    @Transactional
    public static Result getAllUsers() {
+	   final String value = session().get("NAME");
+       if (value == null) {
+       	return ok(views.html.login.render());
+       }
        //List<Location> locations = Location.getHongKongDistricts();  // TODO
        List<User> users = UserService.getAllUsers();
                
@@ -147,6 +163,10 @@ public class ArticleController extends Controller {
    }   
     @Transactional
     public static Result getAllArticleCategory() {
+    	final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
         List<ArticleCategory> articleCategorys = ArticleCategory.getAllCategory();
         
         List<ArticleCategoryVM> articleCategoryVMs = new ArrayList<>();
@@ -158,8 +178,12 @@ public class ArticleController extends Controller {
     }
     
     @Transactional
-    public static Result getAllArticles() {
-        List<Article> allArticles = Article.getAllArticles();
+    public static Result getAllArticles(String id,String name) {
+    	final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
+        List<Article> allArticles = Article.getAllArticles(id,name);
         List<ArticleVM> listOfArticles = new ArrayList<>();
         for (Article article:allArticles) {
             ArticleVM vm = new ArticleVM(article.category,
@@ -173,6 +197,10 @@ public class ArticleController extends Controller {
     
     @Transactional
     public static Result getDescriptionOdArticle(Long art_id) {
+    	final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
         Article article = Article.findById(art_id);
         Map<String, String> description = new HashMap<>();
         description.put("description", article.description);
@@ -181,23 +209,35 @@ public class ArticleController extends Controller {
     
     @Transactional
     public static Result deleteArticle(Long art_id) {
+    	final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
         Article.deleteByID(art_id);
         return ok();
     }
     
     @Transactional
     public static Result infoArticle(Long art_id) {
+    	final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
         Article article = Article.findById(art_id);
         return ok(Json.toJson(article));
     }
     
     @Transactional
     public static Result uploadImage() {
+    	final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
         FilePart picture = request().body().asMultipartFormData().getFile("url-photo0");
         String fileName = picture.getFilename();
         logger.underlyingLogger().info("uploadImage. fileName=" + fileName);
 
-        DateTime now = new DateTime();
+        DateTime  now = new DateTime();
         File file = picture.getFile();
         try {
             String imagePath = getImagePath(now, fileName);

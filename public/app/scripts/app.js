@@ -21,6 +21,9 @@ angular.module('minibean', [
       .when('/', {
         templateUrl: '/assets/app/views/home.html'
       })
+      .when('/manageArticles',{
+    	templateUrl: '/assets/app/views/home.html'
+      })	  
       .when('/article/id/:id',{
     	templateUrl: '/assets/app/views/articlePage.html',
     	controller : 'ViewArticleController'  
@@ -76,6 +79,10 @@ angular.module('minibean', [
       .when('/manageSubscriptions',{
     	templateUrl: '/assets/app/views/manageSubscription.html',
     	controller : 'ManageSubscriptionsController'  
+      })
+      .when('/managePhotoUpload',{
+    	templateUrl: '/assets/app/views/managePhotoUpload.html',
+    	controller : 'ManagePhotoUploadController'  
       })
       .when('/manageGameAccount',{
     	templateUrl: '/assets/app/views/manageGameAccount.html',

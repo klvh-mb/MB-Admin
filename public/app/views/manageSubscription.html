@@ -1,3 +1,16 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head>
+ 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Titillium+Web' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Rationale' rel='stylesheet' type='text/css'>
+	<link href="../assets/app/custom-css/style-admin.css" rel="stylesheet" type="text/css" />
+	<link href="../assets/app/custom-css/form-element-style.css" rel="stylesheet" type="text/css" /> <!-CSS sheet for designers form element->
+	<link href="../assets/app/custom-css/main-syle.css" rel="stylesheet" type="text/css" />
+	<link href="../assets/app/custom-css/jquery.jscrollpane.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="../assets/app/bower_components/angular-bootstrap-datetimepicker/src/css/datetimepicker.css"></script>
+	<script type="text/javascript" src="../assets/app/bower_components/angular-bootstrap-datetimepicker/src/js/datetimepicker.js"></script>
 <ul class="nav nav-tabs" role="tablist" id="myTab">
 	  <li><a href="/#/" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Articles</a></li>
 	  <li><a href="/#/manageAnnouncement" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Announcements</a></li>
@@ -10,9 +23,12 @@
 	  <li class="active"><a href="/#/manageSubscriptions" role="tab" data-toggle="tab" style="cursor: pointer;">Subscriptions</a></li>
 	  <li><a href="/#/manageGameAccount" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Game Account</a></li>
 		  <li><a href="/#/manageRedemption" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Redemption</a></li>
-</ul>
+		  <li><a href="/#/managePhotoUpload" role="tab" data-toggle="tab" style="cursor: pointer;">Photo Upload</a></li>
+	</ul>
+</head>
 
-<div ng-init="searchSubscriptions(1)">
+<body ng-init="searchSubscriptions(1)">
+	<form action="/logout" method="get"><input type="submit" value="logout" style="margin-left: 92%;"></form>
    <!--container begin-->
     <section id="container">
     	<section class="contentpanel">
@@ -99,4 +115,6 @@
     </section>
     <!--container end-->
   </div>
-</div>
+  
+  </body>
+  </html>

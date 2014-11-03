@@ -10,12 +10,14 @@ GET     /favicon.ico                controllers.Assets.at(path="/public", file="
 
 # Home page
 GET     /                           controllers.Application.index
+POST	/							controllers.Application.login
+GET		/logout						controllers.Application.logout
 POST	/createArticle				controllers.ArticleController.addArticle
 POST	/editArticle				controllers.ArticleController.updateArticle
 
 GET     /getAllDistricts            controllers.ArticleController.getAllDistricts
 GET		/getAllArticleCategory		controllers.ArticleController.getAllArticleCategory
-GET     /get-all-Articles			controllers.ArticleController.getAllArticles
+GET     /get-all-Articles/:id/:name			controllers.ArticleController.getAllArticles(id:String,name:String)
 GET		/getDescriptionOdArticle/:id  	controllers.ArticleController.getDescriptionOdArticle(id :Long)
 GET		/deleteArticle/:id			controllers.ArticleController.deleteArticle(id :Long)
 GET		/Article/:id				controllers.ArticleController.infoArticle(id :Long)
@@ -23,7 +25,7 @@ GET		/Article/:id				controllers.ArticleController.infoArticle(id :Long)
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 
-POST		/image/article/upload				controllers.ArticleController.uploadImage()
+POST		/image/article/upload				controllers.ArticleController.uploadImage
 POST		/saveAnnouncement		controllers.AnnouncementController.saveAnnouncement
 POST		/updateAnnouncement		controllers.AnnouncementController.updateAnnouncement
 
@@ -85,10 +87,5 @@ GET 	/image/get-post-image-by-id/:id 	controllers.ReportsController.getPostImage
 GET		/getAllLocations						controllers.ReportsController.getAllLocations
 GET		/getAllSubscription						controllers.ReportsController.getAllSubscription
 GET		/getAllSubscribedUsers/:currentPage/:title/:gender/:location/:subscription		controllers.ReportsController.getAllSubscribedUsers(currentPage: Integer,title: String,gender: String,location: String,subscription: String)
-GET		/sendEmailsToSubscribedUsers/:userIds	controllers.ReportsController.sendEmailsToSubscribedUsers(userIds: String)
-
-#Game Account
-GET		/getGameAccountAllUsers					controllers.ReportsController.getGameAccountAllUsers
-POST	/addbonus								controllers.ReportsController.addBonus
-POST	/addPenalty								controllers.ReportsController.addPenalty
-
+GET		/sendEmailsToSubscribedUsers/:userIds/:subscription		controllers.ReportsController.sendEmailsToSubscribedUsers(userIds: String,subscription: String)
+POST	/photoUpload							controllers.ReportsController.photoUpload

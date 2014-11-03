@@ -1,7 +1,15 @@
 package email;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URLEncoder;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 import models.Subscription;
 import models.User;
@@ -13,8 +21,6 @@ import akka.actor.Cancellable;
 import com.feth.play.module.mail.Mailer;
 import com.feth.play.module.mail.Mailer.Mail;
 import com.feth.play.module.mail.Mailer.Mail.Body;
-import com.typesafe.plugin.MailerAPI;
-import com.typesafe.plugin.MailerPlugin;
 
 public class EDMUtility {
 	
@@ -28,17 +34,23 @@ public class EDMUtility {
 	    //final String url = routes.Signup.verify(token).absoluteURL(ctx.request(), isSecure);
         
 		System.out.println("User ::: "+user.name+" ::: "+user.email);
-		
+		String url = "localhost:9000"+'/'+"unsubscribe"+"/";
+		try {
+			url = url.concat(EDHelper.doEncryption("userid:"+user.id+",subid:"+subscription.id));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 		final String text = getEmailTemplate(
 				subscription.HTMLtemplate,
-				user.name, user.email);
+				user.name, user.email,url);
 		
 		final String html = getEmailTemplate(
 				subscription.TXTtemplate,
-				user.name, user.email);
+				user.name, user.email,url);
 
-		Body body =  new Body(text, html);
-		
+		Body body =  new Body(html, text);
+		System.out.println("........................"+url);
 		sendMail(subscription.name, body, user.email);
 	}
 
@@ -71,7 +83,7 @@ public class EDMUtility {
 	}*/
 	
 	protected String getEmailTemplate(final String template,
-			final String name, final String email) {
+			final String name, final String email,final String url) {
 		Class<?> cls = null;
 		String ret = null;
 		try {
@@ -92,8 +104,8 @@ public class EDMUtility {
 		if (cls != null) {
 			Method htmlRender = null;
 			try {
-				htmlRender = cls.getMethod("render", String.class, String.class);
-				ret = htmlRender.invoke(null, name, email)
+				htmlRender = cls.getMethod("render", String.class, String.class,String.class);
+				ret = htmlRender.invoke(null, name, email,url)
 						.toString();
 
 			} catch (NoSuchMethodException e) {

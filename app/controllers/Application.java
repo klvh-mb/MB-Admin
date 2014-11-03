@@ -1,8 +1,14 @@
 package controllers;
 
 
+import javax.mail.Session;
+import javax.persistence.NoResultException;
+
+import models.AdminUser;
+import play.data.DynamicForm;
 import play.db.jpa.Transactional;
 import play.mvc.Controller;
+import play.mvc.Http;
 import play.mvc.Result;
 public class Application extends Controller {
   
@@ -18,9 +24,36 @@ public class Application extends Controller {
 	
 	@Transactional
 	public static Result index() {
+		final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
 		return ok(views.html.home.render());
 	}
 
+	@Transactional
+	public static Result login() {
+		DynamicForm form = DynamicForm.form().bindFromRequest();
+		try {
+			AdminUser adminUser = AdminUser.doLogin(form.get("name"),form.get("pass"));
+			
+			if(adminUser != null) {
+				session().put("NAME", adminUser.getUserName());
+				return ok(views.html.home.render());
+			}
+		
+		} catch(NoResultException e) { }
+		System.out.println("SESSION VALUE   "+session().get("NAME"));
+		return ok(views.html.login.render());
+	}
+	
+	@Transactional
+	public static Result logout() {
+		System.out.println("SESSION VALUE   "+session().get("NAME"));
+		session().clear();
+		return ok(views.html.login.render());
+	}	
+	
 	/*public static User getLocalUser(final Session session) {
 		final AuthUser currentAuthUser = PlayAuthenticate.getUser(session);
 		final User localUser = User.findByAuthUserIdentity(currentAuthUser);

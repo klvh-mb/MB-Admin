@@ -22,9 +22,15 @@ public class AnnouncementController extends Controller{
 
 	@Transactional
 	public static Result getAnnouncements(String title,int currentPage) {
+		System.out.println("SESSION VALUE   "+session().get("NAME"));
+		
+		final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
 		long totalPages = Announcement.getAllAnnouncementsTotal(title, 10);
 		List<Announcement> allAnnouncements = Announcement.getAllAnnouncements(title, currentPage, 10, totalPages);
-		
+			
 		List<AnnouncementVM> listOfAnnouncements = new ArrayList<>();
 		for (Announcement announcement:allAnnouncements) {
 			AnnouncementVM vm = new AnnouncementVM(announcement);
@@ -42,6 +48,11 @@ public class AnnouncementController extends Controller{
 	
 	@Transactional
 	public static Result saveAnnouncement() {
+		final String value = session().get("NAME");
+
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
 		DynamicForm form = DynamicForm.form().bindFromRequest();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		Announcement announcement = new Announcement();
@@ -61,6 +72,10 @@ public class AnnouncementController extends Controller{
 	
 	@Transactional
 	public static Result deleteAnnouncement(Long id) {
+		final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
 		Announcement announcement =  Announcement.findById(id);
 		announcement.delete();
 		return ok();
@@ -68,6 +83,10 @@ public class AnnouncementController extends Controller{
 	
 	@Transactional
 	public static Result updateAnnouncement() {
+		final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
 		DynamicForm form = DynamicForm.form().bindFromRequest();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		Announcement announcement = Announcement.findById(Long.parseLong(form.get("id")));
@@ -87,6 +106,10 @@ public class AnnouncementController extends Controller{
 	
 	@Transactional
 	public static Result getAllAnnouncementIcons() {
+		final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
 		List<Icon> icons = Icon.getAllIcons();
 		return ok(Json.toJson(icons));
 	}

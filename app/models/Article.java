@@ -74,9 +74,31 @@ public class Article extends domain.Entity {
     public Location targetLocation;
     
 	@Transactional
-	public static List<Article> getAllArticles() {
-		Query q = JPA.em().createQuery("Select a from Article a order by publishedDate desc");
-		q.setMaxResults(DefaultValues.MAX_ARTICLES_COUNT);
+	public static List<Article> getAllArticles(String id,String name) {
+		String sql= "";
+		if(id.trim().equals("") && name.trim().equals("")) {
+			sql="Select a from Article a order by publishedDate desc";
+		}
+		
+		if(id.trim().equals("") && !name.trim().equals("")) {
+			sql="Select a from Article a where a.name LIKE ?1 order by publishedDate desc";
+		}
+		
+		if(!id.trim().equals("") && name.trim().equals("")) {
+			sql="Select a from Article a where a.id=?2 order by publishedDate desc";
+		}
+		
+		if(!id.trim().equals("") && !name.trim().equals("")) {
+			sql="Select a from Article a where a.name LIKE ?1 and a.id=?2 order by publishedDate desc";
+		}
+		
+		Query q = JPA.em().createQuery(sql);
+		if(!name.trim().equals("")) {
+			q.setParameter(1, "%"+name+"%");
+		}
+		if(!id.trim().equals("")) {
+			q.setParameter(2, Long.parseLong(id));
+		}
 		return (List<Article>)q.getResultList();
 	}
 	

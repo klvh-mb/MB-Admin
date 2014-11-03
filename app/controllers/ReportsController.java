@@ -1,5 +1,8 @@
 package controllers;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
@@ -7,7 +10,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
+
+import net.coobird.thumbnailator.Thumbnails;
+
+import org.apache.commons.io.FileUtils;
+import org.joda.time.DateTime;
 import models.Article;
+import domain.SocialObjectType;
+import email.EDMUtility;
+import models.Announcement;
 import models.ArticleCategory;
 import models.Comment;
 import models.Community;
@@ -20,12 +32,15 @@ import models.ReportedObject;
 import models.Resource;
 import models.Subscription;
 import models.User;
+
+import play.Play;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.db.jpa.Transactional;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Http.MultipartFormData.FilePart;
 import viewmodel.CommentVM;
 import viewmodel.CommunityVM;
 import viewmodel.DeletedInfoVM;
@@ -42,8 +57,16 @@ import email.EDMUtility;
 
 public class ReportsController extends Controller {
 
+	private static final String STORAGE_PATH = Play.application().configuration().getString("storage.path");
+	
 	@Transactional
 	public static Result getReportedPosts(int currentPage) {
+		
+		final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
+		
 		long totalPages = ReportedObject.getAllPostsTotal(3);
 		long size = ReportedObject.getSize();
 		List<ReportedObject> reportedObjects = ReportedObject.getAllReportedPosts(currentPage, 3, totalPages);
@@ -68,6 +91,12 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result deleteReportedObject(Long id,Long postId) {
+		
+		final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
+		
 		Post post = Post.findById(postId);
 		post.deleted = true;
 		post.merge();
@@ -80,6 +109,12 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result getDeletedPosts(int currentPage,String communityId) {
+		
+		final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
+		
 		long totalPages = DeletedInfo.getAllPostsTotal(3,communityId);
 		long size = DeletedInfo.getSize();
 		List<DeletedInfo> deletedInfos = DeletedInfo.getAllDeletedPosts(currentPage, 3, totalPages, communityId);
@@ -104,6 +139,12 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result deletedInfoUnDelete(Long id,Long postId) {
+		
+		final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
+		
 		Post post = Post.findById(postId);
 		post.deleted = false;
 		post.merge();
@@ -112,6 +153,12 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result getAllPosts(int currentPage,String title) {
+		
+		final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
+		
 		long totalPages = Post.getAllPostsTotal(3,title);
 		List<Post> postList = Post.findAllPosts(currentPage, 3, totalPages, title);
 		List<PostVM> postVMs = new ArrayList<>();
@@ -135,6 +182,12 @@ public class ReportsController extends Controller {
 	
 	@Transactional
     public static Result setDeletePost(Long id) {
+		
+		final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
+		
 		Post post = Post.findById(id);
 		post.deleted = true;
 		post.merge();
@@ -144,6 +197,12 @@ public class ReportsController extends Controller {
 	
 	@Transactional
     public static Result setUnDeletePost(Long id) {
+		
+		final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
+		
 		Post post = Post.findById(id);
 		post.deleted = false;
 		post.merge();
@@ -152,6 +211,12 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result getReportedComments(int currentPage) {
+		
+		final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
+		
 		long totalPages = ReportedObject.getAllCommentsTotal(3);
 		long size = ReportedObject.getCommentSize();
 		List<ReportedObject> reportedObjects = ReportedObject.getAllReportedComments(currentPage, 3, totalPages);
@@ -176,6 +241,12 @@ public class ReportsController extends Controller {
 	
 	@Transactional
     public static Result deleteReportedObjectComment(Long id,Long commentId) {
+		
+		final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
+		
 		Comment comment = Comment.findById(commentId);
 		comment.deleted = true;
 		comment.merge();
@@ -188,6 +259,12 @@ public class ReportsController extends Controller {
 	
 	@Transactional
     public static Result getDeletedComments(int currentPage,String communityId) {
+		
+		final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
+		
 		long totalPages = DeletedInfo.getAllCommentsTotal(3,communityId);
 		long size = DeletedInfo.getCommentsSize();
 		List<Object[]> deletedInfos = DeletedInfo.getAllDeletedComments(currentPage, 3, totalPages,communityId);
@@ -220,6 +297,12 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result getAllComments(int currentPage,String title) {
+		
+		final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
+		
 		long totalPages = Comment.getAllCommentsTotal(3,title);
 		List<Comment> commentList = Comment.findAllComments(currentPage, 3, totalPages, title);
 		List<CommentVM> commentVMs = new ArrayList<>();
@@ -260,6 +343,12 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result getReportedQuestions(int currentPage) {
+		
+		final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
+		
 		long totalPages = ReportedObject.getAllQuestionsTotal(3);
 		long size = ReportedObject.getQuestionSize();
 		List<ReportedObject> reportedObjects = ReportedObject.getAllReportedQuestions(currentPage, 3, totalPages);
@@ -296,6 +385,12 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result getDeletedQuestions(int currentPage, String communityId) {
+		
+		final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
+		
 		long totalPages = DeletedInfo.getAllQuestionsTotal(3,communityId);
 		long size = DeletedInfo.getQuestionSize();
 		List<DeletedInfo> deletedInfos = DeletedInfo.getAllDeletedQuestions(currentPage, 3, totalPages, communityId);
@@ -336,6 +431,12 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result getAllQuestions(int currentPage,String title) {
+		
+		final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
+		
 		long totalPages = Post.getAllQuestionsTotal(3,title);
 		List<Post> questionList = Post.findAllQuestions(currentPage, 3, totalPages, title);
 		List<PostVM> questionVMs = new ArrayList<>();
@@ -359,6 +460,12 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result getReportedAnswers(int currentPage) {
+		
+		final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
+		
 		long totalPages = ReportedObject.getAllAnswersTotal(3);
 		long size = ReportedObject.getAnswerSize();
 		List<ReportedObject> reportedObjects = ReportedObject.getAllReportedAnswers(currentPage, 3, totalPages);
@@ -395,6 +502,12 @@ public class ReportsController extends Controller {
 	
 	@Transactional
     public static Result getDeletedAnswers(int currentPage,String communityId) {
+		
+		final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
+		
 		long totalPages = DeletedInfo.getAllAnswersTotal(3,communityId);
 		long size = DeletedInfo.getAnswersSize();
 		List<Object[]> deletedInfos = DeletedInfo.getAllDeletedAnswers(currentPage, 3, totalPages,communityId);
@@ -443,6 +556,12 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result getAllAnswers(int currentPage,String title) {
+		
+		final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
+		
 		long totalPages = Comment.getAllAnswersTotal(3,title);
 		List<Comment> answerList = Comment.findAllAnswers(currentPage, 3, totalPages, title);
 		List<CommentVM> commentVMs = new ArrayList<>();
@@ -466,6 +585,12 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result getReportedCommunities(int currentPage) {
+		
+		final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
+		
 		long totalPages = ReportedObject.getAllCommunitiesTotal(3);
 		long size = ReportedObject.getCommunitySize();
 		List<ReportedObject> reportedObjects = ReportedObject.getAllReportedCommunities(currentPage, 3, totalPages);
@@ -502,6 +627,12 @@ public class ReportsController extends Controller {
 	
 	@Transactional
     public static Result getDeletedCommunities(int currentPage) {
+		
+		final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
+		
 		long totalPages = DeletedInfo.getAllCommunityTotal(3);
 		long size = DeletedInfo.getCommunitySize();
 		List<DeletedInfo> deletedInfos = DeletedInfo.getAllDeletedcommunities(currentPage, 3, totalPages);
@@ -542,6 +673,12 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result getAllCommunities(int currentPage,String title) {
+		
+		final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
+		
 		long totalPages = Community.getAllCommunitiesTotal(3,title);
 		List<Community> communityList = Community.findAllCommunities(currentPage, 3, totalPages, title);
 		List<CommunityVM> communityVMs = new ArrayList<>();
@@ -565,6 +702,12 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result getReportedUsers(int currentPage) {
+		
+		final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
+		
 		long totalPages = ReportedObject.getAllUsersTotal(3);
 		long size = ReportedObject.getUsersSize();
 		List<ReportedObject> reportedObjects = ReportedObject.getAllReportedUsers(currentPage, 3, totalPages);
@@ -601,6 +744,12 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result getDeletedUsers(int currentPage) {
+		
+		final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
+		
 		long totalPages = DeletedInfo.getAllUsersTotal(3);
 		long size = DeletedInfo.getUserSize();
 		List<DeletedInfo> deletedInfos = DeletedInfo.getAllDeletedUsers(currentPage, 3, totalPages);
@@ -641,6 +790,12 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result getAllUsers(int currentPage,String title) {
+		
+		final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
+		
 		long totalPages = User.getAllUsersTotal(3,title);
 		List<User> userList = User.findAllUsers(currentPage, 3, totalPages, title);
 		List<UserVM> userVMs = new ArrayList<>();
@@ -675,6 +830,12 @@ public class ReportsController extends Controller {
 	
 	@Transactional
     public static Result getAllSubscription() {
+		
+		final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
+		
 		List<Subscription> subscriptions = Subscription.getAllSubscription();
 		List<SubscriptionVM> subscriptionVMs = new ArrayList<>();
 		for(Subscription s : subscriptions) {
@@ -686,6 +847,12 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result getAllSubscribedUsers(int currentPage,String title,String gender,String location,String subscription) {
+		
+		final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
+		
 		long totalPages = User.getAllSubscribedUsersTotal(2, title, gender, location, subscription);
 		List<Object[]> userList = User.getAllSubscribedUsers(currentPage, 2, totalPages, title, gender, location, subscription);
 		List<UserVM> userVMs = new ArrayList<>();
@@ -711,20 +878,151 @@ public class ReportsController extends Controller {
 	}
 	
 	@Transactional
-    public static Result sendEmailsToSubscribedUsers(String ids) {
+    public static Result sendEmailsToSubscribedUsers(String ids,String subscription) {
+		
+		final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
+		
+		System.out.println("..........subscription "+subscription);
 		String[] UserIds = ids.split(",");
 		for(String s: UserIds) {
 			User user = User.findById(Long.parseLong(s));
-			List<Long> subscriptionIds = User.getSubscriptionIds(Long.parseLong(s));
-				for(Long id:subscriptionIds) {
-					Subscription sub = Subscription.findById(id);
+			if(subscription.trim().equals("")) {
+				List<Long> subscriptionIds = User.getSubscriptionIds(Long.parseLong(s));
+					for(Long id:subscriptionIds) {
+						Subscription sub = Subscription.findById(id);
+						EDMUtility edmUtility = new EDMUtility();
+						System.out.println("...................."+user.displayName+sub.name);
+						edmUtility.sendMailToUser(user,sub);
+					}
+			}	
+			else {
+					Subscription sub = Subscription.findById(Long.parseLong(subscription));
 					EDMUtility edmUtility = new EDMUtility();
-					System.out.println("...................."+user.displayName+sub.name);
 					edmUtility.sendMailToUser(user,sub);
-				}
+			}
 		}
 		return ok();
 	}
+	
+	@Transactional
+    public static Result photoUpload() {
+		
+		final String value = session().get("NAME");
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
+		
+		DynamicForm form = DynamicForm.form().bindFromRequest();
+		boolean fullSize = Boolean.parseBoolean(form.get("fullSize"));
+		boolean thumbnail = Boolean.parseBoolean(form.get("thumbnail"));
+		boolean miniThumbnail = Boolean.parseBoolean(form.get("miniThumbnail"));
+		boolean mobile = Boolean.parseBoolean(form.get("mobile"));
+		String category = form.get("category");
+		
+		FilePart picture = request().body().asMultipartFormData().getFile("cover-photo");
+        String fileName = picture.getFilename();
+        DateTime  now = new DateTime();
+        File file = picture.getFile();
+        String imagePath;
+        try {
+            imagePath = getImagePath(now, fileName,category);
+            FileUtils.copyFile(file, new File(imagePath));
+        } catch (IOException e) {
+            return status(500);
+        }
+        
+        if(thumbnail == true) {
+        	StringBuffer sb = new StringBuffer(fileName);
+        	sb.insert(fileName.indexOf("."),"_thumbnail" );
+        	String name = sb.toString();
+        	try {
+                String imagePath2 = getImagePath(now, name,category);
+                BufferedImage originalImage = ImageIO.read(file);
+                File file2 = new File(imagePath2);
+                Thumbnails.of(originalImage).size(200, 200).toFile(file2);
+                
+            } catch (IOException e) {
+                return status(500);
+            }
+        }
+        
+        if(miniThumbnail == true) {
+        	StringBuffer sb = new StringBuffer(fileName);
+        	sb.insert(fileName.indexOf("."),"_mini" );
+        	String name = sb.toString();
+        	try {
+                String imagePath2 = getImagePath(now, name,category);
+                BufferedImage originalImage = ImageIO.read(file);
+                File file2 = new File(imagePath2);
+                Thumbnails.of(originalImage).size(150, 150).toFile(file2);
+            } catch (IOException e) {
+                return status(500);
+            }
+        }
+        
+        if(mobile == true) {
+        	StringBuffer sb = new StringBuffer(fileName);
+        	sb.insert(fileName.indexOf("."),"_m" );
+        	String name = sb.toString();
+        	try {
+                String imagePath2 = getImagePath(now, name,category);
+                BufferedImage originalImage = ImageIO.read(file);
+                File file2 = new File(imagePath2);
+                Thumbnails.of(originalImage).size(100, 100).toFile(file2);
+            } catch (IOException e) {
+                return status(500);
+            }
+        	
+        	if(thumbnail == true) {
+        		StringBuffer sb1 = new StringBuffer(fileName);
+            	sb1.insert(fileName.indexOf("."),"_thumbnail_m" );
+            	String name1 = sb1.toString();
+            	try {
+                    String imagePath2 = getImagePath(now, name1,category);
+                    BufferedImage originalImage = ImageIO.read(file);
+                    File file2 = new File(imagePath2);
+                    Thumbnails.of(originalImage).size(80, 80).toFile(file2);
+                } catch (IOException e) {
+                    return status(500);
+                }
+        	}
+        	
+        	if(miniThumbnail == true) {
+        		StringBuffer sb1 = new StringBuffer(fileName);
+            	sb1.insert(fileName.indexOf("."),"_mini_m" );
+            	String name1 = sb1.toString();
+            	try {
+                    String imagePath2 = getImagePath(now, name1,category);
+                    BufferedImage originalImage = ImageIO.read(file);
+                    File file2 = new File(imagePath2);
+                    Thumbnails.of(originalImage).size(50, 50).toFile(file2);
+                } catch (IOException e) {
+                    return status(500);
+                }
+        	}
+        	
+        }
+        
+		Map<String, String> map = new HashMap<>();
+        map.put("URL", imagePath);
+		return ok(Json.toJson(map));
+	}
+	
+	private static String getImagePath(Long year, Long month, Long date, String name, String category) {
+        return STORAGE_PATH  + category + "/" + year + "/" + month + "/" + date + "/" + name;
+    }
+
+    private static String getImagePath(DateTime dateTime, String rawFileName, String category) {
+        return getImagePath(Long.valueOf(dateTime.getYear()), Long.valueOf(dateTime.getMonthOfYear()), Long.valueOf(dateTime.getDayOfMonth()), rawFileName,category);
+    }
+	
+	
+	
+	
+	
 	
 	@Transactional
     public static Result getPostImageById(Long id) {

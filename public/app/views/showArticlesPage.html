@@ -1,4 +1,14 @@
+
 <a href="/#/article/create"><button class="btn btn-primary" ><i class="fa fa-fw  fa-group"></i> Create new Article </button></a>
+<form action="/logout" method="get"><input type="submit" value="logout" style="margin-left: 92%;"></form>
+<div style="margin-left: 25%;">
+	<label>Search By Id</label>
+	<input type="text" ng-model="searchById" ng-keyup="$event.keyCode == 13 ? searchArticles() : null">
+	<label>Search By Name</label>
+	<input type="text" ng-model="searchByName" ng-keyup="$event.keyCode == 13 ? searchArticles() : null">
+	<input name="" type="button" class="" value="Search" ng-click="searchArticles(searchById,searchByName)">
+</div>
+
 
 	<div  data-ng-repeat="article in result"  class="row tm">
 	<div class="col-md-3 col-lg-3"></div>
