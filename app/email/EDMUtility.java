@@ -36,7 +36,7 @@ public class EDMUtility {
 		System.out.println("User ::: "+user.name+" ::: "+user.email);
 		String url = "localhost:9000"+'/'+"unsubscribe"+"/";
 		try {
-			url = url.concat(EDHelper.doEncryption("userid:"+user.id+",subid:"+subscription.id));
+			url = url.concat(EDMHelper.doEncryption("userid:"+user.id+",subid:"+subscription.id));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

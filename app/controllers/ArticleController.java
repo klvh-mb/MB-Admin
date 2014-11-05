@@ -48,6 +48,7 @@ public class ArticleController extends Controller {
         if (value == null) {
         	return ok(views.html.login.render());
         }
+        
         Form<Article> articleForm = DynamicForm.form(Article.class).bindFromRequest();
         DynamicForm form = DynamicForm.form().bindFromRequest();
         Long category_id;
@@ -96,6 +97,7 @@ public class ArticleController extends Controller {
         article.publishedDate = new Date();
         
         article.saveArticle();
+        logger.underlyingLogger().info(value+" saved article ["+article.id+"|"+article.name+"]");
         return ok();
     }
     
@@ -124,6 +126,7 @@ public class ArticleController extends Controller {
         article.category = ac;
         article.description = form.get("description");
         article.updateById();
+        logger.underlyingLogger().info(value+" updated article ["+article.id+"|"+article.name+"]");
         return ok();
     }
 
@@ -228,6 +231,7 @@ public class ArticleController extends Controller {
         	return ok(views.html.login.render());
         }
         Article.deleteByID(art_id);
+        logger.underlyingLogger().info(value+" deleted article ["+art_id+"]");
         return ok();
     }
     
@@ -257,7 +261,7 @@ public class ArticleController extends Controller {
             String imagePath = getImagePath(now, fileName);
             FileUtils.copyFile(file, new File(imagePath));
         } catch (IOException e) {
-            logger.underlyingLogger().error("Error in uploadImage", e);
+            logger.underlyingLogger().error(value+" failed to upload photo", e);
             return status(500);
         }
 
@@ -266,6 +270,7 @@ public class ArticleController extends Controller {
 
         Map<String, String> map = new HashMap<>();
         map.put("URL", imageUrl);
+        logger.underlyingLogger().info(value+" uploaded photo - "+imageUrl);
         return ok(Json.toJson(map));
     }
 

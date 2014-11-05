@@ -19,10 +19,10 @@ import play.mvc.Result;
 import viewmodel.AnnouncementVM;
 
 public class AnnouncementController extends Controller{
-
+    private static final play.api.Logger logger = play.api.Logger.apply(AnnouncementController.class);
+    
 	@Transactional
 	public static Result getAnnouncements(String title,int currentPage) {
-		System.out.println("SESSION VALUE   "+session().get("NAME"));
 		
 		final String value = session().get("NAME");
         if (value == null) {

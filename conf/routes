@@ -17,7 +17,8 @@ POST	/editArticle				controllers.ArticleController.updateArticle
 
 GET     /getAllDistricts            controllers.ArticleController.getAllDistricts
 GET		/getAllArticleCategory		controllers.ArticleController.getAllArticleCategory
-GET     /get-all-Articles/:id/:name			controllers.ArticleController.getAllArticles(id:String,name:String)
+GET     /get-latest-Articles		controllers.ArticleController.getLatestArticles
+GET     /get-Articles/:id/:name     controllers.ArticleController.getArticles(id:String,name:String)
 GET		/getDescriptionOdArticle/:id  	controllers.ArticleController.getDescriptionOdArticle(id :Long)
 GET		/deleteArticle/:id			controllers.ArticleController.deleteArticle(id :Long)
 GET		/Article/:id				controllers.ArticleController.infoArticle(id :Long)

@@ -14,7 +14,7 @@ import javax.crypto.spec.SecretKeySpec;
 import Decoder.BASE64Decoder;
 import Decoder.BASE64Encoder;
 
-public class EDHelper {
+public class EDMHelper {
 	
 	private static String secret_key = "zYzZvDROfx2Rpe2CaMCpew==";
 	

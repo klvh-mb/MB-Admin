@@ -9,15 +9,16 @@ import play.mvc.Controller;
 import play.mvc.Result;
 
 public class Application extends Controller {
-    
-    public static Result getPost(int offset, int limit) {
-    	return ok();// TODO: null check need to be added
-    }
+    private static final play.api.Logger logger = play.api.Logger.apply(Application.class);
     
     public static final String FLASH_MESSAGE_KEY = "message";
 	public static final String FLASH_ERROR_KEY = "error";
 	public static final String USER_ROLE = "user";
-	
+
+	public static Result getPost(int offset, int limit) {
+        return ok();// TODO: null check need to be added
+    }
+    
 	@Transactional
 	public static Result index() {
 		final String value = session().get("NAME");
@@ -30,22 +31,27 @@ public class Application extends Controller {
 	@Transactional
 	public static Result login() {
 		DynamicForm form = DynamicForm.form().bindFromRequest();
+		String name = form.get("name");
+	    String password = form.get("pass");
 		try {
-			AdminUser adminUser = AdminUser.doLogin(form.get("name"),form.get("pass"));
+			AdminUser adminUser = AdminUser.doLogin(name,password);
 			
 			if(adminUser != null) {
 				session().put("NAME", adminUser.getUserName());
+				logger.underlyingLogger().info("Admin user logged in - "+adminUser.getUserName());
 				return ok(views.html.home.render());
+			} else {
+			    logger.underlyingLogger().info("Admin user not exist in - "+name);
 			}
-		
-		} catch(NoResultException e) { }
-		System.out.println("SESSION VALUE   "+session().get("NAME"));
+		} catch(NoResultException e) { 
+		    logger.underlyingLogger().error("Admin user failed to log in - "+name);
+		}
 		return ok(views.html.login.render());
 	}
 	
 	@Transactional
 	public static Result logout() {
-		System.out.println("SESSION VALUE   "+session().get("NAME"));
+	    logger.underlyingLogger().info("Admin user logged out - "+session().get("NAME"));
 		session().clear();
 		return ok(views.html.login.render());
 	}	

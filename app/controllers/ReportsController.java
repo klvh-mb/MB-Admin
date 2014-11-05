@@ -16,11 +16,8 @@ import net.coobird.thumbnailator.Thumbnails;
 
 import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
-import models.Article;
 import domain.SocialObjectType;
 import email.EDMUtility;
-import models.Announcement;
-import models.ArticleCategory;
 import models.Comment;
 import models.Community;
 import models.DeletedInfo;
@@ -35,7 +32,6 @@ import models.User;
 
 import play.Play;
 import play.data.DynamicForm;
-import play.data.Form;
 import play.db.jpa.Transactional;
 import play.libs.Json;
 import play.mvc.Controller;
@@ -52,8 +48,6 @@ import viewmodel.ReportedObjectVM;
 import viewmodel.SubscriptionVM;
 import viewmodel.UserVM;
 import domain.ReportType;
-import domain.SocialObjectType;
-import email.EDMUtility;
 
 public class ReportsController extends Controller {
 
