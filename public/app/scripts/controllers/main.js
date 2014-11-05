@@ -140,7 +140,7 @@ minibean.service('deleteArticleService',function($resource){
 
 
 
-minibean.controller('ShowArticleController',function($scope, $modal, deleteArticleService, allUsersService, allArticlesService, getDescriptionService, logoutService){
+minibean.controller('ShowArticleController',function($scope, $modal, deleteArticleService, allUsersService, allArticlesService, getDescriptionService){
 	$scope.searchById = " ";
     $scope.searchByName = " ";
     
