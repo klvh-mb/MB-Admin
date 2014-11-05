@@ -1,18 +1,14 @@
 package controllers;
 
-
-import javax.mail.Session;
 import javax.persistence.NoResultException;
 
 import models.AdminUser;
 import play.data.DynamicForm;
 import play.db.jpa.Transactional;
 import play.mvc.Controller;
-import play.mvc.Http;
 import play.mvc.Result;
+
 public class Application extends Controller {
-  
-   
     
     public static Result getPost(int offset, int limit) {
     	return ok();// TODO: null check need to be added
@@ -182,5 +178,4 @@ public class Application extends Controller {
 		System.out.println(allPosts.getTotalCount());
     	return ok();
     }*/
-  
 }

@@ -99,8 +99,15 @@ minibean.service('articleCategoryService',function($resource){
 
 
 minibean.service('allArticlesService',function($resource){
-    this.AllArticles = $resource(
-            '/get-all-Articles/:id/:name',
+    this.LatestArticles = $resource(
+            '/get-latest-Articles',
+            {alt:'json',callback:'JSON_CALLBACK'},
+            {
+                get: {method:'get' ,isArray:true}
+            }
+    );
+    this.Articles = $resource(
+            '/get-Articles/:id/:name',
             {alt:'json',callback:'JSON_CALLBACK'},
             {
                 get: {method:'get' ,isArray:true}
@@ -138,13 +145,11 @@ minibean.service('deleteArticleService',function($resource){
     );
 });
 
-
-
-minibean.controller('ShowArticleController',function($scope, $modal, deleteArticleService, allUsersService, allArticlesService, getDescriptionService){
+minibean.controller('ShowArticlesController',function($scope, $modal, deleteArticleService, allUsersService, allArticlesService, getDescriptionService){
 	$scope.searchById = " ";
     $scope.searchByName = " ";
     
-	$scope.result = allArticlesService.AllArticles.get({id:$scope.searchById,name:$scope.searchByName});
+	$scope.result = allArticlesService.LatestArticles.get();
     
     //$scope.userResult = allUsersService.AllUsers.get();
     
@@ -155,7 +160,6 @@ minibean.controller('ShowArticleController',function($scope, $modal, deleteArtic
         var msg = getDescriptionService.GetDescription.get({id:id}  , function(data) {
             $('#showDescription').html(data.description);
         });
-        
       };
 
       $scope.searchArticles = function(searchById,searchByName) {
@@ -170,7 +174,7 @@ minibean.controller('ShowArticleController',function($scope, $modal, deleteArtic
     			$scope.searchByName = " ";
     	  }
     	  
-    	  $scope.result = allArticlesService.AllArticles.get({id:$scope.searchById,name:$scope.searchByName});
+    	  $scope.result = allArticlesService.Articles.get({id:$scope.searchById,name:$scope.searchByName});
       };
       
       $scope.deleteArticle = function (id){

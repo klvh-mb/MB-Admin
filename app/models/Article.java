@@ -73,11 +73,17 @@ public class Article extends domain.Entity {
     @ManyToOne
     public Location targetLocation;
     
+    public static List<Article> getLatestArticles() {
+        Query q = JPA.em().createQuery("Select a from Article a order by publishedDate desc");
+        q.setMaxResults(DefaultValues.MAX_ARTICLES_COUNT);
+        return (List<Article>)q.getResultList();
+    }
+    
 	@Transactional
-	public static List<Article> getAllArticles(String id,String name) {
+	public static List<Article> getArticles(String id,String name) {
 		String sql= "";
 		if(id.trim().equals("") && name.trim().equals("")) {
-			sql="Select a from Article a order by publishedDate desc";
+			return getLatestArticles();
 		}
 		
 		if(id.trim().equals("") && !name.trim().equals("")) {

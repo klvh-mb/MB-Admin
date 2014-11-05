@@ -23,7 +23,7 @@ public class DefaultValues {
     public static int CHILD_YEAR_MIN_AGE = -1;
     public static int CHILD_YEAR_MAX_AGE = 14;
 
-    public static int MAX_ARTICLES_COUNT = 200;
+    public static int MAX_ARTICLES_COUNT = 100;
     
     private static DateTime NOW = new DateTime();
     

@@ -178,12 +178,26 @@ public class ArticleController extends Controller {
     }
     
     @Transactional
-    public static Result getAllArticles(String id,String name) {
+    public static Result getLatestArticles() {
+        List<Article> allArticles = Article.getLatestArticles();
+        List<ArticleVM> listOfArticles = new ArrayList<>();
+        for (Article article:allArticles) {
+            ArticleVM vm = new ArticleVM(article.category,
+                    article.name, article.id,
+                    article.targetAgeMinMonth, article.targetAgeMaxMonth,
+                    article.targetGender, article.targetParentGender, article.targetLocation);
+            listOfArticles.add(vm);
+        }
+        return ok(Json.toJson(listOfArticles));
+    }
+
+    @Transactional
+    public static Result getArticles(String id,String name) {
     	final String value = session().get("NAME");
         if (value == null) {
         	return ok(views.html.login.render());
         }
-        List<Article> allArticles = Article.getAllArticles(id,name);
+        List<Article> allArticles = Article.getArticles(id,name);
         List<ArticleVM> listOfArticles = new ArrayList<>();
         for (Article article:allArticles) {
             ArticleVM vm = new ArticleVM(article.category,

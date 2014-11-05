@@ -38,7 +38,7 @@ angular.module('minibean', [
       })
       .when('/article/show',{
     	templateUrl: '/assets/app/views/showArticlesPage.html',
-    	controller : 'ShowArticleController'  
+    	controller : 'ShowArticlesController'  
       })
       .when('/manageAnnouncement',{
     	templateUrl: '/assets/app/views/manageAnnouncements.html',
