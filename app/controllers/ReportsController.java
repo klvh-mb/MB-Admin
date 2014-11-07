@@ -2,6 +2,7 @@ package controllers;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import net.coobird.thumbnailator.Thumbnails;
 
 import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
+
 import domain.SocialObjectType;
 import email.EDMUtility;
 import models.Comment;
@@ -29,7 +31,6 @@ import models.ReportedObject;
 import models.Resource;
 import models.Subscription;
 import models.User;
-
 import play.Play;
 import play.data.DynamicForm;
 import play.db.jpa.Transactional;
@@ -1013,14 +1014,9 @@ public class ReportsController extends Controller {
         return getImagePath(Long.valueOf(dateTime.getYear()), Long.valueOf(dateTime.getMonthOfYear()), Long.valueOf(dateTime.getDayOfMonth()), rawFileName,category);
     }
 	
-	
-	
-	
-	
-	
 	@Transactional
     public static Result getPostImageById(Long id) {
-    	response().setHeader("Cache-Control", "max-age=604800");
+    	response().setHeader("Cache-Control", "max-age=1");
         return ok(Resource.findById(id).getRealFile());
     }
 	

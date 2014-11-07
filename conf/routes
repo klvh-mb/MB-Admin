@@ -26,9 +26,9 @@ GET		/Article/:id				controllers.ArticleController.infoArticle(id :Long)
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
 
-POST		/image/article/upload				controllers.ArticleController.uploadImage
-POST		/saveAnnouncement		controllers.AnnouncementController.saveAnnouncement
-POST		/updateAnnouncement		controllers.AnnouncementController.updateAnnouncement
+POST    /image/article/upload		controllers.ArticleController.uploadImage
+POST	/saveAnnouncement		    controllers.AnnouncementController.saveAnnouncement
+POST	/updateAnnouncement		    controllers.AnnouncementController.updateAnnouncement
 
 GET		/get-all-Users				controllers.ArticleController.getAllUsers
 GET		/getAnnouncements/:title/:currentPage			controllers.AnnouncementController.getAnnouncements(title :String,currentPage :Integer)
@@ -42,11 +42,9 @@ GET		/deleteReportedObject/:id/:postId		controllers.ReportsController.deleteRepo
 GET		/getDeletedPosts/:currentPage/:communityId			controllers.ReportsController.getDeletedPosts(currentPage: Integer,communityId: String)
 GET		/deletedInfoUnDelete/:id/:postId		controllers.ReportsController.deletedInfoUnDelete(id: Long,postId :Long)
 
-
 GET		/getAllPosts/:currentPage/:title		controllers.ReportsController.getAllPosts(currentPage: Integer,title: String)
 GET		/deletePosts/:id						controllers.ReportsController.setDeletePost(id: Long)
 GET		/unDeletePosts/:id						controllers.ReportsController.setUnDeletePost(id: Long)
-
 
 GET		/getReportedComments/:currentPage		controllers.ReportsController.getReportedComments(currentPage: Integer)
 GET		/deleteReportedObjectComment/:id/:commentId		controllers.ReportsController.deleteReportedObjectComment(id: Long,commentId :Long)	
@@ -83,6 +81,7 @@ GET		/deleteUser/:id							controllers.ReportsController.setDeleteUser(id: Long)
 GET		/unDeleteUser/:id						controllers.ReportsController.setUnDeleteUser(id: Long)
 GET		/getAllUsers/:currentPage/:title		controllers.ReportsController.getAllUsers(currentPage: Integer,title: String)
 GET 	/image/get-post-image-by-id/:id 	controllers.ReportsController.getPostImageById(id : Long)
+GET     /image/get-thumbnail-image-by-id/:id    controllers.UserController.getThumbnailVersionImageByID(id :Long)
 
 #Subscription
 GET		/getAllLocations						controllers.ReportsController.getAllLocations

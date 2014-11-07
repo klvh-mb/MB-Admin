@@ -1,20 +1,17 @@
 package controllers;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.Query;
-
-import models.Announcement;
 import models.User;
-import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
-import viewmodel.AnnouncementVM;
 import viewmodel.UserVM;
 
 public class UserController extends Controller{
@@ -72,4 +69,19 @@ public class UserController extends Controller{
 		return ok();
 	}
 	
+	@Transactional
+    public static Result getThumbnailVersionImageByID(Long id) {
+        response().setHeader("Cache-Control", "max-age=1");
+        final User user = User.findById(id);
+        
+        if(User.isLoggedIn(user) && user.getPhotoProfile() != null) {
+            return ok(new File(user.getPhotoProfile().getThumbnail()));
+        }
+        
+        try {
+            return ok(User.getDefaultUserPhoto());
+        } catch (FileNotFoundException e) {
+            return ok("no image set");
+        }
+    }
 }

@@ -1,6 +1,8 @@
 package models;
 
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,7 +21,7 @@ import javax.persistence.Query;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 import domain.SocialObjectType;
-
+import play.Play;
 import play.data.format.Formats;
 import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
@@ -90,405 +92,474 @@ public class User extends SocialObject {
     @JsonIgnore
     public Folder albumCoverProfile;
     
-	    public static User findById(Long id) {
-	    	Query query = JPA.em().createQuery("Select u from User u where u.id = ?1");
-			query.setParameter(1, id);
-	    	return (User) query.getSingleResult();
-	    }
-	    
-	    @Transactional
-	    public static long getUsersTotalPages(String title,  String userStatus, int rowsPerPage) {
-	    	long totalPages = 0, size;
-	    	
-	    	String sql = "";
-	    	if(userStatus.equals("0")|| userStatus.equals("1")) {
-	    		if(title.trim().equals("")) {
-	    			sql = "select count(*) from User u where u.active = ?2";
-	    		}
-	    		else {
-	    			sql = "select count(*) from User u where u.displayName LIKE ?1 AND u.active = ?2";
-	    		}
-	    	}
-	    	else {
-	    		if(title.trim().equals("")) {
-	    			sql = "select count(*) from User u";
-	    		}
-	    		else {
-	    			sql = "select count(*) from User u where u.displayName LIKE ?1";
-	    		}
-	    	}
-	    	
-	    	Query q = JPA.em().createQuery(sql);
-	    	if(!title.trim().equals("")) {
-	    		q.setParameter(1, "%"+title+"%");
-	    	}
-	    	if(userStatus.equals("0")|| userStatus.equals("1")) {
-	    		if(userStatus.equals("0"))
-	    		q.setParameter(2, false);
-	    		
-	    		if(userStatus.equals("1"))
-	        		q.setParameter(2, true);
-	    	}
-	    	
-	    	size= (long) q.getSingleResult();
-	    	
-	    	totalPages = size/rowsPerPage;
-			
-	    	if(size % rowsPerPage > 0) {
-				totalPages++;
-			}
-	    	return totalPages;
-	    }
+    public static User findById(Long id) {
+    	Query query = JPA.em().createQuery("Select u from User u where u.id = ?1");
+		query.setParameter(1, id);
+    	return (User) query.getSingleResult();
+    }
     
-	    @Transactional
-	    public static List<User> getAllUsers(String title,String userStatus,int rowsPerPage,Long totalPages,int currentPage) {
-	    	int  start=0;
-	    	String sql = "";
-	    	if(userStatus.equals("0")|| userStatus.equals("1")) {
-	    		if(title.trim().equals("")) {
-	    			sql = "select u from User u where u.active = ?2";
-	    		}
-	    		else {
-	    			sql = "select u from User u where u.displayName LIKE ?1 AND u.active = ?2";
-	    		}
-	    	}
-	    	else {
-	    		if(title.trim().equals("")) {
-	    			sql = "select u from User u";
-	    		}
-	    		else {
-	    			sql = "select u from User u where u.displayName LIKE ?1";
-	    		}
-	    	}
-	    	
-	    	if(currentPage >= 1 && currentPage <= totalPages) {
-				start = (currentPage*rowsPerPage)-rowsPerPage;
+    @Transactional
+    public static long getUsersTotalPages(String title,  String userStatus, int rowsPerPage) {
+    	long totalPages = 0, size;
+    	
+    	String sql = "";
+    	if(userStatus.equals("0")|| userStatus.equals("1")) {
+    		if(title.trim().equals("")) {
+    			sql = "select count(*) from User u where u.active = ?2";
+    		}
+    		else {
+    			sql = "select count(*) from User u where u.displayName LIKE ?1 AND u.active = ?2";
+    		}
+    	}
+    	else {
+    		if(title.trim().equals("")) {
+    			sql = "select count(*) from User u";
+    		}
+    		else {
+    			sql = "select count(*) from User u where u.displayName LIKE ?1";
+    		}
+    	}
+    	
+    	Query q = JPA.em().createQuery(sql);
+    	if(!title.trim().equals("")) {
+    		q.setParameter(1, "%"+title+"%");
+    	}
+    	if(userStatus.equals("0")|| userStatus.equals("1")) {
+    		if(userStatus.equals("0"))
+    		q.setParameter(2, false);
+    		
+    		if(userStatus.equals("1"))
+        		q.setParameter(2, true);
+    	}
+    	
+    	size= (long) q.getSingleResult();
+    	
+    	totalPages = size/rowsPerPage;
+		
+    	if(size % rowsPerPage > 0) {
+			totalPages++;
+		}
+    	return totalPages;
+    }
+
+    @Transactional
+    public static List<User> getAllUsers(String title,String userStatus,int rowsPerPage,Long totalPages,int currentPage) {
+    	int  start=0;
+    	String sql = "";
+    	if(userStatus.equals("0")|| userStatus.equals("1")) {
+    		if(title.trim().equals("")) {
+    			sql = "select u from User u where u.active = ?2";
+    		}
+    		else {
+    			sql = "select u from User u where u.displayName LIKE ?1 AND u.active = ?2";
+    		}
+    	}
+    	else {
+    		if(title.trim().equals("")) {
+    			sql = "select u from User u";
+    		}
+    		else {
+    			sql = "select u from User u where u.displayName LIKE ?1";
+    		}
+    	}
+    	
+    	if(currentPage >= 1 && currentPage <= totalPages) {
+			start = (currentPage*rowsPerPage)-rowsPerPage;
+		}
+		if(currentPage>totalPages && totalPages!=0) {
+			currentPage--;
+			start = (int) ((totalPages*rowsPerPage)-rowsPerPage); 
+		}
+    	
+    	Query q = JPA.em().createQuery(sql).setFirstResult(start).setMaxResults(rowsPerPage);
+    	
+    	if(!title.trim().equals("")) {
+    		q.setParameter(1, "%"+title+"%");
+    	}
+    	if(userStatus.equals("0")|| userStatus.equals("1")) {
+    		if(userStatus.equals("0"))
+    		q.setParameter(2, false);
+    		
+    		if(userStatus.equals("1"))
+        		q.setParameter(2, true);
+    	}
+    	return (List<User>)q.getResultList();
+    }
+
+    @Transactional
+    public static long getAllUsersTotal(int rowsPerPage,String title) {
+		long totalPages = 0, size;
+		if(title.trim().equals("")) {
+			size = (long) JPA.em().createQuery("Select count(*) from User u where u.objectType = 'USER'").getSingleResult();
+		}
+		else
+		{
+			Query q = JPA.em().createQuery("SELECT count(*) FROM User u where u.id = ?1 AND u.objectType = 'USER'");
+			q.setParameter(1, Long.parseLong(title));
+			size = q.getMaxResults();
+			if(size == 0) {
+				totalPages = 0;
 			}
-			if(currentPage>totalPages && totalPages!=0) {
-				currentPage--;
-				start = (int) ((totalPages*rowsPerPage)-rowsPerPage); 
+			else {
+				totalPages = 1;
 			}
-	    	
-	    	Query q = JPA.em().createQuery(sql).setFirstResult(start).setMaxResults(rowsPerPage);
-	    	
-	    	if(!title.trim().equals("")) {
-	    		q.setParameter(1, "%"+title+"%");
-	    	}
-	    	if(userStatus.equals("0")|| userStatus.equals("1")) {
-	    		if(userStatus.equals("0"))
-	    		q.setParameter(2, false);
-	    		
-	    		if(userStatus.equals("1"))
-	        		q.setParameter(2, true);
-	    	}
-	    	return (List<User>)q.getResultList();
-	    }
+			return totalPages;
+		}
+			
+		totalPages = size/rowsPerPage;
+		
+    	if(size % rowsPerPage > 0) {
+			totalPages++;
+		}
+    	return totalPages;
+	}
     
-	    @Transactional
-	    public static long getAllUsersTotal(int rowsPerPage,String title) {
-			long totalPages = 0, size;
-			if(title.trim().equals("")) {
-				size = (long) JPA.em().createQuery("Select count(*) from User u where u.objectType = 'USER'").getSingleResult();
-			}
-			else
-			{
-				Query q = JPA.em().createQuery("SELECT count(*) FROM User u where u.id = ?1 AND u.objectType = 'USER'");
-				q.setParameter(1, Long.parseLong(title));
-				size = q.getMaxResults();
-				if(size == 0) {
-					totalPages = 0;
-				}
-				else {
-					totalPages = 1;
-				}
-				return totalPages;
-			}
-				
-			totalPages = size/rowsPerPage;
-			
-	    	if(size % rowsPerPage > 0) {
-				totalPages++;
-			}
-	    	return totalPages;
+    @Transactional
+    public static long getAllSubscribedUsersTotal(int rowsPerPage,String title,String gender,String location,String subscription) {
+		long totalPages = 0;
+		String sql="";
+		if(title.trim().equals("") && gender.trim().equals("") && location.trim().equals("") && subscription.trim().equals("")) {
+    		sql = "select count(*) from user where user.id in (select user_subscription.user_id from user_subscription)";
+    	} else {
+    		if(location.trim().equals("") && !(subscription.trim().equals(""))) {
+    			if(title.trim().equals("") && gender.trim().equals("")) {
+    				sql = "select count(*) from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+")";
+    			}
+    			if(!title.trim().equals("") && gender.trim().equals("")) {
+    				sql = "select count(*) from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.displayName LIKE '"+"%"+title+"%"+"'";
+    			}
+    			if(title.trim().equals("") && !gender.trim().equals("")) {
+    				sql = "select count(*) from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
+    			}
+    			if(!title.trim().equals("") && !gender.trim().equals("")) {
+    				sql = "select count(*) from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
+    			}
+    				
+    		}
+    		if(!(location.trim().equals("")) && subscription.trim().equals("")) {
+    			if(title.trim().equals("") && gender.trim().equals("")) {
+    				sql = "select count(*) from user where user.id in (select user_subscription.user_id from user_subscription) AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+")";
+    			}
+    			if(!title.trim().equals("") && gender.trim().equals("")) {
+    				sql = "select count(*) from user where user.id in (select user_subscription.user_id from user_subscription) AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+")";
+    			}
+    			if(title.trim().equals("") && !gender.trim().equals("")) {
+    				sql = "select count(*) from user where user.id in (select user_subscription.user_id from user_subscription) AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+") AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
+    			}
+    			if(!title.trim().equals("") && !gender.trim().equals("")) {
+    				sql = "select count(*) from user where user.id in (select user_subscription.user_id from user_subscription) AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+") AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
+    			}
+    			
+    		}
+    		if(location.trim().equals("") && subscription.trim().equals("")) {
+    			if(title.trim().equals("") && gender.trim().equals("")) {
+    				sql = "select count(*) from user where user.id in (select user_subscription.user_id from user_subscription)";
+    			}
+    			if(!title.trim().equals("") && gender.trim().equals("")) {
+    				sql = "select count(*) from user where user.id in (select user_subscription.user_id from user_subscription) AND user.displayName LIKE '"+"%"+title+"%"+"'";
+    			}
+    			if(title.trim().equals("") && !gender.trim().equals("")) {
+    				sql = "select count(*) from user where user.id in (select user_subscription.user_id from user_subscription) AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
+    			}
+    			if(!title.trim().equals("") && !gender.trim().equals("")) {
+    				sql = "select count(*) from user where user.id in (select user_subscription.user_id from user_subscription) AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
+    			}
+    			
+    		}
+    		if(!(location.trim().equals("")) && !(subscription.trim().equals(""))) {
+    			if(title.trim().equals("") && gender.trim().equals("")) {
+    				sql = "select count(*) from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+")";
+    			}
+    			if(!title.trim().equals("") && gender.trim().equals("")) {
+    				sql = "select count(*) from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+")";
+    			}
+    			if(title.trim().equals("") && !gender.trim().equals("")) {
+    				sql = "select count(*) from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+") AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
+    			}
+    			if(!title.trim().equals("") && !gender.trim().equals("")) {
+    				sql = "select count(*) from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+") AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
+    			}
+    			
+    		}	
+    	}
+		
+		BigInteger size = (BigInteger) JPA.em().createNativeQuery(sql).getSingleResult();
+		
+		totalPages = size.longValue()/rowsPerPage;
+		
+    	if(size.longValue() % rowsPerPage > 0) {
+			totalPages++;
 		}
-	    
-	    @Transactional
-	    public static long getAllSubscribedUsersTotal(int rowsPerPage,String title,String gender,String location,String subscription) {
-			long totalPages = 0;
-			String sql="";
-			if(title.trim().equals("") && gender.trim().equals("") && location.trim().equals("") && subscription.trim().equals("")) {
-	    		sql = "select count(*) from user where user.id in (select user_subscription.user_id from user_subscription)";
-	    	} else {
-	    		if(location.trim().equals("") && !(subscription.trim().equals(""))) {
-	    			if(title.trim().equals("") && gender.trim().equals("")) {
-	    				sql = "select count(*) from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+")";
-	    			}
-	    			if(!title.trim().equals("") && gender.trim().equals("")) {
-	    				sql = "select count(*) from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.displayName LIKE '"+"%"+title+"%"+"'";
-	    			}
-	    			if(title.trim().equals("") && !gender.trim().equals("")) {
-	    				sql = "select count(*) from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
-	    			}
-	    			if(!title.trim().equals("") && !gender.trim().equals("")) {
-	    				sql = "select count(*) from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
-	    			}
-	    				
-	    		}
-	    		if(!(location.trim().equals("")) && subscription.trim().equals("")) {
-	    			if(title.trim().equals("") && gender.trim().equals("")) {
-	    				sql = "select count(*) from user where user.id in (select user_subscription.user_id from user_subscription) AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+")";
-	    			}
-	    			if(!title.trim().equals("") && gender.trim().equals("")) {
-	    				sql = "select count(*) from user where user.id in (select user_subscription.user_id from user_subscription) AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+")";
-	    			}
-	    			if(title.trim().equals("") && !gender.trim().equals("")) {
-	    				sql = "select count(*) from user where user.id in (select user_subscription.user_id from user_subscription) AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+") AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
-	    			}
-	    			if(!title.trim().equals("") && !gender.trim().equals("")) {
-	    				sql = "select count(*) from user where user.id in (select user_subscription.user_id from user_subscription) AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+") AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
-	    			}
-	    			
-	    		}
-	    		if(location.trim().equals("") && subscription.trim().equals("")) {
-	    			if(title.trim().equals("") && gender.trim().equals("")) {
-	    				sql = "select count(*) from user where user.id in (select user_subscription.user_id from user_subscription)";
-	    			}
-	    			if(!title.trim().equals("") && gender.trim().equals("")) {
-	    				sql = "select count(*) from user where user.id in (select user_subscription.user_id from user_subscription) AND user.displayName LIKE '"+"%"+title+"%"+"'";
-	    			}
-	    			if(title.trim().equals("") && !gender.trim().equals("")) {
-	    				sql = "select count(*) from user where user.id in (select user_subscription.user_id from user_subscription) AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
-	    			}
-	    			if(!title.trim().equals("") && !gender.trim().equals("")) {
-	    				sql = "select count(*) from user where user.id in (select user_subscription.user_id from user_subscription) AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
-	    			}
-	    			
-	    		}
-	    		if(!(location.trim().equals("")) && !(subscription.trim().equals(""))) {
-	    			if(title.trim().equals("") && gender.trim().equals("")) {
-	    				sql = "select count(*) from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+")";
-	    			}
-	    			if(!title.trim().equals("") && gender.trim().equals("")) {
-	    				sql = "select count(*) from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+")";
-	    			}
-	    			if(title.trim().equals("") && !gender.trim().equals("")) {
-	    				sql = "select count(*) from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+") AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
-	    			}
-	    			if(!title.trim().equals("") && !gender.trim().equals("")) {
-	    				sql = "select count(*) from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+") AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
-	    			}
-	    			
-	    		}	
-	    	}
-			
-			BigInteger size = (BigInteger) JPA.em().createNativeQuery(sql).getSingleResult();
-			
-			totalPages = size.longValue()/rowsPerPage;
-			
-	    	if(size.longValue() % rowsPerPage > 0) {
-				totalPages++;
-			}
-	    	return totalPages;
-		}
-	    
-	    @Transactional
-		public static List<Object[]> getAllSubscribedUsers(int currentPage, int rowsPerPage, long totalPages,String title,String gender,String location,String subscription) {
-			int  start=0;
-			
-			if(currentPage >= 1 && currentPage <= totalPages) {
-				start = (currentPage*rowsPerPage)-rowsPerPage;
-			}
-			if(currentPage>totalPages && totalPages!=0) {
-				currentPage--;
-				start = (int) ((totalPages*rowsPerPage)-rowsPerPage); 
-			}
-			
-			String sql="";
-			if(title.trim().equals("") && gender.trim().equals("") && location.trim().equals("") && subscription.trim().equals("")) {
-	    		sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription)";
-	    	} else {
-	    		if(location.trim().equals("") && !(subscription.trim().equals(""))) {
-	    			if(title.trim().equals("") && gender.trim().equals("")) {
-	    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+")";
-	    			}
-	    			if(!title.trim().equals("") && gender.trim().equals("")) {
-	    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.displayName LIKE '"+"%"+title+"%"+"'";
-	    			}
-	    			if(title.trim().equals("") && !gender.trim().equals("")) {
-	    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
-	    			}
-	    			if(!title.trim().equals("") && !gender.trim().equals("")) {
-	    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
-	    			}
-	    				
-	    		}
-	    		if(!(location.trim().equals("")) && subscription.trim().equals("")) {
-	    			if(title.trim().equals("") && gender.trim().equals("")) {
-	    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription) AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+")";
-	    			}
-	    			if(!title.trim().equals("") && gender.trim().equals("")) {
-	    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription) AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+")";
-	    			}
-	    			if(title.trim().equals("") && !gender.trim().equals("")) {
-	    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription) AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+") AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
-	    			}
-	    			if(!title.trim().equals("") && !gender.trim().equals("")) {
-	    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription) AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+") AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
-	    			}
-	    			
-	    		}
-	    		if(location.trim().equals("") && subscription.trim().equals("")) {
-	    			if(title.trim().equals("") && gender.trim().equals("")) {
-	    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription)";
-	    			}
-	    			if(!title.trim().equals("") && gender.trim().equals("")) {
-	    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription) AND user.displayName LIKE '"+"%"+title+"%"+"'";
-	    			}
-	    			if(title.trim().equals("") && !gender.trim().equals("")) {
-	    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription) AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
-	    			}
-	    			if(!title.trim().equals("") && !gender.trim().equals("")) {
-	    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription) AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
-	    			}
-	    			
-	    		}
-	    		if(!(location.trim().equals("")) && !(subscription.trim().equals(""))) {
-	    			if(title.trim().equals("") && gender.trim().equals("")) {
-	    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+")";
-	    			}
-	    			if(!title.trim().equals("") && gender.trim().equals("")) {
-	    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+")";
-	    			}
-	    			if(title.trim().equals("") && !gender.trim().equals("")) {
-	    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+") AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
-	    			}
-	    			if(!title.trim().equals("") && !gender.trim().equals("")) {
-	    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+") AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
-	    			}
-	    			
-	    		}	
-	    	}
-			
-			Query q = JPA.em().createNativeQuery(sql).setFirstResult(start).setMaxResults(rowsPerPage);
-			return (List<Object[]>)q.getResultList();
-		}
-	    
-	    public static List<Long> getAllUsersId(String title,String gender,String location,String subscription) {
-	    	String sql="";
-			if(title.trim().equals("") && gender.trim().equals("") && location.trim().equals("") && subscription.trim().equals("")) {
-	    		sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription)";
-	    	} else {
-	    		if(location.trim().equals("") && !(subscription.trim().equals(""))) {
-	    			if(title.trim().equals("") && gender.trim().equals("")) {
-	    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+")";
-	    			}
-	    			if(!title.trim().equals("") && gender.trim().equals("")) {
-	    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.displayName LIKE '"+"%"+title+"%"+"'";
-	    			}
-	    			if(title.trim().equals("") && !gender.trim().equals("")) {
-	    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
-	    			}
-	    			if(!title.trim().equals("") && !gender.trim().equals("")) {
-	    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
-	    			}
-	    				
-	    		}
-	    		if(!(location.trim().equals("")) && subscription.trim().equals("")) {
-	    			if(title.trim().equals("") && gender.trim().equals("")) {
-	    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription) AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+")";
-	    			}
-	    			if(!title.trim().equals("") && gender.trim().equals("")) {
-	    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription) AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+")";
-	    			}
-	    			if(title.trim().equals("") && !gender.trim().equals("")) {
-	    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription) AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+") AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
-	    			}
-	    			if(!title.trim().equals("") && !gender.trim().equals("")) {
-	    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription) AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+") AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
-	    			}
-	    			
-	    		}
-	    		if(location.trim().equals("") && subscription.trim().equals("")) {
-	    			if(title.trim().equals("") && gender.trim().equals("")) {
-	    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription)";
-	    			}
-	    			if(!title.trim().equals("") && gender.trim().equals("")) {
-	    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription) AND user.displayName LIKE '"+"%"+title+"%"+"'";
-	    			}
-	    			if(title.trim().equals("") && !gender.trim().equals("")) {
-	    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription) AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
-	    			}
-	    			if(!title.trim().equals("") && !gender.trim().equals("")) {
-	    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription) AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
-	    			}
-	    			
-	    		}
-	    		if(!(location.trim().equals("")) && !(subscription.trim().equals(""))) {
-	    			if(title.trim().equals("") && gender.trim().equals("")) {
-	    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+")";
-	    			}
-	    			if(!title.trim().equals("") && gender.trim().equals("")) {
-	    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+")";
-	    			}
-	    			if(title.trim().equals("") && !gender.trim().equals("")) {
-	    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+") AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
-	    			}
-	    			if(!title.trim().equals("") && !gender.trim().equals("")) {
-	    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+") AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
-	    			}
-	    			
-	    		}	
-	    	}
-	    	Query query = JPA.em().createNativeQuery(sql);
-			List<Object[]> list = (List<Object[]>)query.getResultList();
-			List<Long> ids = new ArrayList<>();
-			for(Object[] obj: list) {
-				ids.add(((BigInteger)obj[0]).longValue());
-			}
-	    	return ids;
-	    }
-	    public static List<Long> getSubscriptionIds(Long id) {
-	    	Query query = JPA.em().createNativeQuery("select subscriptions_id from user_subscription where User_id = ?1");
-	    	query.setParameter(1, id);
-			List<BigInteger> list = (List<BigInteger>)query.getResultList();
-			List<Long> ids = new ArrayList<>();
-			for(BigInteger obj: list) {
-				ids.add((obj).longValue());
-			}
-	    	return ids;
-	    }
-	    
-	    
-	    public static List<User> findAllUsers(int currentPage, int rowsPerPage, long totalPages, String title) {
-			int  start=0;
-			String sql="";
-	    	if(title.trim().equals("")) {
-	    		sql = "SELECT u FROM User u where u.objectType = 'USER'";
-	    	} else {
-	    		sql = "SELECT u FROM User u where u.id = ?1 AND u.objectType = 'USER'";
-	    	}
-			
-			if(currentPage >= 1 && currentPage <= totalPages) {
-				start = (currentPage*rowsPerPage)-rowsPerPage;
-			}
-			if(currentPage>totalPages && totalPages!=0) {
-				currentPage--;
-				start = (int) ((totalPages*rowsPerPage)-rowsPerPage); 
-			}
-	        try {
-	            Query q = JPA.em().createQuery(sql).setFirstResult(start).setMaxResults(rowsPerPage);
-	            if(!title.trim().equals("")) {
-	    			q.setParameter(1, Long.parseLong(title));
-	    		}
-	            return (List<User>) q.getResultList();
-	        } catch (NoResultException nre) {
-	            return null;
-	        }
-	    
-	    }
-	    @Transactional
-	    public void merge() {
-	        JPA.em().merge(this);
-	    }
+    	return totalPages;
+	}
     
-   }
+    @Transactional
+	public static List<Object[]> getAllSubscribedUsers(int currentPage, int rowsPerPage, long totalPages,String title,String gender,String location,String subscription) {
+		int  start=0;
+		
+		if(currentPage >= 1 && currentPage <= totalPages) {
+			start = (currentPage*rowsPerPage)-rowsPerPage;
+		}
+		if(currentPage>totalPages && totalPages!=0) {
+			currentPage--;
+			start = (int) ((totalPages*rowsPerPage)-rowsPerPage); 
+		}
+		
+		String sql="";
+		if(title.trim().equals("") && gender.trim().equals("") && location.trim().equals("") && subscription.trim().equals("")) {
+    		sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription)";
+    	} else {
+    		if(location.trim().equals("") && !(subscription.trim().equals(""))) {
+    			if(title.trim().equals("") && gender.trim().equals("")) {
+    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+")";
+    			}
+    			if(!title.trim().equals("") && gender.trim().equals("")) {
+    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.displayName LIKE '"+"%"+title+"%"+"'";
+    			}
+    			if(title.trim().equals("") && !gender.trim().equals("")) {
+    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
+    			}
+    			if(!title.trim().equals("") && !gender.trim().equals("")) {
+    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
+    			}
+    				
+    		}
+    		if(!(location.trim().equals("")) && subscription.trim().equals("")) {
+    			if(title.trim().equals("") && gender.trim().equals("")) {
+    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription) AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+")";
+    			}
+    			if(!title.trim().equals("") && gender.trim().equals("")) {
+    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription) AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+")";
+    			}
+    			if(title.trim().equals("") && !gender.trim().equals("")) {
+    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription) AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+") AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
+    			}
+    			if(!title.trim().equals("") && !gender.trim().equals("")) {
+    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription) AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+") AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
+    			}
+    			
+    		}
+    		if(location.trim().equals("") && subscription.trim().equals("")) {
+    			if(title.trim().equals("") && gender.trim().equals("")) {
+    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription)";
+    			}
+    			if(!title.trim().equals("") && gender.trim().equals("")) {
+    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription) AND user.displayName LIKE '"+"%"+title+"%"+"'";
+    			}
+    			if(title.trim().equals("") && !gender.trim().equals("")) {
+    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription) AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
+    			}
+    			if(!title.trim().equals("") && !gender.trim().equals("")) {
+    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription) AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
+    			}
+    			
+    		}
+    		if(!(location.trim().equals("")) && !(subscription.trim().equals(""))) {
+    			if(title.trim().equals("") && gender.trim().equals("")) {
+    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+")";
+    			}
+    			if(!title.trim().equals("") && gender.trim().equals("")) {
+    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+")";
+    			}
+    			if(title.trim().equals("") && !gender.trim().equals("")) {
+    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+") AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
+    			}
+    			if(!title.trim().equals("") && !gender.trim().equals("")) {
+    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+") AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
+    			}
+    			
+    		}	
+    	}
+		
+		Query q = JPA.em().createNativeQuery(sql).setFirstResult(start).setMaxResults(rowsPerPage);
+		return (List<Object[]>)q.getResultList();
+	}
+    
+    public static List<Long> getAllUsersId(String title,String gender,String location,String subscription) {
+    	String sql="";
+		if(title.trim().equals("") && gender.trim().equals("") && location.trim().equals("") && subscription.trim().equals("")) {
+    		sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription)";
+    	} else {
+    		if(location.trim().equals("") && !(subscription.trim().equals(""))) {
+    			if(title.trim().equals("") && gender.trim().equals("")) {
+    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+")";
+    			}
+    			if(!title.trim().equals("") && gender.trim().equals("")) {
+    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.displayName LIKE '"+"%"+title+"%"+"'";
+    			}
+    			if(title.trim().equals("") && !gender.trim().equals("")) {
+    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
+    			}
+    			if(!title.trim().equals("") && !gender.trim().equals("")) {
+    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
+    			}
+    				
+    		}
+    		if(!(location.trim().equals("")) && subscription.trim().equals("")) {
+    			if(title.trim().equals("") && gender.trim().equals("")) {
+    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription) AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+")";
+    			}
+    			if(!title.trim().equals("") && gender.trim().equals("")) {
+    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription) AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+")";
+    			}
+    			if(title.trim().equals("") && !gender.trim().equals("")) {
+    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription) AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+") AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
+    			}
+    			if(!title.trim().equals("") && !gender.trim().equals("")) {
+    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription) AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+") AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
+    			}
+    			
+    		}
+    		if(location.trim().equals("") && subscription.trim().equals("")) {
+    			if(title.trim().equals("") && gender.trim().equals("")) {
+    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription)";
+    			}
+    			if(!title.trim().equals("") && gender.trim().equals("")) {
+    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription) AND user.displayName LIKE '"+"%"+title+"%"+"'";
+    			}
+    			if(title.trim().equals("") && !gender.trim().equals("")) {
+    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription) AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
+    			}
+    			if(!title.trim().equals("") && !gender.trim().equals("")) {
+    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription) AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
+    			}
+    			
+    		}
+    		if(!(location.trim().equals("")) && !(subscription.trim().equals(""))) {
+    			if(title.trim().equals("") && gender.trim().equals("")) {
+    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+")";
+    			}
+    			if(!title.trim().equals("") && gender.trim().equals("")) {
+    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+")";
+    			}
+    			if(title.trim().equals("") && !gender.trim().equals("")) {
+    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+") AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
+    			}
+    			if(!title.trim().equals("") && !gender.trim().equals("")) {
+    				sql = "select * from user where user.id in (select user_subscription.user_id from user_subscription where user_subscription.subscriptions_id = "+Long.parseLong(subscription)+") AND user.displayName LIKE '"+"%"+title+"%"+"' AND user.userInfo_id in (select id from userinfo where userinfo.location_id = "+Long.parseLong(location)+") AND user.userInfo_id in (select id from userinfo where userinfo.gender = '"+gender+"')";
+    			}
+    			
+    		}	
+    	}
+    	Query query = JPA.em().createNativeQuery(sql);
+		List<Object[]> list = (List<Object[]>)query.getResultList();
+		List<Long> ids = new ArrayList<>();
+		for(Object[] obj: list) {
+			ids.add(((BigInteger)obj[0]).longValue());
+		}
+    	return ids;
+    }
+    public static List<Long> getSubscriptionIds(Long id) {
+    	Query query = JPA.em().createNativeQuery("select subscriptions_id from user_subscription where User_id = ?1");
+    	query.setParameter(1, id);
+		List<BigInteger> list = (List<BigInteger>)query.getResultList();
+		List<Long> ids = new ArrayList<>();
+		for(BigInteger obj: list) {
+			ids.add((obj).longValue());
+		}
+    	return ids;
+    }
+    
+    public static List<User> findAllUsers(int currentPage, int rowsPerPage, long totalPages, String title) {
+		int  start=0;
+		String sql="";
+    	if(title.trim().equals("")) {
+    		sql = "SELECT u FROM User u where u.objectType = 'USER'";
+    	} else {
+    		sql = "SELECT u FROM User u where u.id = ?1 AND u.objectType = 'USER'";
+    	}
+		
+		if(currentPage >= 1 && currentPage <= totalPages) {
+			start = (currentPage*rowsPerPage)-rowsPerPage;
+		}
+		if(currentPage>totalPages && totalPages!=0) {
+			currentPage--;
+			start = (int) ((totalPages*rowsPerPage)-rowsPerPage); 
+		}
+        try {
+            Query q = JPA.em().createQuery(sql).setFirstResult(start).setMaxResults(rowsPerPage);
+            if(!title.trim().equals("")) {
+                q.setParameter(1, Long.parseLong(title));
+            }
+            return (List<User>) q.getResultList();
+        } catch (NoResultException nre) {
+            return null;
+        }
+	}
+
+    @Transactional
+	public void merge() {
+	    JPA.em().merge(this);
+	}
+    
+    @JsonIgnore
+    public Resource getPhotoProfile() {
+        if (this.albumPhotoProfile != null) {
+            Resource file = this.albumPhotoProfile.getHighPriorityFile();
+            if (file != null) {
+                return file;
+            }
+        }
+        return null;
+    }
+
+    public String getPhotoProfileURL() {
+        Resource resource = getPhotoProfile();
+        if (resource == null) {
+            return "";
+        }
+        return resource.getPath();
+    }
+    
+    @JsonIgnore
+    public Resource getCoverProfile() {
+        if (this.albumCoverProfile != null) {
+            Resource file = this.albumCoverProfile.getHighPriorityFile();
+            if (file != null) {
+                return file;
+            }
+        }
+        return null;
+    }
+
+    @JsonIgnore
+    public Resource getMiniProfileImage() {
+        if (this.albumPhotoProfile != null) {
+            Resource file = this.albumPhotoProfile.getHighPriorityFile();
+            if (file != null) {
+                return file;
+            }
+        }
+        return null;
+    }
+    
+    public String getCoverProfileURL() {
+        Resource resource = getCoverProfile();
+        if (resource == null) {
+            return "";
+        }
+        return resource.getPath();
+    }
+    
+    public boolean isLoggedIn() {
+        return isLoggedIn(this);
+    }
+    
+    public static boolean isLoggedIn(User user) {
+        return user != null && user.id != -1L;
+    }
+    
+    public static User noLoginUser() {
+        User noLoginUser = new User();
+        noLoginUser.id = -1L;
+        return noLoginUser;
+    }
+    
+    public static File getDefaultUserPhoto() throws FileNotFoundException {
+        return new File(Play.application().configuration().getString("storage.user.noimage"));
+    }
+
+    public static File getDefaultCoverPhoto() throws FileNotFoundException {
+        return new File(Play.application().configuration().getString("storage.user.cover.noimage"));
+    }
+}

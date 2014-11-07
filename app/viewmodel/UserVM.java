@@ -57,14 +57,12 @@ public class UserVM {
 			this.aboutMe = user.userInfo.aboutMe;
 			this.birthYear = user.userInfo.birthYear;
 			this.numChildren = user.userInfo.numChildren;
-		}
-		
-		if(user.userInfo.parentType != null) {
-			this.parentType = user.userInfo.parentType.name();
-		}
-		
-		if(user.userInfo.location != null) {
-			this.location = user.userInfo.location.displayName;
+			if(user.userInfo.parentType != null) {
+	            this.parentType = user.userInfo.parentType.name();
+	        }
+	        if(user.userInfo.location != null) {
+	            this.location = user.userInfo.location.displayName;
+	        }
 		}
 		
 		this.createdOn = formatter.format(user.auditFields.getCreatedDate());
@@ -77,8 +75,5 @@ public class UserVM {
 			List<Resource> resource = Resource.findAllResourceOfFolder(user.albumPhotoProfile.id);
 			this.image = resource.get(0).id;
 		}
-		
 	}
-	
-	
 }
