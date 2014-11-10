@@ -813,17 +813,6 @@ public class ReportsController extends Controller {
 	}
 	
 	@Transactional
-    public static Result getAllLocations() {
-		List<Location> locations = Location.getAllLocations();
-		List<LocationVM> locationVms = new ArrayList<>();
-		for(Location l : locations) {
-			LocationVM vm = new LocationVM(l);
-			locationVms.add(vm);
-		}
-		return ok(Json.toJson(locationVms));
-	}
-	
-	@Transactional
     public static Result getAllSubscription() {
 		
 		final String value = session().get("NAME");

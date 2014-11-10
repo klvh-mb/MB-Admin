@@ -124,10 +124,6 @@ public class ArticleController extends Controller {
 
     @Transactional
     public static Result getAllDistricts() {
-	   final String value = session().get("NAME");
-       if (value == null) {
-       	return ok(views.html.login.render());
-       }
         //List<Location> locations = Location.getHongKongDistricts();  // TODO
         List<Location> locations = Location.getHongKongCityRegionsDistricts();
         
@@ -140,15 +136,15 @@ public class ArticleController extends Controller {
     }
    
     @Transactional
-    public static Result getAllArticleCategory() {
+    public static Result getAllArticleCategories() {
     	final String value = session().get("NAME");
         if (value == null) {
         	return ok(views.html.login.render());
         }
-        List<ArticleCategory> articleCategorys = ArticleCategory.getAllCategory();
+        List<ArticleCategory> articleCategories = ArticleCategory.getAllCategory();
         
         List<ArticleCategoryVM> articleCategoryVMs = new ArrayList<>();
-        for(ArticleCategory articleCategory : articleCategorys) {
+        for(ArticleCategory articleCategory : articleCategories) {
             ArticleCategoryVM vm = ArticleCategoryVM.articleCategoryVM(articleCategory);
             articleCategoryVMs.add(vm);
         }
@@ -170,7 +166,7 @@ public class ArticleController extends Controller {
     }
 
     @Transactional
-    public static Result getArticles(String id,String name) {
+    public static Result searchArticles(String id,String name) {
     	final String value = session().get("NAME");
         if (value == null) {
         	return ok(views.html.login.render());
@@ -214,7 +210,7 @@ public class ArticleController extends Controller {
     }
     
     @Transactional
-    public static Result infoArticle(Long art_id) {
+    public static Result getArticle(Long art_id) {
     	final String value = session().get("NAME");
         if (value == null) {
         	return ok(views.html.login.render());

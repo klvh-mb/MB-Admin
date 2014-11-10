@@ -46,9 +46,9 @@ angular.module('minibean', [
         templateUrl: '/assets/app/views/editCampaignPage.html',
         controller : 'EditCampaignController'  
       })
-      .when('/manageAnnouncement',{
+      .when('/manageAnnouncements',{
     	templateUrl: '/assets/app/views/manageAnnouncements.html',
-    	controller : 'ShowAnnouncementController'  
+    	controller : 'ManageAnnouncementsController'  
       })
       .when('/managePosts',{
     	templateUrl: '/assets/app/views/managePosts.html',

@@ -2,7 +2,91 @@
 
 var minibean = angular.module('minibean');
 
-minibean.controller('CreateArticleController', function($scope, $http, $location, articleCategoryService, locationService, usSpinnerService){
+minibean.service('campaignService',function($resource){
+    this.latestCampaigns = $resource(
+            '/get-latest-campaigns',
+            {alt:'json',callback:'JSON_CALLBACK'},
+            {
+                get: {method:'get',isArray:true}
+            }
+    );
+    this.searchCampaigns = $resource(
+            '/search-campaigns/:id/:name',
+            {alt:'json',callback:'JSON_CALLBACK'},
+            {
+                get: {method:'get',isArray:true}
+            }
+    );
+    this.getCampaign = $resource(
+            '/get-campaign/:id',
+            {alt:'json',callback:'JSON_CALLBACK'},
+            {
+                get: {method:'get'}
+            }
+    );
+    this.getDescription = $resource(
+            '/get-campaign-description/:id',
+            {alt:'json',callback:'JSON_CALLBACK'},
+            {
+                get: {method:'get'}
+            }
+    );
+    this.deleteCampaign = $resource(
+            '/delete-campaign/:id',
+            {alt:'json',callback:'JSON_CALLBACK'},
+            {
+                get: {method:'get'}
+            }
+    );
+});
+
+minibean.controller('ManageCampaignsController',function($scope, $modal, campaignService){
+    $scope.searchById = " ";
+    $scope.searchByName = " ";
+    
+    $scope.result = campaignService.latestCampaigns.get();
+    
+    $scope.open = function (id) {
+        var modalInstance = $modal.open({
+          templateUrl: 'myModalContent.html',
+        });
+        var msg = campaignService.GetDescription.get({id:id}, function(data) {
+            $('#showDescription').html(data.description);
+        });
+    };
+
+    $scope.searchCampaigns = function(searchById,searchByName) {
+        $scope.searchById = searchById;
+        $scope.searchByName = searchByName;
+          
+        if(angular.isUndefined($scope.searchById) || $scope.searchById=="") {
+            $scope.searchById = " ";
+        }
+          
+        if(angular.isUndefined($scope.searchByName) || $scope.searchByName=="") {
+            $scope.searchByName = " ";
+        }
+          
+        $scope.result = campaignService.searchCampaigns.get({id:$scope.searchById,name:$scope.searchByName});
+    };
+      
+    $scope.deleteCampaign = function (id){
+        campaignService.deleteCampaign.get({id :id}, function(data){
+            $('#myModal').modal('hide');
+            angular.forEach($scope.result, function(request, key){
+                if(request.id == id) {
+                    $scope.result.splice($scope.result.indexOf(request),1);
+                }
+            });
+        });
+    }
+      
+    $scope.assignDeleteId = function(id) {
+        $scope.deleteID = id;
+    }
+});
+
+minibean.controller('CreateArticleController', function($scope, $http, $location, articleService, locationService, usSpinnerService){
     $scope.article;
     $scope.submitBtn = "Save";
     
@@ -19,7 +103,7 @@ minibean.controller('CreateArticleController', function($scope, $http, $location
             toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
     }
     
-    $scope.articleCategories = articleCategoryService.getAllArticleCategory.get();
+    $scope.articleCategories = articleService.getAllArticleCategories.get();
     
     $scope.select_targetLocation = function(id, name) {
         $scope.targetLocation_id = id;
@@ -79,45 +163,52 @@ minibean.controller('CreateArticleController', function($scope, $http, $location
 
 minibean.service('locationService',function($resource){
     this.getAllDistricts = $resource(
-            '/getAllDistricts',
+            '/get-all-districts',
             {alt:'json',callback:'JSON_CALLBACK'},
             {
                 get: {method:'get' ,isArray:true}
             }
     );
 });
-
-minibean.service('articleCategoryService',function($resource){
-    this.getAllArticleCategory = $resource(
-            '/getAllArticleCategory',
+    
+minibean.service('articleService',function($resource){
+    this.getAllArticleCategories = $resource(
+            '/get-all-article-categories',
             {alt:'json',callback:'JSON_CALLBACK'},
             {
                 get: {method:'get' ,isArray:true}
             }
     );
-});
-
-
-minibean.service('allArticlesService',function($resource){
-    this.LatestArticles = $resource(
-            '/get-latest-Articles',
+    this.latestArticles = $resource(
+            '/get-latest-articles',
             {alt:'json',callback:'JSON_CALLBACK'},
             {
                 get: {method:'get' ,isArray:true}
             }
     );
-    this.Articles = $resource(
-            '/get-Articles/:id/:name',
+    this.searchArticles = $resource(
+            '/search-articles/:id/:name',
             {alt:'json',callback:'JSON_CALLBACK'},
             {
                 get: {method:'get' ,isArray:true}
             }
     );
-});
-
-minibean.service('getDescriptionService',function($resource){
-    this.GetDescription = $resource(
-            '/getDescriptionOfArticle/:id',
+    this.getArticle = $resource(
+            '/get-article/:id',
+            {alt:'json',callback:'JSON_CALLBACK'},
+            {
+                get: {method:'get'}
+            }
+    );
+    this.getDescription = $resource(
+            '/get-article-description/:id',
+            {alt:'json',callback:'JSON_CALLBACK'},
+            {
+                get: {method:'get'}
+            }
+    );
+    this.deleteArticle = $resource(
+            '/delete-article/:id',
             {alt:'json',callback:'JSON_CALLBACK'},
             {
                 get: {method:'get'}
@@ -125,27 +216,17 @@ minibean.service('getDescriptionService',function($resource){
     );
 });
 
-minibean.service('deleteArticleService',function($resource){
-    this.DeleteArticle = $resource(
-            '/deleteArticle/:id',
-            {alt:'json',callback:'JSON_CALLBACK'},
-            {
-                get: {method:'get'}
-            }
-    );
-});
-
-minibean.controller('ShowArticlesController',function($scope, $modal, deleteArticleService, allArticlesService, getDescriptionService){
+minibean.controller('ShowArticlesController',function($scope, $modal, articleService){
 	$scope.searchById = " ";
     $scope.searchByName = " ";
     
-	$scope.result = allArticlesService.LatestArticles.get();
+	$scope.result = articleService.latestArticles.get();
     
     $scope.open = function (id) {
         var modalInstance = $modal.open({
           templateUrl: 'myModalContent.html',
         });
-        var msg = getDescriptionService.GetDescription.get({id:id}, function(data) {
+        var msg = articleService.getDescription.get({id:id}, function(data) {
             $('#showDescription').html(data.description);
         });
       };
@@ -162,11 +243,11 @@ minibean.controller('ShowArticlesController',function($scope, $modal, deleteArti
     			$scope.searchByName = " ";
     	  }
     	  
-    	  $scope.result = allArticlesService.Articles.get({id:$scope.searchById,name:$scope.searchByName});
+    	  $scope.result = articleService.searchArticles.get({id:$scope.searchById,name:$scope.searchByName});
       };
       
       $scope.deleteArticle = function (id){
-          deleteArticleService.DeleteArticle.get({id :id}, function(data){
+          articleService.deleteArticle.get({id :id}, function(data){
               $('#myModal').modal('hide');
               angular.forEach($scope.result, function(request, key){
                     if(request.id == id) {
@@ -183,18 +264,7 @@ minibean.controller('ShowArticlesController',function($scope, $modal, deleteArti
       
 });
 
-
-minibean.service('ArticleService',function($resource){
-    this.ArticleInfo = $resource(
-            '/Article/:id',
-            {alt:'json',callback:'JSON_CALLBACK'},
-            {
-                get: {method:'get'}
-            }
-    );
-});
-
-minibean.controller('ShowAnnouncementController',function($scope, $modal, $http, $filter, AnnouncementsService, deleteAnnouncementService, announcementIconService){
+minibean.controller('ManageAnnouncementsController',function($scope, $modal, $http, $filter, AnnouncementsService, deleteAnnouncementService, announcementIconService){
 	$scope.title = " ";
 	$scope.pageNumber;
 	$scope.pageSize;
@@ -1920,10 +1990,11 @@ minibean.service('allUsersService',function($resource){
 
 
 
-minibean.controller('EditArticleController',function($scope, $http, $routeParams, $location, $upload, ArticleService, articleCategoryService, usSpinnerService){
+minibean.controller('EditArticleController',function($scope, $http, $routeParams, $location, $upload, articleService, locationService, usSpinnerService){
     $scope.submitBtn = "Save";
-    $scope.article = ArticleService.ArticleInfo.get({id:$routeParams.id});
-    $scope.articleCategorys = articleCategoryService.getAllArticleCategory.get();
+    $scope.article = articleService.getArticle.get({id:$routeParams.id});
+    $scope.articleCategoriess = articleService.getAllArticleCategories.get();
+    $scope.targetLocations = locationService.getAllDistricts.get();
     
     var range = [];
     for(var i=0;i<100;i++) {
@@ -2007,7 +2078,7 @@ minibean.controller('EditArticleController',function($scope, $http, $routeParams
 });
 
       
-minibean.controller('ManageSubscriptionsController',function($scope, $http, $routeParams, getAlllLocationsService, getAllSubscriptionService, getAllSubscribedUsersService, sendEmailsToSubscribedUsersService){
+minibean.controller('ManageSubscriptionsController',function($scope, $http, $routeParams, locationService, getAllSubscriptionService, getAllSubscribedUsersService, sendEmailsToSubscribedUsersService){
 	$scope.pageNumber;
 	$scope.pageSize;
 	var currentPage = 1;
@@ -2019,7 +2090,7 @@ minibean.controller('ManageSubscriptionsController',function($scope, $http, $rou
 	$scope.subscription = " ";
 	$scope.isMailSent = false;
 	
-	$scope.allLocations = getAlllLocationsService.getAllLocations.get();
+	$scope.allLocations = locationService.getAllDistricts.get();
 	$scope.allSubscriptions = getAllSubscriptionService.getAllSubscription.get();
 	
 	
@@ -2083,16 +2154,6 @@ minibean.controller('ManageSubscriptionsController',function($scope, $http, $rou
 		}
 	};
 	
-});
-
-minibean.service('getAlllLocationsService',function($resource){
-    this.getAllLocations = $resource(
-            '/getAllLocations',
-            {alt:'json',callback:'JSON_CALLBACK'},
-            {
-                get: {method:'get',isArray:true}
-            }
-    );
 });
 
 minibean.service('getAllSubscriptionService',function($resource){

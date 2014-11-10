@@ -6,27 +6,36 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
 GET     /favicon.ico                controllers.Assets.at(path="/public", file="app/images/favicon-2.ico")
 
 # Home page
 GET     /                           controllers.Application.index
 POST	/							controllers.Application.login
 GET		/logout						controllers.Application.logout
-POST	/createArticle				controllers.ArticleController.addArticle
-POST	/editArticle				controllers.ArticleController.updateArticle
 
-GET     /getAllDistricts            controllers.ArticleController.getAllDistricts
-GET		/getAllArticleCategory		controllers.ArticleController.getAllArticleCategory
-GET     /get-latest-Articles		controllers.ArticleController.getLatestArticles
-GET     /get-Articles/:id/:name     controllers.ArticleController.getArticles(id:String,name:String)
-GET		/getDescriptionOfArticle/:id  	controllers.ArticleController.getDescriptionOfArticle(id :Long)
-GET		/deleteArticle/:id			controllers.ArticleController.deleteArticle(id :Long)
-GET		/Article/:id				controllers.ArticleController.infoArticle(id :Long)
-# Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+POST	/create-article				controllers.ArticleController.addArticle
+POST	/edit-article				controllers.ArticleController.updateArticle
+GET     /get-all-districts          controllers.ArticleController.getAllDistricts
+GET		/get-all-article-categories   controllers.ArticleController.getAllArticleCategories
+GET     /get-latest-articles		controllers.ArticleController.getLatestArticles
+GET     /search-articles/:id/:name     controllers.ArticleController.searchArticles(id:String,name:String)
+GET		/get-article-description/:id  	controllers.ArticleController.getDescriptionOfArticle(id :Long)
+GET		/delete-article/:id			controllers.ArticleController.deleteArticle(id :Long)
+GET		/get-article/:id			controllers.ArticleController.getArticle(id :Long)
+POST    /image/article/upload       controllers.ArticleController.uploadImage
 
+POST    /create-campaign            controllers.CampaignController.addCampaign
+POST    /edit-campaign              controllers.CampaignController.updateCampaign
+GET     /get-latest-campaigns       controllers.CampaignController.getLatestCampaigns
+GET     /search-campaigns/:id/:name controllers.CampaignController.searchCampaigns(id:String,name:String)
+GET     /get-campaign-description/:id    controllers.CampaignController.getDescriptionOfCampaign(id:Long)
+GET     /delete-campaign/:id        controllers.CampaignController.deleteCampaign(id:Long)
+GET     /get-campaign/:id           controllers.CampaignController.getCampaign(id:Long)
+POST    /image/campaign/upload      controllers.CampaignController.uploadImage
 
-POST    /image/article/upload		controllers.ArticleController.uploadImage
 POST	/saveAnnouncement		    controllers.AnnouncementController.saveAnnouncement
 POST	/updateAnnouncement		    controllers.AnnouncementController.updateAnnouncement
 
@@ -83,7 +92,6 @@ GET 	/image/get-post-image-by-id/:id 	controllers.ReportsController.getPostImage
 GET     /image/get-thumbnail-image-by-id/:id    controllers.UserController.getThumbnailVersionImageByID(id :Long)
 
 #Subscription
-GET		/getAllLocations						controllers.ReportsController.getAllLocations
 GET		/getAllSubscription						controllers.ReportsController.getAllSubscription
 GET		/getAllSubscribedUsers/:currentPage/:title/:gender/:location/:subscription		controllers.ReportsController.getAllSubscribedUsers(currentPage: Integer,title: String,gender: String,location: String,subscription: String)
 GET		/sendEmailsToSubscribedUsers/:userIds/:subscription		controllers.ReportsController.sendEmailsToSubscribedUsers(userIds: String,subscription: String)

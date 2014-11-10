@@ -1,4 +1,3 @@
-<html>
 <head>
 	<div data-ng-include data-src="'../assets/app/views/header.html'"></div>
 </head>
@@ -129,7 +128,7 @@
 				</td>
 				<td>
 					<div class="col-md-8" style="padding: 0 0px;">
-                        <li class="col-md-12 dropdown" style="padding: 0 0px;" validator="[required]" required>
+                        <li class="col-md-12 dropdown" style="padding: 0 0px;" required>
                             <div class="form-control dropdown-toggle">
                                 <div class="media-body">
                                     <p class="margin-none pull-left">{{article.targetLocation.displayName}}</p>
@@ -166,7 +165,7 @@
         					</div>
         					<input type="hidden" data-ng-model="article.ct.id">
                   		    <ul class="dropdown-menu chat media-list" style="left:2%; width: 96%;">
-            					<li class="media" data-ng-repeat="category in articleCategorys" style="margin-top: 1%;">
+            					<li class="media" data-ng-repeat="category in articleCategories" style="margin-top: 1%;">
             				        <a href="" data-ng-click="select_category(category.id, category.name,category.pn)">
             							<input type="hidden" data-ng-model="category.id" >
             							<div class="media-body">
@@ -193,8 +192,8 @@
 		</div>
 </form>		
 </body>		
-</html>		
-	<style>
+
+<style>
 
 .mce-panel{
 	width: 100% !important;

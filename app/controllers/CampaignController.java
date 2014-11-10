@@ -114,12 +114,12 @@ public class CampaignController extends Controller {
     }
 
     @Transactional
-    public static Result getCampaigns(String id,String name) {
+    public static Result searchCampaigns(String id, String name) {
     	final String value = session().get("NAME");
         if (value == null) {
         	return ok(views.html.login.render());
         }
-        List<Campaign> allCampaigns = Campaign.getCampaigns(id,name);
+        List<Campaign> allCampaigns = Campaign.getCampaigns(id, name);
         List<CampaignVM> listOfCampaigns = new ArrayList<>();
         for (Campaign campaign:allCampaigns) {
             CampaignVM vm = new CampaignVM(
@@ -157,7 +157,7 @@ public class CampaignController extends Controller {
     }
     
     @Transactional
-    public static Result infoCampaign(Long id) {
+    public static Result getCampaign(Long id) {
     	final String value = session().get("NAME");
         if (value == null) {
         	return ok(views.html.login.render());
