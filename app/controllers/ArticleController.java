@@ -11,14 +11,12 @@ import java.util.Map;
 import models.Article;
 import models.ArticleCategory;
 import models.Location;
-import models.User;
 
 import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
-import play.Play;
+import common.utils.ImageUploadUtil;
+
 import play.data.DynamicForm;
 import play.data.Form;
 import play.db.jpa.Transactional;
@@ -26,22 +24,15 @@ import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
-import services.UserService;
 import viewmodel.ArticleCategoryVM;
 import viewmodel.ArticleVM;
 import viewmodel.LocationVM;
-import viewmodel.UserVM;
 
 public class ArticleController extends Controller {
     private static play.api.Logger logger = play.api.Logger.apply(ArticleController.class);
 
-    private static final String STORAGE_PATH = Play.application().configuration().getString("storage.path"); 
-
-    private static final String IMAGE_URL_PREFIX =
-            Play.application().configuration().getString("image.url.prefix", "/image");
-
-    private static final DateTimeFormatter timeFormatter = DateTimeFormat.forPattern("HHmmss");
-
+    private static final ImageUploadUtil imageUploadUtil = new ImageUploadUtil("article");
+    
     @Transactional
     public static Result addArticle() {
     	final String value = session().get("NAME");
@@ -107,7 +98,7 @@ public class ArticleController extends Controller {
         if (value == null) {
         	return ok(views.html.login.render());
         }
-        Form<Article> articleForm = DynamicForm.form(Article.class).bindFromRequest();
+        
         DynamicForm form = DynamicForm.form().bindFromRequest();
         
         Long id = Long.parseLong(form.get("id"));
@@ -126,11 +117,12 @@ public class ArticleController extends Controller {
         article.category = ac;
         article.description = form.get("description");
         article.update();
+        
         logger.underlyingLogger().info(value+" updated article ["+article.id+"|"+article.name+"]");
         return ok();
     }
 
-   @Transactional
+    @Transactional
     public static Result getAllDistricts() {
 	   final String value = session().get("NAME");
        if (value == null) {
@@ -147,23 +139,6 @@ public class ArticleController extends Controller {
         return ok(Json.toJson(locationVMs));
     }
    
-   @Transactional
-   public static Result getAllUsers() {
-	   final String value = session().get("NAME");
-       if (value == null) {
-       	return ok(views.html.login.render());
-       }
-       //List<Location> locations = Location.getHongKongDistricts();  // TODO
-       List<User> users = UserService.getAllUsers();
-               
-       
-       List<UserVM> userVMs = new ArrayList<>();
-       for(User user : users) {
-           UserVM vm = new UserVM(user);
-           userVMs.add(vm);
-       }
-       return ok(Json.toJson(userVMs));
-   }   
     @Transactional
     public static Result getAllArticleCategory() {
     	final String value = session().get("NAME");
@@ -213,7 +188,7 @@ public class ArticleController extends Controller {
     }
     
     @Transactional
-    public static Result getDescriptionOdArticle(Long art_id) {
+    public static Result getDescriptionOfArticle(Long art_id) {
     	final String value = session().get("NAME");
         if (value == null) {
         	return ok(views.html.login.render());
@@ -261,14 +236,14 @@ public class ArticleController extends Controller {
         DateTime  now = new DateTime();
         File file = picture.getFile();
         try {
-            String imagePath = getImagePath(now, fileName);
+            String imagePath = imageUploadUtil.getImagePath(now, fileName);
             FileUtils.copyFile(file, new File(imagePath));
         } catch (IOException e) {
             logger.underlyingLogger().error(value+" failed to upload photo", e);
             return status(500);
         }
 
-        String imageUrl = getImageUrl(now, fileName);
+        String imageUrl = imageUploadUtil.getImageUrl(now, fileName);
         logger.underlyingLogger().info("uploadImage. imageUrl=" + imageUrl);
 
         Map<String, String> map = new HashMap<>();
@@ -277,34 +252,9 @@ public class ArticleController extends Controller {
         return ok(Json.toJson(map));
     }
 
-    /**
-     * Ajax call (see routes)
-     * @param year
-     * @param month
-     * @param date
-     * @param name
-     * @return
-     */
     @Transactional
     public static Result getImage(Long year, Long month, Long date, String name) {
-        String path = getImagePath(year, month, date, name);
+        String path = imageUploadUtil.getImagePath(year, month, date, name);
         return ok(new File(path));
-    }
-    
-    private static String getImagePath(Long year, Long month, Long date, String name) {
-        return STORAGE_PATH + "/article/" + year + "/" + month + "/" + date + "/" + name;
-    }
-
-    private static String getImagePath(DateTime dateTime, String rawFileName) {
-        String name = timeFormatter.print(dateTime)+"_"+rawFileName;
-        return getImagePath(Long.valueOf(dateTime.getYear()), Long.valueOf(dateTime.getMonthOfYear()), Long.valueOf(dateTime.getDayOfMonth()), name);
-    }
-
-    private static String getImageUrl(DateTime dateTime, String rawFileName) {
-        int year = dateTime.getYear();
-        int month = dateTime.getMonthOfYear();
-        int date = dateTime.getDayOfMonth();
-        String name = timeFormatter.print(dateTime)+"_"+rawFileName;
-        return IMAGE_URL_PREFIX + "/article/" + year + "/" + month + "/" + date + "/" + name;
     }
 }

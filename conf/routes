@@ -19,7 +19,7 @@ GET     /getAllDistricts            controllers.ArticleController.getAllDistrict
 GET		/getAllArticleCategory		controllers.ArticleController.getAllArticleCategory
 GET     /get-latest-Articles		controllers.ArticleController.getLatestArticles
 GET     /get-Articles/:id/:name     controllers.ArticleController.getArticles(id:String,name:String)
-GET		/getDescriptionOdArticle/:id  	controllers.ArticleController.getDescriptionOdArticle(id :Long)
+GET		/getDescriptionOfArticle/:id  	controllers.ArticleController.getDescriptionOfArticle(id :Long)
 GET		/deleteArticle/:id			controllers.ArticleController.deleteArticle(id :Long)
 GET		/Article/:id				controllers.ArticleController.infoArticle(id :Long)
 # Map static resources from the /public folder to the /assets URL path
@@ -30,7 +30,6 @@ POST    /image/article/upload		controllers.ArticleController.uploadImage
 POST	/saveAnnouncement		    controllers.AnnouncementController.saveAnnouncement
 POST	/updateAnnouncement		    controllers.AnnouncementController.updateAnnouncement
 
-GET		/get-all-Users				controllers.ArticleController.getAllUsers
 GET		/getAnnouncements/:title/:currentPage			controllers.AnnouncementController.getAnnouncements(title :String,currentPage :Integer)
 GET		/deleteAnnouncement/:id		controllers.AnnouncementController.deleteAnnouncement(id :Long)
 GET		/getAllAnnouncementIcons	controllers.AnnouncementController.getAllAnnouncementIcons

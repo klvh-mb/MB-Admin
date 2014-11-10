@@ -3,7 +3,6 @@ package models;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -11,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
 import javax.persistence.Query;
 import javax.persistence.NoResultException;
 
@@ -23,8 +21,6 @@ import play.db.jpa.Transactional;
 @Entity
 public class Campaign extends domain.Entity {
 
-	public Campaign() {}
-	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
 	public Long id;
 	
@@ -50,7 +46,7 @@ public class Campaign extends domain.Entity {
 	public Boolean deleted = false;
 	
 	@Enumerated(EnumType.STRING)
-    public CampaignState campaignState;
+    public CampaignState campaignState = CampaignState.NEW;
     
     public static enum CampaignState {
         NEW,
@@ -71,6 +67,8 @@ public class Campaign extends domain.Entity {
         PHOTO_CONTEST
     }
 	
+    public Campaign() {}
+    
     public static List<Campaign> getLatestCampaigns() {
         Query q = JPA.em().createQuery("Select c from Campaign c order by startDate desc");
         q.setMaxResults(DefaultValues.MAX_CAMPAIGN_COUNT);
@@ -106,10 +104,10 @@ public class Campaign extends domain.Entity {
 		return (List<Campaign>)q.getResultList();
 	}
 	
-	public static Article findById(Long id) {
+	public static Campaign findById(Long id) {
 		Query q = JPA.em().createQuery("SELECT c FROM Campaign c where id = ?1 and c.deleted = false");
 		q.setParameter(1, id);
-		return (Article) q.getSingleResult();
+		return (Campaign) q.getSingleResult();
 	}
 	
     public static int deleteByID(Long id) {

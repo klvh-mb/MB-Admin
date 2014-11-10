@@ -115,19 +115,9 @@ minibean.service('allArticlesService',function($resource){
     );
 });
 
-minibean.service('allUsersService',function($resource){
-    this.AllUsers = $resource(
-            '/get-all-Users',
-            {alt:'json',callback:'JSON_CALLBACK'},
-            {
-                get: {method:'get' ,isArray:true}
-            }
-    );
-});
-
 minibean.service('getDescriptionService',function($resource){
     this.GetDescription = $resource(
-            '/getDescriptionOdArticle/:id',
+            '/getDescriptionOfArticle/:id',
             {alt:'json',callback:'JSON_CALLBACK'},
             {
                 get: {method:'get'}
@@ -145,13 +135,11 @@ minibean.service('deleteArticleService',function($resource){
     );
 });
 
-minibean.controller('ShowArticlesController',function($scope, $modal, deleteArticleService, allUsersService, allArticlesService, getDescriptionService){
+minibean.controller('ShowArticlesController',function($scope, $modal, deleteArticleService, allArticlesService, getDescriptionService){
 	$scope.searchById = " ";
     $scope.searchByName = " ";
     
 	$scope.result = allArticlesService.LatestArticles.get();
-    
-    //$scope.userResult = allUsersService.AllUsers.get();
     
     $scope.open = function (id) {
         var modalInstance = $modal.open({
@@ -1689,7 +1677,7 @@ minibean.service('getAllCommunitiesService',function($resource){
 });
 
 
-minibean.controller('ManageUsers2Controller',function($scope, $http, $routeParams, reportedUsersService, deleteReportedObjectUserService, deletedUsersService, deleteUserStatusService, getAllUsersService){
+minibean.controller('ManageUsers2Controller',function($scope, $http, $routeParams, reportedUsersService, deleteReportedObjectUserService, deletedUsersService, deleteUserStatusService, allUsersService){
 	$scope.pageNumber;
 	$scope.pageSize;
 	var currentPage = 1;
@@ -1775,7 +1763,7 @@ minibean.controller('ManageUsers2Controller',function($scope, $http, $routeParam
 		$scope.deleteUserData = user.id;
 	}
 	
-	$scope.allUsers = getAllUsersService.getAllUsers.get({currentPage: currentPage3,title: $scope.title},function(response) {
+	$scope.allUsers = allUsersService.getAllUsers.get({currentPage: currentPage3,title: $scope.title},function(response) {
 		totalPages3 = $scope.allUsers.totalPages;
 		currentPage3 = $scope.allUsers.currentPage;
 		$scope.pageNumber3 = $scope.allUsers.currentPage;
@@ -1792,7 +1780,7 @@ minibean.controller('ManageUsers2Controller',function($scope, $http, $routeParam
 		if(angular.isUndefined($scope.title) || $scope.title=="") {
 			$scope.title = " ";
 		}
-		$scope.allUsers = getAllUsersService.getAllUsers.get({currentPage: currentPage3,title: $scope.title},function(response) {
+		$scope.allUsers = allUsersService.getAllUsers.get({currentPage: currentPage3,title: $scope.title},function(response) {
 			totalPages3 = $scope.allUsers.totalPages;
 			currentPage3 = $scope.allUsers.currentPage;
 			$scope.pageNumber3 = $scope.allUsers.currentPage;
@@ -1920,7 +1908,7 @@ minibean.service('deleteUserStatusService',function($resource){
     );
 });
 
-minibean.service('getAllUsersService',function($resource){
+minibean.service('allUsersService',function($resource){
     this.getAllUsers = $resource(
             '/getAllUsers/:currentPage/:title',
             {alt:'json',callback:'JSON_CALLBACK'},

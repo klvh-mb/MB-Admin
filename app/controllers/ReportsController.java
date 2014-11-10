@@ -2,7 +2,6 @@ package controllers;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -18,6 +17,8 @@ import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
 
+import common.utils.ImageUploadUtil;
+
 import domain.SocialObjectType;
 import email.EDMUtility;
 import models.Comment;
@@ -31,7 +32,6 @@ import models.ReportedObject;
 import models.Resource;
 import models.Subscription;
 import models.User;
-import play.Play;
 import play.data.DynamicForm;
 import play.db.jpa.Transactional;
 import play.libs.Json;
@@ -52,8 +52,8 @@ import domain.ReportType;
 
 public class ReportsController extends Controller {
 
-	private static final String STORAGE_PATH = Play.application().configuration().getString("storage.path");
-	
+    public ReportsController() {}
+    
 	@Transactional
 	public static Result getReportedPosts(int currentPage) {
 		
@@ -916,14 +916,15 @@ public class ReportsController extends Controller {
 		boolean miniThumbnail = Boolean.parseBoolean(form.get("miniThumbnail"));
 		boolean mobile = Boolean.parseBoolean(form.get("mobile"));
 		String category = form.get("category");
-		
+		ImageUploadUtil imageUploadUtil = new ImageUploadUtil(category)
+		;
 		FilePart picture = request().body().asMultipartFormData().getFile("cover-photo");
         String fileName = picture.getFilename();
         DateTime  now = new DateTime();
         File file = picture.getFile();
         String imagePath;
         try {
-            imagePath = getImagePath(now, fileName,category);
+            imagePath = imageUploadUtil.getImagePath(now, fileName);
             FileUtils.copyFile(file, new File(imagePath));
         } catch (IOException e) {
             return status(500);
@@ -931,10 +932,10 @@ public class ReportsController extends Controller {
         
         if(thumbnail == true) {
         	StringBuffer sb = new StringBuffer(fileName);
-        	sb.insert(fileName.indexOf("."),"_thumbnail" );
+        	sb.insert(fileName.indexOf("."),"_thumbnail");
         	String name = sb.toString();
         	try {
-                String imagePath2 = getImagePath(now, name,category);
+                String imagePath2 = imageUploadUtil.getImagePath(now, name);
                 BufferedImage originalImage = ImageIO.read(file);
                 File file2 = new File(imagePath2);
                 Thumbnails.of(originalImage).size(200, 200).toFile(file2);
@@ -949,7 +950,7 @@ public class ReportsController extends Controller {
         	sb.insert(fileName.indexOf("."),"_mini" );
         	String name = sb.toString();
         	try {
-                String imagePath2 = getImagePath(now, name,category);
+                String imagePath2 = imageUploadUtil.getImagePath(now, name);
                 BufferedImage originalImage = ImageIO.read(file);
                 File file2 = new File(imagePath2);
                 Thumbnails.of(originalImage).size(150, 150).toFile(file2);
@@ -963,7 +964,7 @@ public class ReportsController extends Controller {
         	sb.insert(fileName.indexOf("."),"_m" );
         	String name = sb.toString();
         	try {
-                String imagePath2 = getImagePath(now, name,category);
+                String imagePath2 = imageUploadUtil.getImagePath(now, name);
                 BufferedImage originalImage = ImageIO.read(file);
                 File file2 = new File(imagePath2);
                 Thumbnails.of(originalImage).size(100, 100).toFile(file2);
@@ -976,7 +977,7 @@ public class ReportsController extends Controller {
             	sb1.insert(fileName.indexOf("."),"_thumbnail_m" );
             	String name1 = sb1.toString();
             	try {
-                    String imagePath2 = getImagePath(now, name1,category);
+                    String imagePath2 = imageUploadUtil.getImagePath(now, name1);
                     BufferedImage originalImage = ImageIO.read(file);
                     File file2 = new File(imagePath2);
                     Thumbnails.of(originalImage).size(80, 80).toFile(file2);
@@ -990,7 +991,7 @@ public class ReportsController extends Controller {
             	sb1.insert(fileName.indexOf("."),"_mini_m" );
             	String name1 = sb1.toString();
             	try {
-                    String imagePath2 = getImagePath(now, name1,category);
+                    String imagePath2 = imageUploadUtil.getImagePath(now, name1);
                     BufferedImage originalImage = ImageIO.read(file);
                     File file2 = new File(imagePath2);
                     Thumbnails.of(originalImage).size(50, 50).toFile(file2);
@@ -1005,14 +1006,6 @@ public class ReportsController extends Controller {
         map.put("URL", imagePath);
 		return ok(Json.toJson(map));
 	}
-	
-	private static String getImagePath(Long year, Long month, Long date, String name, String category) {
-        return STORAGE_PATH  + category + "/" + year + "/" + month + "/" + date + "/" + name;
-    }
-
-    private static String getImagePath(DateTime dateTime, String rawFileName, String category) {
-        return getImagePath(Long.valueOf(dateTime.getYear()), Long.valueOf(dateTime.getMonthOfYear()), Long.valueOf(dateTime.getDayOfMonth()), rawFileName,category);
-    }
 	
 	@Transactional
     public static Result getPostImageById(Long id) {
