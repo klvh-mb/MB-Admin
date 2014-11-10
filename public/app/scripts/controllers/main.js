@@ -157,7 +157,7 @@ minibean.controller('ShowArticlesController',function($scope, $modal, deleteArti
         var modalInstance = $modal.open({
           templateUrl: 'myModalContent.html',
         });
-        var msg = getDescriptionService.GetDescription.get({id:id}  , function(data) {
+        var msg = getDescriptionService.GetDescription.get({id:id}, function(data) {
             $('#showDescription').html(data.description);
         });
       };

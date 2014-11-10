@@ -45,6 +45,9 @@ public class Article extends domain.Entity {
 	public Boolean deleted = false;
 	
 	@ManyToOne
+    public User deletedBy;
+	
+	@ManyToOne
 	public ArticleCategory category;
 	
 	// Targeting attributes
@@ -74,7 +77,7 @@ public class Article extends domain.Entity {
     public Location targetLocation;
     
     public static List<Article> getLatestArticles() {
-        Query q = JPA.em().createQuery("Select a from Article a order by publishedDate desc");
+        Query q = JPA.em().createQuery("Select a from Article a where a.deleted = false order by publishedDate desc");
         q.setMaxResults(DefaultValues.MAX_ARTICLES_COUNT);
         return (List<Article>)q.getResultList();
     }
@@ -87,15 +90,15 @@ public class Article extends domain.Entity {
 		}
 		
 		if(id.trim().equals("") && !name.trim().equals("")) {
-			sql="Select a from Article a where a.name LIKE ?1 order by publishedDate desc";
+			sql="Select a from Article a where a.deleted = false and a.name LIKE ?1 order by publishedDate desc";
 		}
 		
 		if(!id.trim().equals("") && name.trim().equals("")) {
-			sql="Select a from Article a where a.id=?2 order by publishedDate desc";
+			sql="Select a from Article a where a.deleted = false and a.id=?2 order by publishedDate desc";
 		}
 		
 		if(!id.trim().equals("") && !name.trim().equals("")) {
-			sql="Select a from Article a where a.name LIKE ?1 and a.id=?2 order by publishedDate desc";
+			sql="Select a from Article a where a.deleted = false and a.name LIKE ?1 and a.id=?2 order by publishedDate desc";
 		}
 		
 		Query q = JPA.em().createQuery(sql);
@@ -109,13 +112,13 @@ public class Article extends domain.Entity {
 	}
 	
 	public static Article findById(Long id) {
-		Query q = JPA.em().createQuery("SELECT u FROM Article u where id = ?1");
-		q.setParameter(1, id);
-		return (Article) q.getSingleResult();
-	}
+	    Query q = JPA.em().createQuery("SELECT a FROM Article a where id = ?1 and a.deleted = false");
+        q.setParameter(1, id);
+        return (Article) q.getSingleResult();
+    }
 	
 	public static int deleteByID(Long id) {
-		Query q = JPA.em().createQuery("DELETE FROM Article u where id = ?1");
+		Query q = JPA.em().createQuery("DELETE FROM Article a where id = ?1");
 		q.setParameter(1, id);
 		return q.executeUpdate();
 	}
@@ -131,12 +134,17 @@ public class Article extends domain.Entity {
 		
 		return (article == null);
 	}
-	
-	public void updateById() {
+
+    public void delete() {
+        this.deleted = true;
+        save();
+    }
+    
+	public void update() {
 		this.merge();
 	}
 	
-	public void saveArticle() {
+	public void save() {
 		this.save();
 	}
 	

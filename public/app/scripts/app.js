@@ -19,15 +19,13 @@ angular.module('minibean', [
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
-        templateUrl: '/assets/app/views/home.html'
+        templateUrl: '/assets/app/views/manageArticlesPage.html',
+        controller : 'ShowArticlesController'
       })
       .when('/manageArticles',{
-    	templateUrl: '/assets/app/views/home.html'
+    	templateUrl: '/assets/app/views/manageArticlesPage.html',
+    	controller : 'ShowArticlesController'
       })	  
-      .when('/article/id/:id',{
-    	templateUrl: '/assets/app/views/articlePage.html',
-    	controller : 'ViewArticleController'  
-      })
       .when('/article/create',{
     	templateUrl: '/assets/app/views/createArticlePage.html',
     	controller : 'CreateArticleController'  
@@ -36,9 +34,17 @@ angular.module('minibean', [
     	templateUrl: '/assets/app/views/editArticlePage.html',
     	controller : 'EditArticleController'  
       })
-      .when('/article/show',{
-    	templateUrl: '/assets/app/views/showArticlesPage.html',
-    	controller : 'ShowArticlesController'  
+      .when('/manageCampaigns',{
+        templateUrl: '/assets/app/views/manageCampaignsPage.html',
+        controller : 'ShowCampaignsController'  
+      })
+      .when('/campaign/create',{
+        templateUrl: '/assets/app/views/createCampaignPage.html',
+        controller : 'CreateCampaignController'  
+      })
+      .when('/campaign/edit/:id',{
+        templateUrl: '/assets/app/views/editCampaignPage.html',
+        controller : 'EditCampaignController'  
       })
       .when('/manageAnnouncement',{
     	templateUrl: '/assets/app/views/manageAnnouncements.html',
@@ -71,10 +77,6 @@ angular.module('minibean', [
       .when('/manageUsers2',{
     	templateUrl: '/assets/app/views/manageUsers2.html',
     	controller : 'ManageUsers2Controller'  
-      })
-      .when('/manageOperations',{
-    	templateUrl: '/assets/app/views/operations.html',
-    	controller : 'ManageOperationsController'  
       })
       .when('/manageSubscriptions',{
     	templateUrl: '/assets/app/views/manageSubscription.html',

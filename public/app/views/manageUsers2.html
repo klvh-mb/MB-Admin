@@ -1,338 +1,327 @@
-<ul class="nav nav-tabs" role="tablist" id="myTab">
-	  <li><a href="/#/" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Articles</a></li>
-	  <li><a href="/#/manageAnnouncement" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Announcements</a></li>
-	  <li><a href="/#/managePosts" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Posts</a></li>
-	  <li><a href="/#/manageComments" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Comments</a></li>
-	  <li><a href="/#/manageQuestions" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Questions</a></li>
-	  <li><a href="/#/manageAnswers" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Answers</a></li>
-	  <li><a href="/#/manageCommunities" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Communities</a></li>
-	  <li class="active"><a href="/#/manageUsers2" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Users</a></li>
-	  <li><a href="/#/manageSubscriptions" role="tab" data-toggle="tab" style="cursor: pointer;">Subscriptions</a></li>
-	  <li><a href="/#/manageGameAccount" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Game Account</a></li>
-		  <li><a href="/#/manageRedemption" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Redemption</a></li>
-		  <li><a href="/#/managePhotoUpload" role="tab" data-toggle="tab" style="cursor: pointer;">Photo Upload</a></li>
-</ul>
+<head>
+    <div data-ng-include data-src="'../assets/app/views/header.html'"></div>
+</head>
 
 <form action="/logout" method="get"><input type="submit" value="logout" style="margin-left: 92%;"></form>
-  		<h4>Manage Users</h4>
-		<!-- Nav tabs -->
-		<ul class="nav nav-tabs" role="tablist" id="myTab">
-		  <li class="active"><a data-target="#reported" role="tab" data-toggle="tab">Reported({{size}})</a></li>
-		  <li><a data-target="#deleted" role="tab" data-toggle="tab">Deleted({{size2}})</a></li>
-		  <li><a data-target="#search" role="tab" data-toggle="tab">Search</a></li>
-		</ul>
-		
-		<!-- Tab panes -->
-		<div class="tab-content">
-		  <div class="tab-pane active" id="reported">
-		  		<section id="container">
-			    	<section class="" style="width:625px;margin-left: 26%;">
-			        	<section class="dgridinfo dactcln">
-			                <table ng-table="tableParams">
-			                	<tbody>
-			                    	<tr ng-repeat="user in users.results" class="row tm bg-white border-bottom">
-			                            <td style="border: 1px solid;border-color: rgb(209, 205, 200);">
-			                            <div style="background-color: #f3f3f3;border: 1px solid;border-color: rgb(209, 205, 200);margin-right: 5px;">
-				                            <div>
-				                            	<b>Type :</b> {{user.objectType}}
-				                            	<button class="margin-none pull-right" ng-click="setData(user)" data-toggle="modal" data-target="#myModal3">Delete</button>
-				                            </div>
-				                            <div>	
-				                            	<b>Report Type : {{user.reportType}}</b>
-				                            </div>
-				                            <div>	
-				                            	<b>Reported On :</b> {{user.reportedDate}}
-				                            </div>
-				                            <div>	
-				                            	<b>Reported By :</b> {{user.reportedBy}}
-				                            </div>
-				                            <div>	
-				                            	<b>Comments :</b> {{user.comment}}
-				                            </div>
-				                         </div>   
-				                            <div>
-				                            	 <div><img class="img-rounded" data-ng-src="/image/get-thumbnail-image-by-id/{{user.id}}" style="height:80px;width:80px;"/></div>
-				                            </div>
-				                            <div>
-				                            	<b>User Name :{{user.userName}}</b> 
-				                            </div>
-				                            <div>
-				                            	<b>ID : {{user.socialObjectID}}</b>
-				                            </div>
-				                            <div>
-				                            	<b>Created On : </b> {{user.createdDate}}
-				                            </div>
-				                            <div>
-				                            	<b>Last Login :</b> {{user.lastLogin}}
-				                            </div>
-				                            <div>
-				                            	<b>User Info :</b> 
-				                            	<div>
-						                            		<div><b>About Me :</b> {{user.aboutMe}}</div>
-						                            		<div><b>Birth Year :</b> {{user.birthYear}}</div>
-						                            		<div><b>Location :</b> {{user.location}}</div>
-						                            		<div><b>Num Children :</b> {{user.numChildren}}</div>
-						                            		<div><b>Parent Type :</b> {{user.parentType}}</div>
-				                            	</div>
-				                            </div>
-				                            <div>
-				                            	<b>User Child Info : </b>
-				                            	<div>
-				                            		<table border=0 ng-table="abc">
-						                            	<tr ng-repeat="child in user.userChildVms">
-						                            		<td><b>Birth Day :</b> {{child.birthDay}}</td>
-						                            		<td><b>Birth Month :</b> {{child.birthMonth}}</td>
-						                            		<td><b>Birth Year :</b> {{child.birthYear}}</td>
-						                            		<td><b>Gender :</b> {{child.gender}}</td>
-						                            	</tr>
-					                            	</table>
-				                            	</div>
-				                            </div>
-			                            </td>
-			                        </tr>
-			                    	</tbody>
-			                </table>
-			        	</section>
-			            <section class="dpaging">
-			            	<h4>{{pageNumber}}/{{pageSize}}</h4>
-			            	<span class="dpagingright">
-			                	<a href="" class="dpagingprv" ng-click="onPrev()">Prev</a>
-			                	<a href="" class="dpagingnxt" ng-click="onNext()">Next</a>
-			                </span>
-			            </section>
-			        </section>
-			    </section>
-		  </div>
-		  <div class="tab-pane" id="deleted">
-		  		<section id="container">
-			    	<section class="" style="width:625px;margin-left: 26%;">
-			        	<section class="dgridinfo dactcln">
-			                <table ng-table="tableParams">
-			                	<tbody>
-			                    	<tr ng-repeat="user in deletedUsers.results" class="row tm bg-white border-bottom">
-			                            <td style="border: 1px solid;border-color: rgb(209, 205, 200);">
-			                              <div style="background-color: #f3f3f3;border: 1px solid;border-color: rgb(209, 205, 200);margin-right: 5px;">
-				                            <div>
-				                            	<b>Type :</b> {{user.objectType}}
-				                            	<button class="margin-none pull-right" ng-click="setDeletedInfoData(user)" data-toggle="modal" data-target="#myModal5" ng-show="user.deleted == true">UnDelete</button>
-				                            	<button class="margin-none pull-right" ng-click="setDeletedInfoData(user)" data-toggle="modal" data-target="#myModal6" ng-show="user.deleted == false">Delete</button>
-				                            </div>
-				                            <div>	
-				                            	<b>Report Type : {{user.reportType}}</b>
-				                            </div>
-				                            <div>	
-				                            	<b>Reported On :</b> {{user.reportedDate}}
-				                            </div>
-				                            <div>	
-				                            	<b>Reported By :</b> {{user.reportedBy}}
-				                            </div>
-				                            <div>	
-				                            	<b>Comment :</b> {{user.comment}}
-				                            </div>
-				                         </div>   
-				                            <div>
-				                            	 <div><img class="img-rounded" data-ng-src="/image/get-thumbnail-image-by-id/{{user.id}}" style="height:80px;width:80px;"/></div>
-				                            </div>
-				                            <div>
-				                            	<b>User Name : {{user.userName}}</b>
-				                            </div>
-				                            <div>
-				                            	<b>ID : {{user.socialObjectID}}</b>
-				                            </div>
-				                            <div>
-				                            	<b>Created On :</b> {{user.createdDate}}
-				                            </div>
-				                            <div>
-				                            	<b>Last Login :</b> {{user.lastLogin}}
-				                            </div>
-				                            <div>
-				                            	<b>User Info : </b>
-				                            	<div>
-						                            		<div><b>About Me :</b> {{user.aboutMe}}</div>
-						                            		<div><b>Birth Year :</b> {{user.birthYear}}</div>
-						                            		<div><b>Location :</b> {{user.location}}</div>
-						                            		<div><b>Num Children :</b> {{user.numChildren}}</div>
-						                            		<div><b>Parent Type :</b> {{user.parentType}}</div>
-				                            	</div>
-				                            </div>
-				                            <div>
-				                            	<b>User Child Info :</b> 
-				                            	<div>
-				                            		<table border=0 ng-table="abcd">
-						                            	<tr ng-repeat="child in user.userChildVms">
-						                            		<td><b>Birth Day :</b> {{child.birthDay}}</td>
-						                            		<td><b>Birth Month :</b> {{child.birthMonth}}</td>
-						                            		<td><b>Birth Year :</b> {{child.birthYear}}</td>
-						                            		<td><b>Gender :</b> {{child.gender}}</td>
-						                            	</tr>
-					                            	</table>
-				                            	</div>
-				                            </div>
-			                            </td>
-			                        </tr>
-			                    	</tbody>
-			                </table>
-			        	</section>
-			            <section class="dpaging">
-			            	<h4>{{pageNumber2}}/{{pageSize2}}</h4>
-			            	<span class="dpagingright">
-			                	<a href="" class="dpagingprv" ng-click="onPrev2()">Prev</a>
-			                	<a href="" class="dpagingnxt" ng-click="onNext2()">Next</a>
-			                </span>
-			            </section>
-			        </section>
-			    </section>
-		  </div>
-		  <div class="tab-pane" id="search">
-			    
-			    <section id="container">
-			    	<section class="" style="width:625px;margin-left: 26%;">
-			        	<section class="dadsrch" style="width:625px;">
-			            	<section class="heading"><h2>User Search By id</h2></section>
-			                <section class="dadsrchdiv">
-			                	<input name="title" type="text" ng-model="title" class="" style="height:1%;width:50%;" ng-keyup="$event.keyCode == 13 ? searchUsers(1) : null"><input name="" type="button" class="btngray" value="Search" ng-click="searchUsers(1)">
-			                </section>
-			            </section>
-			             
-			        	<section class="dgridinfo dactcln">
-			                <table ng-table="tableParams">
-			                	<tbody>
-			                    	<tr ng-repeat="user in allUsers.results" class="row tm bg-white border-bottom">
-			                            <td style="border: 1px solid;border-color: rgb(209, 205, 200);">
-			                            	<div>
-				                            	 <div><img class="img-rounded" data-ng-src="/image/get-thumbnail-image-by-id/{{user.id}}" style="height:80px;width:80px;"/></div>
-				                            </div>
-				                            <div>
-				                            	<b>User Name : {{user.userName}}</b>
-				                            	<button class="margin-none pull-right" ng-click="setUserData(user)" data-toggle="modal" data-target="#myModal5" ng-show="user.deleted == true">UnDelete</button>
-				                            	<button class="margin-none pull-right" ng-click="setUserData(user)" data-toggle="modal" data-target="#myModal6" ng-show="user.deleted == false">Delete</button>
-				                            </div>
-				                            <div>
-				                            	<b>ID : {{user.id}}</b>
-				                            </div>
-				                            <div>
-				                            	<b>Created On :</b> {{user.createdOn}}
-				                            </div>
-				                            <div>
-				                            	<b>Last Login :</b> {{user.lastLogin}}
-				                            </div>
-				                            <div>
-				                            	<b>User Info :</b> 
-				                            	<div>
-						                            		<div><b>About Me :</b> {{user.aboutMe}}</div>
-						                            		<div><b>Birth Year :</b> {{user.birthYear}}</div>
-						                            		<div><b>Location :</b> {{user.location}}</div>
-						                            		<div><b>Num Children :</b> {{user.numChildren}}</div>
-						                            		<div><b>Parent Type :</b> {{user.parentType}}</div>
-				                            	</div>
-				                            </div>
-				                            <div>
-				                            	<b>User Child Info : </b>
-				                            	<div>
-				                            		<table border=0 ng-table="abcd">
-						                            	<tr ng-repeat="child in user.userChildVms">
-						                            		<td><b>Birth Day :</b> {{child.birthDay}}</td>
-						                            		<td><b>Birth Month :</b> {{child.birthMonth}}</td>
-						                            		<td><b>Birth Year :</b> {{child.birthYear}}</td>
-						                            		<td><b>Gender :</b> {{child.gender}}</td>
-						                            	</tr>
-					                            	</table>
-				                            	</div>
-				                            </div>
-			                            </td>
-			                            
-			                            
-			                        </tr>
-			                    	</tbody>
-			                </table>
-			        	</section>
-			            <section class="dpaging">
-			            	<h4>{{pageNumber3}}/{{pageSize3}}</h4>
-			            	<span class="dpagingright">
-			                	<a href="" class="dpagingprv" ng-click="onPrev3()">Prev</a>
-			                	<a href="" class="dpagingnxt" ng-click="onNext3()">Next</a>
-			                </span>
-			            </section>
-			        </section>
-			    </section>
-			  
-			  </div>
-			</div>
-		  </div>
-		</div>
-		
-		<!-- Delete Modal -->
-		<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
-		  <div class="modal-dialog">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		        <h4 class="modal-title" id="myModalLabel">User Delete</h4>
-		      </div>
-		      <div class="modal-body" id="deleteArticleBody">
-		        Are you sure you want to delete?
-		      </div>
-		      <div class="modal-footer">
-		      	<button type="button" class="btn btn-primary" data-ng-click="deleteUser()">Yes</button>
-		        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-		      </div>
-		    </div>
-		  </div>
-		</div>
-		
-		<!-- Delete Modal 2 -->
-		<div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
-		  <div class="modal-dialog">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		        <h4 class="modal-title" id="myModalLabel">Post Delete</h4>
-		      </div>
-		      <div class="modal-body" id="deleteArticleBody">
-		        Are you sure you want to UnDelete?
-		      </div>
-		      <div class="modal-footer">
-		      	<button type="button" class="btn btn-primary" data-ng-click="UnDeletePost()">Yes</button>
-		        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-		      </div>
-		    </div>
-		  </div>
-		</div>
-		
-		<!-- Delete Modal 5 -->
-		<div class="modal fade" id="myModal5" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
-		  <div class="modal-dialog">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		        <h4 class="modal-title" id="myModalLabel">User UnDelete</h4>
-		      </div>
-		      <div class="modal-body" id="deleteArticleBody">
-		        Are you sure you want to UnDelete?
-		      </div>
-		      <div class="modal-footer">
-		      	<button type="button" class="btn btn-primary" data-ng-click="unDeleteUserStatus()">Yes</button>
-		        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-		      </div>
-		    </div>
-		  </div>
-		</div>
-		
-		<!-- Delete Modal 6 -->
-		<div class="modal fade" id="myModal6" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
-		  <div class="modal-dialog">
-		    <div class="modal-content">
-		      <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-		        <h4 class="modal-title" id="myModalLabel">User Delete</h4>
-		      </div>
-		      <div class="modal-body" id="deleteArticleBody">
-		        Are you sure you want to Delete?
-		      </div>
-		      <div class="modal-footer">
-		      	<button type="button" class="btn btn-primary" data-ng-click="deleteUserStatus()">Yes</button>
-		        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-		      </div>
-		    </div>
-		  </div>
-		</div>
+<h4>Manage Users</h4>
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" role="tablist" id="myTab">
+  <li class="active"><a data-target="#reported" role="tab" data-toggle="tab">Reported({{size}})</a></li>
+  <li><a data-target="#deleted" role="tab" data-toggle="tab">Deleted({{size2}})</a></li>
+  <li><a data-target="#search" role="tab" data-toggle="tab">Search</a></li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+  <div class="tab-pane active" id="reported">
+  		<section id="container">
+	    	<section class="" style="width:625px;margin-left: 26%;">
+	        	<section class="dgridinfo dactcln">
+	                <table ng-table="tableParams">
+	                	<tbody>
+	                    	<tr ng-repeat="user in users.results" class="row tm bg-white border-bottom">
+	                            <td style="border: 1px solid;border-color: rgb(209, 205, 200);">
+	                            <div style="background-color: #f3f3f3;border: 1px solid;border-color: rgb(209, 205, 200);margin-right: 5px;">
+		                            <div>
+		                            	<b>Type :</b> {{user.objectType}}
+		                            	<button class="margin-none pull-right" ng-click="setData(user)" data-toggle="modal" data-target="#myModal3">Delete</button>
+		                            </div>
+		                            <div>	
+		                            	<b>Report Type : {{user.reportType}}</b>
+		                            </div>
+		                            <div>	
+		                            	<b>Reported On :</b> {{user.reportedDate}}
+		                            </div>
+		                            <div>	
+		                            	<b>Reported By :</b> {{user.reportedBy}}
+		                            </div>
+		                            <div>	
+		                            	<b>Comments :</b> {{user.comment}}
+		                            </div>
+		                         </div>   
+		                            <div>
+		                            	 <div><img class="img-rounded" data-ng-src="/image/get-thumbnail-image-by-id/{{user.id}}" style="height:80px;width:80px;"/></div>
+		                            </div>
+		                            <div>
+		                            	<b>User Name :{{user.userName}}</b> 
+		                            </div>
+		                            <div>
+		                            	<b>ID : {{user.socialObjectID}}</b>
+		                            </div>
+		                            <div>
+		                            	<b>Created On : </b> {{user.createdDate}}
+		                            </div>
+		                            <div>
+		                            	<b>Last Login :</b> {{user.lastLogin}}
+		                            </div>
+		                            <div>
+		                            	<b>User Info :</b> 
+		                            	<div>
+				                            		<div><b>About Me :</b> {{user.aboutMe}}</div>
+				                            		<div><b>Birth Year :</b> {{user.birthYear}}</div>
+				                            		<div><b>Location :</b> {{user.location}}</div>
+				                            		<div><b>Num Children :</b> {{user.numChildren}}</div>
+				                            		<div><b>Parent Type :</b> {{user.parentType}}</div>
+		                            	</div>
+		                            </div>
+		                            <div>
+		                            	<b>User Child Info : </b>
+		                            	<div>
+		                            		<table border=0 ng-table="abc">
+				                            	<tr ng-repeat="child in user.userChildVms">
+				                            		<td><b>Birth Day :</b> {{child.birthDay}}</td>
+				                            		<td><b>Birth Month :</b> {{child.birthMonth}}</td>
+				                            		<td><b>Birth Year :</b> {{child.birthYear}}</td>
+				                            		<td><b>Gender :</b> {{child.gender}}</td>
+				                            	</tr>
+			                            	</table>
+		                            	</div>
+		                            </div>
+	                            </td>
+	                        </tr>
+	                    	</tbody>
+	                </table>
+	        	</section>
+	            <section class="dpaging">
+	            	<h4>{{pageNumber}}/{{pageSize}}</h4>
+	            	<span class="dpagingright">
+	                	<a href="" class="dpagingprv" ng-click="onPrev()">Prev</a>
+	                	<a href="" class="dpagingnxt" ng-click="onNext()">Next</a>
+	                </span>
+	            </section>
+	        </section>
+	    </section>
+  </div>
+  <div class="tab-pane" id="deleted">
+  		<section id="container">
+	    	<section class="" style="width:625px;margin-left: 26%;">
+	        	<section class="dgridinfo dactcln">
+	                <table ng-table="tableParams">
+	                	<tbody>
+	                    	<tr ng-repeat="user in deletedUsers.results" class="row tm bg-white border-bottom">
+	                            <td style="border: 1px solid;border-color: rgb(209, 205, 200);">
+	                              <div style="background-color: #f3f3f3;border: 1px solid;border-color: rgb(209, 205, 200);margin-right: 5px;">
+		                            <div>
+		                            	<b>Type :</b> {{user.objectType}}
+		                            	<button class="margin-none pull-right" ng-click="setDeletedInfoData(user)" data-toggle="modal" data-target="#myModal5" ng-show="user.deleted == true">UnDelete</button>
+		                            	<button class="margin-none pull-right" ng-click="setDeletedInfoData(user)" data-toggle="modal" data-target="#myModal6" ng-show="user.deleted == false">Delete</button>
+		                            </div>
+		                            <div>	
+		                            	<b>Report Type : {{user.reportType}}</b>
+		                            </div>
+		                            <div>	
+		                            	<b>Reported On :</b> {{user.reportedDate}}
+		                            </div>
+		                            <div>	
+		                            	<b>Reported By :</b> {{user.reportedBy}}
+		                            </div>
+		                            <div>	
+		                            	<b>Comment :</b> {{user.comment}}
+		                            </div>
+		                         </div>   
+		                            <div>
+		                            	 <div><img class="img-rounded" data-ng-src="/image/get-thumbnail-image-by-id/{{user.id}}" style="height:80px;width:80px;"/></div>
+		                            </div>
+		                            <div>
+		                            	<b>User Name : {{user.userName}}</b>
+		                            </div>
+		                            <div>
+		                            	<b>ID : {{user.socialObjectID}}</b>
+		                            </div>
+		                            <div>
+		                            	<b>Created On :</b> {{user.createdDate}}
+		                            </div>
+		                            <div>
+		                            	<b>Last Login :</b> {{user.lastLogin}}
+		                            </div>
+		                            <div>
+		                            	<b>User Info : </b>
+		                            	<div>
+				                            		<div><b>About Me :</b> {{user.aboutMe}}</div>
+				                            		<div><b>Birth Year :</b> {{user.birthYear}}</div>
+				                            		<div><b>Location :</b> {{user.location}}</div>
+				                            		<div><b>Num Children :</b> {{user.numChildren}}</div>
+				                            		<div><b>Parent Type :</b> {{user.parentType}}</div>
+		                            	</div>
+		                            </div>
+		                            <div>
+		                            	<b>User Child Info :</b> 
+		                            	<div>
+		                            		<table border=0 ng-table="abcd">
+				                            	<tr ng-repeat="child in user.userChildVms">
+				                            		<td><b>Birth Day :</b> {{child.birthDay}}</td>
+				                            		<td><b>Birth Month :</b> {{child.birthMonth}}</td>
+				                            		<td><b>Birth Year :</b> {{child.birthYear}}</td>
+				                            		<td><b>Gender :</b> {{child.gender}}</td>
+				                            	</tr>
+			                            	</table>
+		                            	</div>
+		                            </div>
+	                            </td>
+	                        </tr>
+	                    	</tbody>
+	                </table>
+	        	</section>
+	            <section class="dpaging">
+	            	<h4>{{pageNumber2}}/{{pageSize2}}</h4>
+	            	<span class="dpagingright">
+	                	<a href="" class="dpagingprv" ng-click="onPrev2()">Prev</a>
+	                	<a href="" class="dpagingnxt" ng-click="onNext2()">Next</a>
+	                </span>
+	            </section>
+	        </section>
+	    </section>
+  </div>
+  <div class="tab-pane" id="search">
+	    
+	    <section id="container">
+	    	<section class="" style="width:625px;margin-left: 26%;">
+	        	<section class="dadsrch" style="width:625px;">
+	            	<section class="heading"><h2>User Search By id</h2></section>
+	                <section class="dadsrchdiv">
+	                	<input name="title" type="text" ng-model="title" class="" style="height:1%;width:50%;" ng-keyup="$event.keyCode == 13 ? searchUsers(1) : null"><input name="" type="button" class="btngray" value="Search" ng-click="searchUsers(1)">
+	                </section>
+	            </section>
+	             
+	        	<section class="dgridinfo dactcln">
+	                <table ng-table="tableParams">
+	                	<tbody>
+	                    	<tr ng-repeat="user in allUsers.results" class="row tm bg-white border-bottom">
+	                            <td style="border: 1px solid;border-color: rgb(209, 205, 200);">
+	                            	<div>
+		                            	 <div><img class="img-rounded" data-ng-src="/image/get-thumbnail-image-by-id/{{user.id}}" style="height:80px;width:80px;"/></div>
+		                            </div>
+		                            <div>
+		                            	<b>User Name : {{user.userName}}</b>
+		                            	<button class="margin-none pull-right" ng-click="setUserData(user)" data-toggle="modal" data-target="#myModal5" ng-show="user.deleted == true">UnDelete</button>
+		                            	<button class="margin-none pull-right" ng-click="setUserData(user)" data-toggle="modal" data-target="#myModal6" ng-show="user.deleted == false">Delete</button>
+		                            </div>
+		                            <div>
+		                            	<b>ID : {{user.id}}</b>
+		                            </div>
+		                            <div>
+		                            	<b>Created On :</b> {{user.createdOn}}
+		                            </div>
+		                            <div>
+		                            	<b>Last Login :</b> {{user.lastLogin}}
+		                            </div>
+		                            <div>
+		                            	<b>User Info :</b> 
+		                            	<div>
+				                            		<div><b>About Me :</b> {{user.aboutMe}}</div>
+				                            		<div><b>Birth Year :</b> {{user.birthYear}}</div>
+				                            		<div><b>Location :</b> {{user.location}}</div>
+				                            		<div><b>Num Children :</b> {{user.numChildren}}</div>
+				                            		<div><b>Parent Type :</b> {{user.parentType}}</div>
+		                            	</div>
+		                            </div>
+		                            <div>
+		                            	<b>User Child Info : </b>
+		                            	<div>
+		                            		<table border=0 ng-table="abcd">
+				                            	<tr ng-repeat="child in user.userChildVms">
+				                            		<td><b>Birth Day :</b> {{child.birthDay}}</td>
+				                            		<td><b>Birth Month :</b> {{child.birthMonth}}</td>
+				                            		<td><b>Birth Year :</b> {{child.birthYear}}</td>
+				                            		<td><b>Gender :</b> {{child.gender}}</td>
+				                            	</tr>
+			                            	</table>
+		                            	</div>
+		                            </div>
+	                            </td>
+	                            
+	                            
+	                        </tr>
+	                    	</tbody>
+	                </table>
+	        	</section>
+	            <section class="dpaging">
+	            	<h4>{{pageNumber3}}/{{pageSize3}}</h4>
+	            	<span class="dpagingright">
+	                	<a href="" class="dpagingprv" ng-click="onPrev3()">Prev</a>
+	                	<a href="" class="dpagingnxt" ng-click="onNext3()">Next</a>
+	                </span>
+	            </section>
+	        </section>
+	    </section>
+	  
+	  </div>
+	</div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">User Delete</h4>
+      </div>
+      <div class="modal-body" id="deleteArticleBody">
+        Are you sure you want to delete?
+      </div>
+      <div class="modal-footer">
+      	<button type="button" class="btn btn-primary" data-ng-click="deleteUser()">Yes</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal 2 -->
+<div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Post Delete</h4>
+      </div>
+      <div class="modal-body" id="deleteArticleBody">
+        Are you sure you want to UnDelete?
+      </div>
+      <div class="modal-footer">
+      	<button type="button" class="btn btn-primary" data-ng-click="UnDeletePost()">Yes</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal 5 -->
+<div class="modal fade" id="myModal5" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">User UnDelete</h4>
+      </div>
+      <div class="modal-body" id="deleteArticleBody">
+        Are you sure you want to UnDelete?
+      </div>
+      <div class="modal-footer">
+      	<button type="button" class="btn btn-primary" data-ng-click="unDeleteUserStatus()">Yes</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal 6 -->
+<div class="modal fade" id="myModal6" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">User Delete</h4>
+      </div>
+      <div class="modal-body" id="deleteArticleBody">
+        Are you sure you want to Delete?
+      </div>
+      <div class="modal-footer">
+      	<button type="button" class="btn btn-primary" data-ng-click="deleteUserStatus()">Yes</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>

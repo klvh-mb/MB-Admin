@@ -96,7 +96,7 @@ public class ArticleController extends Controller {
         article.category = ac;
         article.publishedDate = new Date();
         
-        article.saveArticle();
+        article.save();
         logger.underlyingLogger().info(value+" saved article ["+article.id+"|"+article.name+"]");
         return ok();
     }
@@ -125,7 +125,7 @@ public class ArticleController extends Controller {
         ArticleCategory ac = ArticleCategory.getCategoryById(Long.parseLong(form.get("category.id")));
         article.category = ac;
         article.description = form.get("description");
-        article.updateById();
+        article.update();
         logger.underlyingLogger().info(value+" updated article ["+article.id+"|"+article.name+"]");
         return ok();
     }
@@ -230,7 +230,10 @@ public class ArticleController extends Controller {
         if (value == null) {
         	return ok(views.html.login.render());
         }
-        Article.deleteByID(art_id);
+        Article article = Article.findById(art_id);
+        if (article != null) {
+            article.delete();
+        }
         logger.underlyingLogger().info(value+" deleted article ["+art_id+"]");
         return ok();
     }

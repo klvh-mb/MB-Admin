@@ -1,69 +1,42 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
- <head>
- 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <link href='http://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
-	<link href='http://fonts.googleapis.com/css?family=Titillium+Web' rel='stylesheet' type='text/css'>
-	<link href='http://fonts.googleapis.com/css?family=Rationale' rel='stylesheet' type='text/css'>
-	<link href="../assets/app/custom-css/style-admin.css" rel="stylesheet" type="text/css" />
-	<link href="../assets/app/custom-css/form-element-style.css" rel="stylesheet" type="text/css" /> <!-CSS sheet for designers form element->
-	<link href="../assets/app/custom-css/main-syle.css" rel="stylesheet" type="text/css" />
-	<link href="../assets/app/custom-css/jquery.jscrollpane.css" rel="stylesheet" type="text/css" media="all" />
-	<link href="../assets/app/custom-css/bootstrap.css" rel="stylesheet" type="text/css" />
-	
-	<!-- <div data-ng-include data-src="'../assets/app/views/header.html'"></div> -->
-	<ul class="nav nav-tabs" role="tablist" id="myTab">
-		  <li><a href="/#/" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Articles</a></li>
-		  <li><a href="/#/manageAnnouncement" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Announcements</a></li>
-		  <li><a href="/#/managePosts" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Posts</a></li>
-		  <li><a href="/#/manageComments" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Comments</a></li>
-		  <li><a href="/#/manageQuestions" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Questions</a></li>
-		  <li><a href="/#/manageAnswers" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Answers</a></li>
-		  <li><a href="/#/manageCommunities" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Communities</a></li>
-		  <li><a href="/#/manageUsers2" role="tab" data-toggle="tab" style="cursor: pointer;">Manage Users</a></li>
-		  <li><a href="/#/manageSubscriptions" role="tab" data-toggle="tab" style="cursor: pointer;">Subscriptions</a></li>
-		  <li class="active"><a href="/#/managePhotoUpload" role="tab" data-toggle="tab" style="cursor: pointer;">Photo Upload</a></li>
-	</ul>
+<head>
+    <div data-ng-include data-src="'../assets/app/views/header.html'"></div>
 </head>
 
 <body>
-  		<form action="/logout" method="get"><input type="submit" value="logout" style="margin-left: 92%;"></form>
-    	<div class="panel panel-default">
-  			<div class="panel-body" style="margin-left: 25%;margin-right: 25%;">
-  			<form method="post" ng-submit="uploadPhoto()" enctype="multipart/form-data">
-           <table class="table" border=0>
-           		<tr style="background-color: cornflowerblue;">
-           			<th>Photo Upload</th>
-           			<th></th>
-           			<th></th>
-           		</tr>
-           		<tr>
-           			<td><p ng-show="isUpload == true" style="color:green;"><b>Success</b> Path - </p></td>
-           			<td><p ng-show="isUpload == true" style="color:green;">{{path}}</p></td>
-           		</tr>
-           		<tr>
-           			<td>
+    <form action="/logout" method="get"><input type="submit" value="logout" style="margin-left: 92%;"></form>
+    <div class="panel panel-default">
+        <div class="panel-body" style="margin-left: 25%;margin-right: 25%;">
+            <form method="post" ng-submit="uploadPhoto()" enctype="multipart/form-data">
+                <table class="table" border=0>
+                    <tr style="background-color: cornflowerblue;">
+                        <th>Photo Upload</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td><p ng-show="isUpload == true" style="color:green;"><b>Success</b> Path - </p></td>
+                        <td><p ng-show="isUpload == true" style="color:green;">{{path}}</p></td>
+                    </tr>
+                    <tr>
+                        <td>
            					<select name="category" ng-model="formData.category" required>
 			        			<option value="">--Category--</option>
 								<option value="article">article</option>
 								<option value="product">product</option>			        			
 			        		</select>
-			        </td>
-           			<td>
+                        </td>
+                        <td>
            					<input type="file" name="cover-photo" ng-file-select="onFileSelect($files)" required>
-           			</td>
-           			<td></td>
-           		</tr>
-           		<tr><td></td><td><input type="checkbox" ng-model="formData.fullSize" value="fullSize">&nbsp;&nbsp;Full size</td><td></td></tr>
-           		<tr><td></td><td><input type="checkbox" ng-model="formData.thumbnail" value="thumbnail">&nbsp;&nbsp;Thumbnail</td><td></td></tr>
-           		<tr><td></td><td><input type="checkbox" ng-model="formData.miniThumbnail" value="miniThumbnail">&nbsp;&nbsp;Mini Thumbnail</td><td></td></tr>
-           		<tr><td></td><td><input type="checkbox" ng-model="formData.mobile" value="mobile">&nbsp;&nbsp;Save one set for mobile</td><td></td></tr>
-           		<tr><td></td><td></td><td><input type="submit" class="btn btn-primary" value="Upload"></td></tr>
-           </table>
-           </form>
-      </div>
-      </div>     
-
-		
-  </body>
-  </html>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr><td></td><td><input type="checkbox" ng-model="formData.fullSize" value="fullSize">&nbsp;&nbsp;Full size</td><td></td></tr>
+                    <tr><td></td><td><input type="checkbox" ng-model="formData.thumbnail" value="thumbnail">&nbsp;&nbsp;Thumbnail</td><td></td></tr>
+                    <tr><td></td><td><input type="checkbox" ng-model="formData.miniThumbnail" value="miniThumbnail">&nbsp;&nbsp;Mini Thumbnail</td><td></td></tr>
+                    <tr><td></td><td><input type="checkbox" ng-model="formData.mobile" value="mobile">&nbsp;&nbsp;Save one set for mobile</td><td></td></tr>
+                    <tr><td></td><td></td><td><input type="submit" class="btn btn-primary" value="Upload"></td></tr>
+                </table>
+            </form>
+        </div>
+    </div>     
+</body>
