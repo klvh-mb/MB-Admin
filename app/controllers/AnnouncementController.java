@@ -1,12 +1,11 @@
 package controllers;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.joda.time.DateTime;
 
 import models.Announcement;
 import models.Announcement.AnnouncementType;
@@ -54,16 +53,17 @@ public class AnnouncementController extends Controller{
         	return ok(views.html.login.render());
         }
 		DynamicForm form = DynamicForm.form().bindFromRequest();
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		Announcement announcement = new Announcement();
 		announcement.setAnnouncementType(AnnouncementType.valueOf(form.get("announcementType")));
 		announcement.description = form.get("description");
 		announcement.icon = Icon.findById((Long.parseLong(form.get("icon"))));
 		announcement.title = form.get("title");
 		try {
-			announcement.fromDate = (Date)formatter.parse(form.get("fromDate"));
-			announcement.toDate = (Date)formatter.parse(form.get("toDate"));
-		} catch (ParseException e) {
+			String fd = form.get("fd");
+            String td = form.get("td");
+            announcement.fromDate = DateTime.parse(fd).toDate();
+            announcement.toDate = DateTime.parse(td).toDate();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		announcement.save();
@@ -88,16 +88,17 @@ public class AnnouncementController extends Controller{
         	return ok(views.html.login.render());
         }
 		DynamicForm form = DynamicForm.form().bindFromRequest();
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		Announcement announcement = Announcement.findById(Long.parseLong(form.get("id")));
 		announcement.setAnnouncementType(AnnouncementType.valueOf(form.get("ty")));
 		announcement.description = form.get("d");
 		announcement.icon = Icon.findById((Long.parseLong(form.get("ic.id"))));
 		announcement.title = form.get("t");
 		try {
-			announcement.fromDate = (Date)formatter.parse(form.get("fd"));
-			announcement.toDate = (Date)formatter.parse(form.get("td"));
-		} catch (ParseException e) {
+		    String fd = form.get("fd");
+            String td = form.get("td");
+            announcement.fromDate = DateTime.parse(fd).toDate();
+            announcement.toDate = DateTime.parse(td).toDate();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		announcement.merge();

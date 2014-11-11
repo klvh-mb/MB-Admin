@@ -3,8 +3,8 @@
 </head>
 
 <body style="margin:0; background-color:#F4FBFF;">
+    <h4>Manage Campaigns</h4>
     <a href="/#/campaign/create"><button class="btn btn-primary" ><i class="fa fa-fw  fa-group"></i> Create new Campaign </button></a>
-    <form action="/logout" method="get"><input type="submit" value="logout" style="margin-left: 92%;"></form>
     <div style="margin-left: 25%;">
         <label>Search By Id</label>
         <input type="text" ng-model="searchById" ng-keyup="$event.keyCode == 13 ? searchCampaigns() : null">
@@ -21,7 +21,7 @@
                  <div class="row tm">
                     <div class="col-md-4">
                         <div class="pull-right">
-                                    <label>Title: </label>
+                            <label>Title: </label>
                         </div>
                      </div>
                      <div class="row">
@@ -30,58 +30,48 @@
     
                     <div class="col-md-4">
                         <div class="pull-right">
-                                    <label>Category: </label>
+                            <label>Campaign Type: </label>
                         </div>
                      </div>
                      <div class="row">
                         <div class="col-md-6">
-                            <div class="col-md-10">  {{campaign.ct.name}} </div>
+                            <div class="col-md-10">  {{campaign.ct}} </div>
                         </div>
                     </div>
     
                     <div class="col-md-4">
                         <div class="pull-right">
-                                    <label>Target Age: </label>
+                            <label>Campaign State: </label>
                         </div>
                      </div>
                      <div class="row">
                         <div class="col-md-6">
-                            <div class="col-md-10">  {{campaign.tamin}} to {{campaign.tamax}} months </div>
+                            <div class="col-md-10">  {{campaign.cs}} </div>
                         </div>
                     </div>
-    
+                    
                     <div class="col-md-4">
                         <div class="pull-right">
-                                    <label>Target Parent: </label>
+                            <label>Start Date: </label>
                         </div>
                      </div>
                      <div class="row">
                         <div class="col-md-6">
-                            <div class="col-md-10">  {{campaign.tpg}} </div>
+                            <div class="col-md-10">  {{campaign.sd}} </div>
                         </div>
                     </div>
-    
+                    
                     <div class="col-md-4">
                         <div class="pull-right">
-                                    <label>Target Gender: </label>
+                            <label>End Date: </label>
                         </div>
                      </div>
                      <div class="row">
                         <div class="col-md-6">
-                            <div class="col-md-10">  {{campaign.tg}} </div>
+                            <div class="col-md-10">  {{campaign.ed}} </div>
                         </div>
                     </div>
-    
-                    <div class="col-md-4">
-                        <div class="pull-right">
-                                    <label>Target District: </label>
-                        </div>
-                     </div>
-                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="col-md-10">  {{campaign.tl.displayName}} </div>
-                        </div>
-                    </div>
+                    
                  </div>
             </div>
     
@@ -95,7 +85,7 @@
                 </div>
                 
                 <div class="innerAll pull-right border-right">
-                      <button ng-controller="ShowCampaignsController" data-ng-click="open(campaign.id)" class="btn btn-primary" ><i class="fa fa-fw  fa-group"></i> Show </button>
+                      <button data-ng-click="open(campaign.id)" class="btn btn-primary" ><i class="fa fa-fw  fa-group"></i> Show </button>
                 </div>
                 
              </div>

@@ -1,12 +1,12 @@
 package viewmodel;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.math.BigInteger;
 
-import domain.AuditFields;
+import common.utils.DateTimeUtil;
 
+import domain.AuditFields;
 import models.Location;
 import models.Resource;
 import models.User;
@@ -33,8 +33,6 @@ public class UserVM {
 	public String parentType;
 	public List<UserChildVM> userChildVms = new ArrayList<>();
 	
-	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-	
 	public UserVM(Object[] obj) {
 		this.id = ((BigInteger)obj[0]).longValue();
 		this.displayName = obj[12].toString();
@@ -52,7 +50,7 @@ public class UserVM {
 			this.deleted = user.deleted;
 		}
 		this.userName = user.displayName;
-		this.lastLogin = formatter.format(user.lastLogin);
+		this.lastLogin = DateTimeUtil.toString(user.lastLogin);
 		if(user.userInfo != null) {
 			this.aboutMe = user.userInfo.aboutMe;
 			this.birthYear = user.userInfo.birthYear;
@@ -65,7 +63,7 @@ public class UserVM {
 	        }
 		}
 		
-		this.createdOn = formatter.format(user.auditFields.getCreatedDate());
+		this.createdOn = DateTimeUtil.toString(user.auditFields.getCreatedDate());
 		List<UserChild> userChilds = UserChild.findListById(user.id);
 		for (UserChild u:userChilds) {
 			UserChildVM vm = new UserChildVM(u);

@@ -8,6 +8,7 @@ import javax.persistence.MappedSuperclass;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 
+import controllers.Application;
 import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
 
@@ -28,7 +29,10 @@ public class Entity
     this.auditFields.setCreatedBy(createdBy);
   }
   
-  
+  public void setCreatedDate(Date createdDate)
+  {
+    this.auditFields.setCreatedDate(createdDate);
+  }
   
   public void setUpdatedBy(String updatedBy)
   {
@@ -50,35 +54,33 @@ public class Entity
 	  return this.auditFields.getUpdatedDate();
   }
   
-  
   @Transactional
   public void save() {
 	  JPA.em().persist(this);
 	  JPA.em().flush();
+	  setCreatedBy(Application.getLoggedInUser());
+	  setCreatedDate(new Date());
 	  postSave();
   }
   
   @Transactional
   public void delete() {
 	  JPA.em().remove(this);
-	  
   }
   
   @Transactional
   public void merge() {
+      setUpdatedBy(Application.getLoggedInUser());
+      setUpdatedDate(new Date());
 	  JPA.em().merge(this);
-	  
   }
+  
   @Transactional
   public void refresh() {
 	  JPA.em().refresh(this);
-	  
   }
   
   public void postSave() {
 	  
   }
-  
- 
-  
 }

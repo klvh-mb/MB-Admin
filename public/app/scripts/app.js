@@ -20,11 +20,11 @@ angular.module('minibean', [
     $routeProvider
       .when('/', {
         templateUrl: '/assets/app/views/manageArticlesPage.html',
-        controller : 'ShowArticlesController'
+        controller : 'ManageArticlesController'
       })
       .when('/manageArticles',{
     	templateUrl: '/assets/app/views/manageArticlesPage.html',
-    	controller : 'ShowArticlesController'
+    	controller : 'ManageArticlesController'
       })	  
       .when('/article/create',{
     	templateUrl: '/assets/app/views/createArticlePage.html',
@@ -36,7 +36,7 @@ angular.module('minibean', [
       })
       .when('/manageCampaigns',{
         templateUrl: '/assets/app/views/manageCampaignsPage.html',
-        controller : 'ShowCampaignsController'  
+        controller : 'ManageCampaignsController'  
       })
       .when('/campaign/create',{
         templateUrl: '/assets/app/views/createCampaignPage.html',

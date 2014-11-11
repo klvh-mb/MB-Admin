@@ -2,10 +2,7 @@ package controllers;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +14,6 @@ import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
 
 import common.utils.ImageUploadUtil;
-
 import play.data.DynamicForm;
 import play.data.Form;
 import play.db.jpa.Transactional;
@@ -48,20 +44,26 @@ public class CampaignController extends Controller {
         }
         
         try {
-            campaign.campaignType = CampaignType.valueOf(form.get("campaign_type"));
+            campaign.campaignType = CampaignType.valueOf(form.get("campaignType"));
         } catch(Exception e) {
             return status(506, "PLEASE CHOOSE CAMPAIGN TYPE");
         }
         
         try {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            campaign.startDate = (Date)formatter.parse(form.get("startDate"));
-            campaign.endDate = (Date)formatter.parse(form.get("endDate"));
-        } catch (ParseException e) {
-            e.printStackTrace();
+            String sd = form.get("startDate");
+            String ed = form.get("endDate");
+            campaign.startDate = DateTime.parse(sd).toDate();
+            campaign.endDate = DateTime.parse(ed).toDate();
+        } catch (Exception e) {
+            return status(507, "PLEASE ENTER START DATE AND END DATE");
+        }
+        
+        if (campaign.startDate.after(campaign.endDate)) {
+            return status(508, "START DATE AFTER END DATE");
         }
         
         campaign.save();
+        
         logger.underlyingLogger().info(value+" saved campaign ["+campaign.id+"|"+campaign.name+"]");
         return ok();
     }
@@ -81,17 +83,27 @@ public class CampaignController extends Controller {
         campaign.description = form.get("description");
         
         try {
-            campaign.campaignType = CampaignType.valueOf(form.get("campaign_type"));
+            campaign.campaignType = CampaignType.valueOf(form.get("campaignType"));
         } catch(Exception e) {
             return status(506, "PLEASE CHOOSE CAMPAIGN TYPE");
         }
         
         try {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            campaign.startDate = (Date)formatter.parse(form.get("startDate"));
-            campaign.endDate = (Date)formatter.parse(form.get("endDate"));
-        } catch (ParseException e) {
-            e.printStackTrace();
+            String sd = form.get("startDate");
+            campaign.startDate = DateTime.parse(sd).toDate();
+        } catch (Exception e) {
+            ;
+        }
+        
+        try {
+            String ed = form.get("endDate");
+            campaign.endDate = DateTime.parse(ed).toDate();
+        } catch (Exception e) {
+            ;
+        }
+        
+        if (campaign.startDate.after(campaign.endDate)) {
+            return status(508, "START DATE AFTER END DATE");
         }
         
         campaign.update();
@@ -105,9 +117,7 @@ public class CampaignController extends Controller {
         List<Campaign> allCampaigns = Campaign.getLatestCampaigns();
         List<CampaignVM> listOfCampaigns = new ArrayList<>();
         for (Campaign campaign:allCampaigns) {
-            CampaignVM vm = new CampaignVM(
-                    campaign.campaignType, campaign.name, campaign.id,
-                    campaign.startDate, campaign.endDate);
+            CampaignVM vm = new CampaignVM(campaign);
             listOfCampaigns.add(vm);
         }
         return ok(Json.toJson(listOfCampaigns));
@@ -122,9 +132,7 @@ public class CampaignController extends Controller {
         List<Campaign> allCampaigns = Campaign.getCampaigns(id, name);
         List<CampaignVM> listOfCampaigns = new ArrayList<>();
         for (Campaign campaign:allCampaigns) {
-            CampaignVM vm = new CampaignVM(
-                    campaign.campaignType, campaign.name, campaign.id,
-                    campaign.startDate, campaign.endDate);
+            CampaignVM vm = new CampaignVM(campaign);
             listOfCampaigns.add(vm);
         }
         return ok(Json.toJson(listOfCampaigns));

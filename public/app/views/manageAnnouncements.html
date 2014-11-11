@@ -3,7 +3,6 @@
 </head>
 
 <body ng-init="searchAnnouncements()">
-<form action="/logout" method="get"><input type="submit" value="logout" style="margin-left: 92%;"></form>
    <!--container begin-->
     <section id="container">
     	<section class="contentpanel">
@@ -26,11 +25,11 @@
                 <table ng-table="tableParams">
                 	<thead>
                     	<tr>
-                            <th><a>Announcement Type</a></th>
-                            <th><a>Description</a></th>
-                            <th><a>From Date</a></th>
-                            <th><a>Title</a></th>
-                            <th><a>To Date</a></th>
+                            <th style="width:100px;"><a>Announcement Type</a></th>
+                            <th style="width:auto"><a>Title</a></th>
+                            <th style="width:100px;"><a>Description</a></th>
+                            <th style="width:100px;"><a>From Date</a></th>
+                            <th style="width:100px;"><a>To Date</a></th>
                             <th><a>Update</a></th>
                             <th><a>Delete</a></th>
                         <tr>
@@ -38,9 +37,9 @@
                 	<tbody>
                     	<tr ng-repeat="ancmt in announcements.results">
                             <td>{{ancmt.ty}}</td>
+                            <td>{{ancmt.t}}</td>
                             <td>{{ancmt.d}}</td>
                             <td>{{ancmt.fd}}</td>
-                            <td>{{ancmt.t}}</td>
                             <td>{{ancmt.td}}</td>
                             <td> <input name="" type="button" value="Update" ng-click="setData(ancmt)" data-toggle="modal" data-target="#myModal2" /></td>
                             <td><input name="" type="button" value="Delete" ng-click="setDeleteId(ancmt)" data-toggle="modal" data-target="#myModal3" /></td>
@@ -90,6 +89,10 @@
 			        <td></td>
 			        </tr>
 			        <tr>
+                        <td><label>Title</label></td>
+                        <td style="height: 60px;"><input type="text" name="title" style="width:200%;" data-ng-model="formData.title" required></td>
+                    </tr>
+			        <tr>
 			        	<td><label>Description</label></td>
 			        	<td style="height: 60px;"><textarea type="text" name="description" style="width:200%;" data-ng-model="formData.description" required></textarea></td>
 			        </tr>
@@ -100,7 +103,7 @@
                                <input type="text" name="fromDate"
                                        class="input-sm form-control dropdown-toggle textStyle"
                                        data-toggle="dropdown"
-                                       value="{{searchForm.from | date:'MMMM-dd-yyyy' || 'To'}}"
+                                       value="{{searchForm.from | date:'MM-dd-yyyy' || 'To'}}"
                                        placeholder="To">
                                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                        <datetimepicker data-ng-model="searchForm.from"
@@ -116,7 +119,7 @@
                                <input type="text" name="toDate"
                                        class="input-sm form-control dropdown-toggle textStyle"
                                        data-toggle="dropdown"
-                                       value="{{searchForm.to | date:'MMMM-dd-yyyy' || 'To'}}"
+                                       value="{{searchForm.to | date:'MM-dd-yyyy' || 'To'}}"
                                        placeholder="To">
                                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                        <datetimepicker data-ng-model="searchForm.to"
@@ -156,13 +159,8 @@
                           </li>  
                             
                         <label class="control-label error" data-ng-show="categoryNotChoose==true" style="color: red;">Please select a category.</label>
-                    </div>
-			        	
+                        </div>
 			        	</td>
-			        </tr>
-			        <tr>
-			        	<td><label>Title</label></td>
-			        	<td style="height: 60px;"><input type="text" name="title" style="width:200%;" data-ng-model="formData.title" required></td>
 			        </tr>
 		        </table>
 		      </div>
@@ -188,7 +186,7 @@
 		      <table>
 			        <tr>
 			        	<td><label>Announcement Type</label></td>
-			        	<td style="height: 60px;">
+			        	<td>
 			        		<select name="announcementType" data-ng-model="ancmtData.ty" style="width:100%;">
 			        			<option disabled="true" value="">--Select--</option>
 			        			<option value="GENERAL">GENERAL</option>
@@ -199,21 +197,25 @@
 			        	</td>
 			        </tr>
 			        <tr>
-			        <td></td>
-			        <td></td>
+                        <td></td>
+                        <td></td>
 			        </tr>
 			        <tr>
+                        <td><label>Title</label></td>
+                        <td><input type="text" name="title" style="width:200%;" data-ng-model="ancmtData.t"></td>
+                    </tr>
+			        <tr>
 			        	<td><label>Description</label></td>
-			        	<td style="height: 60px;"><textarea type="text" name="description" style="width:200%;" data-ng-model="ancmtData.d"></textarea></td>
+			        	<td><textarea type="text" name="description" style="width:200%;" data-ng-model="ancmtData.d"></textarea></td>
 			        </tr>
 			        <tr>
 			        	<td><label>From Date</label></td>
-			        	<td style="height: 60px;">
+			        	<td>
 			        		<div class="form-group dropdown">
                                <input type="text" name="fromDate"
                                        class="input-sm form-control dropdown-toggle textStyle"
                                        data-toggle="dropdown"
-                                       value="{{searchForm.from | date:'MMMM-dd-yyyy' || 'To'}}"
+                                       value="{{searchForm.from | date:'MM-dd-yyyy' || 'To'}}"
                                        placeholder="To">
                                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                        <datetimepicker data-ng-model="searchForm.from"
@@ -229,7 +231,7 @@
                                <input type="text" name="toDate"
                                        class="input-sm form-control dropdown-toggle textStyle"
                                        data-toggle="dropdown"
-                                       value="{{searchForm.to | date:'MMMM-dd-yyyy' || 'To'}}"
+                                       value="{{searchForm.to | date:'MM-dd-yyyy' || 'To'}}"
                                        placeholder="To">
                                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                                        <datetimepicker data-ng-model="searchForm.to"
@@ -262,15 +264,9 @@
                                 </li>
                             </ul>
                         </li>
-                    </div>
-			        	
+                        </div>
 			        	</td>
 			        </tr>
-			        <tr>
-			        	<td><label>Title</label></td>
-			        	<td style="height: 60px;"><input type="text" name="title" style="width:200%;" data-ng-model="ancmtData.t"></td>
-			        </tr>
-			        
 		        </table>
 		      </div>
 		      <div class="modal-footer">

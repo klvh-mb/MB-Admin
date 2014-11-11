@@ -1,8 +1,9 @@
 package viewmodel;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import common.utils.DateTimeUtil;
 
 import models.Community;
 import models.Post;
@@ -40,7 +41,6 @@ public class ReportedObjectVM {
 	public List<UserChildVM> userChildVms = new ArrayList<>();
 	public Long image;
 
-	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 	public ReportedObjectVM(ReportedObject reportedObject,Post post) {
 		this.reportType = reportedObject.reportType.name();
 		this.comment = reportedObject.comment;
@@ -48,7 +48,7 @@ public class ReportedObjectVM {
 		this.id = reportedObject.id;
 		this.socialObjectID = reportedObject.socialObjectID;
 		this.reportedBy = reportedObject.reportedBy;
-		this.reportedDate = formatter.format(reportedObject.reportedDate);
+		this.reportedDate = DateTimeUtil.toString(reportedObject.reportedDate);
 		this.postBody = post.body;
 		this.postTitle = post.title;
 		if(post.deleted != null) {
@@ -67,7 +67,7 @@ public class ReportedObjectVM {
 		this.id = reportedObject.id;
 		this.socialObjectID = reportedObject.socialObjectID;
 		this.reportedBy = reportedObject.reportedBy;
-		this.reportedDate = formatter.format(reportedObject.reportedDate);
+		this.reportedDate = DateTimeUtil.toString(reportedObject.reportedDate);
 		this.commentBody = comment.body;
 		if(comment.deleted != null) {
 			this.deleted = comment.deleted;
@@ -86,13 +86,13 @@ public class ReportedObjectVM {
 		this.id = reportedObject.id;
 		this.socialObjectID = reportedObject.socialObjectID;
 		this.reportedBy = reportedObject.reportedBy;
-		this.reportedDate = formatter.format(reportedObject.reportedDate);
+		this.reportedDate = DateTimeUtil.toString(reportedObject.reportedDate);
 		if(community.deleted != null) {
 			this.deleted = community.deleted;
 		}
 		this.communityName = community.name;
 		if(community.auditFields.getCreatedDate() != null) {
-			this.createdDate = formatter.format(community.auditFields.getCreatedDate());
+			this.createdDate = DateTimeUtil.toString(community.auditFields.getCreatedDate());
 		}
 		if(community.owner != null) {
 			this.owner = community.owner.displayName;
@@ -111,12 +111,12 @@ public class ReportedObjectVM {
 		this.id = reportedObject.id;
 		this.socialObjectID = reportedObject.socialObjectID;
 		this.reportedBy = reportedObject.reportedBy;
-		this.reportedDate = formatter.format(reportedObject.reportedDate);
+		this.reportedDate = DateTimeUtil.toString(reportedObject.reportedDate);
 		if(user.deleted != null) {
 			this.deleted = user.deleted;
 		}
 		this.userName = user.displayName;
-		this.lastLogin = formatter.format(user.lastLogin);
+		this.lastLogin = DateTimeUtil.toString(user.lastLogin);
 		if(user.userInfo != null) {
 			this.aboutMe = user.userInfo.aboutMe;
 			this.birthYear = user.userInfo.birthYear;
@@ -128,7 +128,7 @@ public class ReportedObjectVM {
 		if(user.userInfo.parentType != null) {
 			this.parentType = user.userInfo.parentType.name();
 		}
-		this.createdDate = formatter.format(user.auditFields.getCreatedDate());
+		this.createdDate = DateTimeUtil.toString(user.auditFields.getCreatedDate());
 		List<UserChild> userChilds = UserChild.findListById(user.id);
 		for (UserChild u:userChilds) {
 			UserChildVM vm = new UserChildVM(u);

@@ -1,102 +1,102 @@
 <head>
 	<div data-ng-include data-src="'../assets/app/views/header.html'"></div>
 </head>
+
 <body>
-<link rel="stylesheet" href="../assets/app/custom-css/admin.css">
-<form action="/logout" method="get"><input type="submit" value="logout" style="margin-left: 90%;"></form>
-<form method="post" ng-submit="submit()">
-<table class="table" style="width: 60%;margin-left: 15%;">
-    <tr>
-            <td>
-                <label> Title   : </label>
-            </td>
-            <td>
-                <input type="text" class="form-control ng-pristine ng-invalid ng-invalid-required" data-ng-model="formData.name" required>
-                <label class="control-label error" data-ng-show="uniqueName==true" style="color: red;">Title already exists.</label>
-            </td>
-    </tr>
-    <tr>
-            <td>
-                <label> Target Age  : </label>
-            </td>
-            <td>
-                <span style="float:left;">From</span>
-                <span style="float:left;margin-left: 4%;">
-                    <select class="form-control" data-ng-model="formData.targetAgeMinMonth" name="TargetAgeMinMonth">
-                        <option value=-999>Before Pregnacy</option>
-                        <option value=-10>Pregnacy 0m</option>
-                        <option value=-9>Pregnacy 1m</option>
-                        <option value=-8>Pregnacy 2m</option>
-                        <option value=-7>Pregnacy 3m</option>
-                        <option value=-6>Pregnacy 4m</option>
-                        <option value=-5>Pregnacy 5m</option>
-                        <option value=-4>Pregnacy 6m</option>
-                        <option value=-3>Pregnacy 7m</option>
-                        <option value=-2>Pregnacy 8m</option>
-                        <option value=-1>Pregnacy 9m</option>
-                        <option value=0>Birth</option>
-                        <option value=1>1m</option>
-                        <option value=2>2m</option>
-                        <option value=3>3m</option>
-                        <option value=4>4m</option>
-                        <option value=5>5m</option>
-                        <option value=6>6m</option>
-                        <option value=7>7m</option>
-                        <option value=8>8m</option>
-                        <option value=9>9m</option>
-                        <option value=10>10m</option>
-                        <option value=11>11m</option>
-                        <option value=12>12m</option>
-                        <option value=18>1.5yr</option>
-                        <option value=24>2.0yr</option>
-                        <option value=36>3.0yr</option>
-                        <option value=48>4.0yr</option>
-                        <option value=60>5.0yr</option>
-                        <option value=72>6.0yr</option>
-                        <option value=999>Older</option>
-                    </select>
-                </span>
-                <span style="float:left;margin-left: 4%;">To</span>
-                <span style="float:left;margin-left: 4%;">
-                    <select class="form-control" data-ng-model="formData.targetAgeMaxMonth" name="TargetAgeMaxMonth">
-                        <option value=-999>Before Pregnacy</option>
-                        <option value=-10>Pregnacy 0m</option>
-                        <option value=-9>Pregnacy 1m</option>
-                        <option value=-8>Pregnacy 2m</option>
-                        <option value=-7>Pregnacy 3m</option>
-                        <option value=-6>Pregnacy 4m</option>
-                        <option value=-5>Pregnacy 5m</option>
-                        <option value=-4>Pregnacy 6m</option>
-                        <option value=-3>Pregnacy 7m</option>
-                        <option value=-2>Pregnacy 8m</option>
-                        <option value=-1>Pregnacy 9m</option>
-                        <option value=0>Birth</option>
-                        <option value=1>1m</option>
-                        <option value=2>2m</option>
-                        <option value=3>3m</option>
-                        <option value=4>4m</option>
-                        <option value=5>5m</option>
-                        <option value=6>6m</option>
-                        <option value=7>7m</option>
-                        <option value=8>8m</option>
-                        <option value=9>9m</option>
-                        <option value=10>10m</option>
-                        <option value=11>11m</option>
-                        <option value=12>12m</option>
-                        <option value=18>1.5yr</option>
-                        <option value=24>2.0yr</option>
-                        <option value=36>3.0yr</option>
-                        <option value=48>4.0yr</option>
-                        <option value=60>5.0yr</option>
-                        <option value=72>6.0yr</option>
-                        <option value=999>Older</option>
-                        
-                    </select>
-                </span>
-            </td>
-            <td><label class="control-label error" data-ng-show="TargetAgeNotSelected==true" style="color: red;">Please Select Target Age.</label></td>
-    </tr>
-            <tr data-ng-show="TargetAgeCondition==true">
+    <h4>Create Article</h4>
+    <form method="post" ng-submit="submit()">
+        <table class="table" style="width: 60%;margin-left: 15%;">
+            <tr>
+                <td>
+                    <label> Title   : </label>
+                </td>
+                <td>
+                    <input type="text" class="form-control ng-pristine ng-invalid ng-invalid-required" data-ng-model="formData.name" required>
+                    <label class="control-label error" data-ng-show="uniqueName==true" style="color: red;">Title already exists.</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label> Target Age  : </label>
+                </td>
+                <td>
+                    <span style="float:left;">From</span>
+                    <span style="float:left;margin-left: 4%;">
+                        <select class="form-control" data-ng-model="formData.targetAgeMinMonth" name="TargetAgeMinMonth">
+                            <option value=-999>Before Pregnacy</option>
+                            <option value=-10>Pregnacy 0m</option>
+                            <option value=-9>Pregnacy 1m</option>
+                            <option value=-8>Pregnacy 2m</option>
+                            <option value=-7>Pregnacy 3m</option>
+                            <option value=-6>Pregnacy 4m</option>
+                            <option value=-5>Pregnacy 5m</option>
+                            <option value=-4>Pregnacy 6m</option>
+                            <option value=-3>Pregnacy 7m</option>
+                            <option value=-2>Pregnacy 8m</option>
+                            <option value=-1>Pregnacy 9m</option>
+                            <option value=0>Birth</option>
+                            <option value=1>1m</option>
+                            <option value=2>2m</option>
+                            <option value=3>3m</option>
+                            <option value=4>4m</option>
+                            <option value=5>5m</option>
+                            <option value=6>6m</option>
+                            <option value=7>7m</option>
+                            <option value=8>8m</option>
+                            <option value=9>9m</option>
+                            <option value=10>10m</option>
+                            <option value=11>11m</option>
+                            <option value=12>12m</option>
+                            <option value=18>1.5yr</option>
+                            <option value=24>2.0yr</option>
+                            <option value=36>3.0yr</option>
+                            <option value=48>4.0yr</option>
+                            <option value=60>5.0yr</option>
+                            <option value=72>6.0yr</option>
+                            <option value=999>Older</option>
+                        </select>
+                    </span>
+                    <span style="float:left;margin-left: 4%;">To</span>
+                    <span style="float:left;margin-left: 4%;">
+                        <select class="form-control" data-ng-model="formData.targetAgeMaxMonth" name="TargetAgeMaxMonth">
+                            <option value=-999>Before Pregnacy</option>
+                            <option value=-10>Pregnacy 0m</option>
+                            <option value=-9>Pregnacy 1m</option>
+                            <option value=-8>Pregnacy 2m</option>
+                            <option value=-7>Pregnacy 3m</option>
+                            <option value=-6>Pregnacy 4m</option>
+                            <option value=-5>Pregnacy 5m</option>
+                            <option value=-4>Pregnacy 6m</option>
+                            <option value=-3>Pregnacy 7m</option>
+                            <option value=-2>Pregnacy 8m</option>
+                            <option value=-1>Pregnacy 9m</option>
+                            <option value=0>Birth</option>
+                            <option value=1>1m</option>
+                            <option value=2>2m</option>
+                            <option value=3>3m</option>
+                            <option value=4>4m</option>
+                            <option value=5>5m</option>
+                            <option value=6>6m</option>
+                            <option value=7>7m</option>
+                            <option value=8>8m</option>
+                            <option value=9>9m</option>
+                            <option value=10>10m</option>
+                            <option value=11>11m</option>
+                            <option value=12>12m</option>
+                            <option value=18>1.5yr</option>
+                            <option value=24>2.0yr</option>
+                            <option value=36>3.0yr</option>
+                            <option value=48>4.0yr</option>
+                            <option value=60>5.0yr</option>
+                            <option value=72>6.0yr</option>
+                            <option value=999>Older</option>
+                            
+                        </select>
+                    </span>
+                </td>
+                <td><label class="control-label error" data-ng-show="targetAgeNotSelected==true" style="color: red;">Please Select Target Age.</label></td>
+            </tr>
+            <tr data-ng-show="targetAgeCondition==true">
                 <td></td>
                 <td><label class="control-label error"  style="color: red;">MinTargetAge should be less than MaxTargetAge.</label></td>
             </tr>
@@ -189,12 +189,12 @@
                 </td>
            </tr>
         </table>
-        <div data-ng-controller = "EditArticleController">
+        <div data-ng-controller="EditArticleController">
 	        <input type="file" name="url-photo" ng-file-select="onFileSelect($files)"/>
 	         <p>{{path}}</p>
-         </div>
-        <div style="margin-left: 15%;width: 60%">
-            <textarea data-ui-tinymce='tinymceOptions' data-ng-model="formData.description"></textarea>
+        </div>
+        <div style="margin-left: 15%;width: 70%">
+            <textarea data-ui-tinymce='tinymceOptions' data-ng-model="formData.description" style="height: 300px;"></textarea>
         </div>
         <div style="margin-top: 4%;margin-left: 69%;">
         <button type="submit" class="btn btn-primary ng-binding">
@@ -202,7 +202,7 @@
                 {{submitBtn}}
         </button>
         </div>
-</form>     
+    </form>     
 </body>
 
 <style>

@@ -86,11 +86,9 @@ minibean.controller('ManageCampaignsController',function($scope, $modal, campaig
     }
 });
 
-minibean.controller('CreateArticleController', function($scope, $http, $location, articleService, locationService, usSpinnerService){
+minibean.controller('CreateCampaignController', function($scope, $http, $location, usSpinnerService){
     $scope.article;
     $scope.submitBtn = "Save";
-    
-    $scope.targetLocations = locationService.getAllDistricts.get();
     
     //Refer to http://www.tinymce.com/
     $scope.tinymceOptions = {
@@ -103,34 +101,16 @@ minibean.controller('CreateArticleController', function($scope, $http, $location
             toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
     }
     
-    $scope.articleCategories = articleService.getAllArticleCategories.get();
-    
-    $scope.select_targetLocation = function(id, name) {
-        $scope.targetLocation_id = id;
-        $scope.targetLocation_name = name;
-        $scope.formData.targetLocation_id = id;
-        $scope.isLocationChosen = true;
-    }
-    
-    $scope.select_category = function(id, name, pn) {
-        $scope.category_id = id;
-        $scope.category_picture = pn;
-        $scope.category_name = name;
-        $scope.formData.category_id = id;
-        $scope.isChosen = true;
-    }
-    
     $scope.submit = function() {
+        $scope.uniqueName = false;
+        $scope.campaignTypeNotChoose = false;
+        $scope.startEndDateNotEntered = false
+        $scope.startEndDateCondition = false;
         usSpinnerService.spin('loading...');
-                $http.post('/createArticle', $scope.formData).success(function(data){
+                $http.post('/create-campaign', $scope.formData).success(function(data){
                     $scope.submitBtn = "Done";
-                    $scope.uniqueName = false;
-                    $scope.targetLocationNotChoose = false;
-                    $scope.categoryNotChoose = false;
-                    $scope.TargetAgeNotSelected = false;
-                    $scope.TargetAgeCondition = false;
                     usSpinnerService.stop('loading...');
-                    $location.path('/');
+                    $location.path('/manageCampaigns');
                 }).error(function(data, status, headers, config) {
                     if( status == 505 ) {
                         $scope.uniqueName = true;
@@ -138,26 +118,96 @@ minibean.controller('CreateArticleController', function($scope, $http, $location
                         $scope.submitBtn = "Try Again";
                     }  
                     if( status == 506 ) {
-                        $scope.categoryNotChoose = true;
+                        $scope.campaignTypeNotChoose = true;
                         usSpinnerService.stop('loading...');
                         $scope.submitBtn = "Try Again";
                     }
                     if(status == 507){
-                        $scope.TargetAgeNotSelected = true;
+                        $scope.startEndDateNotEntered = true;
                         usSpinnerService.stop('loading...');
                         $scope.submitBtn = "Try Again";
                     }
                     if(status == 508){
-                        $scope.TargetAgeCondition = true;
-                        usSpinnerService.stop('loading...');
-                        $scope.submitBtn = "Try Again";
-                    }
-                    if(status == 509){
-                        $scope.targetLocationNotChoose = true;
+                        $scope.startEndDateCondition = true;
                         usSpinnerService.stop('loading...');
                         $scope.submitBtn = "Try Again";
                     }
                 });
+    }
+});
+
+minibean.controller('EditCampaignController',function($scope, $http, $filter, $routeParams, $location, $upload, campaignService, usSpinnerService){
+    $scope.submitBtn = "Save";
+    $scope.campaign = campaignService.getCampaign.get({id:$routeParams.id},
+        function(data) {
+            //$scope.startDateStr = $filter('date')($scope.campaign.startDate, 'MM-dd-yyyy hh:mm a');
+            //$scope.endDateStr = $filter('date')($scope.campaign.endDate, 'MM-dd-yyyy hh:mm a');
+        });
+    
+    $scope.tinymceOptions = {
+            selector: "textarea",
+            plugins: [
+                "advlist autolink lists link image charmap print preview anchor",
+                "searchreplace visualblocks code fullscreen",
+                "insertdatetime media table contextmenu paste"
+            ],
+            toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+    }
+    
+    $scope.updateCampaignData = function(data) {
+        $scope.startEndDateCondition = false;
+        $scope.startEndDateNotEntered = false
+        usSpinnerService.spin('loading...');
+        return $http.post('/edit-campaign', $scope.campaign).success(function(data){
+            $scope.submitBtn = "Done";
+            usSpinnerService.stop('loading...');
+            $location.path('/manageCampaigns');
+        }).error(function(data, status, headers, config) {
+            if(status == 507){
+                $scope.startEndDateNotEntered = true;
+                usSpinnerService.stop('loading...');
+                $scope.submitBtn = "Try Again";
+            }
+            if(status == 508){
+                $scope.startEndDateCondition = true;
+                usSpinnerService.stop('loading...');
+                $scope.submitBtn = "Try Again";
+            }
+        });
+    }
+    
+    $scope.selectedFiles;
+    $scope.dataUrls;
+    $scope.path;
+    $scope.tempSelectedFiles;
+    $scope.onFileSelect = function($files) {
+        if($scope.selectedFiles == 0) {
+            $scope.tempSelectedFiles = 0;
+        }
+        
+        $scope.selectedFiles = $files;
+        $scope.tempSelectedFiles = $files;
+        var $file = $files;
+        if (window.FileReader && $file.type > -1) {
+            var fileReader = new FileReader();
+            fileReader.readAsDataURL($files);
+            var loadFile = function(fileReader, index) {
+                fileReader.onload = function(e) {
+                    $timeout(function() {
+                        $scope.dataUrls = e.target.result;
+                    });
+                }
+            }(fileReader, 0);
+        }
+        $upload.upload({
+            url : '/image/campaign/upload',
+            method: $scope.httpMethod,
+            file: $scope.tempSelectedFiles,
+            fileFormDataName: 'url-photo'
+        }).success(function(data, status, headers, config) {
+            usSpinnerService.stop('loading...');
+            $scope.path = data.URL;
+        });
     }
 });
 
@@ -216,7 +266,7 @@ minibean.service('articleService',function($resource){
     );
 });
 
-minibean.controller('ShowArticlesController',function($scope, $modal, articleService){
+minibean.controller('ManageArticlesController',function($scope, $modal, articleService){
 	$scope.searchById = " ";
     $scope.searchByName = " ";
     
@@ -262,6 +312,168 @@ minibean.controller('ShowArticlesController',function($scope, $modal, articleSer
           $scope.deleteID = id;
       }
       
+});
+
+minibean.controller('CreateArticleController', function($scope, $http, $location, articleService, locationService, usSpinnerService){
+    $scope.article;
+    $scope.submitBtn = "Save";
+    
+    $scope.targetLocations = locationService.getAllDistricts.get();
+    
+    //Refer to http://www.tinymce.com/
+    $scope.tinymceOptions = {
+            selector: "textarea",
+            plugins: [
+                "advlist autolink lists link image charmap print preview anchor",
+                "searchreplace visualblocks code fullscreen",
+                "insertdatetime media table contextmenu paste"
+            ],
+            toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+    }
+    
+    $scope.articleCategories = articleService.getAllArticleCategories.get();
+    
+    $scope.select_targetLocation = function(id, name) {
+        $scope.targetLocation_id = id;
+        $scope.targetLocation_name = name;
+        $scope.formData.targetLocation_id = id;
+        $scope.isLocationChosen = true;
+    }
+    
+    $scope.select_category = function(id, name, pn) {
+        $scope.category_id = id;
+        $scope.category_picture = pn;
+        $scope.category_name = name;
+        $scope.formData.category_id = id;
+        $scope.isChosen = true;
+    }
+    
+    $scope.submit = function() {
+        usSpinnerService.spin('loading...');
+                $http.post('/create-article', $scope.formData).success(function(data){
+                    $scope.submitBtn = "Done";
+                    $scope.uniqueName = false;
+                    $scope.targetLocationNotChoose = false;
+                    $scope.categoryNotChoose = false;
+                    $scope.targetAgeNotSelected = false;
+                    $scope.targetAgeCondition = false;
+                    usSpinnerService.stop('loading...');
+                    $location.path('/#/manageArticles');
+                }).error(function(data, status, headers, config) {
+                    if( status == 505 ) {
+                        $scope.uniqueName = true;
+                        usSpinnerService.stop('loading...');
+                        $scope.submitBtn = "Try Again";
+                    }  
+                    if( status == 506 ) {
+                        $scope.categoryNotChoose = true;
+                        usSpinnerService.stop('loading...');
+                        $scope.submitBtn = "Try Again";
+                    }
+                    if(status == 507){
+                        $scope.targetAgeNotSelected = true;
+                        usSpinnerService.stop('loading...');
+                        $scope.submitBtn = "Try Again";
+                    }
+                    if(status == 508){
+                        $scope.targetAgeCondition = true;
+                        usSpinnerService.stop('loading...');
+                        $scope.submitBtn = "Try Again";
+                    }
+                    if(status == 509){
+                        $scope.targetLocationNotChoose = true;
+                        usSpinnerService.stop('loading...');
+                        $scope.submitBtn = "Try Again";
+                    }
+                });
+    }
+});
+
+minibean.controller('EditArticleController',function($scope, $http, $routeParams, $location, $upload, articleService, locationService, usSpinnerService){
+    $scope.submitBtn = "Save";
+    $scope.article = articleService.getArticle.get({id:$routeParams.id});
+    $scope.articleCategoriess = articleService.getAllArticleCategories.get();
+    $scope.targetLocations = locationService.getAllDistricts.get();
+    
+    var range = [];
+    for(var i=0;i<100;i++) {
+          range.push(i);
+    }
+    $scope.targetAge = range;
+    
+    $scope.tinymceOptions = {
+            selector: "textarea",
+            plugins: [
+                "advlist autolink lists link image charmap print preview anchor",
+                "searchreplace visualblocks code fullscreen",
+                "insertdatetime media table contextmenu paste"
+            ],
+            toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
+    }
+    
+    $scope.select_targetLocation = function(id, name) {
+        $scope.article.targetLocation.id = id;
+        $scope.article.targetLocation.displayName = name;
+        $scope.isLocationChosen = true;
+    }
+    
+    $scope.select_category = function(id, name, pn) {
+        $scope.article.category.id = id;
+        $scope.article.category.name = name;
+        $scope.article.category.pictureName = pn;
+        $scope.isChosen = true;
+    }
+    
+    $scope.updateArticleData = function(data) {
+        $scope.targetAgeCondition = false;
+        usSpinnerService.spin('loading...');
+        return $http.post('/edit-article', $scope.article).success(function(data){
+            $scope.submitBtn = "Done";
+            usSpinnerService.stop('loading...');
+            $location.path('/#/manageArticles');
+        }).error(function(data, status, headers, config) {
+            if(status == 509){
+                $scope.targetAgeCondition = true;
+                usSpinnerService.stop('loading...');
+                $scope.submitBtn = "Try Again";
+            }
+
+        });
+    }
+    
+    $scope.selectedFiles;
+    $scope.dataUrls;
+    $scope.path;
+    $scope.tempSelectedFiles;
+    $scope.onFileSelect = function($files) {
+        if($scope.selectedFiles == 0) {
+            $scope.tempSelectedFiles = 0;
+        }
+        
+        $scope.selectedFiles = $files;
+        $scope.tempSelectedFiles = $files;
+        var $file = $files;
+        if (window.FileReader && $file.type > -1) {
+            var fileReader = new FileReader();
+            fileReader.readAsDataURL($files);
+            var loadFile = function(fileReader, index) {
+                fileReader.onload = function(e) {
+                    $timeout(function() {
+                        $scope.dataUrls = e.target.result;
+                    });
+                }
+            }(fileReader, 0);
+        }
+        $upload.upload({
+            url : '/image/article/upload',
+            method: $scope.httpMethod,
+            file: $scope.tempSelectedFiles,
+            fileFormDataName: 'url-photo'
+        }).success(function(data, status, headers, config) {
+            usSpinnerService.stop('loading...');
+            $scope.path = data.URL;
+        });
+    }
 });
 
 minibean.controller('ManageAnnouncementsController',function($scope, $modal, $http, $filter, AnnouncementsService, deleteAnnouncementService, announcementIconService){
@@ -1988,96 +2200,6 @@ minibean.service('allUsersService',function($resource){
     );
 });
 
-
-
-minibean.controller('EditArticleController',function($scope, $http, $routeParams, $location, $upload, articleService, locationService, usSpinnerService){
-    $scope.submitBtn = "Save";
-    $scope.article = articleService.getArticle.get({id:$routeParams.id});
-    $scope.articleCategoriess = articleService.getAllArticleCategories.get();
-    $scope.targetLocations = locationService.getAllDistricts.get();
-    
-    var range = [];
-    for(var i=0;i<100;i++) {
-          range.push(i);
-    }
-    $scope.targetAge = range;
-    
-    $scope.tinymceOptions = {
-            selector: "textarea",
-            plugins: [
-                "advlist autolink lists link image charmap print preview anchor",
-                "searchreplace visualblocks code fullscreen",
-                "insertdatetime media table contextmenu paste"
-            ],
-            toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
-    }
-    
-    $scope.select_targetLocation = function(id, name) {
-        $scope.article.targetLocation.id = id;
-        $scope.article.targetLocation.displayName = name;
-        $scope.isLocationChosen = true;
-    }
-    
-    $scope.select_category = function(id, name, pn) {
-        $scope.article.category.id = id;
-        $scope.article.category.name = name;
-        $scope.article.category.pictureName = pn;
-        $scope.isChosen = true;
-    }
-    
-    $scope.updateArticleData = function(data) {
-        $scope.TargetAgeCondition = false;
-        usSpinnerService.spin('loading...');
-        return $http.post('/editArticle', $scope.article).success(function(data){
-            $scope.submitBtn = "Done";
-            usSpinnerService.stop('loading...');
-            $location.path('/');
-        }).error(function(data, status, headers, config) {
-            if(status == 509){
-                $scope.TargetAgeCondition = true;
-                usSpinnerService.stop('loading...');
-                $scope.submitBtn = "Try Again";
-            }
-
-        });
-    }
-    
-    $scope.selectedFiles;
-    $scope.dataUrls;
-    $scope.path;
-    $scope.tempSelectedFiles;
-    $scope.onFileSelect = function($files) {
-        if($scope.selectedFiles == 0) {
-            $scope.tempSelectedFiles = 0;
-        }
-        
-        $scope.selectedFiles = $files;
-        $scope.tempSelectedFiles = $files;
-        var $file = $files;
-        if (window.FileReader && $file.type > -1) {
-            var fileReader = new FileReader();
-            fileReader.readAsDataURL($files);
-            var loadFile = function(fileReader, index) {
-                fileReader.onload = function(e) {
-                    $timeout(function() {
-                        $scope.dataUrls = e.target.result;
-                    });
-                }
-            }(fileReader, 0);
-        }
-        $upload.upload({
-            url : '/image/article/upload',
-            method: $scope.httpMethod,
-            file: $scope.tempSelectedFiles,
-            fileFormDataName: 'url-photo'
-        }).success(function(data, status, headers, config) {
-            usSpinnerService.stop('loading...');
-            $scope.path = data.URL;
-        });
-    }
-});
-
-      
 minibean.controller('ManageSubscriptionsController',function($scope, $http, $routeParams, locationService, getAllSubscriptionService, getAllSubscribedUsersService, sendEmailsToSubscribedUsersService){
 	$scope.pageNumber;
 	$scope.pageSize;

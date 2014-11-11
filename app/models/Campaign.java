@@ -138,7 +138,7 @@ public class Campaign extends domain.Entity {
 	}
 	
 	public void save() {
-		this.save();
+		super.save();
 	}
 	
 }

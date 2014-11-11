@@ -1,200 +1,93 @@
-<html>
 <head>
 	<div data-ng-include data-src="'../assets/app/views/header.html'"></div>
 </head>
+
 <body>
-<link rel="stylesheet" href="../assets/app/custom-css/admin.css">
-<form action="/logout" method="get"><input type="submit" value="logout" style="margin-left: 90%;"></form>
-<form method="post" editable-form name="article_data" onaftersave="updateArticleData($data)">
-<table class="table" style="width: 60%;margin-left: 15%;">
-	<tr>
-			<td>
-		 		<label> Title	: </label>
-		 	</td>
-		 	<td>
-	    		<input type="text" class="form-control ng-pristine ng-invalid ng-invalid-required" data-ng-model="article.name">
-	    		<input type="hidden" data-ng-model="article.id" name="id">
-	    	</td>
-	</tr>
-	<tr>
-			<td>
-		 		<label> Target Age	: </label>
-		 	</td>
-		 	<td>
-		 		<span style="float:left;">From</span>
-		 		<span style="float:left;margin-left: 4%;">
-		 			<select class="form-control" data-ng-model="article.targetAgeMinMonth" name="targetAgeMinMonth">
-		 				<option value=-999>Before Pregnacy</option>
-                        <option value=-10>Pregnacy 0m</option>
-                        <option value=-9>Pregnacy 1m</option>
-                        <option value=-8>Pregnacy 2m</option>
-                        <option value=-7>Pregnacy 3m</option>
-                        <option value=-6>Pregnacy 4m</option>
-                        <option value=-5>Pregnacy 5m</option>
-                        <option value=-4>Pregnacy 6m</option>
-                        <option value=-3>Pregnacy 7m</option>
-                        <option value=-2>Pregnacy 8m</option>
-                        <option value=-1>Pregnacy 9m</option>
-                        <option value=0>Birth</option>
-                        <option value=1>1m</option>
-                        <option value=2>2m</option>
-                        <option value=3>3m</option>
-                        <option value=4>4m</option>
-                        <option value=5>5m</option>
-                        <option value=6>6m</option>
-                        <option value=7>7m</option>
-                        <option value=8>8m</option>
-                        <option value=9>9m</option>
-                        <option value=10>10m</option>
-                        <option value=11>11m</option>
-                        <option value=12>12m</option>
-                        <option value=18>1.5yr</option>
-                        <option value=24>2.0yr</option>
-                        <option value=36>3.0yr</option>
-                        <option value=48>4.0yr</option>
-                        <option value=60>5.0yr</option>
-                        <option value=72>6.0yr</option>
-                        <option value=999>Older</option>
-		 			</select>
-				</span>
-				<span style="float:left;margin-left: 4%;">To</span>
-				<span style="float:left;margin-left: 4%;">
-					<select class="form-control" data-ng-model="article.targetAgeMaxMonth" name="targetAgeMaxMonth">
-						<option value=-999>Before Pregnacy</option>
-                        <option value=-10>Pregnacy 0m</option>
-                        <option value=-9>Pregnacy 1m</option>
-                        <option value=-8>Pregnacy 2m</option>
-                        <option value=-7>Pregnacy 3m</option>
-                        <option value=-6>Pregnacy 4m</option>
-                        <option value=-5>Pregnacy 5m</option>
-                        <option value=-4>Pregnacy 6m</option>
-                        <option value=-3>Pregnacy 7m</option>
-                        <option value=-2>Pregnacy 8m</option>
-                        <option value=-1>Pregnacy 9m</option>
-                        <option value=0>Birth</option>
-                        <option value=1>1m</option>
-                        <option value=2>2m</option>
-                        <option value=3>3m</option>
-                        <option value=4>4m</option>
-                        <option value=5>5m</option>
-                        <option value=6>6m</option>
-                        <option value=7>7m</option>
-                        <option value=8>8m</option>
-                        <option value=9>9m</option>
-                        <option value=10>10m</option>
-                        <option value=11>11m</option>
-                        <option value=12>12m</option>
-                        <option value=18>1.5yr</option>
-                        <option value=24>2.0yr</option>
-                        <option value=36>3.0yr</option>
-                        <option value=48>4.0yr</option>
-                        <option value=60>5.0yr</option>
-                        <option value=72>6.0yr</option>
-                        <option value=999>Older</option>
-					</select>
-				</span>
-			</td>
-	</tr>
-	<tr data-ng-show="targetAgeCondition==true">
-		<td></td>
-		<td><label class="control-label error"  style="color: red;">MinTargetAge should be less than MaxTargetAge.</label></td>
-	</tr>
-	<tr>
-				<td>
-		 			<label> TargetGender	: </label>
-		 		</td>
-		 		<td>
-		 			<select class="form-control" data-ng-model="article.targetGender" name="targetGender" style="width: 30%;">
-		 			<option value=0>Both</option>
-		 			<option value=1>Boy</option>
-		 			<option value=2>Girl</option>
-		 			</select>
-	    		</td>
-			</tr>
-			<tr>
-				<td>
-		 			<label> TargetParentGender	: </label>
-		 		</td>
-		 		<td>
-		 			<select class="form-control" data-ng-model="article.targetParentGender" name="targetParentGender" style="width: 30%;">
-		 			<option value=0>Both</option>
-		 			<option value=1>Father</option>
-		 			<option value=2>Mother</option>
-		 			</select>
-	    		</td>
-			</tr>
-			<tr>
-				<td>
-					<label> TargetLocation	: </label>
-				</td>
-				<td>
-					<div class="col-md-8" style="padding: 0 0px;">
-                        <li class="col-md-12 dropdown" style="padding: 0 0px;" validator="[required]" required>
-                            <div class="form-control dropdown-toggle">
-                                <div class="media-body">
-                                    <p class="margin-none pull-left">{{article.targetLocation.displayName}}</p>
-                                </div>
-                            </div>
-                            <input type="hidden" data-ng-model="article.tl.id">
-                            <ul class="dropdown-menu chat media-list" style="left:2%; width: 96%;">
-                                <li class="media" data-ng-repeat="targetLocation in targetLocations" style="margin-top: 1%;">
-                                    <a href="" data-ng-click="select_targetLocation(targetLocation.id, targetLocation.displayName)">
-                                        <input type="hidden" data-ng-model="targetLocation.id" >
-                                        <div class="media-body">
-                                            <p class="margin-none pull-left">{{targetLocation.displayName}}</p>
-                                        </div>                                      
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </div>
-				</td>
-			</tr>
-	        <tr>
-    			<td>
-    		 		<label> Category	: </label>
+    <h4>Edit Campaign</h4>
+    <form method="post" editable-form name="campaign_data" onaftersave="updateCampaignData($data)">
+        <table class="table" style="width: 60%;margin-left: 15%;">
+            <tr>
+                <td>
+    		 		<label> Title	: </label>
     		 	</td>
     		 	<td>
-    		 		<!-- <input type="text" class="form-control ng-pristine ng-invalid ng-invalid-required" placeholder="Choose Category" data-ng-model="formData.category" name="category"> -->
-    			
-    				<div class="col-md-8" style="padding: 0 0px;">
-            			<li class="col-md-12 dropdown" style="padding: 0 0px;">
-                 			<div class="form-control dropdown-toggle">
-                 				<div class="media-body">
-        				       		<p class="margin-none pull-left">{{article.category.name}}</p>
-        				    	</div>
-        					</div>
-        					<input type="hidden" data-ng-model="article.ct.id">
-                  		    <ul class="dropdown-menu chat media-list" style="left:2%; width: 96%;">
-            					<li class="media" data-ng-repeat="category in articleCategorys" style="margin-top: 1%;">
-            				        <a href="" data-ng-click="select_category(category.id, category.name,category.pn)">
-            							<input type="hidden" data-ng-model="category.id" >
-            							<div class="media-body">
-            				            	<p class="margin-none pull-left">{{category.name}}</p>
-            				        	</div>							        	
-            				        </a>
-            					</li>
-            				</ul>
-        				</li>
+    	    		<input type="text" class="form-control ng-pristine ng-invalid ng-invalid-required" data-ng-model="campaign.name">
+    	    		<input type="hidden" data-ng-model="campaign.id" name="id">
+    	    	</td>
+        	</tr>
+        	<tr>
+                <td>
+                    <label> Campaign Type  : </label>
+                </td>
+                <td>
+                    <span style="float:left;">From</span>
+                    <span style="float:left;margin-left: 4%;">
+                        <select class="form-control" data-ng-model="campaign.campaignType" name="campaignType">
+                            <option value='ACTIONS'>ACTIONS</option>
+                            <option value='QUESTIONS'>QUESTIONS</option>
+                            <option value='VOTING'>VOTING</option>
+                            <option value='PHOTO_CONTEST'>PHOTO_CONTEST</option>
+                        </select>
+                    </span>
+                </td>
+                <td><label class="control-label error" data-ng-show="campaignTypeNotChoose==true" style="color: red;">Please Select Campaign Type.</label></td>
+            </tr>
+            <tr>
+                <td><label>Start Date</label></td>
+                <td>
+                    <div class="form-group dropdown">
+                        <input type="text" name="startDate"
+                            class="input-sm form-control dropdown-toggle textStyle"
+                            data-toggle="dropdown"  
+                            value="{{campaign.startDate | date:'MM-dd-yyyy hh:mm a' || 'Start'}}"
+                            placeholder="Start">
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                            <datetimepicker data-ng-model="campaign.startDate" data-datetimepicker-config="{ dropdownSelector: '.dropdown-toggle',minView: 'minute' }"></datetimepicker>
+                        </ul>
                     </div>
-    			</td>
-	       </tr>
+                </td>
+            </tr>
+            <tr>
+                <td><label>End Date</label></td>
+                <td>
+                    <div class="form-group dropdown">
+                        <input type="text" name="endDate"
+                            class="input-sm form-control dropdown-toggle textStyle"
+                            data-toggle="dropdown"  
+                            value="{{campaign.endDate | date:'MM-dd-yyyy hh:mm a' || 'End'}}"
+                            placeholder="End">
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                            <datetimepicker data-ng-model="campaign.endDate" data-datetimepicker-config="{ dropdownSelector: '.dropdown-toggle',minView: 'minute' }"></datetimepicker>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            <tr data-ng-show="startEndDateNotEntered==true">
+                <td></td>
+                <td><label class="control-label error" style="color: red;">Please enter start date and end date</label></td>
+            </tr>
+            <tr data-ng-show="startEndDateCondition==true">
+                <td></td>
+                <td><label class="control-label error" style="color: red;">Start date after end date</label></td>
+            </tr>
         </table>
-                	<input type="file" name="url-photo" ng-file-select="onFileSelect($files)"/>
-                	<p>{{path}}</p>
-		<div style=" width: 50%;margin-left: 15%;">
-			<textarea data-ui-tinymce='tinymceOptions' data-ng-model="article.description" style="height: 300px;"></textarea>
+        <div> 
+            <input type="file" name="url-photo" ng-file-select="onFileSelect($files)"/>
+            <p>{{path}}</p>
+        </div>
+		<div style=" width: 70%;margin-left: 15%;">
+			<textarea data-ui-tinymce='tinymceOptions' data-ng-model="campaign.description" style="height: 300px;"></textarea>
 		</div>
 		<div style="margin-top: 4%;margin-left: 59%;">
-		<button type="submit" class="btn btn-primary ng-binding">
-				<span class="glyphicon glyphicon-ok" ></span>
-				{{submitBtn}}
-		</button>
+            <button type="submit" class="btn btn-primary ng-binding">
+                <span class="glyphicon glyphicon-ok" ></span>
+                {{submitBtn}}
+            </button>
 		</div>
-</form>		
+    </form>		
 </body>		
-</html>		
-	<style>
+
+<style>
 
 .mce-panel{
 	width: 100% !important;

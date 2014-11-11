@@ -1,7 +1,8 @@
 package viewmodel;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
+
+import common.utils.DateTimeUtil;
 
 import models.Community;
 import models.Post;
@@ -17,10 +18,7 @@ public class CommunityVM {
 	public Long posts;
 	public Long image;
 	
-	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-	
 	public CommunityVM() {
-		
 	}
 	
 	public CommunityVM(Community community) {
@@ -30,7 +28,7 @@ public class CommunityVM {
 		}
 		this.communityName = community.name;
 		if(community.auditFields.getCreatedDate() != null) {
-			this.createdDate = formatter.format(community.auditFields.getCreatedDate());
+			this.createdDate = DateTimeUtil.toString(community.auditFields.getCreatedDate());
 		}	
 		if(community.owner != null) {
 			this.owner = community.owner.displayName;
@@ -41,5 +39,4 @@ public class CommunityVM {
 			this.image = resource.get(0).id;
 		}
 	}
-	
 }

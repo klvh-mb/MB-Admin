@@ -145,7 +145,7 @@ public class Article extends domain.Entity {
 	}
 	
 	public void save() {
-		this.save();
+		super.save();
 	}
 	
 }
