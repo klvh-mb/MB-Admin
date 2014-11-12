@@ -124,7 +124,7 @@ public class Article extends domain.Entity {
 	}
 	
 	public static boolean checkTitleExists(String title) {
-		Query q = JPA.em().createQuery("Select a from Article a where a.name = ?1");
+		Query q = JPA.em().createQuery("Select a from Article a where a.name = ?1 and a.deleted = false");
 		q.setParameter(1, title);
 		Article article = null;
 		try {

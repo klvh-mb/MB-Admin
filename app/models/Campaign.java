@@ -70,7 +70,7 @@ public class Campaign extends domain.Entity {
     public Campaign() {}
     
     public static List<Campaign> getLatestCampaigns() {
-        Query q = JPA.em().createQuery("Select c from Campaign c order by startDate desc");
+        Query q = JPA.em().createQuery("Select c from Campaign c where c.deleted = false order by startDate desc");
         q.setMaxResults(DefaultValues.MAX_CAMPAIGN_COUNT);
         return (List<Campaign>)q.getResultList();
     }
@@ -83,15 +83,15 @@ public class Campaign extends domain.Entity {
 		}
 		
 		if(id.trim().equals("") && !name.trim().equals("")) {
-			sql="Select c from Campaign c where c.name LIKE ?1 order by startDate desc";
+			sql="Select c from Campaign c where where c.deleted = false and c.name LIKE ?1 order by startDate desc";
 		}
 		
 		if(!id.trim().equals("") && name.trim().equals("")) {
-			sql="Select c from Campaign c where c.id=?2 order by startDate desc";
+			sql="Select c from Campaign c where c.deleted = false and c.id=?2 order by startDate desc";
 		}
 		
 		if(!id.trim().equals("") && !name.trim().equals("")) {
-			sql="Select c from Campaign c where c.name LIKE ?1 and c.id=?2 order by startDate desc";
+			sql="Select c from Campaign c where c.deleted = false and c.name LIKE ?1 and c.id=?2 order by startDate desc";
 		}
 		
 		Query q = JPA.em().createQuery(sql);
@@ -117,7 +117,7 @@ public class Campaign extends domain.Entity {
     }
 	   
 	public static boolean checkTitleExists(String title) {
-		Query q = JPA.em().createQuery("Select c from Campaign c where c.name = ?1");
+		Query q = JPA.em().createQuery("Select c from Campaign c where c.name = ?1 and c.deleted = false");
 		q.setParameter(1, title);
 		Campaign campaign = null;
 		try {

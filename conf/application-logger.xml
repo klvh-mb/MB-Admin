@@ -6,6 +6,9 @@
   <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
      <file>${application.home}/logs/application.log</file>
 
+     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <FileNamePattern>${application.home}/logs/application.%d{yyyyMMdd}.log</FileNamePattern>
+     </rollingPolicy>
      <encoder>
         <pattern>%d{yyyy-MM-dd HH:mm:ss:SSS} %-5level %logger{15} - %message%n%xException{10}</pattern>
      </encoder>
@@ -28,6 +31,7 @@
   <logger name="providers" level="DEBUG" />
   <logger name="security" level="DEBUG" />
   <logger name="service" level="DEBUG" />
+  <logger name="tagword" level="DEBUG" />
   <logger name="targeting" level="DEBUG" />
 
   <root level="INFO">

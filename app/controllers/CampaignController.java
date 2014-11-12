@@ -51,11 +51,16 @@ public class CampaignController extends Controller {
         
         try {
             String sd = form.get("startDate");
-            String ed = form.get("endDate");
             campaign.startDate = DateTime.parse(sd).toDate();
+        } catch (Exception e) {
+            return status(507, "PLEASE ENTER START DATE");
+        }
+        
+        try {
+            String ed = form.get("endDate");
             campaign.endDate = DateTime.parse(ed).toDate();
         } catch (Exception e) {
-            return status(507, "PLEASE ENTER START DATE AND END DATE");
+            return status(507, "PLEASE ENTER END DATE");
         }
         
         if (campaign.startDate.after(campaign.endDate)) {
