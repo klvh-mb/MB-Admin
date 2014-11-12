@@ -40,7 +40,7 @@ minibean.service('campaignService',function($resource){
     );
 });
 
-minibean.controller('ManageCampaignsController',function($scope, $modal, campaignService){
+minibean.controller('ManageCampaignsController',function($scope, $http, $modal, campaignService){
     $scope.searchById = " ";
     $scope.searchByName = " ";
     
@@ -50,7 +50,7 @@ minibean.controller('ManageCampaignsController',function($scope, $modal, campaig
         var modalInstance = $modal.open({
           templateUrl: 'myModalContent.html',
         });
-        var msg = campaignService.GetDescription.get({id:id}, function(data) {
+        var msg = campaignService.getDescription.get({id:id}, function(data) {
             $('#showDescription').html(data.description);
         });
     };
@@ -69,7 +69,21 @@ minibean.controller('ManageCampaignsController',function($scope, $modal, campaig
           
         $scope.result = campaignService.searchCampaigns.get({id:$scope.searchById,name:$scope.searchByName});
     };
-      
+    
+    $scope.populateCampaignState = function(campaign) {
+        $scope.campaignInModal = campaign;
+        $scope.campaignState = campaign.cs;
+    };
+    
+    $scope.changeCampaignState = function() {
+        $http.post('/change-campaign-state', $scope.campaignInModal).success(function(data){
+            //$scope.campaignInModal.cs = $scope.searchForm.campaignState;
+            $('#changeCampaignStateModal').modal('hide');
+        }).error(function(data, status, headers, config) {
+            alert('Failed to change state for campaign - '+$scope.campaignInModal.id);
+        });
+    };
+    
     $scope.deleteCampaign = function (id){
         campaignService.deleteCampaign.get({id :id}, function(data){
             $('#myModal').modal('hide');

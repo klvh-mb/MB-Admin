@@ -26,15 +26,18 @@ GET		/get-article-description/:id  	controllers.ArticleController.getDescription
 GET		/delete-article/:id			controllers.ArticleController.deleteArticle(id :Long)
 GET		/get-article/:id			controllers.ArticleController.getArticle(id :Long)
 POST    /image/article/upload       controllers.ArticleController.uploadImage
+GET     /image/article/:year/:month/:date/:name     controllers.ArticleController.getImage(year :Long, month :Long, date :Long, name : String)
 
 POST    /create-campaign            controllers.CampaignController.addCampaign
 POST    /edit-campaign              controllers.CampaignController.updateCampaign
+POST    /change-campaign-state      controllers.CampaignController.changeCampaignState
 GET     /get-latest-campaigns       controllers.CampaignController.getLatestCampaigns
 GET     /search-campaigns/:id/:name controllers.CampaignController.searchCampaigns(id:String,name:String)
 GET     /get-campaign-description/:id    controllers.CampaignController.getDescriptionOfCampaign(id:Long)
 GET     /delete-campaign/:id        controllers.CampaignController.deleteCampaign(id:Long)
 GET     /get-campaign/:id           controllers.CampaignController.getCampaign(id:Long)
 POST    /image/campaign/upload      controllers.CampaignController.uploadImage
+GET     /image/campaign/:year/:month/:date/:name    controllers.CampaignController.getImage(year :Long, month :Long, date :Long, name : String)
 
 POST	/saveAnnouncement		    controllers.AnnouncementController.saveAnnouncement
 POST	/updateAnnouncement		    controllers.AnnouncementController.updateAnnouncement

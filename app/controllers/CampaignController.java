@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import models.Campaign;
+import models.Campaign.CampaignState;
 import models.Campaign.CampaignType;
 
 import org.apache.commons.io.FileUtils;
@@ -85,6 +86,7 @@ public class CampaignController extends Controller {
         Long id = Long.parseLong(form.get("id"));
         Campaign campaign = Campaign.findById(id);
         campaign.name = form.get("name");
+        campaign.image = form.get("image");
         campaign.description = form.get("description");
         
         try {
@@ -114,6 +116,30 @@ public class CampaignController extends Controller {
         campaign.update();
         
         logger.underlyingLogger().info(value+" updated campaign ["+campaign.id+"|"+campaign.name+"]");
+        return ok();
+    }
+    
+    @Transactional
+    public static Result changeCampaignState() {
+        final String value = session().get("NAME");
+        if (value == null) {
+            return ok(views.html.login.render());
+        }
+        
+        DynamicForm form = DynamicForm.form().bindFromRequest();
+        
+        Long id = Long.parseLong(form.get("id"));
+        Campaign campaign = Campaign.findById(id);
+        
+        try {
+            campaign.campaignState = CampaignState.valueOf(form.get("cs"));
+        } catch(Exception e) {
+            return status(509, "CAMPAIGN STATE INCORRECT");
+        }
+        
+        campaign.update();
+        
+        logger.underlyingLogger().info(value+" changed campaign state ["+campaign.id+"|"+campaign.name+"|"+campaign.campaignState.name()+"]");
         return ok();
     }
 

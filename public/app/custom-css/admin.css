@@ -23,3 +23,6 @@
     font-weight: normal;
     margin-left: 20px;
 }
+.modal.in .modal-dialog {
+    width: 700px;
+}

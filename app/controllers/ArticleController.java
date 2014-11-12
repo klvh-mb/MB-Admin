@@ -16,7 +16,6 @@ import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
 
 import common.utils.ImageUploadUtil;
-
 import play.data.DynamicForm;
 import play.data.Form;
 import play.db.jpa.Transactional;

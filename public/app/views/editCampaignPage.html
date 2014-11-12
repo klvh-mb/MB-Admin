@@ -70,6 +70,14 @@
                 <td></td>
                 <td><label class="control-label error" style="color: red;">Start date after end date</label></td>
             </tr>
+            <tr>
+                <td>
+                    <label> Image   : </label>
+                </td>
+                <td>
+                    <input type="text" class="form-control ng-pristine ng-invalid ng-invalid-required" data-ng-model="campaign.image" required>
+                </td>
+            </tr>
         </table>
         <div> 
             <input type="file" name="url-photo" ng-file-select="onFileSelect($files)"/>

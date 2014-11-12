@@ -21,10 +21,19 @@
                  <div class="row tm">
                     <div class="col-md-4">
                         <div class="pull-right">
+                            <label>ID: </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6"> {{campaign.id}} </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="pull-right">
                             <label>Title: </label>
                         </div>
-                     </div>
-                     <div class="row">
+                    </div>
+                    <div class="row">
                         <div class="col-md-6"> {{campaign.nm}} </div>
                     </div>
     
@@ -46,7 +55,12 @@
                      </div>
                      <div class="row">
                         <div class="col-md-6">
-                            <div class="col-md-10">  {{campaign.cs}} </div>
+                            <div class="col-md-10" ng-switch="campaign.cs">
+                                <span style="color:orange;font-weight:bold;" ng-switch-when="PUBLISHED">{{campaign.cs}}</span>
+                                <span style="color:green;font-weight:bold;" ng-switch-when="STARTED">{{campaign.cs}}</span>
+                                <span style="color:blue;font-weight:bold;" ng-switch-when="ENDED">{{campaign.cs}}</span>
+                                <span ng-switch-default>{{campaign.cs}}</span>
+                            </div>
                         </div>
                     </div>
                     
@@ -76,6 +90,10 @@
             </div>
     
              <div class="col-md-3 col-lg-3">
+                <div class="innerAll pull-right border-right ng-scope">
+                    <a href="" ng-click="populateCampaignState(campaign)" data-toggle="modal" data-target="#changeCampaignStateModal"><button class="btn btn-primary" ><i class="fa fa-fw  fa-edit"></i> State </button></a>
+                </div>
+                
                 <div class="innerAll pull-right border-right ng-scope">
                     <a data-ng-href="#/campaign/edit/{{campaign.id}}"><button class="btn btn-primary" ><i class="fa fa-fw  fa-edit"></i> Edit </button></a>
                 </div>
@@ -112,7 +130,7 @@
         </div>
     </div>
 </body>
-    
+
 <script type="text/ng-template" id="myModalContent.html">
     <div class="modal-header">
         <h4 class="modal-title" id="myModalLabel">Campaign Description</h4>
@@ -122,3 +140,41 @@
 
     <div class="modal-footer"></div>
 </script>
+
+<!-- Update Modal -->
+<div class="modal fade" id="changeCampaignStateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Change Campaign State</h4>
+        <h5>ID: {{campaignInModal.id}}</h5>
+        <h5>Title: {{campaignInModal.nm}}</h5>
+      </div>
+      <form method="post" ng-submit="changeCampaignState()">
+          <div class="modal-body">
+          <table>
+            <tr>
+                <td><label>Campaign State: </label></td>
+                <td style="padding-left:20px;">
+                    <select name="campaignState" data-ng-model="campaignInModal.cs" style="width:100%;">
+                        <option disabled="true" value="">--Select--</option>
+                        <option value="NEW">NEW</option>
+                        <option value="PUBLISHED">PUBLISHED</option>
+                        <option value="STARTED">STARTED</option>
+                        <option value="ENDED">ENDED</option>
+                        <option value="ANNOUNCED">ANNOUNCED</option>
+                        <option value="CLOSED">CLOSED</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Update</button>
+      </div>
+     </form>
+    </div>
+  </div>
+</div>

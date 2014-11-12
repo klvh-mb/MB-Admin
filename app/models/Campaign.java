@@ -26,6 +26,8 @@ public class Campaign extends domain.Entity {
 	
 	public String name;
 	
+	public String image;
+	
 	@Lob
 	public String description;
 	
