@@ -1058,4 +1058,36 @@ public class ReportsController extends Controller {
 		return ok();
 	}
 	
+	
+	@Transactional
+	public static Result sendTestEDM() {
+		final String value = session().get("NAME");
+
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
+		DynamicForm form = DynamicForm.form().bindFromRequest();
+		sendEmailsToSubscribedUsers(form.get("usersId"), form.get("subscription"), form.get("EDMBody"));
+		return ok();
+	}
+	
+	@Transactional
+	public static Result sendBulkEDM() {
+		final String value = session().get("NAME");
+
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
+		DynamicForm form = DynamicForm.form().bindFromRequest();
+		form.get("targetAgeMinMonth");
+		form.get("targetAgeMaxMonth");
+		form.get("parentGender");
+		form.get("gender");
+		form.get("location");
+		List<User> users = User.findAllUsers(form.get("parentGender"),form.get("location"));
+		sendEmailsToSubscribedUsers("",form.get("subscription"), form.get("EDMBody"));
+		return ok();
+	}
+	
+	
 }

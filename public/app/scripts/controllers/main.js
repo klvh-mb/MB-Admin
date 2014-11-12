@@ -2256,10 +2256,19 @@ minibean.controller('ManageSubscriptionsController',function($scope, $http, $rou
 		
 	}
 	
+	$scope.myForm = {};
+	
 	$scope.sendEmails = function() {
-		sendEmailsToSubscribedUsersService.sendEmailTo.get({userIds : $scope.userIds,subscription: $scope.subscription},function(response){
-			console.log('success');
-			$scope.isMailSent = true;
+		console.log($scope.myForm);
+		$http.post('/sendTestEDM', $scope.myForm).success(function(data){
+		}).error(function(data, status, headers, config) {
+		});
+	}
+	
+	$scope.sendMail = function(data) {
+		console.log($scope.myForm);
+		$http.post('/sendBulkEDM', data).success(function(data){
+		}).error(function(data, status, headers, config) {
 		});
 	}
 	

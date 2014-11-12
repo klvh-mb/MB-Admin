@@ -3,56 +3,190 @@
 </head>
 
 <body ng-init="searchSubscriptions(1)">
+	<form action="/logout" method="get"><input type="submit" value="logout" style="margin-left: 92%;"></form>
    <!--container begin-->
+   
+   
     <section id="container">
     	<section class="contentpanel">
         	<h4>Manage Subscriptions</h4>
             <!--Advance search fildes begin-->
-        	<section class="dadsrch">
-            	<section class="heading"><h2></h2></section>
-                <section class="dadsrchdiv">
-                	
-                <table class="table">
-                <tr>
-                	<th>User Name :</th>
-                	<td><input name="userName" type="text" ng-model="title" class="" style="width:250px;height:25px;"></td>
-                </tr>
-                <tr>
-                	<th>Gender</th>
-                	<td>
-                			<select name="gender" ng-model="gender">
-			        			<option selected="selected" value=" ">--All--</option>
-			        			<option value="Male">Male</option>
-			        			<option value="Female">Female</option>
-			        		</select>
-			       </td>
-                </tr>
-                <tr>
-                	<th>
-                		Location
-                	</th>
-                	<td>
-                			<select name="location" ng-model="location">
-			        			<option selected="selected" value=" ">--All--</option>
-								<option ng-repeat="location in allLocations" value="{{location.id}}">{{location.displayName}}</option>			        			
-			        		</select>
-                	</td>
-                </tr>
-                <tr>
-                	<th>Subscription type :</th>
-                	<td>
-                			<select name="subscription" ng-model="subscription">
-			        			<option selected="selected" value=" ">--All--</option>
-			        			<option ng-repeat="sub in allSubscriptions" value="{{sub.id}}">{{sub.nm}}</option>
-			        		</select>
-                	</td>
-                </tr>
-                <tr><td></td><td></td><td><input name="" type="button" class="btn-blue mrtop10 left" value="Search" ng-click="searchSubscriptions(1)"></td></tr>
-                </table>
-                </section>
-            </section>
+            <tabset>
+   	 			<tab heading="Test EDM">
+   	 				<section class="dadsrch">
+		            	<section class="heading"><h2></h2></section>
+		                <section class="dadsrchdiv">
+		                	
+		                <table class="table">
+		                <tr>
+		                	<th>EDM Name :</th>
+		                	<td>
+		                			<select name="subscription" ng-model="myForm.subscription">
+					        			<option selected="selected" value=" ">--All--</option>
+					        			<option ng-repeat="sub in allSubscriptions" value="{{sub.id}}">{{sub.nm}}</option>
+					        		</select>
+		                	</td>
+		                </tr>
+		                
+		                <tr>
+		                	<th>EDM Body :</th>
+		                	<td><textarea name="EDMBody" type="text" ng-model="myForm.EDMBody" class="" cols="60" rows="5"></textarea></td>
+		                </tr>
+		                
+		                <tr>
+		                	<th>Users ID :</th>
+		                	<td><input name="usersId" type="text" ng-model="myForm.usersId" class="" style="width:250px;height:25px;"></td>
+		                </tr>
+		                <tr><td></td><td></td><td><input name="" type="button" class="btn-blue mrtop10 left" value="Send" ng-click="sendEmails()"></td></tr>
+		                </table>
+		                </section>
+		            </section>		
+				</tab>
+		    	<tab heading="Bulk EDM">
+		    		<section class="dadsrch">
+		            	<section class="heading"><h2></h2></section>
+		                <section class="dadsrchdiv">
+		                	
+		                <table class="table">
+		                <tr>
+		                	<th>EDM Name :</th>
+		                	<td>
+		                			<select name="subscription" ng-model="myForm.subscription">
+					        			<option selected="selected" value=" ">--All--</option>
+					        			<option ng-repeat="sub in allSubscriptions" value="{{sub.id}}">{{sub.nm}}</option>
+					        		</select>
+		                	</td>
+		                </tr>
+		                
+		                <tr>
+		                	<th>EDM Body :</th>
+		                	<td><textarea name="EDMBody" type="text" ng-model="myForm.EDMBody" class="" cols="60" rows="5"></textarea></td>
+		                </tr>
+
+		                <tr>
+				            <td>
+				                <label> Target Age  : </label>
+				            </td>
+				            <td>
+				                <span style="float:left;">From</span>
+				                <span style="float:left;margin-left: 4%;">
+				                    <select class="form-control" data-ng-model="myForm.targetAgeMinMonth" name="TargetAgeMinMonth">
+				                        <option value=-999>Before Pregnacy</option>
+				                        <option value=-10>Pregnacy 0m</option>
+				                        <option value=-9>Pregnacy 1m</option>
+				                        <option value=-8>Pregnacy 2m</option>
+				                        <option value=-7>Pregnacy 3m</option>
+				                        <option value=-6>Pregnacy 4m</option>
+				                        <option value=-5>Pregnacy 5m</option>
+				                        <option value=-4>Pregnacy 6m</option>
+				                        <option value=-3>Pregnacy 7m</option>
+				                        <option value=-2>Pregnacy 8m</option>
+				                        <option value=-1>Pregnacy 9m</option>
+				                        <option value=0>Birth</option>
+				                        <option value=1>1m</option>
+				                        <option value=2>2m</option>
+				                        <option value=3>3m</option>
+				                        <option value=4>4m</option>
+				                        <option value=5>5m</option>
+				                        <option value=6>6m</option>
+				                        <option value=7>7m</option>
+				                        <option value=8>8m</option>
+				                        <option value=9>9m</option>
+				                        <option value=10>10m</option>
+				                        <option value=11>11m</option>
+				                        <option value=12>12m</option>
+				                        <option value=18>1.5yr</option>
+				                        <option value=24>2.0yr</option>
+				                        <option value=36>3.0yr</option>
+				                        <option value=48>4.0yr</option>
+				                        <option value=60>5.0yr</option>
+				                        <option value=72>6.0yr</option>
+				                        <option value=999>Older</option>
+				                    </select>
+				                </span>
+				                <span style="float:left;margin-left: 4%;">To</span>
+				                <span style="float:left;margin-left: 4%;">
+				                    <select class="form-control" data-ng-model="myForm.targetAgeMaxMonth" name="TargetAgeMaxMonth">
+				                        <option value=-999>Before Pregnacy</option>
+				                        <option value=-10>Pregnacy 0m</option>
+				                        <option value=-9>Pregnacy 1m</option>
+				                        <option value=-8>Pregnacy 2m</option>
+				                        <option value=-7>Pregnacy 3m</option>
+				                        <option value=-6>Pregnacy 4m</option>
+				                        <option value=-5>Pregnacy 5m</option>
+				                        <option value=-4>Pregnacy 6m</option>
+				                        <option value=-3>Pregnacy 7m</option>
+				                        <option value=-2>Pregnacy 8m</option>
+				                        <option value=-1>Pregnacy 9m</option>
+				                        <option value=0>Birth</option>
+				                        <option value=1>1m</option>
+				                        <option value=2>2m</option>
+				                        <option value=3>3m</option>
+				                        <option value=4>4m</option>
+				                        <option value=5>5m</option>
+				                        <option value=6>6m</option>
+				                        <option value=7>7m</option>
+				                        <option value=8>8m</option>
+				                        <option value=9>9m</option>
+				                        <option value=10>10m</option>
+				                        <option value=11>11m</option>
+				                        <option value=12>12m</option>
+				                        <option value=18>1.5yr</option>
+				                        <option value=24>2.0yr</option>
+				                        <option value=36>3.0yr</option>
+				                        <option value=48>4.0yr</option>
+				                        <option value=60>5.0yr</option>
+				                        <option value=72>6.0yr</option>
+				                        <option value=999>Older</option>
+				                        
+				                    </select>
+				                </span>
+				            </td>
+				         	<td><label class="control-label error" data-ng-show="TargetAgeNotSelected==true" style="color: red;">Please Select Target Age.</label></td>
+				    	</tr>
+		                
+		                <tr>
+		                	<th>Target Gender</th>
+		                	<td>
+		                			<select name="gender" ng-model="myForm.gender">
+					        			<option selected="selected" value=" ">--All--</option>
+					        			<option value="Male">Male</option>
+					        			<option value="Female">Female</option>
+					        		</select>
+					       </td>
+		                </tr>
+		                <tr>
+		                	<th>Target Parent Gender</th>
+		                	<td>
+		                			<select name="gender" ng-model="myForm.parentGender">
+					        			<option selected="selected" value=" ">--All--</option>
+					        			<option value="Male">Male</option>
+					        			<option value="Female">Female</option>
+					        		</select>
+					       </td>
+		                </tr>
+		                
+		                <tr>
+		                	<th>
+		                		Target Location
+		                	</th>
+		                	<td>
+		                			<select name="location" ng-model="myForm.location">
+					        			<option selected="selected" value=" ">--All--</option>
+										<option ng-repeat="location in allLocations" value="{{location.id}}">{{location.displayName}}</option>			        			
+					        		</select>
+		                	</td>
+		                </tr>
+		                <tr><td></td><td></td><td><input name="" type="button" class="btn-blue mrtop10 left" value="Send" ng-click="sendMail(myForm)"></td></tr>
+		                </table>
+		                </section>
+		            </section>
+				</tab>
+		   </tabset>
+            
+        	
              
-            <!--grid begin-->
+            <!-- 
         	<section class="dgridinfo dactcln">
                 <table ng-table="tableParams">
                 	<thead>
@@ -69,7 +203,7 @@
                     	</tbody>
                 </table>
         	</section>
-            <!--grid end-->
+            grid end
             
             <section class="dpaging">
             	<h4>{{pageNumber}}/{{pageSize}}</h4>
@@ -77,10 +211,11 @@
                 	<a href="" class="dpagingprv" ng-click="onPrev()">Prev</a>
                 	<a href="" class="dpagingnxt" ng-click="onNext()">Next</a>
                 </span>
-            </section>
+            </section> 
+            
             <div style="margin-left: 44%;">
             	<input type="button" value="Send Mail" class="btn-blue mrtop10 left" ng-click="sendEmails()">
-            </div>
+            </div> -->
             <div style="float: left;width: 100%;margin-left: 44%;margin-top: 5%;">
             	<p ng-show="isMailSent" style="color: green;font: bold;">Mails sent successfully</p>
             </div>
