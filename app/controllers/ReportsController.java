@@ -862,7 +862,7 @@ public class ReportsController extends Controller {
 	}
 	
 	@Transactional
-    public static Result sendEmailsToSubscribedUsers(String ids,String subscription) {
+    public static Result sendEmailsToSubscribedUsers(String ids,String subscription,String body) {
 		
 		final String value = session().get("NAME");
         if (value == null) {
@@ -879,13 +879,13 @@ public class ReportsController extends Controller {
 						Subscription sub = Subscription.findById(id);
 						EDMUtility edmUtility = new EDMUtility();
 						System.out.println("...................."+user.displayName+sub.name);
-						edmUtility.sendMailToUser(user,sub);
+						edmUtility.sendMailToUser(user,sub,body);
 					}
 			}	
 			else {
 					Subscription sub = Subscription.findById(Long.parseLong(subscription));
 					EDMUtility edmUtility = new EDMUtility();
-					edmUtility.sendMailToUser(user,sub);
+					edmUtility.sendMailToUser(user,sub,body);
 			}
 		}
 		return ok();
