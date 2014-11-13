@@ -1,7 +1,12 @@
-@(name: String, email: String, url: String)
+@(name: String, email: String, url: String, bodyContent: String)
 Hi @name,
 <br />
 <br />
+
+<p>
+ 	@Html(bodyContent)  
+</p>
+
 <p>
 	Community @name.
 </p>

@@ -862,7 +862,7 @@ public class ReportsController extends Controller {
 	}
 	
 	@Transactional
-    public static Result sendEmailsToSubscribedUsers(String ids,String subscription) {
+    public static Result sendEmailsToSubscribedUsers(String ids,String subscription,String body) {
 		
 		final String value = session().get("NAME");
         if (value == null) {
@@ -879,13 +879,13 @@ public class ReportsController extends Controller {
 						Subscription sub = Subscription.findById(id);
 						EDMUtility edmUtility = new EDMUtility();
 						System.out.println("...................."+user.displayName+sub.name);
-						edmUtility.sendMailToUser(user,sub);
+						edmUtility.sendMailToUser(user,sub,body);
 					}
 			}	
 			else {
 					Subscription sub = Subscription.findById(Long.parseLong(subscription));
 					EDMUtility edmUtility = new EDMUtility();
-					edmUtility.sendMailToUser(user,sub);
+					edmUtility.sendMailToUser(user,sub,body);
 			}
 		}
 		return ok();
@@ -1057,5 +1057,37 @@ public class ReportsController extends Controller {
 	    GameRedemption.confirmRedemptionRequest(id);
 		return ok();
 	}
+	
+	
+	@Transactional
+	public static Result sendTestEDM() {
+		final String value = session().get("NAME");
+
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
+		DynamicForm form = DynamicForm.form().bindFromRequest();
+		sendEmailsToSubscribedUsers(form.get("usersId"), form.get("subscription"), form.get("EDMBody"));
+		return ok();
+	}
+	
+	@Transactional
+	public static Result sendBulkEDM() {
+		final String value = session().get("NAME");
+
+        if (value == null) {
+        	return ok(views.html.login.render());
+        }
+		DynamicForm form = DynamicForm.form().bindFromRequest();
+		form.get("targetAgeMinMonth");
+		form.get("targetAgeMaxMonth");
+		form.get("parentGender");
+		form.get("gender");
+		form.get("location");
+		List<User> users = User.findAllUsers(form.get("parentGender"),form.get("location"));
+		sendEmailsToSubscribedUsers("",form.get("subscription"), form.get("EDMBody"));
+		return ok();
+	}
+	
 	
 }

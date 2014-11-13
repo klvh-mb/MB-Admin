@@ -28,7 +28,7 @@ public class EDMUtility {
 
 	protected static final String SETTING_KEY_MAIL = "mail";
 	
-	public void sendMailToUser(final User user,Subscription subscription) {
+	public void sendMailToUser(final User user,Subscription subscription,String bodyContent) {
 
 		//final boolean isSecure = getConfiguration().getBoolean(SETTING_KEY_VERIFICATION_LINK_SECURE);
 	    //final String url = routes.Signup.verify(token).absoluteURL(ctx.request(), isSecure);
@@ -43,11 +43,11 @@ public class EDMUtility {
 		} 
 		final String text = getEmailTemplate(
 				subscription.HTMLtemplate,
-				user.name, user.email,url);
+				user.name, user.email,url,bodyContent);
 		
 		final String html = getEmailTemplate(
 				subscription.TXTtemplate,
-				user.name, user.email,url);
+				user.name, user.email,url,bodyContent);
 
 		Body body =  new Body(html, text);
 		System.out.println("........................"+url);
@@ -83,7 +83,7 @@ public class EDMUtility {
 	}*/
 	
 	protected String getEmailTemplate(final String template,
-			final String name, final String email,final String url) {
+			final String name, final String email,final String url,final String bodyContent) {
 		Class<?> cls = null;
 		String ret = null;
 		try {
@@ -104,8 +104,8 @@ public class EDMUtility {
 		if (cls != null) {
 			Method htmlRender = null;
 			try {
-				htmlRender = cls.getMethod("render", String.class, String.class,String.class);
-				ret = htmlRender.invoke(null, name, email,url)
+				htmlRender = cls.getMethod("render", String.class, String.class,String.class,String.class);
+				ret = htmlRender.invoke(null, name, email, url, bodyContent)
 						.toString();
 
 			} catch (NoSuchMethodException e) {

@@ -97,5 +97,7 @@ GET     /image/get-thumbnail-image-by-id/:id    controllers.UserController.getTh
 #Subscription
 GET		/getAllSubscription						controllers.ReportsController.getAllSubscription
 GET		/getAllSubscribedUsers/:currentPage/:title/:gender/:location/:subscription		controllers.ReportsController.getAllSubscribedUsers(currentPage: Integer,title: String,gender: String,location: String,subscription: String)
-GET		/sendEmailsToSubscribedUsers/:userIds/:subscription		controllers.ReportsController.sendEmailsToSubscribedUsers(userIds: String,subscription: String)
+#GET		/sendEmailsToSubscribedUsers/:userIds/:subscription		controllers.ReportsController.sendEmailsToSubscribedUsers(userIds: String,subscription: String)
 POST	/photoUpload							controllers.ReportsController.photoUpload
+POST	/sendTestEDM							controllers.ReportsController.sendTestEDM
+POST	/sendBulkEDM							controllers.ReportsController.sendBulkEDM

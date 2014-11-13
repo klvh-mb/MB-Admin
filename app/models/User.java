@@ -562,4 +562,14 @@ public class User extends SocialObject {
     public static File getDefaultCoverPhoto() throws FileNotFoundException {
         return new File(Play.application().configuration().getString("storage.user.cover.noimage"));
     }
+	
+		public static List<User> findAllUsers(String gender, String location) {
+			String sql="";
+	    	sql = "select u from user u wher system <> 1 ";
+	    
+	    	Query query = JPA.em().createNativeQuery(sql,User.class);
+			List<User> list = (List<User>)query.getResultList();
+			return null;
+
+		}
 }

@@ -1,7 +1,9 @@
-@(name: String, email: String, url: String)Hi @name, 
+@(name: String, email: String, url: String, bodyContent: String)Hi @name, 
 
 
 	Promotion and Events @name.
+
+	@bodyContent
 
 Le saluda,
 El equipo de PlayAuthenticate.
