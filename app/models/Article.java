@@ -5,9 +5,6 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Query;
@@ -19,15 +16,8 @@ import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
 
 @Entity
-public class Article extends domain.Entity {
+public class Article extends SocialObject {
 
-	public Article() {}
-	
-	@Id @GeneratedValue(strategy = GenerationType.AUTO)
-	public Long id;
-	
-	public String name;
-	
 	@Lob
 	public String description;
 	
@@ -39,13 +29,6 @@ public class Article extends domain.Entity {
 	public Date publishedDate;
 	
 	public String objectType = "ARTICLE";
-	
-	public Boolean system = true;
-	
-	public Boolean deleted = false;
-	
-	@ManyToOne
-    public User deletedBy;
 	
 	@ManyToOne
 	public ArticleCategory category;
@@ -75,6 +58,8 @@ public class Article extends domain.Entity {
     
     @ManyToOne
     public Location targetLocation;
+    
+    public Article() {}
     
     public static List<Article> getLatestArticles() {
         Query q = JPA.em().createQuery("Select a from Article a where a.deleted = false order by publishedDate desc");

@@ -72,15 +72,21 @@ minibean.controller('ManageCampaignsController',function($scope, $http, $modal, 
     
     $scope.populateCampaignState = function(campaign) {
         $scope.campaignInModal = campaign;
-        $scope.campaignState = campaign.cs;
+        $scope.campaignStateInModal = campaign.cs;
     };
     
     $scope.changeCampaignState = function() {
-        $http.post('/change-campaign-state', $scope.campaignInModal).success(function(data){
-            //$scope.campaignInModal.cs = $scope.searchForm.campaignState;
+        var formData = {
+            "id" : $scope.campaignInModal.id,
+            "campaignState" : $scope.campaignStateInModal
+        };
+        var thisFormData = formData;
+        
+        $http.post('/change-campaign-state', formData).success(function(data){
             $('#changeCampaignStateModal').modal('hide');
+            $scope.campaignInModal.cs = $scope.campaignStateInModal;
         }).error(function(data, status, headers, config) {
-            alert('Failed to change state for campaign - '+$scope.campaignInModal.id);
+            alert('Failed to change state for campaign ['+$scope.campaignInModal.id+'|'+$scope.campaignInModal.nm+'] from '+$scope.campaignInModal.cs+' to '+$scope.campaignStateInModal);
         });
     };
     

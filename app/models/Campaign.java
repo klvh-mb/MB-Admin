@@ -6,9 +6,6 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Query;
 import javax.persistence.NoResultException;
@@ -19,13 +16,8 @@ import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
 
 @Entity
-public class Campaign extends domain.Entity {
+public class Campaign extends SocialObject {
 
-	@Id @GeneratedValue(strategy = GenerationType.AUTO)
-	public Long id;
-	
-	public String name;
-	
 	public String image;
 	
 	@Lob
@@ -42,10 +34,6 @@ public class Campaign extends domain.Entity {
     public Date endDate;
     
 	public String objectType = "CAMPAIGN";
-	
-	public Boolean system = true;
-	
-	public Boolean deleted = false;
 	
 	@Enumerated(EnumType.STRING)
     public CampaignState campaignState = CampaignState.NEW;
@@ -109,7 +97,11 @@ public class Campaign extends domain.Entity {
 	public static Campaign findById(Long id) {
 		Query q = JPA.em().createQuery("SELECT c FROM Campaign c where id = ?1 and c.deleted = false");
 		q.setParameter(1, id);
-		return (Campaign) q.getSingleResult();
+		try {
+		    return (Campaign) q.getSingleResult();
+		} catch(NoResultException e) {
+            return null;
+        }
 	}
 	
     public static int deleteByID(Long id) {

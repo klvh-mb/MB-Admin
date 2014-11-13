@@ -132,7 +132,8 @@ public class CampaignController extends Controller {
         Campaign campaign = Campaign.findById(id);
         
         try {
-            campaign.campaignState = CampaignState.valueOf(form.get("cs"));
+            String campaignState = form.get("campaignState");
+            campaign.campaignState = CampaignState.valueOf(campaignState);
         } catch(Exception e) {
             return status(509, "CAMPAIGN STATE INCORRECT");
         }
