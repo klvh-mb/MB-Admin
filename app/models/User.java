@@ -19,13 +19,18 @@ import javax.persistence.OneToOne;
 import javax.persistence.Query;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.joda.time.DateTime;
+import org.joda.time.Months;
 
-import domain.SocialObjectType;
 import play.Play;
+import play.data.DynamicForm;
 import play.data.format.Formats;
 import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
-import scala.Array;
+
+import common.utils.DateTimeUtil;
+
+import domain.SocialObjectType;
 
 @Entity
 public class User extends SocialObject {
@@ -563,13 +568,28 @@ public class User extends SocialObject {
         return new File(Play.application().configuration().getString("storage.user.cover.noimage"));
     }
 	
-		public static List<User> findAllUsers(String gender, String location) {
-			String sql="";
-	    	sql = "select u from user u wher system <> 1 ";
-	    
-	    	Query query = JPA.em().createNativeQuery(sql,User.class);
-			List<User> list = (List<User>)query.getResultList();
-			return null;
-
+	public static List<User> filterUsers(DynamicForm form) {
+		Query q = JPA.em().createNativeQuery(
+	                "Select * from user u where u.userinfo_id IN ( " +
+	                "Select ui.id from userinfo ui where ui.location_id = ?1 " +
+	                "and ui.gender = ?2 and ui.numChildren > 0)",User.class);
+	 	q.setParameter(1, Long.parseLong(form.get("location")));
+        q.setParameter(2, form.get("parentGender"));
+        List<User> users = (List<User>)q.getResultList();
+		List<User> filteredUser = new ArrayList<>();
+		for(User user: users){
+			for (UserChild child : user.children) {
+	            if (child.birthYear != null && child.birthMonth != null) {
+	                DateTime birthDate = DateTimeUtil.parseDate(child.birthYear, child.birthMonth, child.birthDay);
+	                Months months = Months.monthsBetween(birthDate, DateTime.now());
+	                if(child.gender.equals(form.get("gender")) && Integer.parseInt(form.get("targetAgeMinMonth")) < months.getMonths() && months.getMonths()< Integer.parseInt(form.get("targetAgeMaxMonth"))){
+	                	if(!filteredUser.contains(user)){
+	                		filteredUser.add(user);
+	                	}
+	                }
+	            }
+	        }
 		}
+		return filteredUser;
+	}
 }

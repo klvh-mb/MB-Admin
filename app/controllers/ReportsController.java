@@ -9,46 +9,51 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
 
-import net.coobird.thumbnailator.Thumbnails;
-
-import org.apache.commons.io.FileUtils;
-import org.joda.time.DateTime;
-
-import common.utils.ImageUploadUtil;
-
-import domain.SocialObjectType;
-import email.EDMUtility;
 import models.Comment;
 import models.Community;
 import models.DeletedInfo;
+import models.EDMJob;
 import models.GameAccount;
 import models.GameRedemption;
-import models.Location;
 import models.Post;
 import models.ReportedObject;
 import models.Resource;
 import models.Subscription;
 import models.User;
+import net.coobird.thumbnailator.Thumbnails;
+
+import org.apache.commons.io.FileUtils;
+import org.joda.time.DateTime;
+
 import play.data.DynamicForm;
+import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
+import play.libs.Akka;
 import play.libs.Json;
 import play.mvc.Controller;
-import play.mvc.Result;
 import play.mvc.Http.MultipartFormData.FilePart;
+import play.mvc.Result;
+import scala.concurrent.duration.Duration;
 import viewmodel.CommentVM;
 import viewmodel.CommunityVM;
 import viewmodel.DeletedInfoVM;
 import viewmodel.GameAccountVM;
 import viewmodel.GameRedemptionVM;
-import viewmodel.LocationVM;
 import viewmodel.PostVM;
 import viewmodel.ReportedObjectVM;
 import viewmodel.SubscriptionVM;
 import viewmodel.UserVM;
+import akka.actor.ActorSystem;
+
+import common.utils.ImageUploadUtil;
+
 import domain.ReportType;
+import domain.SocialObjectType;
+import email.EDMUtility;
 
 public class ReportsController extends Controller {
 
@@ -864,11 +869,6 @@ public class ReportsController extends Controller {
 	@Transactional
     public static Result sendEmailsToSubscribedUsers(String ids,String subscription,String body) {
 		
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
-        }
-		
 		System.out.println("..........subscription "+subscription);
 		String[] UserIds = ids.split(",");
 		for(String s: UserIds) {
@@ -1078,16 +1078,56 @@ public class ReportsController extends Controller {
         if (value == null) {
         	return ok(views.html.login.render());
         }
-		DynamicForm form = DynamicForm.form().bindFromRequest();
-		form.get("targetAgeMinMonth");
-		form.get("targetAgeMaxMonth");
-		form.get("parentGender");
-		form.get("gender");
-		form.get("location");
-		List<User> users = User.findAllUsers(form.get("parentGender"),form.get("location"));
-		sendEmailsToSubscribedUsers("",form.get("subscription"), form.get("EDMBody"));
-		return ok();
+		final DynamicForm form = DynamicForm.form().bindFromRequest();
+		EDMJob edmJob = new EDMJob();
+		edmJob.startTime = new Date();
+		edmJob.json = Json.stringify(Json.toJson(form.get()));
+		edmJob.save();
+		final Long id = edmJob.id;
+		long success = 0L,fail =0L;
+		ActorSystem  actorSystem1 = Akka.system();
+        actorSystem1.scheduler().scheduleOnce(
+                Duration.create(0, TimeUnit.MILLISECONDS),
+                new Runnable() {
+                    public void run() {
+                        try {
+                    	   JPA.withTransaction(new play.libs.F.Callback0() {
+	           					public void invoke() {
+	           						List<User> users = User.filterUsers(form);
+           							for(User user : users){
+           								try{
+	           								if(user.active == true && user.emailValidated == true && !user.email.isEmpty() && user.email != null
+	           										&& user.displayName != null){
+	           									sendEmailsToSubscribedUsers(user.id+"", form.get("subscription"), form.get("EDMBody"));
+	           									ReportsController.success++;
+	           								} else {
+	           									ReportsController.fail++;
+	           								}
+           								}catch(Exception e){
+    	           							ReportsController.fail++;
+    	           						}
+           							}
+
+                                	EDMJob edmJob = EDMJob.findById(id);
+               						edmJob.successCount = ReportsController.success;
+               				        edmJob.failureCount = ReportsController.fail;
+               				        edmJob.endTime = new Date();
+               				        edmJob.merge();
+               				        System.out.println("Check IT");
+               				        ReportsController.success = 0L;
+               				        ReportsController.fail = 0L;
+           							
+	                    		}
+                    		});
+                        } catch (Exception e) {
+                        	e.printStackTrace();
+                        }
+                    }
+                }, actorSystem1.dispatcher()
+        );
+        return ok();
 	}
 	
-	
+	static Long success = 0L;
+	static Long fail= 0L;
 }

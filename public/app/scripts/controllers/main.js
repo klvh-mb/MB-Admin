@@ -2236,7 +2236,7 @@ minibean.controller('ManageSubscriptionsController',function($scope, $http, $rou
 	$scope.allSubscriptions = getAllSubscriptionService.getAllSubscription.get();
 	
 	
-	$scope.allUsers = getAllSubscribedUsersService.getAllUsers.get({currentPage: currentPage,title: $scope.title,gender: $scope.gender,location: $scope.location,subscription:$scope.subscription},function(response) {
+	/*$scope.allUsers = getAllSubscribedUsersService.getAllUsers.get({currentPage: currentPage,title: $scope.title,gender: $scope.gender,location: $scope.location,subscription:$scope.subscription},function(response) {
 		totalPages = $scope.allUsers.totalPages;
 		currentPage = $scope.allUsers.currentPage;
 		$scope.pageNumber = $scope.allUsers.currentPage;
@@ -2246,7 +2246,7 @@ minibean.controller('ManageSubscriptionsController',function($scope, $http, $rou
 			$scope.pageNumber = 0;
 		}
 	});
-	
+	*/
 	$scope.searchSubscriptions = function(page) {
 		currentPage = page;
 		$scope.isMailSent = false;

@@ -70,7 +70,8 @@ public class Entity
   
   @Transactional
   public void merge() {
-      setUpdatedBy(Application.getLoggedInUser());
+      // TODO: not to get session in  repository
+	  //setUpdatedBy(Application.getLoggedInUser());
       setUpdatedDate(new Date());
 	  JPA.em().merge(this);
   }
