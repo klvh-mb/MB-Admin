@@ -185,7 +185,7 @@ public class CampaignController extends Controller {
         }
         
         if (!StringUtils.isEmpty(note)) {
-            winner.note += String.format("[%s|%s] %s \n", DateFormat.getInstance().format(new Date()), value, note);
+            winner.note += String.format("[%s|%s][%s] %s \n", DateFormat.getInstance().format(new Date()), winnerState, value, note);
         }
         
         winner.update();

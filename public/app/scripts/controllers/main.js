@@ -93,6 +93,7 @@ minibean.controller('ManageCampaignWinnersController',function($scope, $routePar
         
         $http.post('/change-winner-state', formData).success(function(data){
             $('#changeWinnerStateModal').modal('hide');
+            $scope.winnerInModal.id = data.id;
             $scope.winnerInModal.winnerState = data.winnerState;
             $scope.winnerInModal.note = data.note;
         }).error(function(data, status, headers, config) {

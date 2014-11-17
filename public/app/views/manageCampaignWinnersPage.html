@@ -23,7 +23,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6"> {{winner.id}} <span style="margin-left:10px;color:blue;font-weight:bold;" ng-show="winner.id != -1">[WINNER]</span></div>
+                        <div class="col-md-6"> {{winner.id}} <span style="margin-left:10px;color:lightcoral;font-weight:bold;" ng-show="winner.id != -1">[WINNER]</span></div>
                     </div>
                     
                     <div class="col-md-4">
@@ -52,7 +52,8 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="col-md-10" ng-switch="winner.winnerState">
-                                <span style="color:orange;font-weight:bold;" ng-switch-when="SELECTED || ANNOUNCED">{{winner.winnerState}}</span>
+                                <span style="color:orange;font-weight:bold;" ng-switch-when="SELECTED">{{winner.winnerState}}</span>
+                                <span style="color:orange;font-weight:bold;" ng-switch-when="ANNOUNCED">{{winner.winnerState}}</span>
                                 <span style="color:green;font-weight:bold;" ng-switch-when="ACCEPTED">{{winner.winnerState}}</span>
                                 <span style="color:blue;font-weight:bold;" ng-switch-when="DELIVERED">{{winner.winnerState}}</span>
                                 <span style="color:red;font-weight:bold;" ng-switch-when="PROBLEM">{{winner.winnerState}}</span>
@@ -69,7 +70,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6" style="width:100%;">
-                            <div class="col-md-10"><pre>{{winner.note}}</pre></div>
+                            <div class="col-md-10" ng-show="winner.note.length > 0"><pre>{{winner.note}}</pre></div>
                         </div>
                     </div>
                     
@@ -115,7 +116,7 @@
             <tr>
                 <td><label>Note: </label></td>
                 <td style="padding-left:20px;">
-                    <textarea type="text" name="note" data-ng-model="winnerNoteInModal" style="width:100%;" placeholder="make a note..." cols="50" rows="3"></textarea>
+                    <textarea type="text" name="note" data-ng-model="winnerNoteInModal" style="width:100%;" placeholder="make a note..." cols="50" rows="3" required></textarea>
                 </td>
             </tr>
         </table>
