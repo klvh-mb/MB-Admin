@@ -95,7 +95,7 @@ public class Campaign extends SocialObject {
 	}
 	
 	public static Campaign findById(Long id) {
-		Query q = JPA.em().createQuery("SELECT c FROM Campaign c where id = ?1 and c.deleted = false");
+		Query q = JPA.em().createQuery("SELECT c FROM Campaign c where c.id = ?1 and c.deleted = false");
 		q.setParameter(1, id);
 		try {
 		    return (Campaign) q.getSingleResult();
@@ -104,8 +104,8 @@ public class Campaign extends SocialObject {
         }
 	}
 	
-    public static int deleteByID(Long id) {
-        Query q = JPA.em().createQuery("DELETE FROM Campaign c where id = ?1");
+    public static int deleteById(Long id) {
+        Query q = JPA.em().createQuery("DELETE FROM Campaign c where c.id = ?1");
         q.setParameter(1, id);
         return q.executeUpdate();
     }
@@ -134,5 +134,4 @@ public class Campaign extends SocialObject {
 	public void save() {
 		super.save();
 	}
-	
 }

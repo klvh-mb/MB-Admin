@@ -18,12 +18,16 @@ object ApplicationBuild extends Build {
     "org.hibernate" % "hibernate-entitymanager" % "4.2.7.Final",
     "org.hamcrest" % "hamcrest-all" % "1.3",
     "commons-io" % "commons-io" % "2.1",
-     "be.objectify"  %%  "deadbolt-java"     % "2.1-RC2",
-     "com.feth" %% "play-easymail" % "0.3-SNAPSHOT",
-     "org.mindrot" % "jbcrypt" % "0.3m",
-     "org.apache.httpcomponents" % "httpclient" % "4.2.5",
-     "net.coobird" % "thumbnailator" % "0.4.7",
-     "com.clever-age" % "play2-elasticsearch" % "0.6-SNAPSHOT"
+    "joda-time" % "joda-time" % "2.3",
+    "be.objectify"  %%  "deadbolt-java"     % "2.1-RC2",
+    "com.feth" %% "play-easymail" % "0.3-SNAPSHOT",
+    "org.mindrot" % "jbcrypt" % "0.3m",
+    "org.apache.httpcomponents" % "httpclient" % "4.2.5",
+    "net.coobird" % "thumbnailator" % "0.4.7",
+    "com.clever-age" % "play2-elasticsearch" % "0.6-SNAPSHOT",
+    "commons-pool" % "commons-pool" % "1.5.5",
+    "commons-lang" % "commons-lang" % "2.6",
+    "commons-collections" % "commons-collections" % "3.2.1"
   )
 
   val main = play.Project(appName, appVersion, appDependencies).settings(

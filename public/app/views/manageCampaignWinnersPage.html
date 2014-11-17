@@ -1,0 +1,130 @@
+<head>
+    <div data-ng-include data-src="'../assets/app/views/header.html'"></div>
+</head>
+
+<body style="margin:0; background-color:#F4FBFF;">
+    <h4>Manage Campaign Winners</h4>
+    <div style="margin-left:25%;">
+        <h4 style="margin-bottom:20px;">{{campaign.name}}</h4>
+        <label>Search By Id</label>
+        <input type="text" ng-model="positions" ng-keyup="$event.keyCode == 13 ? searchCampaignWinners() : null">
+        <input name="" type="button" class="" value="Search" ng-click="searchCampaignWinners(positions)">
+    </div>
+    
+    <div data-ng-repeat="winner in winners"  class="row tm">
+        <div class="col-md-3 col-lg-3"></div>
+    
+            <div class="col-md-6 col-lg-6 bg-white border-bottom" >
+            <div class="col-md-9 col-lg-9">
+                <div class="row tm">
+                    <div class="col-md-4">
+                        <div class="pull-right">
+                            <label>Winner ID: </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6"> {{winner.id}} <span style="margin-left:10px;color:blue;font-weight:bold;" ng-show="winner.id != -1">[WINNER]</span></div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="pull-right">
+                            <label>User ID: </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6"> {{winner.userId}} </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="pull-right">
+                            <label>Winner Name: </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6"> {{winner.name}} </div>
+                    </div>
+    
+                    <div class="col-md-4">
+                        <div class="pull-right">
+                            <label>Winner State: </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="col-md-10" ng-switch="winner.winnerState">
+                                <span style="color:orange;font-weight:bold;" ng-switch-when="SELECTED || ANNOUNCED">{{winner.winnerState}}</span>
+                                <span style="color:green;font-weight:bold;" ng-switch-when="ACCEPTED">{{winner.winnerState}}</span>
+                                <span style="color:blue;font-weight:bold;" ng-switch-when="DELIVERED">{{winner.winnerState}}</span>
+                                <span style="color:red;font-weight:bold;" ng-switch-when="PROBLEM">{{winner.winnerState}}</span>
+                                <span style="color:gray;font-weight:bold;" ng-switch-when="REMOVED">{{winner.winnerState}}</span>
+                                <span ng-switch-default>{{winner.winnerState}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="pull-right">
+                            <label>Note: </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6" style="width:100%;">
+                            <div class="col-md-10"><pre>{{winner.note}}</pre></div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+    
+            <div class="col-md-3 col-lg-3">
+                <div class="innerAll pull-right border-right ng-scope">
+                    <a href="" ng-click="popupChangeWinnerStateModal(winner)" data-toggle="modal" data-target="#changeWinnerStateModal"><button class="btn btn-primary"><i class="fa fa-fw fa-edit"></i> State </button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<!-- Update Modal -->
+<div class="modal fade" id="changeWinnerStateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Change Winner State</h4>
+        <h5>Name: {{winnerInModal.name}}</h5>
+      </div>
+      <form method="post" ng-submit="changeWinnerState()">
+          <div class="modal-body">
+          <table>
+            <tr>
+                <td><label>Campaign State: </label></td>
+                <td style="padding-left:20px;">
+                    <select name="winnerState" data-ng-model="winnerStateInModal" style="width:100%;">
+                        <option disabled="true" value="">--Select--</option>
+                        <option value="SELECTED">SELECTED</option>
+                        <option value="ANNOUNCED">ANNOUNCED</option>
+                        <option value="ACCEPTED">ACCEPTED</option>
+                        <option value="DELIVERED">DELIVERED</option>
+                        <option value="REMOVED">REMOVED</option>
+                        <option value="PROBLEM">PROBLEM</option>
+                        <option value="OTHER">OTHER</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label>Note: </label></td>
+                <td style="padding-left:20px;">
+                    <textarea type="text" name="note" data-ng-model="winnerNoteInModal" style="width:100%;" placeholder="make a note..." cols="50" rows="3"></textarea>
+                </td>
+            </tr>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Update</button>
+      </div>
+     </form>
+    </div>
+  </div>
+</div>

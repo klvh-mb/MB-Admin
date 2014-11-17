@@ -5,6 +5,7 @@ import models.Campaign;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import common.utils.DateTimeUtil;
+import controllers.CampaignController;
 
 public class CampaignVM {
 	@JsonProperty("id") public long id;
@@ -16,6 +17,9 @@ public class CampaignVM {
 	@JsonProperty("sd") public String startDate;
 	@JsonProperty("ed") public String endDate;
 	
+	@JsonProperty("uc") public Long joinedUsersCount;
+    
+	
 	public CampaignVM(Campaign campaign) {
 	    this.id = campaign.id;
 	    this.name = campaign.name;
@@ -25,5 +29,7 @@ public class CampaignVM {
 		this.campaignState = campaign.campaignState.name();
 		this.startDate = DateTimeUtil.toString(campaign.startDate);
 		this.endDate = DateTimeUtil.toString(campaign.endDate);
+		
+		this.joinedUsersCount = CampaignController.getJoinedUsersCount(campaign.id);
 	}
 }

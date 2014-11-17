@@ -21,13 +21,16 @@ POST	/edit-article				controllers.ArticleController.updateArticle
 GET     /get-all-districts          controllers.ArticleController.getAllDistricts
 GET		/get-all-article-categories   controllers.ArticleController.getAllArticleCategories
 GET     /get-latest-articles		controllers.ArticleController.getLatestArticles
-GET     /search-articles/:id/:name     controllers.ArticleController.searchArticles(id:String,name:String)
-GET		/get-article-description/:id  	controllers.ArticleController.getDescriptionOfArticle(id :Long)
+GET     /search-articles/:id/:name    controllers.ArticleController.searchArticles(id:String,name:String)
+GET		/get-article-description/:id  controllers.ArticleController.getDescriptionOfArticle(id :Long)
 GET		/delete-article/:id			controllers.ArticleController.deleteArticle(id :Long)
 GET		/get-article/:id			controllers.ArticleController.getArticle(id :Long)
 POST    /image/article/upload       controllers.ArticleController.uploadImage
 GET     /image/article/:year/:month/:date/:name     controllers.ArticleController.getImage(year :Long, month :Long, date :Long, name : String)
 
+POST    /change-winner-state        controllers.CampaignController.changeWinnerState
+GET     /get-campaign-winners/:id   controllers.CampaignController.getCampaignWinners(id:Long)
+GET     /search-campaign-winners/:id/:positions     controllers.CampaignController.searchCampaignWinners(id:Long,positions:String)
 POST    /create-campaign            controllers.CampaignController.addCampaign
 POST    /edit-campaign              controllers.CampaignController.updateCampaign
 POST    /change-campaign-state      controllers.CampaignController.changeCampaignState

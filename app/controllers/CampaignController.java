@@ -2,16 +2,25 @@ package controllers;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import models.Campaign;
+import models.CampaignActionsUser;
 import models.Campaign.CampaignState;
 import models.Campaign.CampaignType;
+import models.CampaignWinner;
+import models.CampaignWinner.WinnerState;
+import models.User;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
 
 import common.utils.ImageUploadUtil;
@@ -23,11 +32,167 @@ import play.mvc.Controller;
 import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
 import viewmodel.CampaignVM;
+import viewmodel.CampaignWinnerVM;
 
 public class CampaignController extends Controller {
     private static play.api.Logger logger = play.api.Logger.apply(CampaignController.class);
 
     private static final ImageUploadUtil imageUploadUtil = new ImageUploadUtil("campaign");
+    
+    public static Long getJoinedUsersCount(Long campaignId) {
+        Campaign campaign = Campaign.findById(campaignId);
+        if (campaign == null) {
+            return -1L;
+        }
+        
+        Long count = -1L;
+        if (CampaignType.ACTIONS == campaign.campaignType) {
+            count = CampaignActionsUser.getJoinedUsersCount(campaignId);
+        } else if (CampaignType.QUESTIONS == campaign.campaignType) {
+            // TODO
+        } else if (CampaignType.VOTING == campaign.campaignType) {
+            // TODO
+        } else if (CampaignType.PHOTO_CONTEST == campaign.campaignType) {
+            // TODO
+        }
+        
+        return count;
+    }
+    
+    @Transactional
+    public static Result getCampaignWinners(Long campaignId) {
+        List<CampaignWinner> winners = CampaignWinner.getWinners(campaignId);
+        List<CampaignWinnerVM> vms = new ArrayList<>();
+        for (CampaignWinner winner : winners) {
+            CampaignWinnerVM vm = new CampaignWinnerVM(winner);
+            vms.add(vm);
+        }
+        return ok(Json.toJson(vms));
+    }
+    
+    @Transactional
+    public static Result searchCampaignWinners(Long campaignId, String positions) {
+        final String value = session().get("NAME");
+        if (value == null) {
+            return ok(views.html.login.render());
+        }
+        
+        Campaign campaign = Campaign.findById(campaignId);
+        if (campaign == null) {
+            logger.underlyingLogger().error(
+                    String.format("[c=%d] Campaign not exists! Failed to search winners by positions", campaignId));
+            return status(500, "Campaign not exist!");    
+        }
+        
+        positions = positions.trim();
+        
+        // display winners if not a search
+        if (StringUtils.isEmpty(positions)) {
+            return getCampaignWinners(campaignId);
+        }
+        
+        // remove duplicates
+        Set<Long> set = new HashSet<Long>();
+        String[] tokens = positions.split(",");
+        for (String token : tokens) {
+            try {
+                Long position = Long.parseLong(token.trim());
+                if (position > 0) {
+                    set.add(position);
+                }
+            } catch (NumberFormatException e) {
+                ;
+            }
+        }
+        List<Long> pos = new ArrayList<Long>(set);
+        
+        List<CampaignWinnerVM> vms = new ArrayList<CampaignWinnerVM>(); 
+        if (CampaignType.ACTIONS == campaign.campaignType) {
+            List<CampaignActionsUser> campaignUsers = CampaignActionsUser.getCampaignUsersByPositions(campaignId, pos);
+            if (campaignUsers != null) {
+                for (CampaignActionsUser campaignUser : campaignUsers) {
+                    // see if user already selected as winner
+                    CampaignWinner winner = CampaignWinner.getWinner(campaignUser.campaignId, campaignUser.userId);
+                    if (winner == null) {
+                        vms.add(new CampaignWinnerVM(campaignUser.userId, campaignUser.campaignId));
+                    } else {
+                        vms.add(new CampaignWinnerVM(winner));
+                    }
+                }
+            }
+        } else if (CampaignType.QUESTIONS == campaign.campaignType) {
+            // TODO
+        } else if (CampaignType.VOTING == campaign.campaignType) {
+            // TODO
+        } else if (CampaignType.PHOTO_CONTEST == campaign.campaignType) {
+            // TODO
+        }
+        
+        return ok(Json.toJson(vms));
+    }
+    
+    private static CampaignWinner selectCampaignWinner(Long campaignId, Long userId) {
+       
+        Campaign campaign = Campaign.findById(campaignId);
+        User user = User.findById(userId);
+        
+        if (campaign == null) {
+            logger.underlyingLogger().error(
+                    String.format("[u=%d][c=%d] Campaign not exists! Failed to select winner", userId, campaignId));
+            return null;    
+        }
+        
+        if (user == null) {
+            logger.underlyingLogger().error(
+                    String.format("[u=%d][c=%d] User not exists! Failed to select winner", userId, campaignId));
+            return null;
+        }
+        
+        CampaignWinner winner = new CampaignWinner(campaignId, userId);
+        winner.save();
+        
+        logger.underlyingLogger().info(
+                String.format("[u=%d][c=%d] Selected winner for campaign", userId, campaignId));
+        return winner;
+    }
+    
+    @Transactional
+    public static Result changeWinnerState() {
+        final String value = session().get("NAME");
+        if (value == null) {
+            return ok(views.html.login.render());
+        }
+        
+        DynamicForm form = DynamicForm.form().bindFromRequest();
+        
+        Long id = Long.parseLong(form.get("id"));
+        Long campaignId = Long.parseLong(form.get("campaignId"));
+        Long userId = Long.parseLong(form.get("userId"));
+        String winnerState = form.get("winnerState");
+        String note = form.get("note");
+        
+        CampaignWinner winner = CampaignWinner.findById(id);
+        if (winner == null) {
+            winner = selectCampaignWinner(campaignId, userId);
+        }
+        
+        try {
+            winner.winnerState = WinnerState.valueOf(winnerState);
+        } catch(Exception e) {
+            logger.underlyingLogger().error(
+                    String.format("[w=%d] Winner state incorrect! Failed to change winner state to %s", id, winnerState));
+            return status(500, "WINNER STATE INCORRECT");
+        }
+        
+        if (!StringUtils.isEmpty(note)) {
+            winner.note += String.format("[%s|%s] %s \n", DateFormat.getInstance().format(new Date()), value, note);
+        }
+        
+        winner.update();
+        
+        logger.underlyingLogger().info(value+" changed winner state ["+winner.id+"|"+winner.winnerState.name()+"]");
+        return ok(Json.toJson(new CampaignWinnerVM(winner)));
+    }
     
     @Transactional
     public static Result addCampaign() {
@@ -141,7 +306,7 @@ public class CampaignController extends Controller {
         campaign.update();
         
         logger.underlyingLogger().info(value+" changed campaign state ["+campaign.id+"|"+campaign.name+"|"+campaign.campaignState.name()+"]");
-        return ok();
+        return ok(Json.toJson(new CampaignVM(campaign)));
     }
 
     @Transactional

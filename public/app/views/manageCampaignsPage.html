@@ -13,12 +13,12 @@
         <input name="" type="button" class="" value="Search" ng-click="searchCampaigns(searchById,searchByName)">
     </div>
     
-    <div  data-ng-repeat="campaign in result"  class="row tm">
+    <div  data-ng-repeat="campaign in campaigns"  class="row tm">
         <div class="col-md-3 col-lg-3"></div>
     
             <div class="col-md-6 col-lg-6 bg-white border-bottom" >
-            <div  class="col-md-9 col-lg-9">
-                 <div class="row tm">
+            <div class="col-md-9 col-lg-9">
+                <div class="row tm">
                     <div class="col-md-4">
                         <div class="pull-right">
                             <label>ID: </label>
@@ -41,8 +41,8 @@
                         <div class="pull-right">
                             <label>Campaign Type: </label>
                         </div>
-                     </div>
-                     <div class="row">
+                    </div>
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="col-md-10">  {{campaign.ct}} </div>
                         </div>
@@ -52,8 +52,8 @@
                         <div class="pull-right">
                             <label>Campaign State: </label>
                         </div>
-                     </div>
-                     <div class="row">
+                    </div>
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="col-md-10" ng-switch="campaign.cs">
                                 <span style="color:orange;font-weight:bold;" ng-switch-when="PUBLISHED">{{campaign.cs}}</span>
@@ -68,8 +68,8 @@
                         <div class="pull-right">
                             <label>Start Date: </label>
                         </div>
-                     </div>
-                     <div class="row">
+                    </div>
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="col-md-10">  {{campaign.sd}} </div>
                         </div>
@@ -79,37 +79,49 @@
                         <div class="pull-right">
                             <label>End Date: </label>
                         </div>
-                     </div>
-                     <div class="row">
+                    </div>
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="col-md-10">  {{campaign.ed}} </div>
                         </div>
                     </div>
                     
-                 </div>
+                    <div class="col-md-4">
+                        <div class="pull-right">
+                            <label>Joined Users: </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="col-md-10">  {{campaign.uc}} </div>
+                        </div>
+                    </div>
+                    
+                </div>
             </div>
     
-             <div class="col-md-3 col-lg-3">
+            <div class="col-md-3 col-lg-3">
                 <div class="innerAll pull-right border-right ng-scope">
-                    <a href="" ng-click="populateCampaignState(campaign)" data-toggle="modal" data-target="#changeCampaignStateModal"><button class="btn btn-primary" ><i class="fa fa-fw  fa-edit"></i> State </button></a>
+                    <a href="" ng-click="popupCampaignStateModal(campaign)" data-toggle="modal" data-target="#changeCampaignStateModal"><button class="btn btn-primary"><i class="fa fa-fw fa-edit"></i> State </button></a>
                 </div>
                 
                 <div class="innerAll pull-right border-right ng-scope">
-                    <a data-ng-href="#/campaign/edit/{{campaign.id}}"><button class="btn btn-primary" ><i class="fa fa-fw  fa-edit"></i> Edit </button></a>
+                    <a data-ng-href="#/campaign/winners/{{campaign.id}}"><button class="btn btn-primary"><i class="fa fa-fw fa-group"></i> Winners </button></a>
                 </div>
                 
                 <div class="innerAll pull-right border-right ng-scope">
-                    <button class="btn btn-primary" data-toggle="modal" data-ng-click="assignDeleteId(campaign.id)" data-target="#myModal" ><span class="glyphicon glyphicon-remove-circle"></span> Delete </button>
+                    <a data-ng-href="#/campaign/edit/{{campaign.id}}"><button class="btn btn-primary"><i class="fa fa-fw fa-edit"></i> Edit </button></a>
+                </div>
+                
+                <div class="innerAll pull-right border-right ng-scope">
+                    <button class="btn btn-primary" data-toggle="modal" data-ng-click="assignDeleteId(campaign.id)" data-target="#myModal"><span class="glyphicon glyphicon-remove-circle"></span> Delete </button>
                 </div>
                 
                 <div class="innerAll pull-right border-right">
-                      <button data-ng-click="open(campaign.id)" class="btn btn-primary" ><i class="fa fa-fw  fa-group"></i> Show </button>
+                      <button data-ng-click="open(campaign.id)" class="btn btn-primary"><i class="fa fa-fw fa-group"></i> Show </button>
                 </div>
-                
-             </div>
+            </div>
         </div>
-        
-        <div class="col-md-3 col-lg-3"></div>
         
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
             <div class="modal-dialog">
