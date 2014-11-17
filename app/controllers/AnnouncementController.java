@@ -56,7 +56,9 @@ public class AnnouncementController extends Controller{
 		Announcement announcement = new Announcement();
 		announcement.setAnnouncementType(AnnouncementType.valueOf(form.get("announcementType")));
 		announcement.description = form.get("description");
-		announcement.icon = Icon.findById((Long.parseLong(form.get("icon"))));
+		if(form.get("ic.id") != null){
+			announcement.icon = Icon.findById((Long.parseLong(form.get("icon"))));
+		}
 		announcement.title = form.get("title");
 		try {
 			String fd = form.get("fd");
@@ -91,7 +93,9 @@ public class AnnouncementController extends Controller{
 		Announcement announcement = Announcement.findById(Long.parseLong(form.get("id")));
 		announcement.setAnnouncementType(AnnouncementType.valueOf(form.get("ty")));
 		announcement.description = form.get("d");
-		announcement.icon = Icon.findById((Long.parseLong(form.get("ic.id"))));
+		if(form.get("ic.id") != null){
+			announcement.icon = Icon.findById((Long.parseLong(form.get("ic.id"))));
+		}
 		announcement.title = form.get("t");
 		try {
 		    String fd = form.get("fd");

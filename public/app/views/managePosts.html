@@ -31,6 +31,15 @@
 					                            	<button class="margin-none pull-right" ng-click="setData(post)" data-toggle="modal" data-target="#myModal3">Delete</button>
 					                            </div>
 					                            <div>	
+					                            	<b>Report Object ID :</b> {{post.reportObjectID}}
+					                            </div>
+					                            <div>	
+					                            	<b>Report Object Owner :</b> {{post.owner}}
+					                            </div>
+					                            <div>	
+					                            	<b>Report Object Community :</b> {{post.communityName}}
+					                            </div>
+					                            <div>	
 					                            	<b>Report Type :</b> {{post.reportType}}
 					                            </div>
 					                            <div>	
@@ -49,7 +58,7 @@
 				                            <div>
 				                            	<b>Post Body :</b> {{post.postBody}}
 				                            </div>
-				                            <div>
+				                            <div ng-show="post.isImage">
 				                            	<b>Post Image :</b> <div><img data-ng-src="/image/get-post-image-by-id/{{post.image}}" style="height:200px;width:300px;"/></div>
 				                            </div>
 			                            </td>
@@ -106,7 +115,7 @@
 				                            <div>
 				                            	<b>Post Body :</b> {{post.postBody}}
 				                            </div>
-				                            <div>
+				                            <div ng-show="post.isImage">
 				                            	<b>Post Image :</b> <div><img data-ng-src="/image/get-post-image-by-id/{{post.image}}" style="height:200px;width:300px;"/></div>
 				                            </div>
 			                            </td>
@@ -147,7 +156,7 @@
 				                            <div>
 				                            	<b>Post Body :</b> {{post.body}}
 				                            </div>
-				                            <div>
+				                            <div ng-show="post.isImage">
 				                            	<b>Post Image :</b> <div><img data-ng-src="/image/get-post-image-by-id/{{post.image}}" style="height:200px;width:300px;"/></div>
 				                            </div>
 			                            </td>

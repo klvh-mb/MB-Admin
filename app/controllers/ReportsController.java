@@ -70,9 +70,9 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = ReportedObject.getAllPostsTotal(3);
+		long totalPages = ReportedObject.getAllPostsTotal(20);
 		long size = ReportedObject.getSize();
-		List<ReportedObject> reportedObjects = ReportedObject.getAllReportedPosts(currentPage, 3, totalPages);
+		List<ReportedObject> reportedObjects = ReportedObject.getAllReportedPosts(currentPage, 20, totalPages);
 		List<ReportedObjectVM> reportedObjectVMs = new ArrayList<>();
 		Post post = new Post();
 		for (ReportedObject r:reportedObjects) {
@@ -118,9 +118,9 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = DeletedInfo.getAllPostsTotal(3,communityId);
+		long totalPages = DeletedInfo.getAllPostsTotal(20,communityId);
 		long size = DeletedInfo.getSize();
-		List<DeletedInfo> deletedInfos = DeletedInfo.getAllDeletedPosts(currentPage, 3, totalPages, communityId);
+		List<DeletedInfo> deletedInfos = DeletedInfo.getAllDeletedPosts(currentPage, 20, totalPages, communityId);
 		List<DeletedInfoVM> deletedInfoVMs = new ArrayList<>();
 		Post post = new Post();
 		for (DeletedInfo d:deletedInfos) {
@@ -162,8 +162,8 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = Post.getAllPostsTotal(3,title);
-		List<Post> postList = Post.findAllPosts(currentPage, 3, totalPages, title);
+		long totalPages = Post.getAllPostsTotal(20,title);
+		List<Post> postList = Post.findAllPosts(currentPage, 20, totalPages, title);
 		List<PostVM> postVMs = new ArrayList<>();
 		for (Post p:postList) {
 			PostVM vm = new PostVM(p);
@@ -220,9 +220,9 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = ReportedObject.getAllCommentsTotal(3);
+		long totalPages = ReportedObject.getAllCommentsTotal(20);
 		long size = ReportedObject.getCommentSize();
-		List<ReportedObject> reportedObjects = ReportedObject.getAllReportedComments(currentPage, 3, totalPages);
+		List<ReportedObject> reportedObjects = ReportedObject.getAllReportedComments(currentPage, 20, totalPages);
 		List<ReportedObjectVM> reportedObjectVMs = new ArrayList<>();
 		Comment comment = new Comment();
 		for (ReportedObject r:reportedObjects) {
@@ -268,9 +268,9 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = DeletedInfo.getAllCommentsTotal(3,communityId);
+		long totalPages = DeletedInfo.getAllCommentsTotal(20,communityId);
 		long size = DeletedInfo.getCommentsSize();
-		List<Object[]> deletedInfos = DeletedInfo.getAllDeletedComments(currentPage, 3, totalPages,communityId);
+		List<Object[]> deletedInfos = DeletedInfo.getAllDeletedComments(currentPage, 20, totalPages,communityId);
 		List<DeletedInfoVM> deletedInfoVMs = new ArrayList<>();
 		Comment comment = new Comment();
 		for (Object[] d:deletedInfos) {
@@ -306,8 +306,8 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = Comment.getAllCommentsTotal(3,title);
-		List<Comment> commentList = Comment.findAllComments(currentPage, 3, totalPages, title);
+		long totalPages = Comment.getAllCommentsTotal(20,title);
+		List<Comment> commentList = Comment.findAllComments(currentPage, 20, totalPages, title);
 		List<CommentVM> commentVMs = new ArrayList<>();
 		for (Comment c:commentList) {
 			CommentVM vm = new CommentVM(c);
@@ -352,9 +352,9 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = ReportedObject.getAllQuestionsTotal(3);
+		long totalPages = ReportedObject.getAllQuestionsTotal(20);
 		long size = ReportedObject.getQuestionSize();
-		List<ReportedObject> reportedObjects = ReportedObject.getAllReportedQuestions(currentPage, 3, totalPages);
+		List<ReportedObject> reportedObjects = ReportedObject.getAllReportedQuestions(currentPage, 20, totalPages);
 		List<ReportedObjectVM> reportedObjectVMs = new ArrayList<>();
 		Post post = new Post();
 		for (ReportedObject r:reportedObjects) {
@@ -394,9 +394,9 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = DeletedInfo.getAllQuestionsTotal(3,communityId);
+		long totalPages = DeletedInfo.getAllQuestionsTotal(20,communityId);
 		long size = DeletedInfo.getQuestionSize();
-		List<DeletedInfo> deletedInfos = DeletedInfo.getAllDeletedQuestions(currentPage, 3, totalPages, communityId);
+		List<DeletedInfo> deletedInfos = DeletedInfo.getAllDeletedQuestions(currentPage, 20, totalPages, communityId);
 		List<DeletedInfoVM> deletedInfoVMs = new ArrayList<>();
 		Post post = new Post();
 		for (DeletedInfo d:deletedInfos) {
@@ -440,8 +440,8 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = Post.getAllQuestionsTotal(3,title);
-		List<Post> questionList = Post.findAllQuestions(currentPage, 3, totalPages, title);
+		long totalPages = Post.getAllQuestionsTotal(20,title);
+		List<Post> questionList = Post.findAllQuestions(currentPage, 20, totalPages, title);
 		List<PostVM> questionVMs = new ArrayList<>();
 		for (Post p:questionList) {
 			PostVM vm = new PostVM(p);
@@ -469,9 +469,9 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = ReportedObject.getAllAnswersTotal(3);
+		long totalPages = ReportedObject.getAllAnswersTotal(20);
 		long size = ReportedObject.getAnswerSize();
-		List<ReportedObject> reportedObjects = ReportedObject.getAllReportedAnswers(currentPage, 3, totalPages);
+		List<ReportedObject> reportedObjects = ReportedObject.getAllReportedAnswers(currentPage, 20, totalPages);
 		List<ReportedObjectVM> reportedObjectVMs = new ArrayList<>();
 		Comment comment = new Comment();
 		for (ReportedObject r:reportedObjects) {
@@ -511,9 +511,9 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = DeletedInfo.getAllAnswersTotal(3,communityId);
+		long totalPages = DeletedInfo.getAllAnswersTotal(20,communityId);
 		long size = DeletedInfo.getAnswersSize();
-		List<Object[]> deletedInfos = DeletedInfo.getAllDeletedAnswers(currentPage, 3, totalPages,communityId);
+		List<Object[]> deletedInfos = DeletedInfo.getAllDeletedAnswers(currentPage, 20, totalPages,communityId);
 		List<DeletedInfoVM> deletedInfoVMs = new ArrayList<>();
 		Comment comment = new Comment();
 		for (Object[] d:deletedInfos) {
@@ -565,8 +565,8 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = Comment.getAllAnswersTotal(3,title);
-		List<Comment> answerList = Comment.findAllAnswers(currentPage, 3, totalPages, title);
+		long totalPages = Comment.getAllAnswersTotal(20,title);
+		List<Comment> answerList = Comment.findAllAnswers(currentPage, 20, totalPages, title);
 		List<CommentVM> commentVMs = new ArrayList<>();
 		for (Comment c:answerList) {
 			CommentVM vm = new CommentVM(c);
@@ -594,9 +594,9 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = ReportedObject.getAllCommunitiesTotal(3);
+		long totalPages = ReportedObject.getAllCommunitiesTotal(20);
 		long size = ReportedObject.getCommunitySize();
-		List<ReportedObject> reportedObjects = ReportedObject.getAllReportedCommunities(currentPage, 3, totalPages);
+		List<ReportedObject> reportedObjects = ReportedObject.getAllReportedCommunities(currentPage, 20, totalPages);
 		List<ReportedObjectVM> reportedObjectVMs = new ArrayList<>();
 		Community community = new Community();
 		for (ReportedObject r:reportedObjects) {
@@ -636,9 +636,9 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = DeletedInfo.getAllCommunityTotal(3);
+		long totalPages = DeletedInfo.getAllCommunityTotal(20);
 		long size = DeletedInfo.getCommunitySize();
-		List<DeletedInfo> deletedInfos = DeletedInfo.getAllDeletedcommunities(currentPage, 3, totalPages);
+		List<DeletedInfo> deletedInfos = DeletedInfo.getAllDeletedcommunities(currentPage, 20, totalPages);
 		List<DeletedInfoVM> deletedInfoVMs = new ArrayList<>();
 		Community community = new Community();
 		for (DeletedInfo d:deletedInfos) {
@@ -682,8 +682,8 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = Community.getAllCommunitiesTotal(3,title);
-		List<Community> communityList = Community.findAllCommunities(currentPage, 3, totalPages, title);
+		long totalPages = Community.getAllCommunitiesTotal(20,title);
+		List<Community> communityList = Community.findAllCommunities(currentPage, 20, totalPages, title);
 		List<CommunityVM> communityVMs = new ArrayList<>();
 		for (Community c:communityList) {
 			CommunityVM vm = new CommunityVM(c);
@@ -711,9 +711,9 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = ReportedObject.getAllUsersTotal(3);
+		long totalPages = ReportedObject.getAllUsersTotal(20);
 		long size = ReportedObject.getUsersSize();
-		List<ReportedObject> reportedObjects = ReportedObject.getAllReportedUsers(currentPage, 3, totalPages);
+		List<ReportedObject> reportedObjects = ReportedObject.getAllReportedUsers(currentPage, 20, totalPages);
 		List<ReportedObjectVM> reportedObjectVMs = new ArrayList<>();
 		User user = new User();
 		for (ReportedObject r:reportedObjects) {
@@ -753,9 +753,9 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = DeletedInfo.getAllUsersTotal(3);
+		long totalPages = DeletedInfo.getAllUsersTotal(20);
 		long size = DeletedInfo.getUserSize();
-		List<DeletedInfo> deletedInfos = DeletedInfo.getAllDeletedUsers(currentPage, 3, totalPages);
+		List<DeletedInfo> deletedInfos = DeletedInfo.getAllDeletedUsers(currentPage, 20, totalPages);
 		List<DeletedInfoVM> deletedInfoVMs = new ArrayList<>();
 		User user = new User();
 		for (DeletedInfo d:deletedInfos) {
@@ -799,8 +799,8 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = User.getAllUsersTotal(3,title);
-		List<User> userList = User.findAllUsers(currentPage, 3, totalPages, title);
+		long totalPages = User.getAllUsersTotal(20,title);
+		List<User> userList = User.findAllUsers(currentPage, 20, totalPages, title);
 		List<UserVM> userVMs = new ArrayList<>();
 		for (User u:userList) {
 			UserVM vm = new UserVM(u);
@@ -1064,7 +1064,25 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		DynamicForm form = DynamicForm.form().bindFromRequest();
-		sendEmailsToSubscribedUsers(form.get("usersId"), form.get("subscription"), form.get("EDMBody"));
+		String[] userEmails = form.get("userEmails").split(",");
+		for(String userEmail: userEmails) {
+			User user = User.findByEmail(userEmail);
+			if(form.get("subscription").trim().equals("")) {
+				List<Long> subscriptionIds = User.getSubscriptionIds(user.id);
+			    for(Long id : subscriptionIds) {
+			        Subscription sub = Subscription.findById(id);
+			        logger.underlyingLogger().info(String.format("send edm to user [u=%d|name=%s|sub=%d]", user.id, user.name, sub.id));
+			        edmUtility.sendMailToUser(user,sub,form.get("EDMBody"));
+			    }
+			} else {
+                Subscription sub = Subscription.findById(Long.parseLong(form.get("subscription")));
+                edmUtility.sendMailToUser(user,sub,form.get("EDMBody"));
+			}
+		}
+		
+		
+		
+		logger.underlyingLogger().info(String.format("Completed EDM job [id=%s]", form.get("usersId")));
 		return ok();
 	}
 	

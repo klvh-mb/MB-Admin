@@ -16,6 +16,7 @@ import models.UserChild;
 public class ReportedObjectVM {
 
 	public Long id;
+	public Long reportObjectID;
 	public String objectType;
 	public Long socialObjectID;
 	public String comment;
@@ -26,13 +27,13 @@ public class ReportedObjectVM {
 	public String postBody;
 	public String commentBody;
 	public boolean deleted;
+	public boolean isImage = false;
 	public String communityName;
 	public String createdDate;
 	public String owner;
 	public Long posts;
 	public String userName;
 	public String lastLogin;
-	
 	public String aboutMe;
 	public String birthYear;
 	public String location;
@@ -51,10 +52,14 @@ public class ReportedObjectVM {
 		this.reportedDate = DateTimeUtil.toString(reportedObject.reportedDate);
 		this.postBody = post.body;
 		this.postTitle = post.title;
+		this.owner = post.owner.displayName+" ("+post.owner.id+")";
+		this.communityName = post.community.name+" ("+post.community.id+")";
+		this.reportObjectID = post.id;
 		if(post.deleted != null) {
 			this.deleted = post.deleted;
 		}
 		if(post.folder != null) {
+			isImage = true;
 			List<Resource> resource = Resource.findAllResourceOfFolder(post.folder.id);
 			this.image = resource.get(0).id;
 		}	
@@ -69,10 +74,13 @@ public class ReportedObjectVM {
 		this.reportedBy = reportedObject.reportedBy;
 		this.reportedDate = DateTimeUtil.toString(reportedObject.reportedDate);
 		this.commentBody = comment.body;
+		this.owner = comment.owner.displayName+" ("+comment.owner.id+")";
+		this.reportObjectID = comment.id;
 		if(comment.deleted != null) {
 			this.deleted = comment.deleted;
 		}
 		if(comment.folder != null) {
+			isImage = true;
 			List<Resource> resource = Resource.findAllResourceOfFolder(comment.folder.id);
 			this.image = resource.get(0).id;
 		}

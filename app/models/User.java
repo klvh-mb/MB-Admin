@@ -592,4 +592,19 @@ public class User extends SocialObject {
 		}
 		return filteredUser;
 	}
+
+	 public static User findByEmail(final String email) {
+	        try {
+	            Query q = JPA.em().createQuery(
+	                    "SELECT u FROM User u where active = ?1 and email = ?2 and deleted = false");
+	            q.setParameter(1, true);
+	            q.setParameter(2, email);
+	            return (User) q.getSingleResult();
+	        } catch (NoResultException e) {
+	            return null;
+	        } catch (Exception e) {
+	            logger.underlyingLogger().error("Error in findByEmail", e);
+	            return null;
+	        }
+	    }
 }

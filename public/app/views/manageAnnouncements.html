@@ -94,7 +94,7 @@
                     </tr>
 			        <tr>
 			        	<td><label>Description</label></td>
-			        	<td style="height: 60px;"><textarea type="text" name="description" style="width:200%;" data-ng-model="formData.description" required></textarea></td>
+			        	<td style="height: 60px;"><textarea type="text" name="description" style="width:200%;" data-ng-model="formData.description" ></textarea></td>
 			        </tr>
 			        <tr>
 			        	<td><label>From Date</label></td>
@@ -215,10 +215,10 @@
                                <input type="text" name="fromDate"
                                        class="input-sm form-control dropdown-toggle textStyle"
                                        data-toggle="dropdown"
-                                       value="{{searchForm.from | date:'MM-dd-yyyy' || 'To'}}"
+                                       value="{{ancmtData.fd | date:'MM-dd-yyyy' || 'To'}}"
                                        placeholder="To">
                                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                                       <datetimepicker data-ng-model="searchForm.from"
+                                       <datetimepicker data-ng-model="ancmtData.fd"
                                                data-datetimepicker-config="{ dropdownSelector: '.dropdown-toggle',minView: 'day' }"></datetimepicker>
                                </ul>
                        		</div>
@@ -231,10 +231,10 @@
                                <input type="text" name="toDate"
                                        class="input-sm form-control dropdown-toggle textStyle"
                                        data-toggle="dropdown"
-                                       value="{{searchForm.to | date:'MM-dd-yyyy' || 'To'}}"
+                                       value="{{ancmtData.td | date:'MM-dd-yyyy' || 'To'}}"
                                        placeholder="To">
                                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                                       <datetimepicker data-ng-model="searchForm.to"
+                                       <datetimepicker data-ng-model="ancmtData.td"
                                                data-datetimepicker-config="{ dropdownSelector: '.dropdown-toggle',minView: 'day' }"></datetimepicker>
                                </ul>
                        		</div>

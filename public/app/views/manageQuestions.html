@@ -27,6 +27,15 @@
 				                            	<button class="margin-none pull-right" ng-click="setData(question)" data-toggle="modal" data-target="#myModal3">Delete</button>
 				                            </div>
 				                            <div>	
+				                            	<b>Report Object ID :</b> {{question.reportObjectID}}
+				                            </div>
+				                            <div>	
+				                            	<b>Report Object Owner :</b> {{question.owner}}
+				                            </div>
+				                            <div>	
+				                            	<b>Report Object Community :</b> {{question.communityName}}
+				                            </div>
+				                            <div>	
 				                            	<b>Report Type :</b> {{question.reportType}}
 				                            </div>
 				                            <div>	
@@ -45,7 +54,7 @@
 				                            <div>
 				                            	<b>Question Body :</b> {{question.postBody}}
 				                            </div>
-				                            <div>
+				                            <div ng-show="question.isImage">
 				                            	<b>Question Image :</b> <div><img data-ng-src="/image/get-post-image-by-id/{{question.image}}" style="height:200px;width:300px;"/></div>
 				                            </div>
 			                            </td>
@@ -102,7 +111,7 @@
 				                            <div>
 				                            	<b>Question Body :</b> {{question.postBody}}
 				                            </div>
-				                            <div>
+				                            <div ng-show="question.isImage">
 				                            	<b>Question Image :</b> <div><img data-ng-src="/image/get-post-image-by-id/{{question.image}}" style="height:200px;width:300px;"/></div>
 				                            </div>
 			                            </td>
@@ -144,7 +153,7 @@
 				                            	<button class="margin-none pull-right" ng-click="setQuestionData(question)" data-toggle="modal" data-target="#myModal5" ng-show="question.deleted == true">UnDelete</button>
 				                            	<button class="margin-none pull-right" ng-click="setQuestionData(question)" data-toggle="modal" data-target="#myModal6" ng-show="question.deleted == false">Delete</button>
 				                            </div>
-				                            <div>
+				                            <div ng-show="question.isImage">
 				                            	<b>Question Image :</b> <div><img data-ng-src="/image/get-post-image-by-id/{{question.image}}" style="height:200px;width:300px;"/></div>
 				                            </div>
 			                            </td>

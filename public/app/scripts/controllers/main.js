@@ -650,8 +650,6 @@ minibean.controller('ManageAnnouncementsController',function($scope, $modal, $ht
 	};
 	
 	$scope.updateAnnouncement = function() {
-		$scope.ancmtData.fd = $filter('date')(new Date($scope.searchForm.from),'yyyy-MM-dd');
-		$scope.ancmtData.td = $filter('date')(new Date($scope.searchForm.to),'yyyy-MM-dd');
 		$http.post('/updateAnnouncement', $scope.ancmtData).success(function(data){
 			$scope.searchAnnouncements(currentPage);
 			$('#myModal2').modal('hide');
@@ -906,18 +904,6 @@ minibean.controller('ManagePostsController',function($scope, $modal, $http, $fil
 			}
 		});
 	};
-	
-	$scope.allPosts = getAllPostsService.getPosts.get({currentPage: currentPage3,title: $scope.title},function(response) {
-		totalPages3 = $scope.allPosts.totalPages;
-		currentPage3 = $scope.allPosts.currentPage;
-		$scope.pageNumber3 = $scope.allPosts.currentPage;
-		$scope.pageSize3 = $scope.allPosts.totalPages;
-		$scope.size3 = $scope.allPosts.size;
-		
-		if(totalPages3 == 0) {
-			$scope.pageNumber3 = 0;
-		}
-	});
 	
 	$scope.searchPosts = function(page) {
 		currentPage3 = page;
@@ -1182,18 +1168,6 @@ minibean.controller('ManageQuestionsController',function($scope, $http, $routePa
 	}
 	
 	
-	$scope.allQuestions = getAllQuestionsService.getAllQuestions.get({currentPage: currentPage3,title: $scope.title},function(response) {
-		totalPages3 = $scope.allQuestions.totalPages;
-		currentPage3 = $scope.allQuestions.currentPage;
-		$scope.pageNumber3 = $scope.allQuestions.currentPage;
-		$scope.pageSize3 = $scope.allQuestions.totalPages;
-		$scope.size3 = $scope.allQuestions.size;
-		
-		if(totalPages3 == 0) {
-			$scope.pageNumber3 = 0;
-		}
-	});
-	
 	$scope.searchQuestions = function(page) {
 		currentPage3 = page;
 		if(angular.isUndefined($scope.title) || $scope.title=="") {
@@ -1387,18 +1361,6 @@ minibean.controller('ManageCommentsController',function($scope, $http, $routePar
 			}
 		});
 	};
-	
-	$scope.allComments = getAllCommentsService.getAllComments.get({currentPage: currentPage3,title: $scope.title},function(response) {
-		totalPages3 = $scope.allComments.totalPages;
-		currentPage3 = $scope.allComments.currentPage;
-		$scope.pageNumber3 = $scope.allComments.currentPage;
-		$scope.pageSize3 = $scope.allComments.totalPages;
-		$scope.size3 = $scope.allComments.size;
-		
-		if(totalPages3 == 0) {
-			$scope.pageNumber3 = 0;
-		}
-	});
 	
 	$scope.searchComments = function(page) {
 		currentPage3 = page;
@@ -1669,19 +1631,6 @@ minibean.controller('ManageAnswersController',function($scope, $http, $routePara
 			$('#myModal6').modal('hide');
 		});
 	}
-	
-	$scope.allAnswers = getAllAnswersService.getAllAnswers.get({currentPage: currentPage3,title: $scope.title},function(response) {
-		totalPages3 = $scope.allAnswers.totalPages;
-		currentPage3 = $scope.allAnswers.currentPage;
-		$scope.pageNumber3 = $scope.allAnswers.currentPage;
-		$scope.pageSize3 = $scope.allAnswers.totalPages;
-		$scope.size3 = $scope.allAnswers.size;
-		
-		if(totalPages3 == 0) {
-			$scope.pageNumber3 = 0;
-		}
-	});
-	
 	
 	$scope.searchAllAnswers = function(page) {
 		currentPage3 = page;
