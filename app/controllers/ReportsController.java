@@ -27,6 +27,8 @@ import models.User;
 import net.coobird.thumbnailator.Thumbnails;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.joda.time.DateTime;
 
 import play.data.DynamicForm;
@@ -48,15 +50,16 @@ import viewmodel.ReportedObjectVM;
 import viewmodel.SubscriptionVM;
 import viewmodel.UserVM;
 import akka.actor.ActorSystem;
-
 import common.utils.ImageUploadUtil;
-
 import domain.ReportType;
 import domain.SocialObjectType;
 import email.EDMUtility;
 
 public class ReportsController extends Controller {
-
+    private static play.api.Logger logger = play.api.Logger.apply(ReportsController.class);
+    
+    private static final EDMUtility edmUtility = new EDMUtility();
+    
     public ReportsController() {}
     
 	@Transactional
@@ -867,25 +870,20 @@ public class ReportsController extends Controller {
 	}
 	
 	@Transactional
-    public static Result sendEmailsToSubscribedUsers(String ids,String subscription,String body) {
-		
-		System.out.println("..........subscription "+subscription);
-		String[] UserIds = ids.split(",");
-		for(String s: UserIds) {
-			User user = User.findById(Long.parseLong(s));
+    public static Result sendEmailsToSubscribedUsers(String ids, String subscription, String body) {
+		String[] userIds = ids.split(",");
+		for(String userId: userIds) {
+			User user = User.findById(Long.parseLong(userId));
 			if(subscription.trim().equals("")) {
-				List<Long> subscriptionIds = User.getSubscriptionIds(Long.parseLong(s));
-					for(Long id:subscriptionIds) {
-						Subscription sub = Subscription.findById(id);
-						EDMUtility edmUtility = new EDMUtility();
-						System.out.println("...................."+user.displayName+sub.name);
-						edmUtility.sendMailToUser(user,sub,body);
-					}
-			}	
-			else {
-					Subscription sub = Subscription.findById(Long.parseLong(subscription));
-					EDMUtility edmUtility = new EDMUtility();
-					edmUtility.sendMailToUser(user,sub,body);
+				List<Long> subscriptionIds = User.getSubscriptionIds(Long.parseLong(userId));
+			    for(Long id : subscriptionIds) {
+			        Subscription sub = Subscription.findById(id);
+			        logger.underlyingLogger().info(String.format("send edm to user [u=%d|name=%s|sub=%d]", user.id, user.name, sub.id));
+			        edmUtility.sendMailToUser(user,sub,body);
+			    }
+			} else {
+                Subscription sub = Subscription.findById(Long.parseLong(subscription));
+                edmUtility.sendMailToUser(user,sub,body);
 			}
 		}
 		return ok();
@@ -905,8 +903,7 @@ public class ReportsController extends Controller {
 		boolean miniThumbnail = Boolean.parseBoolean(form.get("miniThumbnail"));
 		boolean mobile = Boolean.parseBoolean(form.get("mobile"));
 		String category = form.get("category");
-		ImageUploadUtil imageUploadUtil = new ImageUploadUtil(category)
-		;
+		ImageUploadUtil imageUploadUtil = new ImageUploadUtil(category);
 		FilePart picture = request().body().asMultipartFormData().getFile("cover-photo");
         String fileName = picture.getFilename();
         DateTime  now = new DateTime();
@@ -1071,24 +1068,27 @@ public class ReportsController extends Controller {
 		return ok();
 	}
 	
+	// EDM job status
+	private static Long success = 0L;
+	private static Long fail= 0L;
+    
 	@Transactional
 	public static Result sendBulkEDM() {
 		final String value = session().get("NAME");
-
         if (value == null) {
         	return ok(views.html.login.render());
         }
+        
 		final DynamicForm form = DynamicForm.form().bindFromRequest();
 		EDMJob edmJob = new EDMJob();
 		edmJob.startTime = new Date();
 		edmJob.json = Json.stringify(Json.toJson(form.get()));
 		edmJob.save();
 		final Long id = edmJob.id;
-		long success = 0L,fail =0L;
 		ActorSystem  actorSystem1 = Akka.system();
-        actorSystem1.scheduler().scheduleOnce(
-                Duration.create(0, TimeUnit.MILLISECONDS),
-                new Runnable() {
+		actorSystem1.scheduler().scheduleOnce(
+		        Duration.create(0, TimeUnit.MILLISECONDS), 
+		        new Runnable() {
                     public void run() {
                         try {
                     	   JPA.withTransaction(new play.libs.F.Callback0() {
@@ -1096,9 +1096,12 @@ public class ReportsController extends Controller {
 	           						List<User> users = User.filterUsers(form);
            							for(User user : users){
            								try{
-	           								if(user.active == true && user.emailValidated == true && !user.email.isEmpty() && user.email != null
-	           										&& user.displayName != null){
-	           									sendEmailsToSubscribedUsers(user.id+"", form.get("subscription"), form.get("EDMBody"));
+	           								if(user.active && 
+	           								        user.emailValidated &&
+	           								        user.deleted && 
+	           								        !StringUtils.isEmpty(user.email) && 
+	           										!StringUtils.isEmpty(user.displayName)) {
+	           									sendEmailsToSubscribedUsers(user.id.toString(), form.get("subscription"), form.get("EDMBody"));
 	           									ReportsController.success++;
 	           								} else {
 	           									ReportsController.fail++;
@@ -1113,21 +1116,17 @@ public class ReportsController extends Controller {
                				        edmJob.failureCount = ReportsController.fail;
                				        edmJob.endTime = new Date();
                				        edmJob.merge();
-               				        System.out.println("Check IT");
                				        ReportsController.success = 0L;
                				        ReportsController.fail = 0L;
-           							
+               				        logger.underlyingLogger().info(String.format("Completed EDM job [id=%d]", edmJob.id));
 	                    		}
                     		});
                         } catch (Exception e) {
-                        	e.printStackTrace();
+                            logger.underlyingLogger().error(ExceptionUtils.getFullStackTrace(e));
                         }
                     }
                 }, actorSystem1.dispatcher()
         );
         return ok();
 	}
-	
-	static Long success = 0L;
-	static Long fail= 0L;
 }

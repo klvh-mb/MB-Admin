@@ -3,6 +3,7 @@ package controllers;
 import javax.persistence.NoResultException;
 
 import models.AdminUser;
+import play.Play;
 import play.data.DynamicForm;
 import play.db.jpa.Transactional;
 import play.mvc.Controller;
@@ -10,6 +11,12 @@ import play.mvc.Result;
 
 public class Application extends Controller {
     private static final play.api.Logger logger = play.api.Logger.apply(Application.class);
+    
+    public static final String APPLICATION_ENV = 
+            Play.application().configuration().getString("application.env", "dev");
+    
+    public static final String APPLICATION_BASE_URL = 
+            Play.application().configuration().getString("application.baseUrl");
     
     public static final String FLASH_MESSAGE_KEY = "message";
 	public static final String FLASH_ERROR_KEY = "error";
