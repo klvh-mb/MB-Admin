@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Set;
 
 import models.Campaign;
+import models.Campaign.AnnouncementType;
 import models.CampaignActionsUser;
 import models.Campaign.CampaignState;
 import models.Campaign.CampaignType;
@@ -233,6 +234,12 @@ public class CampaignController extends Controller {
             return status(508, "START DATE AFTER END DATE");
         }
         
+        try {
+            campaign.announcementType = AnnouncementType.valueOf(form.get("announcementType"));
+        } catch(Exception e) {
+            return status(509, "PLEASE CHOOSE ANNOUNCEMENT TYPE");
+        }
+        
         campaign.save();
         
         logger.underlyingLogger().info(value+" saved campaign ["+campaign.id+"|"+campaign.name+"]");
@@ -253,6 +260,7 @@ public class CampaignController extends Controller {
         campaign.name = form.get("name");
         campaign.image = form.get("image");
         campaign.description = form.get("description");
+        campaign.announcement = form.get("announcement");
         
         try {
             campaign.campaignType = CampaignType.valueOf(form.get("campaignType"));
@@ -276,6 +284,12 @@ public class CampaignController extends Controller {
         
         if (campaign.startDate.after(campaign.endDate)) {
             return status(508, "START DATE AFTER END DATE");
+        }
+        
+        try {
+            campaign.announcementType = AnnouncementType.valueOf(form.get("announcementType"));
+        } catch(Exception e) {
+            return status(509, "PLEASE CHOOSE ANNOUNCEMENT TYPE");
         }
         
         campaign.update();
@@ -369,6 +383,16 @@ public class CampaignController extends Controller {
         }
         Campaign campaign = Campaign.findById(id);
         return ok(Json.toJson(campaign));
+    }
+    
+    @Transactional
+    public static Result infoCampaign(Long id) {
+        final String value = session().get("NAME");
+        if (value == null) {
+            return ok(views.html.login.render());
+        }
+        Campaign campaign = Campaign.findById(id);
+        return ok(Json.toJson(new CampaignVM(campaign)));
     }
     
     @Transactional

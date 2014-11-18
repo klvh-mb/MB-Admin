@@ -16,7 +16,9 @@ public class CampaignVM {
 	@JsonProperty("cs") public String campaignState;
 	@JsonProperty("sd") public String startDate;
 	@JsonProperty("ed") public String endDate;
-	
+	@JsonProperty("at") public String announcementType;
+    @JsonProperty("an") public String announcement;
+    
 	@JsonProperty("uc") public Long joinedUsersCount;
     
 	public CampaignVM(Campaign campaign) {
@@ -28,7 +30,9 @@ public class CampaignVM {
 		this.campaignState = campaign.campaignState.name();
 		this.startDate = DateTimeUtil.toString(campaign.startDate);
 		this.endDate = DateTimeUtil.toString(campaign.endDate);
-		
+		this.announcementType = campaign.announcementType.name();
+        this.announcement = campaign.announcement;
+        
 		this.joinedUsersCount = CampaignController.getJoinedUsersCount(campaign.id);
 	}
 }

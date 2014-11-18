@@ -57,6 +57,17 @@ public class Campaign extends SocialObject {
         PHOTO_CONTEST
     }
 	
+    @Lob
+    public String announcement;
+    
+    @Enumerated(EnumType.STRING)
+    public AnnouncementType announcementType;
+    
+    public static enum AnnouncementType {
+        WINNERS,
+        CUSTOM
+    }
+    
     public Campaign() {}
     
     public static List<Campaign> getLatestCampaigns() {
