@@ -19,7 +19,6 @@ public class CampaignVM {
 	
 	@JsonProperty("uc") public Long joinedUsersCount;
     
-	
 	public CampaignVM(Campaign campaign) {
 	    this.id = campaign.id;
 	    this.name = campaign.name;

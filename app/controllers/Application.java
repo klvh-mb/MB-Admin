@@ -27,10 +27,14 @@ public class Application extends Controller {
     }
     
 	public static String getLoggedInUser() {
-	    final String value = session().get("NAME");
-        if (value != null) {
-            return value;
-        }
+	    try {
+	        final String value = session().get("NAME");
+	        if (value != null) {
+	            return value;
+	        }
+	    } catch (Exception e) {
+	        return "";
+	    }
         return "";
 	}
         

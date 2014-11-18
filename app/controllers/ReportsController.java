@@ -58,6 +58,8 @@ import email.EDMUtility;
 public class ReportsController extends Controller {
     private static play.api.Logger logger = play.api.Logger.apply(ReportsController.class);
     
+    public static final int PAGINATION_SIZE = 20;
+    
     private static final EDMUtility edmUtility = new EDMUtility();
     
     public ReportsController() {}
@@ -70,9 +72,9 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = ReportedObject.getAllPostsTotal(20);
+		long totalPages = ReportedObject.getAllPostsTotal(PAGINATION_SIZE);
 		long size = ReportedObject.getSize();
-		List<ReportedObject> reportedObjects = ReportedObject.getAllReportedPosts(currentPage, 20, totalPages);
+		List<ReportedObject> reportedObjects = ReportedObject.getAllReportedPosts(currentPage, PAGINATION_SIZE, totalPages);
 		List<ReportedObjectVM> reportedObjectVMs = new ArrayList<>();
 		Post post = new Post();
 		for (ReportedObject r:reportedObjects) {
@@ -118,9 +120,9 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = DeletedInfo.getAllPostsTotal(20,communityId);
+		long totalPages = DeletedInfo.getAllPostsTotal(PAGINATION_SIZE,communityId);
 		long size = DeletedInfo.getSize();
-		List<DeletedInfo> deletedInfos = DeletedInfo.getAllDeletedPosts(currentPage, 20, totalPages, communityId);
+		List<DeletedInfo> deletedInfos = DeletedInfo.getAllDeletedPosts(currentPage, PAGINATION_SIZE, totalPages, communityId);
 		List<DeletedInfoVM> deletedInfoVMs = new ArrayList<>();
 		Post post = new Post();
 		for (DeletedInfo d:deletedInfos) {
@@ -162,8 +164,8 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = Post.getAllPostsTotal(20,title);
-		List<Post> postList = Post.findAllPosts(currentPage, 20, totalPages, title);
+		long totalPages = Post.getAllPostsTotal(PAGINATION_SIZE,title);
+		List<Post> postList = Post.findAllPosts(currentPage, PAGINATION_SIZE, totalPages, title);
 		List<PostVM> postVMs = new ArrayList<>();
 		for (Post p:postList) {
 			PostVM vm = new PostVM(p);
@@ -220,9 +222,9 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = ReportedObject.getAllCommentsTotal(20);
+		long totalPages = ReportedObject.getAllCommentsTotal(PAGINATION_SIZE);
 		long size = ReportedObject.getCommentSize();
-		List<ReportedObject> reportedObjects = ReportedObject.getAllReportedComments(currentPage, 20, totalPages);
+		List<ReportedObject> reportedObjects = ReportedObject.getAllReportedComments(currentPage, PAGINATION_SIZE, totalPages);
 		List<ReportedObjectVM> reportedObjectVMs = new ArrayList<>();
 		Comment comment = new Comment();
 		for (ReportedObject r:reportedObjects) {
@@ -268,9 +270,9 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = DeletedInfo.getAllCommentsTotal(20,communityId);
+		long totalPages = DeletedInfo.getAllCommentsTotal(PAGINATION_SIZE,communityId);
 		long size = DeletedInfo.getCommentsSize();
-		List<Object[]> deletedInfos = DeletedInfo.getAllDeletedComments(currentPage, 20, totalPages,communityId);
+		List<Object[]> deletedInfos = DeletedInfo.getAllDeletedComments(currentPage, PAGINATION_SIZE, totalPages,communityId);
 		List<DeletedInfoVM> deletedInfoVMs = new ArrayList<>();
 		Comment comment = new Comment();
 		for (Object[] d:deletedInfos) {
@@ -306,8 +308,8 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = Comment.getAllCommentsTotal(20,title);
-		List<Comment> commentList = Comment.findAllComments(currentPage, 20, totalPages, title);
+		long totalPages = Comment.getAllCommentsTotal(PAGINATION_SIZE,title);
+		List<Comment> commentList = Comment.findAllComments(currentPage, PAGINATION_SIZE, totalPages, title);
 		List<CommentVM> commentVMs = new ArrayList<>();
 		for (Comment c:commentList) {
 			CommentVM vm = new CommentVM(c);
@@ -352,9 +354,9 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = ReportedObject.getAllQuestionsTotal(20);
+		long totalPages = ReportedObject.getAllQuestionsTotal(PAGINATION_SIZE);
 		long size = ReportedObject.getQuestionSize();
-		List<ReportedObject> reportedObjects = ReportedObject.getAllReportedQuestions(currentPage, 20, totalPages);
+		List<ReportedObject> reportedObjects = ReportedObject.getAllReportedQuestions(currentPage, PAGINATION_SIZE, totalPages);
 		List<ReportedObjectVM> reportedObjectVMs = new ArrayList<>();
 		Post post = new Post();
 		for (ReportedObject r:reportedObjects) {
@@ -394,9 +396,9 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = DeletedInfo.getAllQuestionsTotal(20,communityId);
+		long totalPages = DeletedInfo.getAllQuestionsTotal(PAGINATION_SIZE,communityId);
 		long size = DeletedInfo.getQuestionSize();
-		List<DeletedInfo> deletedInfos = DeletedInfo.getAllDeletedQuestions(currentPage, 20, totalPages, communityId);
+		List<DeletedInfo> deletedInfos = DeletedInfo.getAllDeletedQuestions(currentPage, PAGINATION_SIZE, totalPages, communityId);
 		List<DeletedInfoVM> deletedInfoVMs = new ArrayList<>();
 		Post post = new Post();
 		for (DeletedInfo d:deletedInfos) {
@@ -440,8 +442,8 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = Post.getAllQuestionsTotal(20,title);
-		List<Post> questionList = Post.findAllQuestions(currentPage, 20, totalPages, title);
+		long totalPages = Post.getAllQuestionsTotal(PAGINATION_SIZE,title);
+		List<Post> questionList = Post.findAllQuestions(currentPage, PAGINATION_SIZE, totalPages, title);
 		List<PostVM> questionVMs = new ArrayList<>();
 		for (Post p:questionList) {
 			PostVM vm = new PostVM(p);
@@ -469,9 +471,9 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = ReportedObject.getAllAnswersTotal(20);
+		long totalPages = ReportedObject.getAllAnswersTotal(PAGINATION_SIZE);
 		long size = ReportedObject.getAnswerSize();
-		List<ReportedObject> reportedObjects = ReportedObject.getAllReportedAnswers(currentPage, 20, totalPages);
+		List<ReportedObject> reportedObjects = ReportedObject.getAllReportedAnswers(currentPage, PAGINATION_SIZE, totalPages);
 		List<ReportedObjectVM> reportedObjectVMs = new ArrayList<>();
 		Comment comment = new Comment();
 		for (ReportedObject r:reportedObjects) {
@@ -511,9 +513,9 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = DeletedInfo.getAllAnswersTotal(20,communityId);
+		long totalPages = DeletedInfo.getAllAnswersTotal(PAGINATION_SIZE,communityId);
 		long size = DeletedInfo.getAnswersSize();
-		List<Object[]> deletedInfos = DeletedInfo.getAllDeletedAnswers(currentPage, 20, totalPages,communityId);
+		List<Object[]> deletedInfos = DeletedInfo.getAllDeletedAnswers(currentPage, PAGINATION_SIZE, totalPages,communityId);
 		List<DeletedInfoVM> deletedInfoVMs = new ArrayList<>();
 		Comment comment = new Comment();
 		for (Object[] d:deletedInfos) {
@@ -565,8 +567,8 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = Comment.getAllAnswersTotal(20,title);
-		List<Comment> answerList = Comment.findAllAnswers(currentPage, 20, totalPages, title);
+		long totalPages = Comment.getAllAnswersTotal(PAGINATION_SIZE,title);
+		List<Comment> answerList = Comment.findAllAnswers(currentPage, PAGINATION_SIZE, totalPages, title);
 		List<CommentVM> commentVMs = new ArrayList<>();
 		for (Comment c:answerList) {
 			CommentVM vm = new CommentVM(c);
@@ -594,9 +596,9 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = ReportedObject.getAllCommunitiesTotal(20);
+		long totalPages = ReportedObject.getAllCommunitiesTotal(PAGINATION_SIZE);
 		long size = ReportedObject.getCommunitySize();
-		List<ReportedObject> reportedObjects = ReportedObject.getAllReportedCommunities(currentPage, 20, totalPages);
+		List<ReportedObject> reportedObjects = ReportedObject.getAllReportedCommunities(currentPage, PAGINATION_SIZE, totalPages);
 		List<ReportedObjectVM> reportedObjectVMs = new ArrayList<>();
 		Community community = new Community();
 		for (ReportedObject r:reportedObjects) {
@@ -636,9 +638,9 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = DeletedInfo.getAllCommunityTotal(20);
+		long totalPages = DeletedInfo.getAllCommunityTotal(PAGINATION_SIZE);
 		long size = DeletedInfo.getCommunitySize();
-		List<DeletedInfo> deletedInfos = DeletedInfo.getAllDeletedcommunities(currentPage, 20, totalPages);
+		List<DeletedInfo> deletedInfos = DeletedInfo.getAllDeletedcommunities(currentPage, PAGINATION_SIZE, totalPages);
 		List<DeletedInfoVM> deletedInfoVMs = new ArrayList<>();
 		Community community = new Community();
 		for (DeletedInfo d:deletedInfos) {
@@ -682,8 +684,8 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = Community.getAllCommunitiesTotal(20,title);
-		List<Community> communityList = Community.findAllCommunities(currentPage, 20, totalPages, title);
+		long totalPages = Community.getAllCommunitiesTotal(PAGINATION_SIZE,title);
+		List<Community> communityList = Community.findAllCommunities(currentPage, PAGINATION_SIZE, totalPages, title);
 		List<CommunityVM> communityVMs = new ArrayList<>();
 		for (Community c:communityList) {
 			CommunityVM vm = new CommunityVM(c);
@@ -711,9 +713,9 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = ReportedObject.getAllUsersTotal(20);
+		long totalPages = ReportedObject.getAllUsersTotal(PAGINATION_SIZE);
 		long size = ReportedObject.getUsersSize();
-		List<ReportedObject> reportedObjects = ReportedObject.getAllReportedUsers(currentPage, 20, totalPages);
+		List<ReportedObject> reportedObjects = ReportedObject.getAllReportedUsers(currentPage, PAGINATION_SIZE, totalPages);
 		List<ReportedObjectVM> reportedObjectVMs = new ArrayList<>();
 		User user = new User();
 		for (ReportedObject r:reportedObjects) {
@@ -753,9 +755,9 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = DeletedInfo.getAllUsersTotal(20);
+		long totalPages = DeletedInfo.getAllUsersTotal(PAGINATION_SIZE);
 		long size = DeletedInfo.getUserSize();
-		List<DeletedInfo> deletedInfos = DeletedInfo.getAllDeletedUsers(currentPage, 20, totalPages);
+		List<DeletedInfo> deletedInfos = DeletedInfo.getAllDeletedUsers(currentPage, PAGINATION_SIZE, totalPages);
 		List<DeletedInfoVM> deletedInfoVMs = new ArrayList<>();
 		User user = new User();
 		for (DeletedInfo d:deletedInfos) {
@@ -799,8 +801,8 @@ public class ReportsController extends Controller {
         	return ok(views.html.login.render());
         }
 		
-		long totalPages = User.getAllUsersTotal(20,title);
-		List<User> userList = User.findAllUsers(currentPage, 20, totalPages, title);
+		long totalPages = User.getAllUsersTotal(PAGINATION_SIZE,title);
+		List<User> userList = User.findAllUsers(currentPage, PAGINATION_SIZE, totalPages, title);
 		List<UserVM> userVMs = new ArrayList<>();
 		for (User u:userList) {
 			UserVM vm = new UserVM(u);
