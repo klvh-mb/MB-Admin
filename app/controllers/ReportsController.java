@@ -1,7 +1,9 @@
 package controllers;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -31,6 +33,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.joda.time.DateTime;
 
+import play.Play;
 import play.data.DynamicForm;
 import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
@@ -50,7 +53,10 @@ import viewmodel.ReportedObjectVM;
 import viewmodel.SubscriptionVM;
 import viewmodel.UserVM;
 import akka.actor.ActorSystem;
+
+import com.ning.http.util.DateUtil;
 import common.utils.ImageUploadUtil;
+
 import domain.ReportType;
 import domain.SocialObjectType;
 import email.EDMUtility;
@@ -59,6 +65,8 @@ public class ReportsController extends Controller {
     private static play.api.Logger logger = play.api.Logger.apply(ReportsController.class);
     
     public static final int PAGINATION_SIZE = 20;
+    
+    public static final String EDM_LOG_PATH = Play.application().configuration().getString("edm.path");
     
     private static final EDMUtility edmUtility = new EDMUtility();
     
@@ -1113,8 +1121,11 @@ public class ReportsController extends Controller {
                         try {
                     	   JPA.withTransaction(new play.libs.F.Callback0() {
 	           					public void invoke() {
+	           						String message = "Starts";
 	           						List<User> users = User.filterUsers(form);
+	           						message = message + "\n Total Users :: "+users.size();
            							for(User user : users){
+           								
            								try{
 	           								if(user.active && 
 	           								        user.emailValidated &&
@@ -1123,10 +1134,14 @@ public class ReportsController extends Controller {
 	           										!StringUtils.isEmpty(user.displayName)) {
 	           									sendEmailsToSubscribedUsers(user.id.toString(), form.get("subscription"), form.get("EDMBody"));
 	           									ReportsController.success++;
+	           									message  = message + "\nThis User successed ID :: "+user.id;
 	           								} else {
+	           									message  = message + "\n#ELSE CONDITION \n This User failed ID :: "+user.id;
 	           									ReportsController.fail++;
 	           								}
            								}catch(Exception e){
+           									message  = message + "\n#EXCEPTION \n This User failed ID :: "+user.id;
+           									message = message + ExceptionUtils.getFullStackTrace(e);
     	           							ReportsController.fail++;
     	           						}
            							}
@@ -1136,6 +1151,25 @@ public class ReportsController extends Controller {
                				        edmJob.failureCount = ReportsController.fail;
                				        edmJob.endTime = new Date();
                				        edmJob.merge();
+               				        message = message + "\n#RESULT \n success :: "+ReportsController.success+" \n fail :: "+ReportsController.fail;
+               				        String name = EDM_LOG_PATH + "/" + "edm_job_{"+edmJob.id+"}_"+
+               				        			DateUtil.formatDate(edmJob.startTime,"yyyyMMdd")+"_"+
+               				        			DateUtil.formatDate(edmJob.startTime,"hhmm")+".log";
+               				        try {
+	               				        File file = new File(name);
+		               				    if (!file.exists()) {
+		               						file.createNewFile();
+		               					}
+		               		 
+		               					FileWriter fw = new FileWriter(file.getAbsoluteFile());
+									
+		               					BufferedWriter bw = new BufferedWriter(fw);
+		               					bw.write(message);
+		               					bw.close();
+									} catch (IOException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
                				        ReportsController.success = 0L;
                				        ReportsController.fail = 0L;
                				        logger.underlyingLogger().info(String.format("Completed EDM job [id=%d]", edmJob.id));
