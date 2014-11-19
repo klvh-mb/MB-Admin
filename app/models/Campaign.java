@@ -84,15 +84,15 @@ public class Campaign extends SocialObject {
 		}
 		
 		if(id.trim().equals("") && !name.trim().equals("")) {
-			sql="Select c from Campaign c where where c.deleted = false and c.name LIKE ?1 order by startDate desc";
+			sql="Select c from Campaign c where c.deleted = false and c.name LIKE ?1 order by startDate desc";
 		}
 		
 		if(!id.trim().equals("") && name.trim().equals("")) {
-			sql="Select c from Campaign c where c.deleted = false and c.id=?2 order by startDate desc";
+			sql="Select c from Campaign c where c.deleted = false and c.id = ?2 order by startDate desc";
 		}
 		
 		if(!id.trim().equals("") && !name.trim().equals("")) {
-			sql="Select c from Campaign c where c.deleted = false and c.name LIKE ?1 and c.id=?2 order by startDate desc";
+			sql="Select c from Campaign c where c.deleted = false and c.name LIKE ?1 and c.id = ?2 order by startDate desc";
 		}
 		
 		Query q = JPA.em().createQuery(sql);

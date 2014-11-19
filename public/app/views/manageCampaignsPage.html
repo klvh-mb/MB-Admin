@@ -59,7 +59,9 @@
                                 <span style="color:orange;font-weight:bold;" ng-switch-when="PUBLISHED">{{campaign.cs}}</span>
                                 <span style="color:green;font-weight:bold;" ng-switch-when="STARTED">{{campaign.cs}}</span>
                                 <span style="color:blue;font-weight:bold;" ng-switch-when="ENDED">{{campaign.cs}}</span>
-                                <span ng-switch-default>{{campaign.cs}}</span>
+                                <span style="color:blue;font-weight:bold;" ng-switch-when="ANNOUNCED">{{campaign.cs}}</span>
+                                <span style="color:gray;font-weight:bold;" ng-switch-when="CLOSED">{{campaign.cs}}</span>
+                                <span style="font-weight:bold;" ng-switch-default>{{campaign.cs}}</span>
                             </div>
                         </div>
                     </div>

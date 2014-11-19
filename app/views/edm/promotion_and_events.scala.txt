@@ -1,0 +1,8 @@
+@(name: String, email: String, url: String, bodyContent :String)
+
+@name 你好，
+
+@bodyContent
+
+如果您不願意繼續接收訂閱郵件，請使用下面的鏈接：
+@url

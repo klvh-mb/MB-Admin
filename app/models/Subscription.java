@@ -14,18 +14,18 @@ import play.db.jpa.JPA;
 @Entity
 public class Subscription {
 
-	public Subscription() {}
-	
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long id;
     
     public String name;
     
-    public String HTMLtemplate;
+    public String htmlTemplate;
     
-    public String TXTtemplate;
+    public String txtTemplate;
 
+    public Subscription() {}
+    
 	public static List<Subscription> getAllSubscription() {
 		Query q = JPA.em().createQuery("Select a from Subscription a ");
 		return (List<Subscription>)q.getResultList();		

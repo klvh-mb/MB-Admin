@@ -20,7 +20,6 @@
                     <label> Campaign Type  : </label>
                 </td>
                 <td>
-                    <span style="float:left;">From</span>
                     <span style="float:left;margin-left: 4%;">
                         <select class="form-control" data-ng-model="campaign.campaignType" name="campaignType">
                             <option value='ACTIONS'>ACTIONS</option>
@@ -72,6 +71,20 @@
             </tr>
             <tr>
                 <td>
+                    <label> Announcement Type  : </label>
+                </td>
+                <td>
+                    <span style="float:left;margin-left: 4%;">
+                        <select class="form-control" data-ng-model="campaign.announcementType" name="announcementType">
+                            <option value='WINNERS'>WINNERS</option>
+                            <option value='CUSTOM'>CUSTOM</option>
+                        </select>
+                    </span>
+                </td>
+                <td><label class="control-label error" data-ng-show="announcementTypeNotChoose==true" style="color: red;">Please Select Announcement Type.</label></td>
+            </tr>
+            <tr>
+                <td>
                     <label> Image   : </label>
                 </td>
                 <td>
@@ -84,9 +97,14 @@
             <p>{{path}}</p>
         </div>
 		<div style=" width: 70%;margin-left: 15%;">
-			<textarea data-ui-tinymce='tinymceOptions' data-ng-model="campaign.description" style="height: 300px;"></textarea>
+            <div style="font-weight:bold;margin:15px 0;">Details:</div>
+			<textarea name="description" id="description" data-ui-tinymce='tinymceOptions' data-ng-model="campaign.description" style="height: 300px;"></textarea>
 		</div>
-		<div style="margin-top: 4%;margin-left: 59%;">
+		<div style=" width: 70%;margin-left: 15%;">
+            <div style="font-weight:bold;margin:15px 0;">Winners / Announcement:</div>
+            <textarea name="announcement" id="announcement" data-ui-tinymce='tinymceOptions' data-ng-model="campaign.announcement" style="height: 150px;"></textarea>
+        </div>
+		<div style="margin-top: 4%;margin-left: 70%;">
             <button type="submit" class="btn btn-primary ng-binding">
                 <span class="glyphicon glyphicon-ok" ></span>
                 {{submitBtn}}

@@ -1,0 +1,16 @@
+@(name: String, email: String, url: String, bodyContent: String)
+
+<div style="margin:20px 10px 10px 10x;font-family:Helvetica, Arial, 'lucida grande', tahoma, verdana, arial, sans-serif;">
+    <div style="font-size:12px;color:black;">
+        @name 你好，
+    </div>
+    
+    <p>
+        @Html(bodyContent)  
+    </p>
+    
+    <div style="margin:10px;font-size:x-small;color:#aaaaaa;">
+        如果您不願意繼續接收訂閱郵件，請使用下面的鏈接：
+        <a style="font-size:x-small;color:#aaaaaa;" href="@url">@url</a>
+    </div>
+</div>

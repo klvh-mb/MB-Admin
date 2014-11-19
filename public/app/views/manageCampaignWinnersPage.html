@@ -5,7 +5,8 @@
 <body style="margin:0; background-color:#F4FBFF;">
     <h4>Manage Campaign Winners</h4>
     <div style="margin-left:25%;">
-        <h4 style="margin-bottom:20px;">{{campaign.name}}</h4>
+        <h4 style="margin-bottom:20px;">{{campaign.nm}}</h4>
+        <label style="color:purple;margin-right:20px;">[Joined Users: {{campaign.uc}}]</label>
         <label>Search By Id</label>
         <input type="text" ng-model="positions" ng-keyup="$event.keyCode == 13 ? searchCampaignWinners() : null">
         <input name="" type="button" class="" value="Search" ng-click="searchCampaignWinners(positions)">

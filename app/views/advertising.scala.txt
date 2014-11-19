@@ -1,8 +1,0 @@
-@(name: String, email: String, url: String, bodyContent :String)Hi @name, 
-
-
-	Advertising @name.
-@bodyContent
-Le saluda,
-El equipo de PlayAuthenticate.
-@url

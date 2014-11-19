@@ -24,6 +24,13 @@ minibean.service('campaignService',function($resource){
                 get: {method:'get'}
             }
     );
+    this.campaignInfo = $resource(
+            '/get-campaign-info/:id',
+            {alt:'json',callback:'JSON_CALLBACK'},
+            {
+                get: {method:'get'}
+            }
+    );
     this.getDescription = $resource(
             '/get-campaign-description/:id',
             {alt:'json',callback:'JSON_CALLBACK'},
@@ -58,7 +65,7 @@ minibean.controller('ManageCampaignWinnersController',function($scope, $routePar
 
     $scope.positions = "";
 
-    $scope.campaign = campaignService.getCampaign.get({id:$routeParams.id});
+    $scope.campaign = campaignService.campaignInfo.get({id:$routeParams.id});
     
     $scope.winners = campaignService.campaignWinners.get({id:$routeParams.id}, 
         function(data) {
@@ -184,7 +191,7 @@ minibean.controller('CreateCampaignController', function($scope, $http, $locatio
             toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
     }
     
-    $scope.submit = function() {
+    $scope.createCampaign = function() {
         $scope.uniqueName = false;
         $scope.campaignTypeNotChoose = false;
         $scope.startEndDateNotEntered = false
@@ -195,25 +202,25 @@ minibean.controller('CreateCampaignController', function($scope, $http, $locatio
                     usSpinnerService.stop('loading...');
                     $location.path('/manageCampaigns');
                 }).error(function(data, status, headers, config) {
-                    if( status == 505 ) {
+                    if(status == 505) {
                         $scope.uniqueName = true;
                         usSpinnerService.stop('loading...');
-                        $scope.submitBtn = "Try Again";
                     }  
-                    if( status == 506 ) {
+                    if(status == 506) {
                         $scope.campaignTypeNotChoose = true;
                         usSpinnerService.stop('loading...');
-                        $scope.submitBtn = "Try Again";
                     }
                     if(status == 507){
                         $scope.startEndDateNotEntered = true;
                         usSpinnerService.stop('loading...');
-                        $scope.submitBtn = "Try Again";
                     }
                     if(status == 508){
                         $scope.startEndDateCondition = true;
                         usSpinnerService.stop('loading...');
-                        $scope.submitBtn = "Try Again";
+                    }
+                    if(status == 509) {
+                        $scope.announcementTypeNotChoose = true;
+                        usSpinnerService.stop('loading...');
                     }
                 });
     }
@@ -249,12 +256,10 @@ minibean.controller('EditCampaignController',function($scope, $http, $filter, $r
             if(status == 507){
                 $scope.startEndDateNotEntered = true;
                 usSpinnerService.stop('loading...');
-                $scope.submitBtn = "Try Again";
             }
             if(status == 508){
                 $scope.startEndDateCondition = true;
                 usSpinnerService.stop('loading...');
-                $scope.submitBtn = "Try Again";
             }
         });
     }
@@ -446,27 +451,22 @@ minibean.controller('CreateArticleController', function($scope, $http, $location
                     if( status == 505 ) {
                         $scope.uniqueName = true;
                         usSpinnerService.stop('loading...');
-                        $scope.submitBtn = "Try Again";
                     }  
                     if( status == 506 ) {
                         $scope.categoryNotChoose = true;
                         usSpinnerService.stop('loading...');
-                        $scope.submitBtn = "Try Again";
                     }
                     if(status == 507){
                         $scope.targetAgeNotSelected = true;
                         usSpinnerService.stop('loading...');
-                        $scope.submitBtn = "Try Again";
                     }
                     if(status == 508){
                         $scope.targetAgeCondition = true;
                         usSpinnerService.stop('loading...');
-                        $scope.submitBtn = "Try Again";
                     }
                     if(status == 509){
                         $scope.targetLocationNotChoose = true;
                         usSpinnerService.stop('loading...');
-                        $scope.submitBtn = "Try Again";
                     }
                 });
     }
@@ -518,7 +518,6 @@ minibean.controller('EditArticleController',function($scope, $http, $routeParams
             if(status == 509){
                 $scope.targetAgeCondition = true;
                 usSpinnerService.stop('loading...');
-                $scope.submitBtn = "Try Again";
             }
 
         });

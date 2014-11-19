@@ -66,7 +66,7 @@ public class ReportsController extends Controller {
     
     public static final int PAGINATION_SIZE = 20;
     
-    public static final String EDM_LOG_PATH = Play.application().configuration().getString("edm.path");
+    public static final String EDM_LOGGING_PATH = Play.application().configuration().getString("edm.logging.path");
     
     private static final EDMUtility edmUtility = new EDMUtility();
     
@@ -880,7 +880,7 @@ public class ReportsController extends Controller {
 	}
 	
 	@Transactional
-    public static Result sendEmailsToSubscribedUsers(String ids, String subscription, String body) {
+    public static Result sendEmailsToSubscribedUsers(String ids, String subscription, String subject, String body) {
 		String[] userIds = ids.split(",");
 		for(String userId: userIds) {
 			User user = User.findById(Long.parseLong(userId));
@@ -889,11 +889,11 @@ public class ReportsController extends Controller {
 			    for(Long id : subscriptionIds) {
 			        Subscription sub = Subscription.findById(id);
 			        logger.underlyingLogger().info(String.format("send edm to user [u=%d|name=%s|sub=%d]", user.id, user.name, sub.id));
-			        edmUtility.sendMailToUser(user,sub,body);
+			        edmUtility.sendMailToUser(user,sub,subject,body);
 			    }
 			} else {
                 Subscription sub = Subscription.findById(Long.parseLong(subscription));
-                edmUtility.sendMailToUser(user,sub,body);
+                edmUtility.sendMailToUser(user,sub,subject,body);
 			}
 		}
 		return ok();
@@ -1075,18 +1075,18 @@ public class ReportsController extends Controller {
         }
 		DynamicForm form = DynamicForm.form().bindFromRequest();
 		String[] userEmails = form.get("userEmails").split(",");
-		for(String userEmail: userEmails) {
+		for(String userEmail : userEmails) {
 			User user = User.findByEmail(userEmail);
 			if(form.get("subscription").trim().equals("")) {
 				List<Long> subscriptionIds = User.getSubscriptionIds(user.id);
 			    for(Long id : subscriptionIds) {
 			        Subscription sub = Subscription.findById(id);
 			        logger.underlyingLogger().info(String.format("send edm to user [u=%d|name=%s|sub=%d]", user.id, user.name, sub.id));
-			        edmUtility.sendMailToUser(user,sub,form.get("EDMBody"));
+			        edmUtility.sendMailToUser(user,sub,form.get("EDMSubject"),form.get("EDMBody"));
 			    }
 			} else {
                 Subscription sub = Subscription.findById(Long.parseLong(form.get("subscription")));
-                edmUtility.sendMailToUser(user,sub,form.get("EDMBody"));
+                edmUtility.sendMailToUser(user,sub,form.get("EDMSubject"),form.get("EDMBody"));
 			}
 		}
 		
@@ -1131,8 +1131,8 @@ public class ReportsController extends Controller {
 	           								        user.emailValidated &&
 	           								        user.deleted && 
 	           								        !StringUtils.isEmpty(user.email) && 
-	           										!StringUtils.isEmpty(user.displayName)) {
-	           									sendEmailsToSubscribedUsers(user.id.toString(), form.get("subscription"), form.get("EDMBody"));
+	           										!StringUtils.isEmpty(user.firstName)) {
+	           									sendEmailsToSubscribedUsers(user.id.toString(), form.get("subscription"), form.get("EDMSubject"), form.get("EDMBody"));
 	           									ReportsController.success++;
 	           									message  = message + "\nThis User successed ID :: "+user.id;
 	           								} else {
@@ -1152,7 +1152,7 @@ public class ReportsController extends Controller {
                				        edmJob.endTime = new Date();
                				        edmJob.merge();
                				        message = message + "\n#RESULT \n success :: "+ReportsController.success+" \n fail :: "+ReportsController.fail;
-               				        String name = EDM_LOG_PATH + "/" + "edm_job_{"+edmJob.id+"}_"+
+               				        String name = EDM_LOGGING_PATH + "/" + "edm_job_"+edmJob.id+"_"+
                				        			DateUtil.formatDate(edmJob.startTime,"yyyyMMdd")+"_"+
                				        			DateUtil.formatDate(edmJob.startTime,"hhmm")+".log";
                				        try {

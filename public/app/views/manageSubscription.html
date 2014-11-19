@@ -17,13 +17,18 @@
 		                <tr>
 		                	<th>EDM Name :</th>
 		                	<td>
-		                			<select name="subscription" ng-model="myForm.subscription">
-					        			<option selected="selected" value=" ">--All--</option>
-					        			<option ng-repeat="sub in allSubscriptions" value="{{sub.id}}">{{sub.nm}}</option>
-					        		</select>
+	                			<select name="subscription" ng-model="myForm.subscription">
+				        			<option selected="selected" value=" ">--All--</option>
+				        			<option ng-repeat="sub in allSubscriptions" value="{{sub.id}}">{{sub.nm}}</option>
+				        		</select>
 		                	</td>
 		                </tr>
 		                
+		                <tr>
+                            <th>EDM Subject :</th>
+                            <td><input type="text" name="EDMSubject" ng-model="myForm.EDMSubject" class="form-control ng-pristine ng-invalid ng-invalid-required" required></input></td>
+                        </tr>
+                        
 		                <tr>
 		                	<th>EDM Body :</th>
 		                	<td><textarea name="EDMBody" type="text" ng-model="myForm.EDMBody" class="" cols="60" rows="5"></textarea></td>
@@ -54,6 +59,11 @@
 		                	</td>
 		                </tr>
 		                
+		                <tr>
+                            <th>EDM Subject :</th>
+                            <td><input type="text" name="EDMSubject" ng-model="myForm.EDMSubject" class="form-control ng-pristine ng-invalid ng-invalid-required" required></input></td>
+                        </tr>
+                        
 		                <tr>
 		                	<th>EDM Body :</th>
 		                	<td><textarea name="EDMBody" type="text" ng-model="myForm.EDMBody" class="" cols="60" rows="5"></textarea></td>

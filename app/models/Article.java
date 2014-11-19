@@ -79,11 +79,11 @@ public class Article extends SocialObject {
 		}
 		
 		if(!id.trim().equals("") && name.trim().equals("")) {
-			sql="Select a from Article a where a.deleted = false and a.id=?2 order by publishedDate desc";
+			sql="Select a from Article a where a.deleted = false and a.id = ?2 order by publishedDate desc";
 		}
 		
 		if(!id.trim().equals("") && !name.trim().equals("")) {
-			sql="Select a from Article a where a.deleted = false and a.name LIKE ?1 and a.id=?2 order by publishedDate desc";
+			sql="Select a from Article a where a.deleted = false and a.name LIKE ?1 and a.id = ?2 order by publishedDate desc";
 		}
 		
 		Query q = JPA.em().createQuery(sql);

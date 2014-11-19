@@ -36,7 +36,7 @@ public class EDMUtility {
 	
 	protected static Mailer mailer = Mailer.getCustomMailer(config);
 	
-	public void sendMailToUser(final User user,Subscription subscription,String bodyContent) {
+	public void sendMailToUser(final User user, Subscription subscription, String subject, String bodyContent) {
 
 		//final boolean isSecure = getConfiguration().getBoolean(SETTING_KEY_VERIFICATION_LINK_SECURE);
 	    //final String url = routes.Signup.verify(token).absoluteURL(ctx.request(), isSecure);
@@ -50,17 +50,12 @@ public class EDMUtility {
 		    logger.underlyingLogger().error(ExceptionUtils.getFullStackTrace(e));
 		}
 		
-		final String text = getEmailTemplate(
-				subscription.HTMLtemplate,
-				user.name, user.email,url,bodyContent);
-		
-		final String html = getEmailTemplate(
-				subscription.TXTtemplate,
-				user.name, user.email,url,bodyContent);
+		final String html = getEmailTemplate(subscription.htmlTemplate, user.firstName, user.email,url,bodyContent);
+		final String txt = getEmailTemplate(subscription.txtTemplate, user.firstName, user.email,url,bodyContent);
 
-		Body body =  new Body(html, text);
-		sendMail(subscription.name, body, user.email);
-		logger.underlyingLogger().debug(String.format("sendMailToUser [u=%d|%s|%s]", user.id, user.name, user.email));
+		Body body =  new Body(txt, html);
+		sendMail(subject, body, user.email);
+		logger.underlyingLogger().debug(String.format("sendMailToUser [u=%d|%s|%s]", user.id, user.firstName, user.email));
 	}
 
 	protected Cancellable sendMail(String subject, Body body, String recipient) {
@@ -79,7 +74,7 @@ public class EDMUtility {
     }
 	   
 	private String getEmailName(final User user) {
-		return getEmailName(user.email, user.name);
+		return getEmailName(user.email, user.firstName);
 	}
 	
 	protected String getEmailName(final String email, final String name) {
@@ -90,32 +85,29 @@ public class EDMUtility {
 		return getConfiguration1().getConfig(getKey());
 	}*/
 	
-	protected String getEmailTemplate(final String template,
-			final String name, final String email,final String url,final String bodyContent) {
+	protected String getEmailTemplate(
+	        final String template, final String name, final String email, 
+	        final String url,final String bodyContent) {
+	    
 		Class<?> cls = null;
 		String ret = null;
 		try {
 			cls = Class.forName(template);
 		} catch (ClassNotFoundException e) {
-			Logger.warn("Template: '"
-					+ template
-					+ "' was not found! Trying to use English fallback template instead.");
+		    logger.underlyingLogger().warn("Template: '" + template + "' was not found! Trying to use English fallback template instead.");
 		}
 		if (cls == null) {
 			try {
 				cls = Class.forName(template);
 			} catch (ClassNotFoundException e) {
-				Logger.error("Fallback template: '" + template 
-						+ "' was not found either!");
+			    logger.underlyingLogger().error("Fallback template: '" + template + "' was not found either!");
 			}
 		}
 		if (cls != null) {
 			Method htmlRender = null;
 			try {
-				htmlRender = cls.getMethod("render", String.class, String.class,String.class,String.class);
-				ret = htmlRender.invoke(null, name, email, url, bodyContent)
-						.toString();
-
+				htmlRender = cls.getMethod("render", String.class, String.class, String.class, String.class);
+				ret = htmlRender.invoke(null, name, email, url, bodyContent).toString();
 			} catch (NoSuchMethodException e) {
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
