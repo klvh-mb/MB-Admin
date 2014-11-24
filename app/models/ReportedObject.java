@@ -30,7 +30,7 @@ public class ReportedObject {
 	
 	public Long socialObjectID;
 
-	public String comment;
+	public String description;
 	
 	@Enumerated(EnumType.STRING)
 	public ReportType reportType;
@@ -44,7 +44,7 @@ public class ReportedObject {
     }
     
 	public ReportedObject(DeletedInfo deletedInfo) {
-		this.comment = deletedInfo.comment;
+		this.description = deletedInfo.description;
 		this.reportType = deletedInfo.reportType;
 		this.objectType = deletedInfo.objectType;
 		this.reportedBy = deletedInfo.reportedBy;
@@ -76,12 +76,12 @@ public class ReportedObject {
 		this.socialObjectID = socialObjectID;
 	}
 
-	public String getComment() {
-		return comment;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setComment(String comment) {
-		this.comment = comment;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public ReportType getReportType() {

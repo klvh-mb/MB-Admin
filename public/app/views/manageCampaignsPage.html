@@ -95,10 +95,31 @@
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="col-md-10">  {{campaign.uc}} </div>
+                            <div class="col-md-10" style="color:purple;">  <b>{{campaign.uc}}</b> </div>
                         </div>
                     </div>
                     
+                    <div class="col-md-4">
+                        <div class="pull-right">
+                            <label>Created Date: </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="col-md-10">  {{campaign.cd  | date:'M/dd/yyyy HH:mm'}} </div>
+                        </div>
+                    </div>
+    
+                    <div class="col-md-4">
+                        <div class="pull-right">
+                            <label>Created By: </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="col-md-10">  {{campaign.cb}} </div>
+                        </div>
+                    </div>
                 </div>
             </div>
     

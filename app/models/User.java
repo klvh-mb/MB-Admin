@@ -219,6 +219,7 @@ public class User extends SocialObject {
     	return totalPages;
 	}
     
+    /*
     @Transactional
     public static long getAllSubscribedUsersTotal(int rowsPerPage,String title,String gender,String location,String subscription) {
 		long totalPages = 0;
@@ -454,16 +455,7 @@ public class User extends SocialObject {
 		}
     	return ids;
     }
-    public static List<Long> getSubscriptionIds(Long id) {
-    	Query query = JPA.em().createNativeQuery("select subscriptions_id from user_subscription where User_id = ?1");
-    	query.setParameter(1, id);
-		List<BigInteger> list = (List<BigInteger>)query.getResultList();
-		List<Long> ids = new ArrayList<>();
-		for(BigInteger obj: list) {
-			ids.add((obj).longValue());
-		}
-    	return ids;
-    }
+    */
     
     public static List<User> findAllUsers(int currentPage, int rowsPerPage, long totalPages, String title) {
 		int  start=0;

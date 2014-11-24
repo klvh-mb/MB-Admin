@@ -19,7 +19,7 @@ public class ReportedObjectVM {
 	public Long reportObjectID;
 	public String objectType;
 	public Long socialObjectID;
-	public String comment;
+	public String description;
 	public String reportType;
 	public String reportedBy;
 	public String reportedDate;
@@ -42,9 +42,9 @@ public class ReportedObjectVM {
 	public List<UserChildVM> userChildVms = new ArrayList<>();
 	public Long image;
 
-	public ReportedObjectVM(ReportedObject reportedObject,Post post) {
+	public ReportedObjectVM(ReportedObject reportedObject, Post post) {
 		this.reportType = reportedObject.reportType.name();
-		this.comment = reportedObject.comment;
+		this.description = reportedObject.description;
 		this.objectType = reportedObject.objectType.name();
 		this.id = reportedObject.id;
 		this.socialObjectID = reportedObject.socialObjectID;
@@ -65,9 +65,9 @@ public class ReportedObjectVM {
 		}	
 	}
 	
-	public ReportedObjectVM(ReportedObject reportedObject,Comment comment) {
+	public ReportedObjectVM(ReportedObject reportedObject, Comment comment) {
 		this.reportType = reportedObject.reportType.name();
-		this.comment = reportedObject.comment;
+		this.description = reportedObject.description;
 		this.objectType = reportedObject.objectType.name();
 		this.id = reportedObject.id;
 		this.socialObjectID = reportedObject.socialObjectID;
@@ -89,7 +89,7 @@ public class ReportedObjectVM {
 	
 	public ReportedObjectVM(ReportedObject reportedObject,Community community) {
 		this.reportType = reportedObject.reportType.name();
-		this.comment = reportedObject.comment;
+		this.description = reportedObject.description;
 		this.objectType = reportedObject.objectType.name();
 		this.id = reportedObject.id;
 		this.socialObjectID = reportedObject.socialObjectID;
@@ -114,7 +114,7 @@ public class ReportedObjectVM {
 	
 	public ReportedObjectVM(ReportedObject reportedObject,User user) {
 		this.reportType = reportedObject.reportType.name();
-		this.comment = reportedObject.comment;
+		this.description = reportedObject.description;
 		this.objectType = reportedObject.objectType.name();
 		this.id = reportedObject.id;
 		this.socialObjectID = reportedObject.socialObjectID;
@@ -184,12 +184,12 @@ public class ReportedObjectVM {
 		this.socialObjectID = socialObjectID;
 	}
 
-	public String getComment() {
-		return comment;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setComment(String comment) {
-	    this.comment = comment;
+	public void setDescription(String description) {
+	    this.description = description;
 	}
 
 	public String getReportedBy() {

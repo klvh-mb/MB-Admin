@@ -2231,7 +2231,7 @@ minibean.service('allUsersService',function($resource){
     );
 });
 
-minibean.controller('ManageSubscriptionsController',function($scope, $http, $routeParams, locationService, getAllSubscriptionService, getAllSubscribedUsersService, sendEmailsToSubscribedUsersService){
+minibean.controller('ManageEdmController',function($scope, $http, $routeParams, locationService, edmService, getAllSubscribedUsersService, sendEmailsToSubscribedUsersService){
 	$scope.pageNumber;
 	$scope.pageSize;
 	var currentPage = 1;
@@ -2240,14 +2240,13 @@ minibean.controller('ManageSubscriptionsController',function($scope, $http, $rou
 	$scope.title = " ";
 	$scope.gender = " ";
 	$scope.location = " ";
-	$scope.subscription = " ";
+	$scope.edmTemplateId = " ";
 	$scope.isMailSent = false;
 	
 	$scope.allLocations = locationService.getAllDistricts.get();
-	$scope.allSubscriptions = getAllSubscriptionService.getAllSubscription.get();
+	$scope.allEdmTemplates = edmService.allEdmTemplates.get();
 	
-	
-	/*$scope.allUsers = getAllSubscribedUsersService.getAllUsers.get({currentPage: currentPage,title: $scope.title,gender: $scope.gender,location: $scope.location,subscription:$scope.subscription},function(response) {
+	/*$scope.allUsers = getAllSubscribedUsersService.getAllUsers.get({currentPage: currentPage,title: $scope.title,gender: $scope.gender,location: $scope.location,edmTemplateId:$scope.edmTemplateId},function(response) {
 		totalPages = $scope.allUsers.totalPages;
 		currentPage = $scope.allUsers.currentPage;
 		$scope.pageNumber = $scope.allUsers.currentPage;
@@ -2258,7 +2257,7 @@ minibean.controller('ManageSubscriptionsController',function($scope, $http, $rou
 		}
 	});
 	*/
-	$scope.searchSubscriptions = function(page) {
+	$scope.searchEdmTemplates = function(page) {
 		currentPage = page;
 		$scope.isMailSent = false;
 		if(angular.isUndefined($scope.title) || $scope.title=="") {
@@ -2270,10 +2269,10 @@ minibean.controller('ManageSubscriptionsController',function($scope, $http, $rou
 		if(angular.isUndefined($scope.location) || $scope.location=="") {
 			$scope.location = " ";
 		}
-		if(angular.isUndefined($scope.subscription) || $scope.subscription=="") {
-			$scope.subscription = " ";
+		if(angular.isUndefined($scope.edmTemplateId) || $scope.edmTemplateId=="") {
+			$scope.edmTemplateId = " ";
 		}
-		$scope.allUsers = getAllSubscribedUsersService.getAllUsers.get({currentPage: currentPage,title: $scope.title,gender: $scope.gender,location: $scope.location,subscription:$scope.subscription},function(response) {
+		$scope.allUsers = getAllSubscribedUsersService.getAllUsers.get({currentPage: currentPage,title: $scope.title,gender: $scope.gender,location: $scope.location,edmTemplateId:$scope.edmTemplateId},function(response) {
 			totalPages = $scope.allUsers.totalPages;
 			currentPage = $scope.allUsers.currentPage;
 			$scope.pageNumber = $scope.allUsers.currentPage;
@@ -2306,21 +2305,21 @@ minibean.controller('ManageSubscriptionsController',function($scope, $http, $rou
 	$scope.onNext = function() {
 		if(currentPage < totalPages) {
 			currentPage++;
-			$scope.searchSubscriptions(currentPage);
+			$scope.searchEdmTemplates(currentPage);
 		}
 	};
 	$scope.onPrev = function() {
 		if(currentPage > 1) {
 			currentPage--;
-			$scope.searchSubscriptions(currentPage);
+			$scope.searchEdmTemplates(currentPage);
 		}
 	};
 	
 });
 
-minibean.service('getAllSubscriptionService',function($resource){
-    this.getAllSubscription = $resource(
-            '/getAllSubscription',
+minibean.service('edmService',function($resource){
+    this.allEdmTemplates = $resource(
+            '/get-all-edm-templates',
             {alt:'json',callback:'JSON_CALLBACK'},
             {
                 get: {method:'get',isArray:true}
@@ -2330,7 +2329,7 @@ minibean.service('getAllSubscriptionService',function($resource){
 
 minibean.service('getAllSubscribedUsersService',function($resource){
     this.getAllUsers = $resource(
-            '/getAllSubscribedUsers/:currentPage/:title/:gender/:location/:subscription',
+            '/getAllSubscribedUsers/:currentPage/:title/:gender/:location/:edmTemplate',
             {alt:'json',callback:'JSON_CALLBACK'},
             {
                 get: {method:'get'}
@@ -2340,7 +2339,7 @@ minibean.service('getAllSubscribedUsersService',function($resource){
 
 minibean.service('sendEmailsToSubscribedUsersService',function($resource){
     this.sendEmailTo = $resource(
-            '/sendEmailsToSubscribedUsers/:userIds/:subscription',
+            '/sendEmailsToSubscribedUsers/:userIds/:edmTemplate',
             {alt:'json',callback:'JSON_CALLBACK'},
             {
                 get: {method:'get'}

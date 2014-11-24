@@ -25,7 +25,6 @@ public class Article extends SocialObject {
 	
 	public int noOfViews = 0;
     
-	@Formats.DateTime(pattern = "yyyy-MM-dd")
 	public Date publishedDate;
 	
 	public String objectType = "ARTICLE";

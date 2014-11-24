@@ -5,10 +5,9 @@ import java.lang.reflect.Method;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 
-import models.Subscription;
+import models.EdmTemplate;
 import models.User;
 import play.Configuration;
-import play.Logger;
 import play.Play;
 import akka.actor.Cancellable;
 
@@ -36,22 +35,22 @@ public class EDMUtility {
 	
 	protected static Mailer mailer = Mailer.getCustomMailer(config);
 	
-	public void sendMailToUser(final User user, Subscription subscription, String subject, String bodyContent) {
+	public void sendMailToUser(final User user, EdmTemplate edmTemplate, String subject, String bodyContent) {
 
 		//final boolean isSecure = getConfiguration().getBoolean(SETTING_KEY_VERIFICATION_LINK_SECURE);
 	    //final String url = routes.Signup.verify(token).absoluteURL(ctx.request(), isSecure);
         
 		String url = EDM_UNSUBSCRIBE_URL_PREFIX;
 		try {
-			url = url.concat(EDMHelper.doEncryption("userid:"+user.id+",subid:"+subscription.id));
+			url = url.concat(EDMHelper.doEncryption("userId:"+user.id+",edmTemplateId:"+edmTemplate.id));
 			logger.underlyingLogger().debug(String.format("Unsubscribe url generated [u=%d|url=%s]", user.id, url));
 		} catch (Exception e) {
-		    logger.underlyingLogger().error(String.format("Failed to generate unsubscribe url [u=%d|sub=%d]", user.id, subscription.id));
+		    logger.underlyingLogger().error(String.format("Failed to generate unsubscribe url [u=%d|sub=%d]", user.id, edmTemplate.id));
 		    logger.underlyingLogger().error(ExceptionUtils.getFullStackTrace(e));
 		}
 		
-		final String html = getEmailTemplate(subscription.htmlTemplate, user.firstName, user.email,url,bodyContent);
-		final String txt = getEmailTemplate(subscription.txtTemplate, user.firstName, user.email,url,bodyContent);
+		final String html = getEmailTemplate(edmTemplate.htmlTemplate, user.firstName, user.email,url,bodyContent);
+		final String txt = getEmailTemplate(edmTemplate.txtTemplate, user.firstName, user.email,url,bodyContent);
 
 		Body body =  new Body(txt, html);
 		sendMail(subject, body, user.email);

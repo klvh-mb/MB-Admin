@@ -1,7 +1,6 @@
 package viewmodel;
 
 import models.GameAccount;
-import models.Subscription;
 import models.User;
 
 import org.codehaus.jackson.annotate.JsonProperty;

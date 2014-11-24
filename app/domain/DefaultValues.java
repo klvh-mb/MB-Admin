@@ -26,14 +26,12 @@ public class DefaultValues {
     public static int MAX_ARTICLES_COUNT = 100;
     public static int MAX_CAMPAIGN_COUNT = 100;
     
-    private static DateTime NOW = new DateTime();
-    
     static {
         init();
     }
     
     private static void init() {
-        int year = NOW.getYear();
+        int year = new DateTime().getYear();
         
         // parent age range
         for (int i = PARENT_YEAR_MIN_AGE; i <= PARENT_YEAR_MAX_AGE; i++) {

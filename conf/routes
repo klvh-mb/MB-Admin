@@ -98,10 +98,14 @@ GET		/getAllUsers/:currentPage/:title		controllers.ReportsController.getAllUsers
 GET 	/image/get-post-image-by-id/:id 	controllers.ReportsController.getPostImageById(id : Long)
 GET     /image/get-thumbnail-image-by-id/:id    controllers.UserController.getThumbnailVersionImageByID(id :Long)
 
+POST    /photoUpload                            controllers.ReportsController.photoUpload
+
+# Edm
+GET     /get-all-edm-templates                  controllers.ReportsController.getAllEdmTemplates
+POST    /sendTestEDM                            controllers.ReportsController.sendTestEDM
+POST    /sendBulkEDM                            controllers.ReportsController.sendBulkEDM
+
 #Subscription
-GET		/getAllSubscription						controllers.ReportsController.getAllSubscription
-GET		/getAllSubscribedUsers/:currentPage/:title/:gender/:location/:subscription		controllers.ReportsController.getAllSubscribedUsers(currentPage: Integer,title: String,gender: String,location: String,subscription: String)
-#GET		/sendEmailsToSubscribedUsers/:userIds/:subscription		controllers.ReportsController.sendEmailsToSubscribedUsers(userIds: String,subscription: String)
-POST	/photoUpload							controllers.ReportsController.photoUpload
-POST	/sendTestEDM							controllers.ReportsController.sendTestEDM
-POST	/sendBulkEDM							controllers.ReportsController.sendBulkEDM
+#GET	/getAllSubscription						controllers.ReportsController.getAllSubscription
+#GET    /getAllSubscribedUsers/:currentPage/:title/:gender/:location/:edmTemplate       controllers.ReportsController.getAllSubscribedUsers(currentPage: Integer,title: String,gender: String,location: String,edmTemplate: String)
+#GET	/sendEmailsToSubscribedUsers/:userIds/:edmTemplate		controllers.ReportsController.sendEmailsToSubscribedUsers(userIds: String,edmTemplate: String)

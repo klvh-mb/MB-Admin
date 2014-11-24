@@ -5,7 +5,6 @@ angular.module('minibean', [
   'ngResource',
   'ngRoute',
   'xeditable',
-  'ngAnimate',
   'ui.bootstrap',
   'ui.bootstrap.tpls',
   'angularFileUpload',
@@ -82,9 +81,9 @@ angular.module('minibean', [
     	templateUrl: '/assets/app/views/manageUsers2.html',
     	controller : 'ManageUsers2Controller'  
       })
-      .when('/manageSubscriptions',{
-    	templateUrl: '/assets/app/views/manageSubscription.html',
-    	controller : 'ManageSubscriptionsController'  
+      .when('/manageEdm',{
+    	templateUrl: '/assets/app/views/manageEdm.html',
+    	controller : 'ManageEdmController'  
       })
       .when('/managePhotoUpload',{
     	templateUrl: '/assets/app/views/managePhotoUpload.html',

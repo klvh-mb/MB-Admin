@@ -11,7 +11,6 @@ import javax.persistence.Query;
 import javax.persistence.NoResultException;
 
 import domain.DefaultValues;
-import play.data.format.Formats;
 import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
 
@@ -27,10 +26,8 @@ public class Campaign extends SocialObject {
 	
 	public int noOfViews = 0;
     
-	@Formats.DateTime(pattern = "yyyy-MM-dd")
 	public Date startDate;
 	
-	@Formats.DateTime(pattern = "yyyy-MM-dd")
     public Date endDate;
     
 	public String objectType = "CAMPAIGN";

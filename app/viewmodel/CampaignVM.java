@@ -1,5 +1,7 @@
 package viewmodel;
 
+import java.util.Date;
+
 import models.Campaign;
 
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -18,9 +20,10 @@ public class CampaignVM {
 	@JsonProperty("ed") public String endDate;
 	@JsonProperty("at") public String announcementType;
     @JsonProperty("an") public String announcement;
-    
 	@JsonProperty("uc") public Long joinedUsersCount;
-    
+	@JsonProperty("cd") public Date createdDate;
+    @JsonProperty("cb") public String createdBy;
+        
 	public CampaignVM(Campaign campaign) {
 	    this.id = campaign.id;
 	    this.name = campaign.name;
@@ -32,7 +35,8 @@ public class CampaignVM {
 		this.endDate = DateTimeUtil.toString(campaign.endDate);
 		this.announcementType = campaign.announcementType.name();
         this.announcement = campaign.announcement;
-        
 		this.joinedUsersCount = CampaignController.getJoinedUsersCount(campaign.id);
+		this.createdDate = campaign.getCreatedDate();
+		this.createdBy = campaign.getCreatedBy();
 	}
 }

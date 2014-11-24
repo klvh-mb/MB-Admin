@@ -18,7 +18,7 @@ public class DeletedInfoVM {
 	public Long id;
 	public String objectType;
 	public Long socialObjectID;
-	public String comment;
+	public String description;
 	public String reportType;
 	public String reportedBy;
 	public String reportedDate;
@@ -44,7 +44,7 @@ public class DeletedInfoVM {
 
 	public DeletedInfoVM(DeletedInfo deletedInfo,Post post) {
 		this.reportType = deletedInfo.reportType.name();
-		this.comment = deletedInfo.comment;
+		this.description = deletedInfo.description;
 		if(post.objectType != null) {
 			this.objectType = deletedInfo.objectType.name();
 		}
@@ -64,9 +64,9 @@ public class DeletedInfoVM {
 		
 	}
 	
-	public DeletedInfoVM(DeletedInfo deletedInfo,Comment comment) {
+	public DeletedInfoVM(DeletedInfo deletedInfo, Comment comment) {
 		this.reportType = deletedInfo.reportType.name();
-		this.comment = deletedInfo.comment;
+		this.description = deletedInfo.description;
 		if(comment.objectType != null) {
 			this.objectType = deletedInfo.objectType.name();
 		}
@@ -87,7 +87,7 @@ public class DeletedInfoVM {
 	
 	public DeletedInfoVM(DeletedInfo deletedInfo,Community community) {
 		this.reportType = deletedInfo.reportType.name();
-		this.comment = deletedInfo.comment;
+		this.description = deletedInfo.description;
 		this.objectType = deletedInfo.objectType.name();
 		this.id = deletedInfo.id;
 		this.socialObjectID = deletedInfo.socialObjectID;
@@ -111,7 +111,7 @@ public class DeletedInfoVM {
 	
 	public DeletedInfoVM(DeletedInfo deletedInfo,User user) {
 		this.reportType = deletedInfo.reportType.name();
-		this.comment = deletedInfo.comment;
+		this.description = deletedInfo.description;
 		this.objectType = deletedInfo.objectType.name();
 		this.id = deletedInfo.id;
 		this.socialObjectID = deletedInfo.socialObjectID;
@@ -181,12 +181,12 @@ public class DeletedInfoVM {
 		this.socialObjectID = socialObjectID;
 	}
 
-	public String getComment() {
-		return comment;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setComment(String comment) {
-		this.comment = comment;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public String getReportedBy() {

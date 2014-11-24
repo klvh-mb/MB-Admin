@@ -2,10 +2,10 @@
     <div data-ng-include data-src="'../assets/app/views/header.html'"></div>
 </head>
 
-<body ng-init="searchSubscriptions(1)">
+<body>
     <section id="container">
     	<section class="contentpanel">
-        	<h4>Manage Subscriptions</h4>
+        	<h4>Manage Edm</h4>
             <!--Advance search fildes begin-->
             <tabset>
    	 			<tab heading="Test EDM">
@@ -17,9 +17,8 @@
 		                <tr>
 		                	<th>EDM Name :</th>
 		                	<td>
-	                			<select name="subscription" ng-model="myForm.subscription">
-				        			<option selected="selected" value=" ">--All--</option>
-				        			<option ng-repeat="sub in allSubscriptions" value="{{sub.id}}">{{sub.nm}}</option>
+	                			<select name="edmTemplateId" ng-model="myForm.edmTemplateId">
+				        			<option ng-repeat="edmTemplate in allEdmTemplates" value="{{edmTemplate.id}}">{{edmTemplate.nm}}</option>
 				        		</select>
 		                	</td>
 		                </tr>
@@ -52,9 +51,8 @@
 		                <tr>
 		                	<th>EDM Name :</th>
 		                	<td>
-		                			<select name="subscription" ng-model="myForm.subscription">
-					        			<option selected="selected" value=" ">--All--</option>
-					        			<option ng-repeat="sub in allSubscriptions" value="{{sub.id}}">{{sub.nm}}</option>
+		                			<select name="edmTemplateId" ng-model="myForm.edmTemplateId">
+					        			<option ng-repeat="edmTemplate in allEdmTemplates" value="{{edmTemplate.id}}">{{edmTemplate.nm}}</option>
 					        		</select>
 		                	</td>
 		                </tr>

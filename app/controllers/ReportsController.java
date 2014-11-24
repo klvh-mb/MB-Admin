@@ -19,12 +19,12 @@ import models.Comment;
 import models.Community;
 import models.DeletedInfo;
 import models.EdmJob;
+import models.EdmTemplate;
 import models.GameAccount;
 import models.GameRedemption;
 import models.Post;
 import models.ReportedObject;
 import models.Resource;
-import models.Subscription;
 import models.User;
 import net.coobird.thumbnailator.Thumbnails;
 
@@ -46,11 +46,11 @@ import scala.concurrent.duration.Duration;
 import viewmodel.CommentVM;
 import viewmodel.CommunityVM;
 import viewmodel.DeletedInfoVM;
+import viewmodel.EdmTemplateVM;
 import viewmodel.GameAccountVM;
 import viewmodel.GameRedemptionVM;
 import viewmodel.PostVM;
 import viewmodel.ReportedObjectVM;
-import viewmodel.SubscriptionVM;
 import viewmodel.UserVM;
 import akka.actor.ActorSystem;
 
@@ -283,11 +283,11 @@ public class ReportsController extends Controller {
 		List<Object[]> deletedInfos = DeletedInfo.getAllDeletedComments(currentPage, PAGINATION_SIZE, totalPages,communityId);
 		List<DeletedInfoVM> deletedInfoVMs = new ArrayList<>();
 		Comment comment = new Comment();
-		for (Object[] d:deletedInfos) {
+		for (Object[] d : deletedInfos) {
 			comment = Comment.findById(((BigInteger)d[6]).longValue());
 			DeletedInfo deletedInfo = new DeletedInfo();
 			deletedInfo.setReportType(ReportType.valueOf(d[2].toString()));
-			deletedInfo.comment = d[1].toString();
+			deletedInfo.description = d[1].toString();
 			deletedInfo.setObjectType(SocialObjectType.valueOf(d[3].toString()));
 			deletedInfo.id = ((BigInteger)d[0]).longValue();
 			deletedInfo.socialObjectID = ((BigInteger)d[6]).longValue();
@@ -530,7 +530,7 @@ public class ReportsController extends Controller {
 			comment = Comment.findById(((BigInteger)d[6]).longValue());
 			DeletedInfo deletedInfo = new DeletedInfo();
 			deletedInfo.setReportType(ReportType.valueOf(d[2].toString()));
-			deletedInfo.comment = d[1].toString();
+			deletedInfo.description = d[1].toString();
 			deletedInfo.setObjectType(SocialObjectType.valueOf(d[3].toString()));
 			deletedInfo.id = ((BigInteger)d[0]).longValue();
 			deletedInfo.socialObjectID = ((BigInteger)d[6]).longValue();
@@ -831,22 +831,23 @@ public class ReportsController extends Controller {
 	}
 	
 	@Transactional
-    public static Result getAllSubscription() {
-		
-		final String value = session().get("NAME");
+    public static Result getAllEdmTemplates() {
+        
+        final String value = session().get("NAME");
         if (value == null) {
-        	return ok(views.html.login.render());
+            return ok(views.html.login.render());
         }
-		
-		List<Subscription> subscriptions = Subscription.getAllSubscription();
-		List<SubscriptionVM> subscriptionVMs = new ArrayList<>();
-		for(Subscription s : subscriptions) {
-			SubscriptionVM vm = new SubscriptionVM(s);
-			subscriptionVMs.add(vm);
-		}
-		return ok(Json.toJson(subscriptionVMs));
-	}
+        
+        List<EdmTemplate> edmTemplates = EdmTemplate.getAllEdmTemplates();
+        List<EdmTemplateVM> vms = new ArrayList<>();
+        for(EdmTemplate edmTemplate : edmTemplates) {
+            EdmTemplateVM vm = new EdmTemplateVM(edmTemplate);
+            vms.add(vm);
+        }
+        return ok(Json.toJson(vms));
+    }
 	
+	/*
 	@Transactional
 	public static Result getAllSubscribedUsers(int currentPage,String title,String gender,String location,String subscription) {
 		
@@ -878,23 +879,15 @@ public class ReportsController extends Controller {
 		map.put("results", userVMs);
 		return ok(Json.toJson(map));
 	}
+	*/
 	
 	@Transactional
-    public static Result sendEmailsToSubscribedUsers(String ids, String subscription, String subject, String body) {
+    public static Result sendEmailsToSubscribedUsers(String ids, String edmTemplateId, String subject, String body) {
 		String[] userIds = ids.split(",");
 		for(String userId: userIds) {
 			User user = User.findById(Long.parseLong(userId));
-			if(subscription.trim().equals("")) {
-				List<Long> subscriptionIds = User.getSubscriptionIds(Long.parseLong(userId));
-			    for(Long id : subscriptionIds) {
-			        Subscription sub = Subscription.findById(id);
-			        logger.underlyingLogger().info(String.format("send edm to user [u=%d|name=%s|sub=%d]", user.id, user.name, sub.id));
-			        edmUtility.sendMailToUser(user,sub,subject,body);
-			    }
-			} else {
-                Subscription sub = Subscription.findById(Long.parseLong(subscription));
-                edmUtility.sendMailToUser(user,sub,subject,body);
-			}
+		    EdmTemplate edmTemplate = EdmTemplate.findById(Long.parseLong(edmTemplateId));
+            edmUtility.sendMailToUser(user,edmTemplate,subject,body);
 		}
 		return ok();
 	}
@@ -1077,22 +1070,15 @@ public class ReportsController extends Controller {
 		String[] userEmails = form.get("userEmails").split(",");
 		for(String userEmail : userEmails) {
 			User user = User.findByEmail(userEmail);
-			if(form.get("subscription").trim().equals("")) {
-				List<Long> subscriptionIds = User.getSubscriptionIds(user.id);
-			    for(Long id : subscriptionIds) {
-			        Subscription sub = Subscription.findById(id);
-			        logger.underlyingLogger().info(String.format("send edm to user [u=%d|name=%s|sub=%d]", user.id, user.name, sub.id));
-			        edmUtility.sendMailToUser(user,sub,form.get("EDMSubject"),form.get("EDMBody"));
-			    }
-			} else {
-                Subscription sub = Subscription.findById(Long.parseLong(form.get("subscription")));
-                edmUtility.sendMailToUser(user,sub,form.get("EDMSubject"),form.get("EDMBody"));
+			if (user == null) {
+			    logger.underlyingLogger().error(String.format("Failed to send Test EDM to %s", userEmail));
+			    continue;
 			}
+		    EdmTemplate edmTemplate = EdmTemplate.findById(Long.parseLong(form.get("edmTemplateId")));
+            edmUtility.sendMailToUser(user,edmTemplate,form.get("EDMSubject"),form.get("EDMBody"));
 		}
 		
-		
-		
-		logger.underlyingLogger().info(String.format("Completed EDM job [id=%s]", form.get("usersId")));
+		logger.underlyingLogger().info(String.format("Completed EDM Test [id=%s]", form.get("userEmails")));
 		return ok();
 	}
 	
@@ -1132,7 +1118,7 @@ public class ReportsController extends Controller {
 	           								        user.deleted && 
 	           								        !StringUtils.isEmpty(user.email) && 
 	           										!StringUtils.isEmpty(user.firstName)) {
-	           									sendEmailsToSubscribedUsers(user.id.toString(), form.get("subscription"), form.get("EDMSubject"), form.get("EDMBody"));
+	           									sendEmailsToSubscribedUsers(user.id.toString(), form.get("edmTemplateId"), form.get("EDMSubject"), form.get("EDMBody"));
 	           									ReportsController.success++;
 	           									message  = message + "\nThis User successed ID :: "+user.id;
 	           								} else {
@@ -1172,7 +1158,7 @@ public class ReportsController extends Controller {
 									}
                				        ReportsController.success = 0L;
                				        ReportsController.fail = 0L;
-               				        logger.underlyingLogger().info(String.format("Completed EDM job [id=%d]", edmJob.id));
+               				        logger.underlyingLogger().info(String.format("Completed EDM Job [id=%d]", edmJob.id));
 	                    		}
                     		});
                         } catch (Exception e) {

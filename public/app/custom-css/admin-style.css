@@ -29,7 +29,8 @@
 .d-link-black{color:#333;} .d-link-black:hover{color:#000;}
 
 /*--------------------------------------- Fonts : Start */
-body {font-family:'Titillium Web', sans-serif, Arial, Helvetica;}
+body {font-family: Helvetica, Arial, 'lucida grande',tahoma,verdana,arial,sans-serif;}
+label, input, button, select, textarea {font-size: 14px;}
 .heading h1, .headerright ul li a, #footerleft h2 a, #following h6, .heading h2, .dpopupwindow .heading h4, .mainnav ul li a{font-family: 'Fjalla One', sans-serif, sans-serif, Arial, Helvetica;}
 .mainnav > ul > li > ul > li > a{font-family: 'Rationale', sans-serif, Arial, Helvetica;}
 /*--------------------------------------- Fonts : End */
