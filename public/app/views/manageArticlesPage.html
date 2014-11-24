@@ -21,30 +21,52 @@
     			 <div class="row tm">
     	            <div class="col-md-4">
     	           		<div class="pull-right">
-    	             				<label>Title: </label>
+                            <label>Title: </label>
     	             	</div>
-    	             </div>
-    	             <div class="row">
+    	            </div>
+    	            <div class="row">
     	              	<div class="col-md-6"> {{article.nm}} </div>
     	        	</div>
     
     	            <div class="col-md-4">
     	           		<div class="pull-right">
-    	             				<label>Category: </label>
+                            <label>Category: </label>
     	             	</div>
-    	             </div>
-    	             <div class="row">
+                    </div>
+    	            <div class="row">
     	              	<div class="col-md-6">
     	              		<div class="col-md-10">  {{article.ct.name}} </div>
     	              	</div>
     	        	</div>
+    	        	
+    	        	<div class="col-md-4">
+                        <div class="pull-right">
+                            <label>Published Date: </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="col-md-10">  {{article.pd  | date:'M/dd/yyyy HH:mm'}} </div>
+                        </div>
+                    </div>
     
+                    <div class="col-md-4">
+                        <div class="pull-right">
+                            <label>Created By: </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="col-md-10">  {{article.cb}} </div>
+                        </div>
+                    </div>
+                    
     	            <div class="col-md-4">
     	           		<div class="pull-right">
-    	             				<label>Target Age: </label>
+                            <label>Target Age: </label>
     	             	</div>
-    	             </div>
-    	             <div class="row">
+    	            </div>
+    	            <div class="row">
     	              	<div class="col-md-6">
     	              		<div class="col-md-10">  {{article.tamin}} to {{article.tamax}} months </div>
     	              	</div>
@@ -52,10 +74,10 @@
     
     	            <div class="col-md-4">
     	           		<div class="pull-right">
-    	             				<label>Target Parent: </label>
+                            <label>Target Parent: </label>
     	             	</div>
-    	             </div>
-    	             <div class="row">
+    	            </div>
+    	            <div class="row">
     	              	<div class="col-md-6">
     	              		<div class="col-md-10">  {{article.tpg}} </div>
     	              	</div>
@@ -63,10 +85,10 @@
     
     	            <div class="col-md-4">
     	           		<div class="pull-right">
-    	             				<label>Target Gender: </label>
+                            <label>Target Gender: </label>
     	             	</div>
-    	             </div>
-    	             <div class="row">
+    	            </div>
+    	            <div class="row">
     	              	<div class="col-md-6">
     	              		<div class="col-md-10">  {{article.tg}} </div>
     	              	</div>
@@ -74,10 +96,10 @@
     
     	            <div class="col-md-4">
     	           		<div class="pull-right">
-    	             				<label>Target District: </label>
+                            <label>Target District: </label>
     	             	</div>
-    	             </div>
-    	             <div class="row">
+    	            </div>
+    	            <div class="row">
     	              	<div class="col-md-6">
     	              		<div class="col-md-10">  {{article.tl.displayName}} </div>
     	              	</div>

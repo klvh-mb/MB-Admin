@@ -18,7 +18,7 @@ import javax.imageio.ImageIO;
 import models.Comment;
 import models.Community;
 import models.DeletedInfo;
-import models.EDMJob;
+import models.EdmJob;
 import models.GameAccount;
 import models.GameRedemption;
 import models.Post;
@@ -55,8 +55,8 @@ import viewmodel.UserVM;
 import akka.actor.ActorSystem;
 
 import com.ning.http.util.DateUtil;
-import common.utils.ImageUploadUtil;
 
+import common.utils.ImageUploadUtil;
 import domain.ReportType;
 import domain.SocialObjectType;
 import email.EDMUtility;
@@ -1108,7 +1108,7 @@ public class ReportsController extends Controller {
         }
         
 		final DynamicForm form = DynamicForm.form().bindFromRequest();
-		EDMJob edmJob = new EDMJob();
+		EdmJob edmJob = new EdmJob();
 		edmJob.startTime = new Date();
 		edmJob.json = Json.stringify(Json.toJson(form.get()));
 		edmJob.save();
@@ -1146,7 +1146,7 @@ public class ReportsController extends Controller {
     	           						}
            							}
 
-                                	EDMJob edmJob = EDMJob.findById(id);
+           							EdmJob edmJob = EdmJob.findById(id);
                						edmJob.successCount = ReportsController.success;
                				        edmJob.failureCount = ReportsController.fail;
                				        edmJob.endTime = new Date();

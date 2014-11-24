@@ -45,21 +45,43 @@ public class Entity
   }
   
   @JsonIgnore
+  public String getCreatedBy() {
+      if (this.auditFields != null) {
+          return this.auditFields.getCreatedBy();
+      }
+      return "";
+  }
+  
+  @JsonIgnore
   public Date getCreatedDate() {
-	  return this.auditFields.getCreatedDate();
+      if (this.auditFields != null) {
+          return this.auditFields.getCreatedDate();
+      }
+      return null;
+  }
+  
+  @JsonIgnore
+  public String getUpdatedBy() {
+      if (this.auditFields != null) {
+          return this.auditFields.getUpdatedBy();
+      }
+      return "";
   }
   
   @JsonIgnore
   public Date getUpdatedDate() {
-	  return this.auditFields.getUpdatedDate();
+      if (this.auditFields != null) {
+          return this.auditFields.getUpdatedDate();
+      }
+      return null;
   }
   
   @Transactional
   public void save() {
+      setCreatedBy(Application.getLoggedInUser());
+      setCreatedDate(new Date());
 	  JPA.em().persist(this);
 	  JPA.em().flush();
-	  setCreatedBy(Application.getLoggedInUser());
-	  setCreatedDate(new Date());
 	  postSave();
   }
   

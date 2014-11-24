@@ -6,14 +6,12 @@ import javax.persistence.Embeddable;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
-
 @Embeddable
 public class AuditFields {
 	private String createdBy;
 	private String updatedBy;
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date createdDate;
+	public Date createdDate;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date updatedDate;
 
@@ -33,11 +31,18 @@ public class AuditFields {
 		this.updatedDate = updatedDate;
 	}
 
+	public String getCreatedBy() {
+        return createdBy;
+    }
+	
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+    
 	public Date getCreatedDate() {
 		return createdDate;
 	}
 	
-	@JsonIgnore
 	public Date getUpdatedDate() {
 		return updatedDate;
 	}

@@ -156,7 +156,8 @@ public class ArticleController extends Controller {
         List<ArticleVM> listOfArticles = new ArrayList<>();
         for (Article article:allArticles) {
             ArticleVM vm = new ArticleVM(article.category,
-                    article.name, article.id,
+                    article.name, article.id, 
+                    article.publishedDate, article.getCreatedBy(), 
                     article.targetAgeMinMonth, article.targetAgeMaxMonth,
                     article.targetGender, article.targetParentGender, article.targetLocation);
             listOfArticles.add(vm);
@@ -174,7 +175,8 @@ public class ArticleController extends Controller {
         List<ArticleVM> listOfArticles = new ArrayList<>();
         for (Article article:allArticles) {
             ArticleVM vm = new ArticleVM(article.category,
-                    article.name, article.id,
+                    article.name, article.id, 
+                    article.publishedDate, article.getCreatedBy(), 
                     article.targetAgeMinMonth, article.targetAgeMaxMonth,
                     article.targetGender, article.targetParentGender, article.targetLocation);
             listOfArticles.add(vm);
