@@ -78,8 +78,10 @@ public class Entity
   
   @Transactional
   public void save() {
-      setCreatedBy(Application.getLoggedInUser());
-      setCreatedDate(new Date());
+      if (this.auditFields != null) {
+          setCreatedBy(Application.getLoggedInUser());
+          setCreatedDate(new Date());
+      }
 	  JPA.em().persist(this);
 	  JPA.em().flush();
 	  postSave();
@@ -92,8 +94,10 @@ public class Entity
   
   @Transactional
   public void merge() {
-      setUpdatedBy(Application.getLoggedInUser());
-      setUpdatedDate(new Date());
+      if (this.auditFields != null) {
+          setUpdatedBy(Application.getLoggedInUser());
+          setUpdatedDate(new Date());
+      }
       JPA.em().merge(this);
   }
   
