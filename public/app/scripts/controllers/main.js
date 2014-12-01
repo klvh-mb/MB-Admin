@@ -403,9 +403,9 @@ minibean.controller('ManageArticlesController',function($scope, $modal, articleS
 });
 
 minibean.controller('CreateArticleController', function($scope, $http, $location, articleService, locationService, usSpinnerService){
-    $scope.article;
     $scope.submitBtn = "Save";
-    
+    $scope.article;
+    $scope.articleCategories = articleService.getAllArticleCategories.get();
     $scope.targetLocations = locationService.getAllDistricts.get();
     
     //Refer to http://www.tinymce.com/
@@ -418,8 +418,6 @@ minibean.controller('CreateArticleController', function($scope, $http, $location
             ],
             toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image"
     }
-    
-    $scope.articleCategories = articleService.getAllArticleCategories.get();
     
     $scope.select_targetLocation = function(id, name) {
         $scope.targetLocation_id = id;
@@ -475,12 +473,12 @@ minibean.controller('CreateArticleController', function($scope, $http, $location
 minibean.controller('EditArticleController',function($scope, $http, $routeParams, $location, $upload, articleService, locationService, usSpinnerService){
     $scope.submitBtn = "Save";
     $scope.article = articleService.getArticle.get({id:$routeParams.id});
-    $scope.articleCategoriess = articleService.getAllArticleCategories.get();
+    $scope.articleCategories = articleService.getAllArticleCategories.get();
     $scope.targetLocations = locationService.getAllDistricts.get();
     
     var range = [];
     for(var i=0;i<100;i++) {
-          range.push(i);
+        range.push(i);
     }
     $scope.targetAge = range;
     
