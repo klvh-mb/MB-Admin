@@ -45,12 +45,12 @@ public class ArticleCategory {
 	}
 	
 	public static List<ArticleCategory> getAllCategory() {
-		Query q = JPA.em().createQuery("Select a from ArticleCategory a");
+		Query q = JPA.em().createQuery("Select a from ArticleCategory a where deleted = false order by seq");
 		return (List<ArticleCategory>)q.getResultList();
 	}
 	
 	public static ArticleCategory getCategoryById(long id) {
-		Query q = JPA.em().createQuery("Select a from ArticleCategory a where id = ?1");
+		Query q = JPA.em().createQuery("Select a from ArticleCategory a where id = ?1 and deleted = false");
 		q.setParameter(1, id);
 		return (ArticleCategory)q.getSingleResult();
 	}
