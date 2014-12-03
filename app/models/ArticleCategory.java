@@ -45,7 +45,7 @@ public class ArticleCategory {
 	}
 	
 	public static List<ArticleCategory> getAllCategory() {
-		Query q = JPA.em().createQuery("Select a from ArticleCategory a where deleted = false order by seq");
+		Query q = JPA.em().createQuery("Select a from ArticleCategory a where deleted = false order by categoryGroup,seq");
 		return (List<ArticleCategory>)q.getResultList();
 	}
 	
