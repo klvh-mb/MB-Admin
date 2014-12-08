@@ -911,8 +911,10 @@ public class ReportsController extends Controller {
         String fileName = picture.getFilename();
         DateTime  now = new DateTime();
         File file = picture.getFile();
+        String imageUrl;
         String imagePath;
         try {
+            imageUrl = imageUploadUtil.getImageUrl(now, fileName);
             imagePath = imageUploadUtil.getImagePath(now, fileName);
             FileUtils.copyFile(file, new File(imagePath));
         } catch (IOException e) {
@@ -921,7 +923,7 @@ public class ReportsController extends Controller {
         
         if(thumbnail == true) {
         	StringBuffer sb = new StringBuffer(fileName);
-        	sb.insert(fileName.indexOf("."),"_thumbnail");
+        	sb.insert(fileName.indexOf("."),"_thumb");
         	String name = sb.toString();
         	try {
                 String imagePath2 = imageUploadUtil.getImagePath(now, name);
@@ -936,7 +938,7 @@ public class ReportsController extends Controller {
         
         if(miniThumbnail == true) {
         	StringBuffer sb = new StringBuffer(fileName);
-        	sb.insert(fileName.indexOf("."),"_mini" );
+        	sb.insert(fileName.indexOf("."),"_minithumb" );
         	String name = sb.toString();
         	try {
                 String imagePath2 = imageUploadUtil.getImagePath(now, name);
@@ -963,7 +965,7 @@ public class ReportsController extends Controller {
         	
         	if(thumbnail == true) {
         		StringBuffer sb1 = new StringBuffer(fileName);
-            	sb1.insert(fileName.indexOf("."),"_thumbnail_m" );
+            	sb1.insert(fileName.indexOf("."),"_thumb_m" );
             	String name1 = sb1.toString();
             	try {
                     String imagePath2 = imageUploadUtil.getImagePath(now, name1);
@@ -977,7 +979,7 @@ public class ReportsController extends Controller {
         	
         	if(miniThumbnail == true) {
         		StringBuffer sb1 = new StringBuffer(fileName);
-            	sb1.insert(fileName.indexOf("."),"_mini_m" );
+            	sb1.insert(fileName.indexOf("."),"_minithumb_m" );
             	String name1 = sb1.toString();
             	try {
                     String imagePath2 = imageUploadUtil.getImagePath(now, name1);
@@ -992,7 +994,7 @@ public class ReportsController extends Controller {
         }
         
 		Map<String, String> map = new HashMap<>();
-        map.put("URL", imagePath);
+        map.put("URL", Application.APPLICATION_BASE_URL + imageUrl);
 		return ok(Json.toJson(map));
 	}
 	

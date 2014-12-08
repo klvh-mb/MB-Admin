@@ -26,7 +26,6 @@ GET		/get-article-description/:id  controllers.ArticleController.getDescriptionO
 GET		/delete-article/:id			controllers.ArticleController.deleteArticle(id :Long)
 GET		/get-article/:id			controllers.ArticleController.getArticle(id :Long)
 POST    /image/article/upload       controllers.ArticleController.uploadImage
-GET     /image/article/:year/:month/:date/:name     controllers.ArticleController.getImage(year :Long, month :Long, date :Long, name : String)
 
 POST    /change-winner-state        controllers.CampaignController.changeWinnerState
 GET     /get-campaign-winners/:id   controllers.CampaignController.getCampaignWinners(id:Long)
@@ -41,14 +40,19 @@ GET     /delete-campaign/:id        controllers.CampaignController.deleteCampaig
 GET     /get-campaign/:id           controllers.CampaignController.getCampaign(id:Long)
 GET     /get-campaign-info/:id      controllers.CampaignController.infoCampaign(id:Long)
 POST    /image/campaign/upload      controllers.CampaignController.uploadImage
-GET     /image/campaign/:year/:month/:date/:name    controllers.CampaignController.getImage(year :Long, month :Long, date :Long, name : String)
+
+POST    /saveFeaturedTopic          controllers.FeaturedTopicController.saveFeaturedTopic
+POST    /updateFeaturedTopic        controllers.FeaturedTopicController.updateFeaturedTopic
+GET     /getFeaturedTopics/:name/:currentPage           controllers.FeaturedTopicController.getFeaturedTopics(name :String,currentPage :Integer)
+GET     /deleteFeaturedTopic/:id    controllers.FeaturedTopicController.deleteFeaturedTopic(id :Long)
+GET     /toggleActiveFeaturedTopic/:id  controllers.FeaturedTopicController.toggleActiveFeaturedTopic(id :Long)
 
 POST	/saveAnnouncement		    controllers.AnnouncementController.saveAnnouncement
 POST	/updateAnnouncement		    controllers.AnnouncementController.updateAnnouncement
-
 GET		/getAnnouncements/:title/:currentPage			controllers.AnnouncementController.getAnnouncements(title :String,currentPage :Integer)
 GET		/deleteAnnouncement/:id		controllers.AnnouncementController.deleteAnnouncement(id :Long)
 GET		/getAllAnnouncementIcons	controllers.AnnouncementController.getAllAnnouncementIcons
+
 GET		/getUsers/:title/:userStatus/:currentPage		controllers.UserController.getUsers(title :String,userStatus :String,currentPage :Integer)
 GET		/suspendUser/:id			controllers.UserController.suspendUser(id: Long)
 GET		/activateUser/:id			controllers.UserController.activateUser(id: Long)
@@ -99,6 +103,9 @@ GET 	/image/get-post-image-by-id/:id 	controllers.ReportsController.getPostImage
 GET     /image/get-thumbnail-image-by-id/:id    controllers.UserController.getThumbnailVersionImageByID(id :Long)
 
 POST    /photoUpload                            controllers.ReportsController.photoUpload
+
+GET     /image/article/:year/:month/:date/:name     controllers.ArticleController.getImage(year :Long, month :Long, date :Long, name : String)
+GET     /image/campaign/:year/:month/:date/:name    controllers.CampaignController.getImage(year :Long, month :Long, date :Long, name : String)
 
 # Edm
 GET     /get-all-edm-templates                  controllers.ReportsController.getAllEdmTemplates

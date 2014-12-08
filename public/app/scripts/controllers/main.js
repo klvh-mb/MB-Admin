@@ -556,6 +556,123 @@ minibean.controller('EditArticleController',function($scope, $http, $routeParams
     }
 });
 
+minibean.controller('ManageFeaturedTopicsController',function($scope, $modal, $http, $filter, featuredTopicsService){
+    $scope.name = " ";
+    $scope.pageNumber;
+    $scope.pageSize;
+    $scope.formData = "";
+    var currentPage = 1;
+    var totalPages;
+    $scope.isChosen = false;
+    
+    $scope.featuredTopics = featuredTopicsService.FeaturedTopicInfo.get({name:$scope.name,currentPage:currentPage},function(response) {
+        totalPages = $scope.featuredTopics.totalPages;
+        currentPage = $scope.featuredTopics.currentPage;
+        $scope.pageNumber = $scope.featuredTopics.currentPage;
+        $scope.pageSize = $scope.featuredTopics.totalPages;
+        if(totalPages == 0) {
+            $scope.pageNumber = 0;
+        }
+    });
+    
+    $scope.searchFeaturedTopics = function(page) {
+        if(angular.isUndefined($scope.name) || $scope.name=="") {
+            $scope.name = " ";
+        }
+        currentPage = page;
+        $scope.featuredTopics = featuredTopicsService.FeaturedTopicInfo.get({name:$scope.name,currentPage:currentPage},function(response) {
+            totalPages = $scope.featuredTopics.totalPages;
+            currentPage = $scope.featuredTopics.currentPage;
+            $scope.pageNumber = $scope.featuredTopics.currentPage;
+            $scope.pageSize = $scope.featuredTopics.totalPages;
+            if(totalPages == 0) {
+                $scope.pageNumber = 0;
+            }
+        });
+    };
+    
+    $scope.setData = function(featuredTopic) {
+        $scope.featuredTopicData = featuredTopic;
+    };
+    $scope.setDates = function() {
+        $scope.formData = "";
+        $scope.isChosen = false;
+    }
+    $scope.setDeleteId = function(Id) {
+        $scope.deleteId = Id;
+    };
+    $scope.setToggleActiveId = function(Id) {
+        $scope.toggleActiveId = Id;
+    };
+    $scope.saveFeaturedTopic = function() {
+        $http.post('/saveFeaturedTopic', $scope.formData).success(function(data){
+            $scope.searchFeaturedTopics(currentPage);
+            $('#myModal').modal('hide');
+        }).error(function(data, status, headers, config) {
+        });
+    };
+    
+    $scope.updateFeaturedTopic = function() {
+        $http.post('/updateFeaturedTopic', $scope.featuredTopicData).success(function(data){
+            $scope.searchFeaturedTopics(currentPage);
+            $('#myModal2').modal('hide');
+        }).error(function(data, status, headers, config) {
+        });
+    };
+    
+    $scope.deleteFeaturedTopic = function(idData) {
+        featuredTopicsService.DeleteFeaturedTopic.get({id :idData.id}, function(data){
+            $scope.searchFeaturedTopics(currentPage);
+            $('#myModal3').modal('hide');
+        });    
+    };
+    
+    $scope.toggleActiveFeaturedTopic = function(idData) {
+        featuredTopicsService.ToggleActiveFeaturedTopic.get({id :idData.id}, function(data){
+            $scope.searchFeaturedTopics(currentPage);
+            $('#myModal4').modal('hide');
+        });    
+    };
+    
+    $scope.onNext = function() {
+        if(currentPage < totalPages) {
+            currentPage++;
+            $scope.searchFeaturedTopics(currentPage);
+        }
+    };
+    $scope.onPrev = function() {
+        if(currentPage > 1) {
+            currentPage--;
+            $scope.searchFeaturedTopics(currentPage);
+        }
+    };
+    
+});
+
+minibean.service('featuredTopicsService',function($resource){
+    this.FeaturedTopicInfo = $resource(
+            '/getFeaturedTopics/:name/:currentPage',
+            {alt:'json',callback:'JSON_CALLBACK'},
+            {
+                get: {method:'get'}
+            }
+    );
+    this.DeleteFeaturedTopic = $resource(
+            '/deleteFeaturedTopic/:id',
+            {alt:'json',callback:'JSON_CALLBACK'},
+            {
+                get: {method:'get'}
+            }
+    );
+    this.ToggleActiveFeaturedTopic = $resource(
+            '/toggleActiveFeaturedTopic/:id',
+            {alt:'json',callback:'JSON_CALLBACK'},
+            {
+                get: {method:'get'}
+            }
+    );
+});
+
 minibean.controller('ManageAnnouncementsController',function($scope, $modal, $http, $filter, AnnouncementsService, deleteAnnouncementService, announcementIconService){
 	$scope.title = " ";
 	$scope.pageNumber;
@@ -566,9 +683,8 @@ minibean.controller('ManageAnnouncementsController',function($scope, $modal, $ht
 	$scope.isChosen = false;
 	
 	$scope.searchForm= {
-            from : new Date(),
-            to : new Date()
-
+        from : new Date(),
+        to : new Date()
 	}
 	
 	// this is workaround to close the dropdown
@@ -675,6 +791,7 @@ minibean.controller('ManageAnnouncementsController',function($scope, $modal, $ht
 	};
 	
 });
+
 minibean.service('AnnouncementsService',function($resource){
     this.AnnouncementInfo = $resource(
             '/getAnnouncements/:title/:currentPage',

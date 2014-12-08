@@ -1,0 +1,215 @@
+<head>
+    <div data-ng-include data-src="'../assets/app/views/header.html'"></div>
+</head>
+
+<body ng-init="searchFeaturedTopics()">
+   <!--container begin-->
+    <section id="container">
+        <section class="contentpanel">
+            <h4>Manage Featured Topics</h4>
+            <!--Advance search fildes begin-->
+            <section class="dadsrch">
+                <section class="heading"><h2></h2></section>
+                <section class="dadsrchdiv">
+                    <input name="title" type="text" ng-model="title" class="" style="height:1%;" ng-keyup="$event.keyCode == 13 ? searchFeaturedTopics(1) : null"><input name="" type="button" class="btngray" value="Search" ng-click="searchFeaturedTopics(1)">
+                </section>
+            </section>
+            <!--Advance search fildes end-->
+            <section class="dactperform">
+                <section class="left">
+                    <input name="" type="button" value="Create" class="btnblue" ng-click="setDates()" data-toggle="modal" data-target="#myModal" />
+                </section>
+            </section>  
+            <!--grid begin-->
+            <section class="dgridinfo dactcln">
+                <table ng-table="tableParams">
+                    <thead>
+                        <tr>
+                            <th style="width:50px;"><a>Active?</a></th>
+                            <th style="width:80px;"><a>Type</a></th>
+                            <th style="width:120px;"><a>Name</a></th>
+                            <th style="width:auto;"><a>Description</a></th>
+                            <th style="width:100px;"><a>Image</a></th>
+                            <th style="width:100px;"><a>URL</a></th>
+                            <th style="width:80px;"><a>Published</a></th>
+                            <th><a>Update</a></th>
+                            <th><a>Delete</a></th>
+                            <th><a>Active</a></th>
+                        <tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="featuredTopic in featuredTopics.results">
+                            <td>
+                                <span ng-show="{{featuredTopic.ac}}" style="color:green;">YES</span>
+                                <span ng-show="{{!featuredTopic.ac}}" style="color:gray;">NO</span>
+                            </td>
+                            <td>{{featuredTopic.ty}}</td>
+                            <td>{{featuredTopic.nm}}</td>
+                            <td>{{featuredTopic.ds}}</td>
+                            <td style="word-wrap:break-word;word-break:break-all;">{{featuredTopic.img}}</td>
+                            <td style="word-wrap:break-word;word-break:break-all;">{{featuredTopic.url}}</td>
+                            <td>{{featuredTopic.pd | date:'M/dd/yyyy HH:mm'}}</td>
+                            <td><input name="" type="button" value="Update" ng-click="setData(featuredTopic)" data-toggle="modal" data-target="#myModal2" /></td>
+                            <td><input name="" type="button" value="Delete" ng-click="setDeleteId(featuredTopic)" data-toggle="modal" data-target="#myModal3" /></td>
+                            <td><input name="" type="button" value="Toggle" ng-click="setToggleActiveId(featuredTopic)" data-toggle="modal" data-target="#myModal4" /></td>
+                        </tr>
+                        </tbody>
+                </table>
+            </section>
+            <!--grid end-->
+            
+            <section class="dpaging">
+                <h4>{{pageNumber}}/{{pageSize}}</h4>
+                <span class="dpagingright">
+                    <a href="" class="dpagingprv" ng-click="onPrev()">Prev</a>
+                    <a href="" class="dpagingnxt" ng-click="onNext()">Next</a>
+                </span>
+            </section>
+        </div>     
+        </section>
+    </section>
+    <!--container end-->
+  </div>
+          <!-- Create Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">Create Featured Topic</h4>
+              </div>
+              <form method="post" ng-submit="saveFeaturedTopic()">
+              <div class="modal-body">
+              <table>
+                    <tr>
+                        <td><label>Featured Type</label></td>
+                        <td style="height: 60px;">
+                            <select name="featuredType" data-ng-model="formData.featuredType" style="width:100%;" required>
+                                <option disabled="true" value="">--Select--</option>
+                                <option value="FEATURED">FEATURED</option>
+                            </select>
+                        </td>
+                        <label class="control-label error" data-ng-show="typeNotChoose==true" style="color: red;">Please select Featured Type</label>
+                    </tr>
+                    <tr>
+                    <td></td>
+                    <td></td>
+                    </tr>
+                    <tr>
+                        <td><label>Name</label></td>
+                        <td style="height: 60px;"><input type="text" name="name" style="width:200%;" data-ng-model="formData.name" required></td>
+                    </tr>
+                    <tr>
+                        <td><label>Description</label></td>
+                        <td style="height: 60px;"><textarea type="text" name="description" style="width:200%;" data-ng-model="formData.description" ></textarea></td>
+                    </tr>
+                    <tr>
+                        <td><label>Image</label></td>
+                        <td style="height: 60px;"><input type="text" name="image" style="width:200%;" data-ng-model="formData.image" required></td>
+                    </tr>
+                    <tr>
+                        <td><label>URL</label></td>
+                        <td style="height: 60px;"><input type="text" name="url" style="width:200%;" data-ng-model="formData.url" required></td>
+                    </tr>
+                </table>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save</button>
+              </div>
+             </form>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Update Modal -->
+        <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">Update Featured Topic</h4>
+              </div>
+              <form method="post" ng-submit="updateFeaturedTopic()">
+              <div class="modal-body">
+              <table>
+                    <tr>
+                        <td><label>Featured Type</label></td>
+                        <td>
+                            <select name="featuredTopicType" data-ng-model="featuredTopicData.ty" style="width:100%;">
+                                <option disabled="true" value="">--Select--</option>
+                                <option value="FEATURED">FEATURED</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><label>Name</label></td>
+                        <td><input type="text" name="name" style="width:200%;" data-ng-model="featuredTopicData.nm"></td>
+                    </tr>
+                    <tr>
+                        <td><label>Description</label></td>
+                        <td><textarea type="text" name="description" style="width:200%;" data-ng-model="featuredTopicData.ds"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td><label>Image</label></td>
+                        <td><textarea type="text" name="image" style="width:200%;" data-ng-model="featuredTopicData.img"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td><label>URL</label></td>
+                        <td><textarea type="text" name="url" style="width:200%;" data-ng-model="featuredTopicData.url"></textarea></td>
+                    </tr>
+                </table>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Update</button>
+              </div>
+             </form>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Delete Modal -->
+        <div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Featured Topic Delete</h4>
+              </div>
+              <div class="modal-body">
+                Are you sure you want to delete?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-ng-click="deleteFeaturedTopic(deleteId)">Yes</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Inactive Modal -->
+        <div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Featured Topic Toggle Active</h4>
+              </div>
+              <div class="modal-body">
+                Are you sure you want to toggle active?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-ng-click="toggleActiveFeaturedTopic(toggleActiveId)">Yes</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+  </body>
+

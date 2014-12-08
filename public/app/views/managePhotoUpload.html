@@ -13,7 +13,7 @@
                         <th></th>
                     </tr>
                     <tr>
-                        <td><p ng-show="isUpload == true" style="color:green;"><b>Success</b> Path - </p></td>
+                        <td><p ng-show="isUpload == true" style="color:green;"><b>Success</b></td>
                         <td><p ng-show="isUpload == true" style="color:green;">{{path}}</p></td>
                     </tr>
                     <tr>
@@ -21,7 +21,8 @@
            					<select name="category" ng-model="formData.category" required>
 			        			<option value="">--Category--</option>
 								<option value="article">article</option>
-								<option value="product">product</option>			        			
+								<option value="frontpage">frontpage</option>
+								<option value="campaign">campaign</option>
 			        		</select>
                         </td>
                         <td>
@@ -29,10 +30,10 @@
                         </td>
                         <td></td>
                     </tr>
-                    <tr><td></td><td><input type="checkbox" ng-model="formData.fullSize" value="fullSize">&nbsp;&nbsp;Full size</td><td></td></tr>
-                    <tr><td></td><td><input type="checkbox" ng-model="formData.thumbnail" value="thumbnail">&nbsp;&nbsp;Thumbnail</td><td></td></tr>
-                    <tr><td></td><td><input type="checkbox" ng-model="formData.miniThumbnail" value="miniThumbnail">&nbsp;&nbsp;Mini Thumbnail</td><td></td></tr>
-                    <tr><td></td><td><input type="checkbox" ng-model="formData.mobile" value="mobile">&nbsp;&nbsp;Save one set for mobile</td><td></td></tr>
+                    <tr><td></td><td colspan=2><input type="checkbox" ng-model="formData.fullSize" value="fullSize">&nbsp;&nbsp;Full size</td></tr>
+                    <tr><td></td><td colspan=2><input type="checkbox" ng-model="formData.thumbnail" value="thumbnail">&nbsp;&nbsp;Thumbnail (xxx_thumb.png)</td></tr>
+                    <tr><td></td><td colspan=2><input type="checkbox" ng-model="formData.miniThumbnail" value="miniThumbnail">&nbsp;&nbsp;Mini Thumbnail (xxx_minithumb.png)</td></tr>
+                    <tr><td></td><td colspan=2><input type="checkbox" ng-model="formData.mobile" value="mobile">&nbsp;&nbsp;Save one set for mobile <br/> (xxx_m.png, xxx_thumb_m.png, xxx_minithumb_m.png)</td></tr>
                     <tr><td></td><td></td><td><input type="submit" class="btn btn-primary" value="Upload"></td></tr>
                 </table>
             </form>
