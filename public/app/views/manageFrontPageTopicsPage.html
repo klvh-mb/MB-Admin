@@ -46,8 +46,8 @@
                             <td>{{frontPageTopic.ty}}</td>
                             <td>{{frontPageTopic.sty}}</td>
                             <td>{{frontPageTopic.seq}}</td>
-                            <td>{{frontPageTopic.nm}}</td>
-                            <td>{{frontPageTopic.ds}}</td>
+                            <td style="word-wrap:break-word;word-break:break-all;">{{frontPageTopic.nm}}</td>
+                            <td style="word-wrap:break-word;word-break:break-all;">{{frontPageTopic.ds}}</td>
                             <td style="word-wrap:break-word;word-break:break-all;">{{frontPageTopic.img}}</td>
                             <td style="word-wrap:break-word;word-break:break-all;">{{frontPageTopic.url}}</td>
                             <td>{{frontPageTopic.pd | date:'M/dd/yyyy HH:mm'}}</td>
@@ -87,7 +87,7 @@
               <table>
                     <tr>
                         <td><label>Topic Type</label></td>
-                        <td style="height: 60px;">
+                        <td style="height: 50px;">
                             <select name="topicType" data-ng-model="formData.topicType" style="width:100%;" required>
                                 <option disabled="true" value="">--Select--</option>
                                 <option value="SLIDER">SLIDER</option>
@@ -99,7 +99,7 @@
                     </tr>
                     <tr>
                         <td><label>Topic SubType</label></td>
-                        <td style="height: 60px;">
+                        <td style="height: 50px;">
                             <select name="topicSubType" data-ng-model="formData.topicSubType" style="width:100%;" required>
                                 <option disabled="true" value="">--Select--</option>
                                 <option value="NONE">NONE</option>
@@ -116,23 +116,23 @@
                     </tr>
                     <tr>
                         <td><label>Seq</label></td>
-                        <td style="height: 60px;"><input type="text" name="seq" style="width:50%;" data-ng-model="formData.seq" value="1" required></td>
+                        <td style="height: 50px;"><input type="text" name="seq" style="width:50%;" data-ng-model="formData.seq"></td>
                     </tr>
                     <tr>
                         <td><label>Name</label></td>
-                        <td style="height: 60px;"><input type="text" name="name" style="width:200%;" data-ng-model="formData.name" required></td>
+                        <td style="height: 50px;"><input type="text" name="name" style="width:300%;" data-ng-model="formData.name"></td>
                     </tr>
                     <tr>
                         <td><label>Description</label></td>
-                        <td style="height: 60px;"><textarea type="text" name="description" style="width:200%;" data-ng-model="formData.description" required></textarea></td>
+                        <td style="height: 50px;"><textarea type="text" name="description" style="width:300%;" data-ng-model="formData.description" rows="5"></textarea></td>
                     </tr>
                     <tr>
                         <td><label>Image</label></td>
-                        <td style="height: 60px;"><input type="text" name="image" style="width:200%;" data-ng-model="formData.image" required></td>
+                        <td style="height: 50px;"><input type="text" name="image" style="width:300%;" data-ng-model="formData.image"></td>
                     </tr>
                     <tr>
                         <td><label>URL</label></td>
-                        <td style="height: 60px;"><input type="text" name="url" style="width:200%;" data-ng-model="formData.url" required></td>
+                        <td style="height: 50px;"><input type="text" name="url" style="width:300%;" data-ng-model="formData.url"></td>
                     </tr>
                 </table>
               </div>
@@ -158,7 +158,7 @@
               <table>
                     <tr>
                         <td><label>Topic Type</label></td>
-                        <td>
+                        <td style="height: 50px;">
                             <select name="topicType" data-ng-model="frontPageTopicData.ty" style="width:100%;" required>
                                 <option value="SLIDER">SLIDER</option>
                                 <option value="FEATURED">FEATURED</option>
@@ -168,7 +168,7 @@
                     </tr>
                     <tr>
                         <td><label>Topic SubType</label></td>
-                        <td>
+                        <td style="height: 50px;">
                             <select name="topicSubType" data-ng-model="frontPageTopicData.sty" style="width:100%;" required>
                                 <option value="NONE">NONE</option>
                                 <option value="FLASH">FLASH</option>
@@ -183,23 +183,23 @@
                     </tr>
                     <tr>
                         <td><label>Seq</label></td>
-                        <td><input type="text" name="seq" style="width:50%;" data-ng-model="frontPageTopicData.seq" required></td>
+                        <td style="height: 50px;"><input type="text" name="seq" style="width:50%;" data-ng-model="frontPageTopicData.seq"></td>
                     </tr>
                     <tr>
                         <td><label>Name</label></td>
-                        <td><input type="text" name="name" style="width:200%;" data-ng-model="frontPageTopicData.nm" required></td>
+                        <td style="height: 50px;"><input type="text" name="name" style="width:300%;" data-ng-model="frontPageTopicData.nm"></td>
                     </tr>
                     <tr>
                         <td><label>Description</label></td>
-                        <td><textarea type="text" name="description" style="width:200%;" data-ng-model="frontPageTopicData.ds" required></textarea></td>
+                        <td style="height: 50px;"><textarea type="text" name="description" style="width:300%;" data-ng-model="frontPageTopicData.ds" rows="5"></textarea></td>
                     </tr>
                     <tr>
                         <td><label>Image</label></td>
-                        <td><input type="text" name="image" style="width:200%;" data-ng-model="frontPageTopicData.img" required></td>
+                        <td style="height: 50px;"><input type="text" name="image" style="width:300%;" data-ng-model="frontPageTopicData.img"></td>
                     </tr>
                     <tr>
                         <td><label>URL</label></td>
-                        <td><input type="text" name="url" style="width:200%;" data-ng-model="frontPageTopicData.url" required></td>
+                        <td style="height: 50px;"><input type="text" name="url" style="width:300%;" data-ng-model="frontPageTopicData.url"></td>
                     </tr>
                 </table>
               </div>

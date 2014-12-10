@@ -107,8 +107,8 @@ a{color:#006699;}a:hover{color:#222;}
 .contentpanel{width:1000px; margin:auto;}
 header{background:#f2f2f2 url(../images/header.png) no-repeat 0 0; border-bottom:5px solid #0099CC;}
 header .contentpanel{padding:10px 0 10px;}
-#container{background:#f9f9f9 url(../images/bg-container.png) repeat 0 0;}
-#container .contentpanel{min-height:690px; background:#fff; padding:5px 10px 0; width:980px; border-left:1px solid #ccc; border-right:1px solid #ccc;}
+#container{background:#fff url(../images/bg-container.png) repeat 0 0;}
+#container .contentpanel{/*min-height:690px; background:#fff; padding:5px 10px 0; width:980px; border-left:1px solid #ccc; border-right:1px solid #ccc;*/}
 footer{background:#000 url(../images/footer.png) repeat 0 0;}
 footer .contentpanel{ padding:0 0 10px;}
 
