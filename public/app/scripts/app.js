@@ -49,9 +49,9 @@ angular.module('minibean', [
         templateUrl: '/assets/app/views/manageCampaignWinnersPage.html',
         controller : 'ManageCampaignWinnersController'  
       })
-      .when('/manageFeaturedTopics',{
-        templateUrl: '/assets/app/views/manageFeaturedTopicsPage.html',
-        controller : 'ManageFeaturedTopicsController'
+      .when('/manageFrontPageTopics',{
+        templateUrl: '/assets/app/views/manageFrontPageTopicsPage.html',
+        controller : 'ManageFrontPageTopicsController'
       })
       .when('/manageAnnouncements',{
     	templateUrl: '/assets/app/views/manageAnnouncements.html',

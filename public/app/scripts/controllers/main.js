@@ -556,7 +556,7 @@ minibean.controller('EditArticleController',function($scope, $http, $routeParams
     }
 });
 
-minibean.controller('ManageFeaturedTopicsController',function($scope, $modal, $http, $filter, featuredTopicsService){
+minibean.controller('ManageFrontPageTopicsController',function($scope, $modal, $http, $filter, frontPageTopicsService){
     $scope.name = " ";
     $scope.pageNumber;
     $scope.pageSize;
@@ -565,34 +565,34 @@ minibean.controller('ManageFeaturedTopicsController',function($scope, $modal, $h
     var totalPages;
     $scope.isChosen = false;
     
-    $scope.featuredTopics = featuredTopicsService.FeaturedTopicInfo.get({name:$scope.name,currentPage:currentPage},function(response) {
-        totalPages = $scope.featuredTopics.totalPages;
-        currentPage = $scope.featuredTopics.currentPage;
-        $scope.pageNumber = $scope.featuredTopics.currentPage;
-        $scope.pageSize = $scope.featuredTopics.totalPages;
+    $scope.frontPageTopics = frontPageTopicsService.FrontPageTopicInfo.get({name:$scope.name,currentPage:currentPage},function(response) {
+        totalPages = $scope.frontPageTopics.totalPages;
+        currentPage = $scope.frontPageTopics.currentPage;
+        $scope.pageNumber = $scope.frontPageTopics.currentPage;
+        $scope.pageSize = $scope.frontPageTopics.totalPages;
         if(totalPages == 0) {
             $scope.pageNumber = 0;
         }
     });
     
-    $scope.searchFeaturedTopics = function(page) {
+    $scope.searchFrontPageTopics = function(page) {
         if(angular.isUndefined($scope.name) || $scope.name=="") {
             $scope.name = " ";
         }
         currentPage = page;
-        $scope.featuredTopics = featuredTopicsService.FeaturedTopicInfo.get({name:$scope.name,currentPage:currentPage},function(response) {
-            totalPages = $scope.featuredTopics.totalPages;
-            currentPage = $scope.featuredTopics.currentPage;
-            $scope.pageNumber = $scope.featuredTopics.currentPage;
-            $scope.pageSize = $scope.featuredTopics.totalPages;
+        $scope.frontPageTopics = frontPageTopicsService.FrontPageTopicInfo.get({name:$scope.name,currentPage:currentPage},function(response) {
+            totalPages = $scope.frontPageTopics.totalPages;
+            currentPage = $scope.frontPageTopics.currentPage;
+            $scope.pageNumber = $scope.frontPageTopics.currentPage;
+            $scope.pageSize = $scope.frontPageTopics.totalPages;
             if(totalPages == 0) {
                 $scope.pageNumber = 0;
             }
         });
     };
     
-    $scope.setData = function(featuredTopic) {
-        $scope.featuredTopicData = featuredTopic;
+    $scope.setData = function(frontPageTopic) {
+        $scope.frontPageTopicData = frontPageTopic;
     };
     $scope.setDates = function() {
         $scope.formData = "";
@@ -604,32 +604,32 @@ minibean.controller('ManageFeaturedTopicsController',function($scope, $modal, $h
     $scope.setToggleActiveId = function(Id) {
         $scope.toggleActiveId = Id;
     };
-    $scope.saveFeaturedTopic = function() {
-        $http.post('/saveFeaturedTopic', $scope.formData).success(function(data){
-            $scope.searchFeaturedTopics(currentPage);
+    $scope.saveFrontPageTopic = function() {
+        $http.post('/saveFrontPageTopic', $scope.formData).success(function(data){
+            $scope.searchFrontPageTopics(currentPage);
             $('#myModal').modal('hide');
         }).error(function(data, status, headers, config) {
         });
     };
     
-    $scope.updateFeaturedTopic = function() {
-        $http.post('/updateFeaturedTopic', $scope.featuredTopicData).success(function(data){
-            $scope.searchFeaturedTopics(currentPage);
+    $scope.updateFrontPageTopic = function() {
+        $http.post('/updateFrontPageTopic', $scope.frontPageTopicData).success(function(data){
+            $scope.searchFrontPageTopics(currentPage);
             $('#myModal2').modal('hide');
         }).error(function(data, status, headers, config) {
         });
     };
     
-    $scope.deleteFeaturedTopic = function(idData) {
-        featuredTopicsService.DeleteFeaturedTopic.get({id :idData.id}, function(data){
-            $scope.searchFeaturedTopics(currentPage);
+    $scope.deleteFrontPageTopic = function(idData) {
+        frontPageTopicsService.DeleteFrontPageTopic.get({id :idData.id}, function(data){
+            $scope.searchFrontPageTopics(currentPage);
             $('#myModal3').modal('hide');
         });    
     };
     
-    $scope.toggleActiveFeaturedTopic = function(idData) {
-        featuredTopicsService.ToggleActiveFeaturedTopic.get({id :idData.id}, function(data){
-            $scope.searchFeaturedTopics(currentPage);
+    $scope.toggleActiveFrontPageTopic = function(idData) {
+        frontPageTopicsService.ToggleActiveFrontPageTopic.get({id :idData.id}, function(data){
+            $scope.searchFrontPageTopics(currentPage);
             $('#myModal4').modal('hide');
         });    
     };
@@ -637,35 +637,35 @@ minibean.controller('ManageFeaturedTopicsController',function($scope, $modal, $h
     $scope.onNext = function() {
         if(currentPage < totalPages) {
             currentPage++;
-            $scope.searchFeaturedTopics(currentPage);
+            $scope.searchFrontPageTopics(currentPage);
         }
     };
     $scope.onPrev = function() {
         if(currentPage > 1) {
             currentPage--;
-            $scope.searchFeaturedTopics(currentPage);
+            $scope.searchFrontPageTopics(currentPage);
         }
     };
     
 });
 
-minibean.service('featuredTopicsService',function($resource){
-    this.FeaturedTopicInfo = $resource(
-            '/getFeaturedTopics/:name/:currentPage',
+minibean.service('frontPageTopicsService',function($resource){
+    this.FrontPageTopicInfo = $resource(
+            '/getFrontPageTopics/:name/:currentPage',
             {alt:'json',callback:'JSON_CALLBACK'},
             {
                 get: {method:'get'}
             }
     );
-    this.DeleteFeaturedTopic = $resource(
-            '/deleteFeaturedTopic/:id',
+    this.DeleteFrontPageTopic = $resource(
+            '/deleteFrontPageTopic/:id',
             {alt:'json',callback:'JSON_CALLBACK'},
             {
                 get: {method:'get'}
             }
     );
-    this.ToggleActiveFeaturedTopic = $resource(
-            '/toggleActiveFeaturedTopic/:id',
+    this.ToggleActiveFrontPageTopic = $resource(
+            '/toggleActiveFrontPageTopic/:id',
             {alt:'json',callback:'JSON_CALLBACK'},
             {
                 get: {method:'get'}

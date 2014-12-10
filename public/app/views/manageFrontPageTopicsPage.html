@@ -2,16 +2,16 @@
     <div data-ng-include data-src="'../assets/app/views/header.html'"></div>
 </head>
 
-<body ng-init="searchFeaturedTopics()">
+<body ng-init="searchFrontPageTopics()">
    <!--container begin-->
     <section id="container">
         <section class="contentpanel">
-            <h4>Manage Featured Topics</h4>
+            <h4>Manage FrontPage Topics</h4>
             <!--Advance search fildes begin-->
             <section class="dadsrch">
                 <section class="heading"><h2></h2></section>
                 <section class="dadsrchdiv">
-                    <input name="title" type="text" ng-model="title" class="" style="height:1%;" ng-keyup="$event.keyCode == 13 ? searchFeaturedTopics(1) : null"><input name="" type="button" class="btngray" value="Search" ng-click="searchFeaturedTopics(1)">
+                    <input name="title" type="text" ng-model="title" class="" style="height:1%;" ng-keyup="$event.keyCode == 13 ? searchFrontPageTopics(1) : null"><input name="" type="button" class="btngray" value="Search" ng-click="searchFrontPageTopics(1)">
                 </section>
             </section>
             <!--Advance search fildes end-->
@@ -27,31 +27,35 @@
                         <tr>
                             <th style="width:50px;"><a>Active?</a></th>
                             <th style="width:80px;"><a>Type</a></th>
+                            <th style="width:80px;"><a>SubType</a></th>
+                            <th style="width:30px;"><a>Seq</a></th>
                             <th style="width:120px;"><a>Name</a></th>
                             <th style="width:auto;"><a>Description</a></th>
                             <th style="width:100px;"><a>Image</a></th>
                             <th style="width:100px;"><a>URL</a></th>
                             <th style="width:80px;"><a>Published</a></th>
-                            <th><a>Update</a></th>
-                            <th><a>Delete</a></th>
-                            <th><a>Active</a></th>
+                            <th><a></a></th>
                         <tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="featuredTopic in featuredTopics.results">
+                        <tr ng-repeat="frontPageTopic in frontPageTopics.results">
                             <td>
-                                <span ng-show="{{featuredTopic.ac}}" style="color:green;">YES</span>
-                                <span ng-show="{{!featuredTopic.ac}}" style="color:gray;">NO</span>
+                                <span ng-show="{{frontPageTopic.ac}}" style="color:green;">YES</span>
+                                <span ng-show="{{!frontPageTopic.ac}}" style="color:gray;">NO</span>
                             </td>
-                            <td>{{featuredTopic.ty}}</td>
-                            <td>{{featuredTopic.nm}}</td>
-                            <td>{{featuredTopic.ds}}</td>
-                            <td style="word-wrap:break-word;word-break:break-all;">{{featuredTopic.img}}</td>
-                            <td style="word-wrap:break-word;word-break:break-all;">{{featuredTopic.url}}</td>
-                            <td>{{featuredTopic.pd | date:'M/dd/yyyy HH:mm'}}</td>
-                            <td><input name="" type="button" value="Update" ng-click="setData(featuredTopic)" data-toggle="modal" data-target="#myModal2" /></td>
-                            <td><input name="" type="button" value="Delete" ng-click="setDeleteId(featuredTopic)" data-toggle="modal" data-target="#myModal3" /></td>
-                            <td><input name="" type="button" value="Toggle" ng-click="setToggleActiveId(featuredTopic)" data-toggle="modal" data-target="#myModal4" /></td>
+                            <td>{{frontPageTopic.ty}}</td>
+                            <td>{{frontPageTopic.sty}}</td>
+                            <td>{{frontPageTopic.seq}}</td>
+                            <td>{{frontPageTopic.nm}}</td>
+                            <td>{{frontPageTopic.ds}}</td>
+                            <td style="word-wrap:break-word;word-break:break-all;">{{frontPageTopic.img}}</td>
+                            <td style="word-wrap:break-word;word-break:break-all;">{{frontPageTopic.url}}</td>
+                            <td>{{frontPageTopic.pd | date:'M/dd/yyyy HH:mm'}}</td>
+                            <td>
+                                <input type="button" value="Update" ng-click="setData(frontPageTopic)" data-toggle="modal" data-target="#myModal2" style="margin-bottom:5px;"/>
+                                <input type="button" value="Delete" ng-click="setDeleteId(frontPageTopic)" data-toggle="modal" data-target="#myModal3" style="margin-bottom:5px;"/>
+                                <input type="button" value="Toggle" ng-click="setToggleActiveId(frontPageTopic)" data-toggle="modal" data-target="#myModal4" style="margin-bottom:5px;"/>
+                            </td>
                         </tr>
                         </tbody>
                 </table>
@@ -76,24 +80,43 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="myModalLabel">Create Featured Topic</h4>
+                <h4 class="modal-title" id="myModalLabel">Create FrontPage Topic</h4>
               </div>
-              <form method="post" ng-submit="saveFeaturedTopic()">
+              <form method="post" ng-submit="saveFrontPageTopic()">
               <div class="modal-body">
               <table>
                     <tr>
-                        <td><label>Featured Type</label></td>
+                        <td><label>Topic Type</label></td>
                         <td style="height: 60px;">
-                            <select name="featuredType" data-ng-model="formData.featuredType" style="width:100%;" required>
+                            <select name="topicType" data-ng-model="formData.topicType" style="width:100%;" required>
                                 <option disabled="true" value="">--Select--</option>
+                                <option value="SLIDER">SLIDER</option>
                                 <option value="FEATURED">FEATURED</option>
+                                <option value="PROMO">PROMO</option>
                             </select>
                         </td>
-                        <label class="control-label error" data-ng-show="typeNotChoose==true" style="color: red;">Please select Featured Type</label>
+                        <label class="control-label error" data-ng-show="typeNotChoose==true" style="color: red;">Please select Topic Type</label>
+                    </tr>
+                    <tr>
+                        <td><label>Topic SubType</label></td>
+                        <td style="height: 60px;">
+                            <select name="topicSubType" data-ng-model="formData.topicSubType" style="width:100%;" required>
+                                <option disabled="true" value="">--Select--</option>
+                                <option value="NONE">NONE</option>
+                                <option value="FLASH">FLASH</option>
+                                <option value="IMAGE">IMAGE</option>
+                                <option value="IMAGE_TEXT">IMAGE_TEXT</option>
+                            </select>
+                        </td>
+                        <label class="control-label error" data-ng-show="subTypeNotChoose==true" style="color: red;">Please select Topic SubType</label>
                     </tr>
                     <tr>
                     <td></td>
                     <td></td>
+                    </tr>
+                    <tr>
+                        <td><label>Seq</label></td>
+                        <td style="height: 60px;"><input type="text" name="seq" style="width:50%;" data-ng-model="formData.seq" value="1" required></td>
                     </tr>
                     <tr>
                         <td><label>Name</label></td>
@@ -101,7 +124,7 @@
                     </tr>
                     <tr>
                         <td><label>Description</label></td>
-                        <td style="height: 60px;"><textarea type="text" name="description" style="width:200%;" data-ng-model="formData.description" ></textarea></td>
+                        <td style="height: 60px;"><textarea type="text" name="description" style="width:200%;" data-ng-model="formData.description" required></textarea></td>
                     </tr>
                     <tr>
                         <td><label>Image</label></td>
@@ -128,17 +151,29 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="myModalLabel">Update Featured Topic</h4>
+                <h4 class="modal-title" id="myModalLabel">Update FrontPage Topic</h4>
               </div>
-              <form method="post" ng-submit="updateFeaturedTopic()">
+              <form method="post" ng-submit="updateFrontPageTopic()">
               <div class="modal-body">
               <table>
                     <tr>
-                        <td><label>Featured Type</label></td>
+                        <td><label>Topic Type</label></td>
                         <td>
-                            <select name="featuredTopicType" data-ng-model="featuredTopicData.ty" style="width:100%;">
-                                <option disabled="true" value="">--Select--</option>
+                            <select name="topicType" data-ng-model="frontPageTopicData.ty" style="width:100%;" required>
+                                <option value="SLIDER">SLIDER</option>
                                 <option value="FEATURED">FEATURED</option>
+                                <option value="PROMO">PROMO</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label>Topic SubType</label></td>
+                        <td>
+                            <select name="topicSubType" data-ng-model="frontPageTopicData.sty" style="width:100%;" required>
+                                <option value="NONE">NONE</option>
+                                <option value="FLASH">FLASH</option>
+                                <option value="IMAGE">IMAGE</option>
+                                <option value="IMAGE_TEXT">IMAGE_TEXT</option>
                             </select>
                         </td>
                     </tr>
@@ -147,20 +182,24 @@
                         <td></td>
                     </tr>
                     <tr>
+                        <td><label>Seq</label></td>
+                        <td><input type="text" name="seq" style="width:50%;" data-ng-model="frontPageTopicData.seq" required></td>
+                    </tr>
+                    <tr>
                         <td><label>Name</label></td>
-                        <td><input type="text" name="name" style="width:200%;" data-ng-model="featuredTopicData.nm"></td>
+                        <td><input type="text" name="name" style="width:200%;" data-ng-model="frontPageTopicData.nm" required></td>
                     </tr>
                     <tr>
                         <td><label>Description</label></td>
-                        <td><textarea type="text" name="description" style="width:200%;" data-ng-model="featuredTopicData.ds"></textarea></td>
+                        <td><textarea type="text" name="description" style="width:200%;" data-ng-model="frontPageTopicData.ds" required></textarea></td>
                     </tr>
                     <tr>
                         <td><label>Image</label></td>
-                        <td><textarea type="text" name="image" style="width:200%;" data-ng-model="featuredTopicData.img"></textarea></td>
+                        <td><input type="text" name="image" style="width:200%;" data-ng-model="frontPageTopicData.img" required></td>
                     </tr>
                     <tr>
                         <td><label>URL</label></td>
-                        <td><textarea type="text" name="url" style="width:200%;" data-ng-model="featuredTopicData.url"></textarea></td>
+                        <td><input type="text" name="url" style="width:200%;" data-ng-model="frontPageTopicData.url" required></td>
                     </tr>
                 </table>
               </div>
@@ -179,13 +218,13 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Featured Topic Delete</h4>
+                <h4 class="modal-title" id="myModalLabel">FrontPage Topic Delete</h4>
               </div>
               <div class="modal-body">
                 Are you sure you want to delete?
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-ng-click="deleteFeaturedTopic(deleteId)">Yes</button>
+                <button type="button" class="btn btn-primary" data-ng-click="deleteFrontPageTopic(deleteId)">Yes</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
               </div>
             </div>
@@ -198,13 +237,13 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Featured Topic Toggle Active</h4>
+                <h4 class="modal-title" id="myModalLabel">FrontPage Topic Toggle Active</h4>
               </div>
               <div class="modal-body">
                 Are you sure you want to toggle active?
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-ng-click="toggleActiveFeaturedTopic(toggleActiveId)">Yes</button>
+                <button type="button" class="btn btn-primary" data-ng-click="toggleActiveFrontPageTopic(toggleActiveId)">Yes</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
               </div>
             </div>

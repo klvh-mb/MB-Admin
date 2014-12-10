@@ -41,11 +41,11 @@ GET     /get-campaign/:id           controllers.CampaignController.getCampaign(i
 GET     /get-campaign-info/:id      controllers.CampaignController.infoCampaign(id:Long)
 POST    /image/campaign/upload      controllers.CampaignController.uploadImage
 
-POST    /saveFeaturedTopic          controllers.FeaturedTopicController.saveFeaturedTopic
-POST    /updateFeaturedTopic        controllers.FeaturedTopicController.updateFeaturedTopic
-GET     /getFeaturedTopics/:name/:currentPage           controllers.FeaturedTopicController.getFeaturedTopics(name :String,currentPage :Integer)
-GET     /deleteFeaturedTopic/:id    controllers.FeaturedTopicController.deleteFeaturedTopic(id :Long)
-GET     /toggleActiveFeaturedTopic/:id  controllers.FeaturedTopicController.toggleActiveFeaturedTopic(id :Long)
+POST    /saveFrontPageTopic         controllers.FrontPageTopicController.saveFrontPageTopic
+POST    /updateFrontPageTopic       controllers.FrontPageTopicController.updateFrontPageTopic
+GET     /getFrontPageTopics/:name/:currentPage  controllers.FrontPageTopicController.getFrontPageTopics(name :String,currentPage :Integer)
+GET     /deleteFrontPageTopic/:id    controllers.FrontPageTopicController.deleteFrontPageTopic(id :Long)
+GET     /toggleActiveFrontPageTopic/:id         controllers.FrontPageTopicController.toggleActiveFrontPageTopic(id :Long)
 
 POST	/saveAnnouncement		    controllers.AnnouncementController.saveAnnouncement
 POST	/updateAnnouncement		    controllers.AnnouncementController.updateAnnouncement
