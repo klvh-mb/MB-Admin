@@ -114,9 +114,9 @@ public class FrontPageTopic extends domain.Entity {
         
         String sql="";
         if(name.trim().equals("")) {
-            sql = "Select f from FrontPageTopic f where deleted = false order by publishedDate desc";
+            sql = "Select f from FrontPageTopic f where deleted = false order by topicType desc, publishedDate desc";
         } else {
-            sql = "Select f from FrontPageTopic f where deleted = false and f.name LIKE ?1 order by publishedDate desc";
+            sql = "Select f from FrontPageTopic f where deleted = false and f.name LIKE ?1 order by topicType desc, publishedDate desc";
         }
         
         if(currentPage >= 1 && currentPage <= totalPages) {
