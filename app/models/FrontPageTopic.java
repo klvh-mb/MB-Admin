@@ -58,8 +58,7 @@ public class FrontPageTopic extends domain.Entity {
     public static enum TopicSubType {
         NONE,
         FLASH,
-        IMAGE,
-        IMAGE_TEXT
+        IMAGE
     }
     
     public FrontPageTopic() {}
