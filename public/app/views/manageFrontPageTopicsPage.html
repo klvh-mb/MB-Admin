@@ -43,7 +43,9 @@
                                 <span ng-show="{{frontPageTopic.ac}}" style="color:green;">YES</span>
                                 <span ng-show="{{!frontPageTopic.ac}}" style="color:gray;">NO</span>
                             </td>
-                            <td>{{frontPageTopic.ty}}</td>
+                            <td>
+                                <span style="color:purple;font-weight:bold;">{{frontPageTopic.ty}}</span>
+                            </td>
                             <td>{{frontPageTopic.sty}}</td>
                             <td>{{frontPageTopic.seq}}</td>
                             <td style="word-wrap:break-word;word-break:break-all;">{{frontPageTopic.nm}}</td>
@@ -91,8 +93,9 @@
                             <select name="topicType" data-ng-model="formData.topicType" style="width:100%;" required>
                                 <option disabled="true" value="">--Select--</option>
                                 <option value="SLIDER">SLIDER</option>
-                                <option value="FEATURED">FEATURED</option>
                                 <option value="PROMO">PROMO</option>
+                                <option value="FEATURED">FEATURED</option>
+                                <option value="GAME">GAME</option>
                             </select>
                         </td>
                         <label class="control-label error" data-ng-show="typeNotChoose==true" style="color: red;">Please select Topic Type</label>
@@ -160,8 +163,9 @@
                         <td style="height: 50px;">
                             <select name="topicType" data-ng-model="frontPageTopicData.ty" style="width:100%;" required>
                                 <option value="SLIDER">SLIDER</option>
-                                <option value="FEATURED">FEATURED</option>
                                 <option value="PROMO">PROMO</option>
+                                <option value="FEATURED">FEATURED</option>
+                                <option value="GAME">GAME</option>
                             </select>
                         </td>
                     </tr>
