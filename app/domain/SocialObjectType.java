@@ -21,7 +21,7 @@ public enum  SocialObjectType {
      QUESTION,
      ARTICLE,
      COMMENT,
-     ANSWER;
-     
-     
+     ANSWER,
+     TAGWORD,
+     CAMPAIGN
 }
