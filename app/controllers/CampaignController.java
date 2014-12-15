@@ -18,6 +18,7 @@ import models.Campaign.CampaignState;
 import models.Campaign.CampaignType;
 import models.CampaignWinner;
 import models.CampaignWinner.WinnerState;
+import models.Notification;
 import models.User;
 
 import org.apache.commons.io.FileUtils;
@@ -132,6 +133,60 @@ public class CampaignController extends Controller {
         return ok(Json.toJson(vms));
     }
     
+    @Transactional
+    public static Result notifyWinners(Long id) {
+        final String value = session().get("NAME");
+        if (value == null) {
+            return ok(views.html.login.render());
+        }
+        
+        Map<String, String> responseMap = new HashMap<>();
+        Campaign campaign = Campaign.findById(id);
+        if (campaign != null) {
+            try {
+                // send notifications
+                List<CampaignWinner> winners = CampaignWinner.getWinners(campaign.id);
+                List<Long> selectedWinnerIds = new ArrayList<Long>();
+                for (CampaignWinner winner : winners) {
+                    if (winner.winnerState == WinnerState.SELECTED) {
+                        selectedWinnerIds.add(winner.userId);
+                        
+                        // update winner state
+                        winner.winnerState = WinnerState.ANNOUNCED;
+                        winner.note += formatWinnerNote(WinnerState.ANNOUNCED, "Notification sent");
+                    }
+                }
+                
+                if (!selectedWinnerIds.isEmpty()) {
+                    Notification.createCampaignNotification(selectedWinnerIds, campaign);
+                } else {
+                    logger.underlyingLogger().error(selectedWinnerIds.size()+" SELECTED winners ("+winners.size()+" winners total) for campaign ["+id+"]");
+                    responseMap.put("status", "ERROR");
+                    responseMap.put("message", selectedWinnerIds.size()+" SELECTED winners ("+winners.size()+" winners total)");
+                    return ok(Json.toJson(responseMap));
+                }
+                
+                // update campaign state
+                campaign.campaignState = CampaignState.ANNOUNCED;
+                
+                logger.underlyingLogger().info(value+" notified "+selectedWinnerIds.size()+" SELECTED winners ("+winners.size()+" winners total) for campaign ["+id+"]");
+                responseMap.put("status", "SUCCESS");
+                responseMap.put("message", "Notified "+selectedWinnerIds.size()+" SELECTED winners ("+winners.size()+" winners total)");
+                return ok(Json.toJson(responseMap));
+            } catch (Exception e) {
+                logger.underlyingLogger().error("Failed to send notifications to winners for campaign ["+id+"]");
+                responseMap.put("status", "ERROR");
+                responseMap.put("message", "Failed to send notifications to winners for campaign ["+id+"]");
+                return ok(Json.toJson(responseMap));
+            }
+        }
+        
+        logger.underlyingLogger().info(value+" failed to notify winners for campaign ["+id+"] - Campaign not found");
+        responseMap.put("status", "ERROR");
+        responseMap.put("message", "Failed to notify winners for campaign ["+id+"] - Campaign not found");
+        return ok(Json.toJson(responseMap));
+    }
+    
     private static CampaignWinner selectCampaignWinner(Long campaignId, Long userId) {
        
         Campaign campaign = Campaign.findById(campaignId);
@@ -157,6 +212,11 @@ public class CampaignController extends Controller {
         return winner;
     }
     
+    private static String formatWinnerNote(WinnerState winnerState, String note) {
+        final String value = session().get("NAME");
+        return String.format("[%s -> %s]\n%s: %s\n", DateFormat.getInstance().format(new Date()), winnerState, value, note);
+    }
+    
     @Transactional
     public static Result changeWinnerState() {
         final String value = session().get("NAME");
@@ -179,14 +239,13 @@ public class CampaignController extends Controller {
         
         try {
             winner.winnerState = WinnerState.valueOf(winnerState);
+            if (!StringUtils.isEmpty(note)) {
+                winner.note += formatWinnerNote(winner.winnerState, note);
+            }
         } catch(Exception e) {
             logger.underlyingLogger().error(
                     String.format("[w=%d] Winner state incorrect! Failed to change winner state to %s", id, winnerState));
             return status(500, "WINNER STATE INCORRECT");
-        }
-        
-        if (!StringUtils.isEmpty(note)) {
-            winner.note += String.format("[%s -> %s]\n%s: %s\n", DateFormat.getInstance().format(new Date()), winnerState, value, note);
         }
         
         winner.update();

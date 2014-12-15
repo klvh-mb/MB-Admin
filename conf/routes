@@ -30,6 +30,7 @@ POST    /image/article/upload       controllers.ArticleController.uploadImage
 POST    /change-winner-state        controllers.CampaignController.changeWinnerState
 GET     /get-campaign-winners/:id   controllers.CampaignController.getCampaignWinners(id:Long)
 GET     /search-campaign-winners/:id/:positions     controllers.CampaignController.searchCampaignWinners(id:Long,positions:String)
+GET     /notify-winners/:id         controllers.CampaignController.notifyWinners(id:Long)
 POST    /create-campaign            controllers.CampaignController.addCampaign
 POST    /edit-campaign              controllers.CampaignController.updateCampaign
 POST    /change-campaign-state      controllers.CampaignController.changeCampaignState

@@ -129,10 +129,6 @@
                 </div>
                 
                 <div class="innerAll pull-right border-right ng-scope">
-                    <a data-ng-href="#/campaign/winners/{{campaign.id}}"><button class="btn btn-primary"><i class="fa fa-fw fa-group"></i> Winners </button></a>
-                </div>
-                
-                <div class="innerAll pull-right border-right ng-scope">
                     <a data-ng-href="#/campaign/edit/{{campaign.id}}"><button class="btn btn-primary"><i class="fa fa-fw fa-edit"></i> Edit </button></a>
                 </div>
                 
@@ -140,9 +136,17 @@
                     <button class="btn btn-primary" data-toggle="modal" data-ng-click="assignDeleteId(campaign.id)" data-target="#myModal"><span class="glyphicon glyphicon-remove-circle"></span> Delete </button>
                 </div>
                 
-                <div class="innerAll pull-right border-right">
-                      <button data-ng-click="open(campaign.id)" class="btn btn-primary"><i class="fa fa-fw fa-group"></i> Show </button>
+                <div class="innerAll pull-right border-right ng-scope">
+                    <a data-ng-href="#/campaign/winners/{{campaign.id}}"><button class="btn btn-primary"><i class="fa fa-fw fa-group"></i> Winners </button></a>
                 </div>
+                
+                <div class="innerAll pull-right border-right ng-scope">
+                    <button class="btn btn-primary" data-toggle="modal" data-ng-click="assignNotifyId(campaign.id)" data-target="#notifyModal"><i class="fa fa-fw fa-group"></i> Notify Winners </button>
+                </div>
+                
+                <!--div class="innerAll pull-right border-right">
+                      <button data-ng-click="open(campaign.id)" class="btn btn-primary"><i class="fa fa-fw fa-group"></i> Show </button>
+                </div-->
             </div>
         </div>
         
@@ -158,6 +162,25 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" data-ng-click="deleteCampaign(deleteID)">Yes</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="modal fade" id="notifyModal" tabindex="-1" role="dialog" aria-labelledby="notifyModalLabel" aria-hidden="true" data-backdrop="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="notifyModalLabel">Notify Winners</h4>
+                    </div>
+                    <div class="modal-body" id="notifyWinnersBody">
+                        Send notifications to Selected Winners? <br/>
+                        (Note: only winners in "SELECTED" state will be notified)
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-ng-click="notifyWinners(notifyID)">Yes</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
                     </div>
                 </div>

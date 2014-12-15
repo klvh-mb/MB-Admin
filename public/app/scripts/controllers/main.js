@@ -59,6 +59,13 @@ minibean.service('campaignService',function($resource){
                 get: {method:'get',isArray:true}
             }
     );
+    this.notifyWinners = $resource(
+            '/notify-winners/:id',
+            {alt:'json',callback:'JSON_CALLBACK'},
+            {
+                get: {method:'get'}
+            }
+    );
 });
 
 minibean.controller('ManageCampaignWinnersController',function($scope, $routeParams, $http, $modal, campaignService){
@@ -173,6 +180,17 @@ minibean.controller('ManageCampaignsController',function($scope, $http, $modal, 
       
     $scope.assignDeleteId = function(id) {
         $scope.deleteID = id;
+    }
+    
+    $scope.notifyWinners = function (id){
+        campaignService.notifyWinners.get({id :id}, function(data){
+            $('#notifyModal').modal('hide');
+            alert(data.status+" - "+data.message);
+        });
+    }
+      
+    $scope.assignNotifyId = function(id) {
+        $scope.notifyID = id;
     }
 });
 
