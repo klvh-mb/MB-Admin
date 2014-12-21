@@ -31,16 +31,14 @@ public class GameAccount  extends domain.Entity {
 	
 	public Date previous_day_accumulated_points;
 	
-	public String address_1;
-	
-	public String address_2;
-	
-	public String city;
-	
-	public Long phone;
-	
-	public String email;
-	
+	// Contact information
+    public String realName;
+    public String phone;
+    public String email;
+    public String address_1;
+    public String address_2;
+    public String city;
+
 	public Boolean has_upload_profile_pic = true;
 	
 	public Long number_of_referral_signups;
