@@ -16,8 +16,8 @@ public class GameAccountVM {
 	
 	public GameAccountVM(GameAccount account) {
 		this.id = account.id;
-		this.userId = account.User_id;
-		this.name = User.findById(account.User_id).name;
-		this.totalPoints = account.total_points;
+		this.userId = account.user_id;
+		this.name = User.findById(account.user_id).name;
+		this.totalPoints = account.getGame_points();
 	}
 }
