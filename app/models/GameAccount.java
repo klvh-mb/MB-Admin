@@ -9,9 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
-
 import models.GameAccountTransaction.TransactionType;
-
 import play.db.jpa.JPA;
 
 @Entity
