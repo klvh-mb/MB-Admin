@@ -1,6 +1,7 @@
 package viewmodel;
 
 import models.CampaignWinner;
+import models.GameAccount;
 import models.User;
 
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -12,14 +13,16 @@ public class CampaignWinnerVM {
 	@JsonProperty("userId") public long userId;
 	@JsonProperty("campaignId") public long campaignId;
 	@JsonProperty("note") public String note;
+	@JsonProperty("email") public String email;
 	
 	public CampaignWinnerVM(CampaignWinner winner) {
 	    this.id = winner.id;
 	    this.name = User.findById(winner.userId).name;
 	    this.userId = winner.userId;
 	    this.campaignId = winner.campaignId;
-	    this.note = winner.note;
 	    this.winnerState = winner.winnerState.name();
+	    this.note = winner.note;
+	    this.email = GameAccount.findByUserId(winner.userId).email;
 	}
 	
 	public CampaignWinnerVM(Long userId, Long campaignId) {
@@ -27,7 +30,8 @@ public class CampaignWinnerVM {
         this.name = User.findById(userId).name;
         this.userId = userId;
         this.campaignId = campaignId;
-        this.note = "";
         this.winnerState = "";
+        this.note = "";
+        this.email = GameAccount.findByUserId(userId).email;
     }
 }

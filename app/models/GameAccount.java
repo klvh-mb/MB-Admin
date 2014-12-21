@@ -11,7 +11,6 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import models.GameAccountTransaction.Transaction_type;
-
 import play.db.jpa.JPA;
 
 @Entity
@@ -39,6 +38,8 @@ public class GameAccount  extends domain.Entity {
 	public String city;
 	
 	public Long phone;
+	
+	public String email;
 	
 	public Boolean has_upload_profile_pic = true;
 	

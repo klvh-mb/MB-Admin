@@ -13,7 +13,6 @@ import javax.persistence.Query;
 
 import org.apache.commons.collections.CollectionUtils;
 
-import domain.DefaultValues;
 import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
 
