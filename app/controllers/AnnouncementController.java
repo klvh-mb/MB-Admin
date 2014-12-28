@@ -22,11 +22,11 @@ public class AnnouncementController extends Controller{
     
 	@Transactional
 	public static Result getAnnouncements(String title,int currentPage) {
-		
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
+        
 		long totalPages = Announcement.getAllAnnouncementsTotal(title, 10);
 		List<Announcement> allAnnouncements = Announcement.getAllAnnouncements(title, currentPage, 10, totalPages);
 			
@@ -47,12 +47,12 @@ public class AnnouncementController extends Controller{
 	
 	@Transactional
 	public static Result saveAnnouncement() {
-		final String value = session().get("NAME");
-
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
-		DynamicForm form = DynamicForm.form().bindFromRequest();
+        
+        DynamicForm form = DynamicForm.form().bindFromRequest();
 		Announcement announcement = new Announcement();
 		announcement.setAnnouncementType(AnnouncementType.valueOf(form.get("announcementType")));
 		announcement.description = form.get("description");
@@ -74,10 +74,11 @@ public class AnnouncementController extends Controller{
 	
 	@Transactional
 	public static Result deleteAnnouncement(Long id) {
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
+        
 		Announcement announcement =  Announcement.findById(id);
 		announcement.delete();
 		return ok();
@@ -85,10 +86,11 @@ public class AnnouncementController extends Controller{
 	
 	@Transactional
 	public static Result updateAnnouncement() {
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
+        
 		DynamicForm form = DynamicForm.form().bindFromRequest();
 		Announcement announcement = Announcement.findById(Long.parseLong(form.get("id")));
 		announcement.setAnnouncementType(AnnouncementType.valueOf(form.get("ty")));
@@ -111,10 +113,11 @@ public class AnnouncementController extends Controller{
 	
 	@Transactional
 	public static Result getAllAnnouncementIcons() {
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
+        
 		List<Icon> icons = Icon.getAllIcons();
 		return ok(Json.toJson(icons));
 	}

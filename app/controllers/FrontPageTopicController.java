@@ -21,11 +21,11 @@ public class FrontPageTopicController extends Controller{
     
 	@Transactional
 	public static Result getFrontPageTopics(String title,int currentPage) {
-		
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
+        
 		long totalPages = FrontPageTopic.getAllFrontPageTopicsTotal(title, 10);
 		List<FrontPageTopic> allFrontPageTopics = FrontPageTopic.getAllFrontPageTopics(title, currentPage, 10, totalPages);
 			
@@ -46,11 +46,11 @@ public class FrontPageTopicController extends Controller{
 	
 	@Transactional
 	public static Result saveFrontPageTopic() {
-		final String value = session().get("NAME");
-
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
+        
 		DynamicForm form = DynamicForm.form().bindFromRequest();
 		FrontPageTopic frontPageTopic = new FrontPageTopic();
 		frontPageTopic.topicType = TopicType.valueOf(form.get("topicType"));
@@ -68,10 +68,11 @@ public class FrontPageTopicController extends Controller{
 	
 	@Transactional
 	public static Result deleteFrontPageTopic(Long id) {
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
+        
         FrontPageTopic frontPageTopic = FrontPageTopic.findById(id);
         frontPageTopic.deleted = true;
         frontPageTopic.save();
@@ -80,10 +81,11 @@ public class FrontPageTopicController extends Controller{
 	
 	@Transactional
     public static Result toggleActiveFrontPageTopic(Long id) {
-        final String value = session().get("NAME");
-        if (value == null) {
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
             return ok(views.html.login.render());
         }
+        
         FrontPageTopic frontPageTopic = FrontPageTopic.findById(id);
         frontPageTopic.active = !frontPageTopic.active;
         frontPageTopic.save();
@@ -92,10 +94,11 @@ public class FrontPageTopicController extends Controller{
 	
 	@Transactional
 	public static Result updateFrontPageTopic() {
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
+        
 		DynamicForm form = DynamicForm.form().bindFromRequest();
 		FrontPageTopic frontPageTopic = FrontPageTopic.findById(Long.parseLong(form.get("id")));
 		frontPageTopic.topicType = TopicType.valueOf(form.get("ty"));

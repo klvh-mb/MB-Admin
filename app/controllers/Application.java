@@ -1,6 +1,10 @@
 package controllers;
 
+import java.util.Date;
+
 import javax.persistence.NoResultException;
+
+import org.apache.commons.lang.StringUtils;
 
 import models.AdminUser;
 import play.Play;
@@ -18,6 +22,9 @@ public class Application extends Controller {
     public static final String APPLICATION_BASE_URL = 
             Play.application().configuration().getString("application.baseUrl");
     
+    public static final Long APPLICATION_SESSION_TIMEOUT = 
+            Play.application().configuration().getLong("application.sessionTimeout", 60L);
+    
     public static final String FLASH_MESSAGE_KEY = "message";
 	public static final String FLASH_ERROR_KEY = "error";
 	public static final String USER_ROLE = "user";
@@ -28,20 +35,37 @@ public class Application extends Controller {
     
 	public static String getLoggedInUser() {
 	    try {
-	        final String value = session().get("NAME");
-	        if (value != null) {
-	            return value;
+	        final String loggedInUser = session().get("loggedInUser");
+	        if (loggedInUser != null) {
+	            // see if the session is expired
+	            String loggedInTime = session().get("loggedInTime");
+	            if (loggedInTime != null) {
+	                long previousT = Long.valueOf(loggedInTime);
+	                long currentT = new Date().getTime();
+	                long timeout = APPLICATION_SESSION_TIMEOUT * 1000 * 60;
+	                long diff = (currentT - previousT);
+	                if (diff > timeout) {
+	                    // session expired
+	                    session().clear();
+	                    logger.underlyingLogger().info(String.format("Admin user session expired after %d mins - %s",APPLICATION_SESSION_TIMEOUT,loggedInUser));
+	                    return null;
+	                } 
+	            }
+	     
+	            // update time in session
+	            session("loggedInTime", Long.toString(new Date().getTime()));
+	            return loggedInUser;
 	        }
 	    } catch (Exception e) {
-	        return "";
+	        return null;
 	    }
-        return "";
+        return null;
 	}
         
 	@Transactional
 	public static Result index() {
-		final String value = session().get("NAME");
-        if (value == null) {
+		final String loggedInUser = getLoggedInUser();
+        if (loggedInUser == null) {
         	return ok(views.html.login.render());
         }
 		return ok(views.html.home.render());
@@ -54,9 +78,8 @@ public class Application extends Controller {
 	    String password = form.get("pass");
 		try {
 			AdminUser adminUser = AdminUser.doLogin(name,password);
-			
 			if(adminUser != null) {
-				session().put("NAME", adminUser.getUserName());
+				session().put("loggedInUser", adminUser.getUserName());
 				logger.underlyingLogger().info("Admin user logged in - "+adminUser.getUserName());
 				return ok(views.html.home.render());
 			} else {
@@ -70,7 +93,7 @@ public class Application extends Controller {
 	
 	@Transactional
 	public static Result logout() {
-	    logger.underlyingLogger().info("Admin user logged out - "+session().get("NAME"));
+	    logger.underlyingLogger().info("Admin user logged out - "+getLoggedInUser());
 		session().clear();
 		return ok(views.html.login.render());
 	}	

@@ -34,9 +34,9 @@ public class ArticleController extends Controller {
     
     @Transactional
     public static Result addArticle() {
-    	final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+        final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
         
         Form<Article> articleForm = DynamicForm.form(Article.class).bindFromRequest();
@@ -87,15 +87,15 @@ public class ArticleController extends Controller {
         article.publishedDate = new Date();
         
         article.save();
-        logger.underlyingLogger().info(value+" saved article ["+article.id+"|"+article.name+"]");
+        logger.underlyingLogger().info(loggedInUser+" saved article ["+article.id+"|"+article.name+"]");
         return ok();
     }
     
     @Transactional
     public static Result updateArticle() {
-    	final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+        final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
         
         DynamicForm form = DynamicForm.form().bindFromRequest();
@@ -117,7 +117,7 @@ public class ArticleController extends Controller {
         article.description = form.get("description");
         article.update();
         
-        logger.underlyingLogger().info(value+" updated article ["+article.id+"|"+article.name+"]");
+        logger.underlyingLogger().info(loggedInUser+" updated article ["+article.id+"|"+article.name+"]");
         return ok();
     }
 
@@ -136,10 +136,11 @@ public class ArticleController extends Controller {
    
     @Transactional
     public static Result getAllArticleCategories() {
-    	final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+        final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
+        
         List<ArticleCategory> articleCategories = ArticleCategory.getAllCategory();
         
         List<ArticleCategoryVM> articleCategoryVMs = new ArrayList<>();
@@ -167,10 +168,11 @@ public class ArticleController extends Controller {
 
     @Transactional
     public static Result searchArticles(String id,String name) {
-    	final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+        final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
+        
         List<Article> allArticles = Article.getArticles(id,name);
         List<ArticleVM> listOfArticles = new ArrayList<>();
         for (Article article:allArticles) {
@@ -186,10 +188,11 @@ public class ArticleController extends Controller {
     
     @Transactional
     public static Result getDescriptionOfArticle(Long art_id) {
-    	final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+        final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
+        
         Article article = Article.findById(art_id);
         Map<String, String> description = new HashMap<>();
         description.put("description", article.description);
@@ -198,34 +201,37 @@ public class ArticleController extends Controller {
     
     @Transactional
     public static Result deleteArticle(Long art_id) {
-    	final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+        final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
+        
         Article article = Article.findById(art_id);
         if (article != null) {
             article.delete();
         }
-        logger.underlyingLogger().info(value+" deleted article ["+art_id+"]");
+        logger.underlyingLogger().info(loggedInUser+" deleted article ["+art_id+"]");
         return ok();
     }
     
     @Transactional
     public static Result getArticle(Long art_id) {
-    	final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+        final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
+        
         Article article = Article.findById(art_id);
         return ok(Json.toJson(article));
     }
     
     @Transactional
     public static Result uploadImage() {
-    	final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+        final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
+        
         FilePart picture = request().body().asMultipartFormData().getFile("url-photo0");
         String fileName = picture.getFilename();
         logger.underlyingLogger().info("uploadImage. fileName=" + fileName);
@@ -236,7 +242,7 @@ public class ArticleController extends Controller {
             String imagePath = imageUploadUtil.getImagePath(now, fileName);
             FileUtils.copyFile(file, new File(imagePath));
         } catch (IOException e) {
-            logger.underlyingLogger().error(value+" failed to upload photo", e);
+            logger.underlyingLogger().error(loggedInUser+" failed to upload photo", e);
             return status(500);
         }
 
@@ -245,7 +251,7 @@ public class ArticleController extends Controller {
 
         Map<String, String> map = new HashMap<>();
         map.put("URL", imageUrl);
-        logger.underlyingLogger().info(value+" uploaded photo - "+imageUrl);
+        logger.underlyingLogger().info(loggedInUser+" uploaded photo - "+imageUrl);
         return ok(Json.toJson(map));
     }
 

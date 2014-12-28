@@ -18,11 +18,11 @@ public class UserController extends Controller{
 
 	@Transactional
 	public static Result getUsers(String title,String userStatus,int currentPage) {
-		
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
+        
 		long totalPages = User.getUsersTotalPages(title, userStatus, 5);
 		List<User> listOfUsers = User.getAllUsers(title,userStatus,5,totalPages,currentPage);
 		List<UserVM> listOfUserVMs = new ArrayList<>();
@@ -35,8 +35,6 @@ public class UserController extends Controller{
 			currentPage--;
 		}
 		
-		System.out.println("Inside controller.............."+"Title  :: "+title+"   status :: "+userStatus+"   currentPage ::: "+currentPage);
-		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("totalPages", totalPages);
 		map.put("currentPage", currentPage);
@@ -47,10 +45,11 @@ public class UserController extends Controller{
 	
 	@Transactional
 	public static Result suspendUser(Long id) {
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
+        
 		User user = User.findById(id);
 		user.active = false;
 		user.merge();
@@ -59,10 +58,11 @@ public class UserController extends Controller{
 	
 	@Transactional
 	public static Result activateUser(Long id) {
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
+        
 		User user = User.findById(id);
 		user.active = true;
 		user.merge();

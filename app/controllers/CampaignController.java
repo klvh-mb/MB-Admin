@@ -74,8 +74,8 @@ public class CampaignController extends Controller {
     
     @Transactional
     public static Result searchCampaignWinners(Long campaignId, String positions) {
-        final String value = session().get("NAME");
-        if (value == null) {
+        final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
             return ok(views.html.login.render());
         }
         
@@ -135,8 +135,8 @@ public class CampaignController extends Controller {
     
     @Transactional
     public static Result notifyWinners(Long id) {
-        final String value = session().get("NAME");
-        if (value == null) {
+        final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
             return ok(views.html.login.render());
         }
         
@@ -169,7 +169,7 @@ public class CampaignController extends Controller {
                 // update campaign state
                 campaign.campaignState = CampaignState.ANNOUNCED;
                 
-                logger.underlyingLogger().info(value+" notified "+selectedWinnerIds.size()+" SELECTED winners ("+winners.size()+" winners total) for campaign ["+id+"]");
+                logger.underlyingLogger().info(loggedInUser+" notified "+selectedWinnerIds.size()+" SELECTED winners ("+winners.size()+" winners total) for campaign ["+id+"]");
                 responseMap.put("status", "SUCCESS");
                 responseMap.put("message", "Notified "+selectedWinnerIds.size()+" SELECTED winners ("+winners.size()+" winners total)");
                 return ok(Json.toJson(responseMap));
@@ -181,7 +181,7 @@ public class CampaignController extends Controller {
             }
         }
         
-        logger.underlyingLogger().info(value+" failed to notify winners for campaign ["+id+"] - Campaign not found");
+        logger.underlyingLogger().info(loggedInUser+" failed to notify winners for campaign ["+id+"] - Campaign not found");
         responseMap.put("status", "ERROR");
         responseMap.put("message", "Failed to notify winners for campaign ["+id+"] - Campaign not found");
         return ok(Json.toJson(responseMap));
@@ -213,14 +213,14 @@ public class CampaignController extends Controller {
     }
     
     private static String formatWinnerNote(WinnerState winnerState, String note) {
-        final String value = session().get("NAME");
-        return String.format("[%s -> %s]\n%s: %s\n", DateFormat.getInstance().format(new Date()), winnerState, value, note);
+        final String loggedInUser = Application.getLoggedInUser();
+        return String.format("[%s -> %s]\n%s: %s\n", DateFormat.getInstance().format(new Date()), winnerState, loggedInUser, note);
     }
     
     @Transactional
     public static Result changeWinnerState() {
-        final String value = session().get("NAME");
-        if (value == null) {
+        final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
             return ok(views.html.login.render());
         }
         
@@ -250,15 +250,15 @@ public class CampaignController extends Controller {
         
         winner.update();
         
-        logger.underlyingLogger().info(value+" changed winner state ["+winner.id+"|"+winner.winnerState.name()+"]");
+        logger.underlyingLogger().info(loggedInUser+" changed winner state ["+winner.id+"|"+winner.winnerState.name()+"]");
         return ok(Json.toJson(new CampaignWinnerVM(winner)));
     }
     
     @Transactional
     public static Result addCampaign() {
-    	final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+        final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
         
         Form<Campaign> campaignForm = DynamicForm.form(Campaign.class).bindFromRequest();
@@ -301,15 +301,15 @@ public class CampaignController extends Controller {
         
         campaign.save();
         
-        logger.underlyingLogger().info(value+" saved campaign ["+campaign.id+"|"+campaign.name+"]");
+        logger.underlyingLogger().info(loggedInUser+" saved campaign ["+campaign.id+"|"+campaign.name+"]");
         return ok();
     }
     
     @Transactional
     public static Result updateCampaign() {
-    	final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+        final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
         
         DynamicForm form = DynamicForm.form().bindFromRequest();
@@ -353,14 +353,14 @@ public class CampaignController extends Controller {
         
         campaign.update();
         
-        logger.underlyingLogger().info(value+" updated campaign ["+campaign.id+"|"+campaign.name+"]");
+        logger.underlyingLogger().info(loggedInUser+" updated campaign ["+campaign.id+"|"+campaign.name+"]");
         return ok();
     }
     
     @Transactional
     public static Result changeCampaignState() {
-        final String value = session().get("NAME");
-        if (value == null) {
+        final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
             return ok(views.html.login.render());
         }
         
@@ -378,7 +378,7 @@ public class CampaignController extends Controller {
         
         campaign.update();
         
-        logger.underlyingLogger().info(value+" changed campaign state ["+campaign.id+"|"+campaign.name+"|"+campaign.campaignState.name()+"]");
+        logger.underlyingLogger().info(loggedInUser+" changed campaign state ["+campaign.id+"|"+campaign.name+"|"+campaign.campaignState.name()+"]");
         return ok(Json.toJson(new CampaignVM(campaign)));
     }
 
@@ -395,10 +395,11 @@ public class CampaignController extends Controller {
 
     @Transactional
     public static Result searchCampaigns(String id, String name) {
-    	final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+        final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
+
         List<Campaign> allCampaigns = Campaign.getCampaigns(id, name);
         List<CampaignVM> listOfCampaigns = new ArrayList<>();
         for (Campaign campaign:allCampaigns) {
@@ -410,10 +411,11 @@ public class CampaignController extends Controller {
     
     @Transactional
     public static Result getDescriptionOfCampaign(Long id) {
-    	final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+        final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
+        
         Campaign campaign = Campaign.findById(id);
         Map<String, String> description = new HashMap<>();
         description.put("description", campaign.description);
@@ -422,44 +424,48 @@ public class CampaignController extends Controller {
     
     @Transactional
     public static Result deleteCampaign(Long id) {
-    	final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+        final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
+        
         Campaign campaign = Campaign.findById(id);
         if (campaign != null) {
             campaign.delete();
         }
-        logger.underlyingLogger().info(value+" deleted campaign ["+id+"]");
+        logger.underlyingLogger().info(loggedInUser+" deleted campaign ["+id+"]");
         return ok();
     }
     
     @Transactional
     public static Result getCampaign(Long id) {
-    	final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+        final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
+        
         Campaign campaign = Campaign.findById(id);
         return ok(Json.toJson(campaign));
     }
     
     @Transactional
     public static Result infoCampaign(Long id) {
-        final String value = session().get("NAME");
-        if (value == null) {
+        final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
             return ok(views.html.login.render());
         }
+        
         Campaign campaign = Campaign.findById(id);
         return ok(Json.toJson(new CampaignVM(campaign)));
     }
     
     @Transactional
     public static Result uploadImage() {
-    	final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+        final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
+        
         FilePart picture = request().body().asMultipartFormData().getFile("url-photo0");
         String fileName = picture.getFilename();
         logger.underlyingLogger().info("uploadImage. fileName=" + fileName);
@@ -470,7 +476,7 @@ public class CampaignController extends Controller {
             String imagePath = imageUploadUtil.getImagePath(now, fileName);
             FileUtils.copyFile(file, new File(imagePath));
         } catch (IOException e) {
-            logger.underlyingLogger().error(value+" failed to upload photo", e);
+            logger.underlyingLogger().error(loggedInUser+" failed to upload photo", e);
             return status(500);
         }
 
@@ -479,7 +485,7 @@ public class CampaignController extends Controller {
 
         Map<String, String> map = new HashMap<>();
         map.put("URL", imageUrl);
-        logger.underlyingLogger().info(value+" uploaded photo - "+imageUrl);
+        logger.underlyingLogger().info(loggedInUser+" uploaded photo - "+imageUrl);
         return ok(Json.toJson(map));
     }
 

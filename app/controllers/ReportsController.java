@@ -74,10 +74,9 @@ public class ReportsController extends Controller {
     
 	@Transactional
 	public static Result getReportedPosts(int currentPage) {
-		
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
 		
 		long totalPages = ReportedObject.getAllPostsTotal(PAGINATION_SIZE);
@@ -104,10 +103,9 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result deleteReportedObject(Long id,Long postId) {
-		
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
 		
 		Post post = Post.findById(postId);
@@ -122,10 +120,9 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result getDeletedPosts(int currentPage,String communityId) {
-		
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
 		
 		long totalPages = DeletedInfo.getAllPostsTotal(PAGINATION_SIZE,communityId);
@@ -152,12 +149,11 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result deletedInfoUnDelete(Long id,Long postId) {
-		
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
-		
+        
 		Post post = Post.findById(postId);
 		post.deleted = false;
 		post.merge();
@@ -166,10 +162,9 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result getAllPosts(int currentPage,String title) {
-		
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
 		
 		long totalPages = Post.getAllPostsTotal(PAGINATION_SIZE,title);
@@ -195,10 +190,9 @@ public class ReportsController extends Controller {
 	
 	@Transactional
     public static Result setDeletePost(Long id) {
-		
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
 		
 		Post post = Post.findById(id);
@@ -210,10 +204,9 @@ public class ReportsController extends Controller {
 	
 	@Transactional
     public static Result setUnDeletePost(Long id) {
-		
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
 		
 		Post post = Post.findById(id);
@@ -224,10 +217,9 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result getReportedComments(int currentPage) {
-		
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
 		
 		long totalPages = ReportedObject.getAllCommentsTotal(PAGINATION_SIZE);
@@ -254,10 +246,9 @@ public class ReportsController extends Controller {
 	
 	@Transactional
     public static Result deleteReportedObjectComment(Long id,Long commentId) {
-		
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
 		
 		Comment comment = Comment.findById(commentId);
@@ -272,10 +263,9 @@ public class ReportsController extends Controller {
 	
 	@Transactional
     public static Result getDeletedComments(int currentPage,String communityId) {
-		
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
 		
 		long totalPages = DeletedInfo.getAllCommentsTotal(PAGINATION_SIZE,communityId);
@@ -310,10 +300,9 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result getAllComments(int currentPage,String title) {
-		
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
 		
 		long totalPages = Comment.getAllCommentsTotal(PAGINATION_SIZE,title);
@@ -356,10 +345,9 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result getReportedQuestions(int currentPage) {
-		
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
 		
 		long totalPages = ReportedObject.getAllQuestionsTotal(PAGINATION_SIZE);
@@ -398,10 +386,9 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result getDeletedQuestions(int currentPage, String communityId) {
-		
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
 		
 		long totalPages = DeletedInfo.getAllQuestionsTotal(PAGINATION_SIZE,communityId);
@@ -444,10 +431,9 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result getAllQuestions(int currentPage,String title) {
-		
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
 		
 		long totalPages = Post.getAllQuestionsTotal(PAGINATION_SIZE,title);
@@ -473,10 +459,9 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result getReportedAnswers(int currentPage) {
-		
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
 		
 		long totalPages = ReportedObject.getAllAnswersTotal(PAGINATION_SIZE);
@@ -515,10 +500,9 @@ public class ReportsController extends Controller {
 	
 	@Transactional
     public static Result getDeletedAnswers(int currentPage,String communityId) {
-		
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
 		
 		long totalPages = DeletedInfo.getAllAnswersTotal(PAGINATION_SIZE,communityId);
@@ -569,10 +553,9 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result getAllAnswers(int currentPage,String title) {
-		
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
 		
 		long totalPages = Comment.getAllAnswersTotal(PAGINATION_SIZE,title);
@@ -598,10 +581,9 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result getReportedCommunities(int currentPage) {
-		
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
 		
 		long totalPages = ReportedObject.getAllCommunitiesTotal(PAGINATION_SIZE);
@@ -640,10 +622,9 @@ public class ReportsController extends Controller {
 	
 	@Transactional
     public static Result getDeletedCommunities(int currentPage) {
-		
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
 		
 		long totalPages = DeletedInfo.getAllCommunityTotal(PAGINATION_SIZE);
@@ -686,10 +667,9 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result getAllCommunities(int currentPage,String title) {
-		
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
 		
 		long totalPages = Community.getAllCommunitiesTotal(PAGINATION_SIZE,title);
@@ -715,10 +695,9 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result getReportedUsers(int currentPage) {
-		
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
 		
 		long totalPages = ReportedObject.getAllUsersTotal(PAGINATION_SIZE);
@@ -757,10 +736,9 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result getDeletedUsers(int currentPage) {
-		
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
 		
 		long totalPages = DeletedInfo.getAllUsersTotal(PAGINATION_SIZE);
@@ -803,10 +781,9 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result getAllUsers(int currentPage,String title) {
-		
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
 		
 		long totalPages = User.getAllUsersTotal(PAGINATION_SIZE,title);
@@ -832,9 +809,8 @@ public class ReportsController extends Controller {
 	
 	@Transactional
     public static Result getAllEdmTemplates() {
-        
-        final String value = session().get("NAME");
-        if (value == null) {
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
             return ok(views.html.login.render());
         }
         
@@ -850,10 +826,9 @@ public class ReportsController extends Controller {
 	/*
 	@Transactional
 	public static Result getAllSubscribedUsers(int currentPage,String title,String gender,String location,String subscription) {
-		
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+		final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
 		
 		long totalPages = User.getAllSubscribedUsersTotal(2, title, gender, location, subscription);
@@ -894,10 +869,9 @@ public class ReportsController extends Controller {
 	
 	@Transactional
     public static Result photoUpload() {
-		
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
 		
 		DynamicForm form = DynamicForm.form().bindFromRequest();
@@ -1063,11 +1037,11 @@ public class ReportsController extends Controller {
 	
 	@Transactional
 	public static Result sendTestEDM() {
-		final String value = session().get("NAME");
-
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
+        
 		DynamicForm form = DynamicForm.form().bindFromRequest();
 		String[] userEmails = form.get("userEmails").split(",");
 		for(String userEmail : userEmails) {
@@ -1090,9 +1064,9 @@ public class ReportsController extends Controller {
     
 	@Transactional
 	public static Result sendBulkEDM() {
-		final String value = session().get("NAME");
-        if (value == null) {
-        	return ok(views.html.login.render());
+	    final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
         }
         
 		final DynamicForm form = DynamicForm.form().bindFromRequest();
