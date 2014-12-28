@@ -997,7 +997,7 @@ public class ReportsController extends Controller {
 	    String detail = form.get("detail");
 	    String uId = form.get("uId");
 	    GameAccount account = GameAccount.findByUserId(Long.parseLong(uId));
-	    account.addBonusbyAdmin(bonus,detail);
+	    account.addBonusByAdmin(bonus, detail);
 	    System.out.println("id :::: "+id+"\n bonus :::: "+bonus+"\n detail ::::: "+detail+"\n uId :::::"+uId);
         return ok();
     }
@@ -1010,7 +1010,7 @@ public class ReportsController extends Controller {
 	    String detail = form.get("detail");
 	    String uId = form.get("uId");
 	    GameAccount account = GameAccount.findByUserId(Long.parseLong(uId));
-	    account.addPenaltybyAdmin(bonus,detail);
+	    account.addPenaltyByAdmin(bonus, detail);
 	    System.out.println("id :::: "+id+"\n bonus :::: "+bonus+"\n detail ::::: "+detail+"\n uId :::::"+uId);
         return ok();
     }

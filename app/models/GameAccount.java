@@ -9,40 +9,46 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
-
-import models.GameAccountTransaction.Transaction_type;
+import models.GameAccountTransaction.TransactionType;
 import play.db.jpa.JPA;
 
 @Entity
-public class GameAccount  extends domain.Entity {
+public class GameAccount extends domain.Entity {
     private static final play.api.Logger logger = play.api.Logger.apply(GameAccount.class);
 
-	@Id
+    @Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Long id;
-	
-	public Long User_id;
-	
-	public Long total_points = 0L;
-	
-	public Long redeemed_points;	
-	 
+
+	public Long user_id;
+
+	private Long game_points = 0L;      // total capped points redeemable
+    private Long activity_points = 0L;  // total points from activity
+
+    // Points multiplier
+    private Double firstPersonMultiplier = 1d;
+
+    // Redemption
+	public Long redeemed_points;
 	public Date last_redemption_time;
-	
-	public Date previous_day_accumulated_points;
-	
-	// Contact information
+
+    // Contact information
     public String realName;
-    public String phone;
+	public String phone;
     public String email;
     public String address_1;
-    public String address_2;
-    public String city;
+	public String address_2;
+	public String city;
 
-	public Boolean has_upload_profile_pic = true;
-	
-	public Long number_of_referral_signups;
-	
+	public Boolean has_upload_profile_pic = false;
+
+    public String promoCode;
+	public Long number_of_referral_signups = 0L;
+
+
+    /**
+     * Ctor
+     */
 	public GameAccount() {}
 	
 	public static GameAccount findByUserId(Long id) {
@@ -52,25 +58,10 @@ public class GameAccount  extends domain.Entity {
 	        return (GameAccount) q.getSingleResult();
 	    } catch (NoResultException e) {
 	    	GameAccount account = new GameAccount();
-	    	account.User_id = id;
+	    	account.user_id = id;
 	    	account.save();
 	        return account;
 	    } 
-	}
-	
-	public static void deletePostByAdmin(Long id) {
-		GameAccount account = GameAccount.findByUserId(id);
-		account.auditFields.setUpdatedDate(new Date());
-		account.total_points = account.total_points - 5L;
-		account.merge();
-	}
-
-	public static void deleteCommentByAdmin(Long id) {
-		GameAccount account = GameAccount.findByUserId(id);
-		account.auditFields.setUpdatedDate(new Date());
-		account.total_points = account.total_points - 5L;
-		account.merge();
-		
 	}
 
 	public static List<GameAccount> getAllGameAccounts() {
@@ -78,17 +69,46 @@ public class GameAccount  extends domain.Entity {
 		return (List<GameAccount>)q.getResultList();		
 	}
 
-	public void addBonusbyAdmin(String bonus, String detail) {
+	public void addBonusByAdmin(String bonus, String detail) {
 		this.auditFields.setUpdatedDate(new Date());
-		this.total_points = this.total_points + Long.parseLong(bonus);
+        Long bonusL = Long.parseLong(bonus);
+        addPointsAcross(bonusL);
 		this.merge();
-		GameAccountTransaction.recordPoints(this.User_id, this, Long.parseLong(bonus), Transaction_type.Bonus, detail);
+
+        GameAccountTransaction.recordPoints(user_id, bonusL, TransactionType.Bonus, "小豆豆獎賞 -"+detail, getGame_points());
 	}
 	
-	public void addPenaltybyAdmin(String penalty, String detail) {
+	public void addPenaltyByAdmin(String penalty, String detail) {
 		this.auditFields.setUpdatedDate(new Date());
-		this.total_points = this.total_points + Long.parseLong(penalty);
+        Long penaltyL = Long.parseLong(penalty);
+        if (penaltyL > 0) {
+            penaltyL *= -1;
+        }
+        addPointsAcross(penaltyL);
 		this.merge();
-		GameAccountTransaction.recordPoints(this.User_id, this, Long.parseLong(penalty), Transaction_type.Bonus, detail);
+
+        GameAccountTransaction.recordPoints(user_id, penaltyL, TransactionType.Penalty, detail, getGame_points());
 	}
+
+    public void addPointsAcross(long newPoints) {
+        game_points += newPoints;
+        activity_points += newPoints;
+    }
+
+    public void subtractPointsAcross(long points) {
+        game_points -= points;
+        activity_points -= points;
+    }
+
+    public static void deletePostByAdmin(Long id) {
+		// TODO
+	}
+
+	public static void deleteCommentByAdmin(Long id) {
+		// TODO
+	}
+
+    public Long getGame_points() {
+        return game_points;
+    }
 }
