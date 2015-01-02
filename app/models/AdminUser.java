@@ -16,6 +16,7 @@ public class AdminUser extends domain.Entity {
 	
 	public String userName;
 	public String passWord;
+	public Boolean deleted = false;
 	
 	public Long getId() {
 		return id;
@@ -37,10 +38,10 @@ public class AdminUser extends domain.Entity {
 	}
 	
 	public static AdminUser doLogin(String name,String pass) {
-		Query q = JPA.em().createQuery("SELECT a FROM AdminUser a where a.userName = ?1 AND a.passWord = ?2");
+		Query q = JPA.em().createQuery("SELECT a FROM AdminUser a where a.userName = ?1 AND a.passWord = ?2 AND a.deleted = ?3");
 		q.setParameter(1, name);
 		q.setParameter(2, pass);
-		
+		q.setParameter(3, false);
 		return (AdminUser) q.getSingleResult();
 	}
 }
