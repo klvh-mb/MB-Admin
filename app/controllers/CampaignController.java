@@ -318,8 +318,14 @@ public class CampaignController extends Controller {
         Campaign campaign = Campaign.findById(id);
         campaign.name = form.get("name");
         campaign.image = form.get("image");
-        campaign.description = form.get("description");
-        campaign.announcement = form.get("announcement");
+        String description = form.get("description");
+        if (!StringUtils.isEmpty(description)) {
+            campaign.description = description;
+        }
+        String announcement = form.get("announcement");
+        if (!StringUtils.isEmpty(announcement)) {
+            campaign.announcement = announcement;
+        }
         
         try {
             campaign.campaignType = CampaignType.valueOf(form.get("campaignType"));
@@ -381,7 +387,7 @@ public class CampaignController extends Controller {
         logger.underlyingLogger().info(loggedInUser+" changed campaign state ["+campaign.id+"|"+campaign.name+"|"+campaign.campaignState.name()+"]");
         return ok(Json.toJson(new CampaignVM(campaign)));
     }
-
+    
     @Transactional
     public static Result getLatestCampaigns() {
         List<Campaign> allCampaigns = Campaign.getLatestCampaigns();

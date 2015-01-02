@@ -177,7 +177,7 @@ minibean.controller('ManageCampaignsController',function($scope, $http, $modal, 
             });
         });
     }
-      
+
     $scope.assignDeleteId = function(id) {
         $scope.deleteID = id;
     }
@@ -200,7 +200,7 @@ minibean.controller('CreateCampaignController', function($scope, $http, $locatio
     
     //Refer to http://www.tinymce.com/
     $scope.tinymceOptions = {
-            selector: "textarea",
+            selector: "textarea.editor",
             plugins: [
                 "advlist autolink lists link image charmap print preview anchor",
                 "searchreplace visualblocks code fullscreen",
@@ -253,7 +253,7 @@ minibean.controller('EditCampaignController',function($scope, $http, $filter, $r
         });
     
     $scope.tinymceOptions = {
-            selector: "textarea",
+            selector: "textarea.editor",
             plugins: [
                 "advlist autolink lists link image charmap print preview anchor",
                 "searchreplace visualblocks code fullscreen",
@@ -428,7 +428,7 @@ minibean.controller('CreateArticleController', function($scope, $http, $location
     
     //Refer to http://www.tinymce.com/
     $scope.tinymceOptions = {
-            selector: "textarea",
+            selector: "textarea.editor",
             plugins: [
                 "advlist autolink lists link image charmap print preview anchor",
                 "searchreplace visualblocks code fullscreen",
@@ -501,7 +501,7 @@ minibean.controller('EditArticleController',function($scope, $http, $routeParams
     $scope.targetAge = range;
     
     $scope.tinymceOptions = {
-            selector: "textarea",
+            selector: "textarea.editor",
             plugins: [
                 "advlist autolink lists link image charmap print preview anchor",
                 "searchreplace visualblocks code fullscreen",
