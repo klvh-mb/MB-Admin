@@ -23,36 +23,55 @@ import domain.SocialObjectType;
 public class Post extends SocialObject {
     private static final play.api.Logger logger = play.api.Logger.apply(Post.class);
 
-    public Post() {}
-    
     public String title;
-       
+
     @Required
     @Column(length=2000)
     public String body;
-    
+
     @ManyToOne(cascade=CascadeType.REMOVE)
     public Community community;
-    
+
     @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     public Set<Comment> comments;
-    
+
     @Required
     public PostType postType;
-    
+
     @ManyToOne(cascade = CascadeType.REMOVE)
     public Folder folder;
-    
-    @Enumerated(EnumType.STRING)
-	public SocialObjectType objectType;
-    
+
     public int noOfComments = 0;
     public int noOfLikes = 0;
+    public int noWantAns = 0;
+    public int noOfViews = 0;
+    public int shortBodyCount = 0;
 
 	public Date socialUpdatedDate = new Date();
-    
-	
-	
+
+    @Enumerated(EnumType.STRING)
+	public SocialObjectType objectType;
+
+
+    /**
+     * Ctor
+     */
+    public Post() {}
+
+    /**
+     * Ctor
+     * @param adminUserName
+     * @param title
+     * @param post
+     * @param community
+     */
+    public Post(String adminUserName, String title, String post, Community community) {
+        this.auditFields.setCreatedBy(adminUserName);
+        this.title = title;
+        this.body = post;
+        this.community = community;
+    }
+
 	@Transactional
     public static long getAllPostsTotal(int rowsPerPage,String title) {
 		long totalPages = 0, size;
