@@ -15,6 +15,8 @@ import java.util.List;
  */
 @Entity
 public class PKViewMeta extends domain.Entity {
+    private static final play.api.Logger logger = play.api.Logger.apply(Post.class);
+
     public static final String COMMENT_ATTR_YES = "YES";
     public static final String COMMENT_ATTR_NO = "NO";
 
@@ -26,7 +28,9 @@ public class PKViewMeta extends domain.Entity {
 
     private String yesText;
     private String noText;
-    private String image;
+
+    private String yesImage;
+    private String noImage;
 
     private int yesVoteCount = 0;
     private int noVoteCount = 0;
@@ -34,10 +38,12 @@ public class PKViewMeta extends domain.Entity {
     // Ctor
     public PKViewMeta() {}
 
-    public PKViewMeta(Long postId, String yesText, String noText) {
+    public PKViewMeta(Long postId, String yesText, String noText, String yesImage, String noImage) {
         this.postId = postId;
         this.yesText = yesText;
         this.noText = noText;
+        this.yesImage = yesImage;
+        this.noImage = noImage;
     }
 
 	public static List<Pair<PKViewMeta, Post>> getAllPKViewMeta() {
@@ -105,8 +111,12 @@ public class PKViewMeta extends domain.Entity {
         return noText;
     }
 
-    public String getImage() {
-        return image;
+    public String getYesImage() {
+        return yesImage;
+    }
+
+    public String getNoImage() {
+        return noImage;
     }
 
     public int getYesVoteCount() {

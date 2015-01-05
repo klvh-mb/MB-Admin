@@ -43,6 +43,8 @@ public class PKViewController extends Controller {
 
         String pkYesText = form.get("pkYesText");
         String pkNoText = form.get("pkNoText");
+        String pkYesImage = form.get("pkYesImage");
+        String pkNoImage = form.get("pkNoImage");
 
         Community community = Community.findById(communityId);
         if (community == null) {
@@ -58,7 +60,7 @@ public class PKViewController extends Controller {
         post.setUpdatedDate(new Date());
         post.save();
         // create PKViewMeta
-        PKViewMeta pkViewMeta = new PKViewMeta(post.id, pkYesText, pkNoText);
+        PKViewMeta pkViewMeta = new PKViewMeta(post.id, pkYesText, pkNoText, pkYesImage, pkNoImage);
         pkViewMeta.save();
 
         logger.underlyingLogger().info("[c="+communityId+"] postPKOnCommunity");
