@@ -39,6 +39,7 @@ public class PKViewController extends Controller {
         Long communityId = Long.parseLong(form.get("community_id"));
         String pkTitle = form.get("pkTitle");
         String pkText = form.get("pkText");
+        String pkImage = form.get("pkImage");
         int shortBodyCount = StringUtil.computePostShortBodyCount(pkText);
 
         String pkYesText = form.get("pkYesText");
@@ -60,7 +61,7 @@ public class PKViewController extends Controller {
         post.setUpdatedDate(new Date());
         post.save();
         // create PKViewMeta
-        PKViewMeta pkViewMeta = new PKViewMeta(post.id, pkYesText, pkNoText, pkYesImage, pkNoImage);
+        PKViewMeta pkViewMeta = new PKViewMeta(post.id, pkYesText, pkImage, pkNoText, pkYesImage, pkNoImage);
         pkViewMeta.save();
 
         logger.underlyingLogger().info("[c="+communityId+"] postPKOnCommunity");

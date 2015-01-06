@@ -25,6 +25,7 @@ public class PKViewMeta extends domain.Entity {
     public Long id;
 
     private Long postId;
+    private String postImage;
 
     private String yesText;
     private String noText;
@@ -38,8 +39,9 @@ public class PKViewMeta extends domain.Entity {
     // Ctor
     public PKViewMeta() {}
 
-    public PKViewMeta(Long postId, String yesText, String noText, String yesImage, String noImage) {
+    public PKViewMeta(Long postId, String postImage, String yesText, String noText, String yesImage, String noImage) {
         this.postId = postId;
+        this.postImage = postImage;
         this.yesText = yesText;
         this.noText = noText;
         this.yesImage = yesImage;
@@ -101,6 +103,10 @@ public class PKViewMeta extends domain.Entity {
     ///////////////////// Getters /////////////////////
     public Long getPostId() {
         return postId;
+    }
+
+    public String getPostImage() {
+        return postImage;
     }
 
     public String getYesText() {
