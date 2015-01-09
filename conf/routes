@@ -73,7 +73,9 @@ GET		/deletePosts/:id						controllers.ReportsController.setDeletePost(id: Long)
 GET		/unDeletePosts/:id						controllers.ReportsController.setUnDeletePost(id: Long)
 
 # PKView
-POST    /postPKOnCommunity          controllers.PKViewController.postPKOnCommunity
+POST    /create-pkview                          controllers.PKViewController.createPKView
+POST    /update-pkview                          controllers.PKViewController.updatePKView
+GET     /delete-pkview/:id                      controllers.PKViewController.deletePKView(id:Long)
 
 GET		/getReportedComments/:currentPage		controllers.ReportsController.getReportedComments(currentPage: Integer)
 GET		/deleteReportedObjectComment/:id/:commentId		controllers.ReportsController.deleteReportedObjectComment(id: Long,commentId :Long)	

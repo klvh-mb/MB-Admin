@@ -2,6 +2,7 @@ package controllers;
 
 import java.util.*;
 
+import common.collection.Pair;
 import common.utils.ImageUploadUtil;
 import common.utils.StringUtil;
 import domain.PostType;
@@ -25,11 +26,11 @@ public class PKViewController extends Controller {
     private static final ImageUploadUtil imageUploadUtil = new ImageUploadUtil("pkview");
 
     /**
-     * For Admin purpose.
+     * For Admin purpose (Create)
      * @return
      */
     @Transactional
-    public static Result postPKOnCommunity() {
+    public static Result createPKView() {
         final String loggedInUser = Application.getLoggedInUser();
         if (loggedInUser == null) {
             return ok(views.html.login.render());
@@ -77,5 +78,84 @@ public class PKViewController extends Controller {
             map.put("showM", "false");
         }
         return ok(Json.toJson(map));
+    }
+
+    /**
+     * For Admin purpose (Update)
+     * @return
+     */
+    @Transactional
+    public static Result updatePKView() {
+        final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
+        }
+
+        DynamicForm form = DynamicForm.form().bindFromRequest();
+        Long id = Long.parseLong(form.get("id"));
+
+        Pair<PKViewMeta,Post> pkViewMeta = PKViewMeta.getPKViewById(id);
+        if (pkViewMeta == null) {
+            logger.underlyingLogger().error("Invalid pkViewMetaId: "+id);
+            return status(501);
+        }
+
+        Long communityId = Long.parseLong(form.get("community_id"));
+
+        Community community = Community.findById(communityId);
+        if (community == null) {
+            logger.underlyingLogger().error("Invalid communityId: "+communityId);
+            return status(502);
+        }
+
+        PKViewMeta meta = pkViewMeta.getFirst();
+        Post post = pkViewMeta.getSecond();
+
+        String pkTitle = form.get("pkTitle");
+        String pkText = form.get("pkText");
+        String pkImage = form.get("pkImage");
+
+        String pkYesText = form.get("pkYesText");
+        String pkNoText = form.get("pkNoText");
+        String pkYesImage = form.get("pkYesImage");
+        String pkNoImage = form.get("pkNoImage");
+
+        post.title = pkTitle;
+        post.body = pkText;
+        meta.setPostImage(pkImage);
+        meta.setYesText(pkYesText);
+        meta.setNoText(pkNoText);
+        meta.setYesImage(pkYesImage);
+        meta.setNoImage(pkNoImage);
+
+        post.merge();
+        meta.merge();
+
+        logger.underlyingLogger().info(loggedInUser+" updated PKView ["+id+"] Post ["+post.id+"]");
+        return ok();
+    }
+
+    /**
+     * For Admin purpose (Delete)
+     * @return
+     */
+    @Transactional
+    public static Result deletePKView(Long id) {
+        final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
+        }
+
+        Pair<PKViewMeta,Post> pkViewMeta = PKViewMeta.getPKViewById(id);
+        if (pkViewMeta != null) {
+            pkViewMeta.getFirst().delete();
+            pkViewMeta.getSecond().delete();
+            logger.underlyingLogger().info(loggedInUser+" deleted PKView ["+id+"]");
+        }
+        else {
+            logger.underlyingLogger().info("Invalid PKView ["+id+"]");
+        }
+
+        return ok();
     }
 }

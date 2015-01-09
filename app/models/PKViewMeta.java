@@ -132,4 +132,25 @@ public class PKViewMeta extends domain.Entity {
     public int getNoVoteCount() {
         return noVoteCount;
     }
+
+    ///////////////////// Setters /////////////////////
+    public void setPostImage(String postImage) {
+        this.postImage = postImage;
+    }
+
+    public void setYesText(String yesText) {
+        this.yesText = yesText;
+    }
+
+    public void setNoText(String noText) {
+        this.noText = noText;
+    }
+
+    public void setYesImage(String yesImage) {
+        this.yesImage = yesImage;
+    }
+
+    public void setNoImage(String noImage) {
+        this.noImage = noImage;
+    }
 }
