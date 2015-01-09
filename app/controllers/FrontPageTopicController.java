@@ -60,6 +60,7 @@ public class FrontPageTopicController extends Controller{
 		frontPageTopic.description = form.get("description");
 		frontPageTopic.image = form.get("image");
 		frontPageTopic.url = form.get("url");
+		frontPageTopic.attribute = form.get("attribute");
 		frontPageTopic.publishedDate = new Date();
 		frontPageTopic.active = true;
 		frontPageTopic.save();
@@ -108,6 +109,7 @@ public class FrontPageTopicController extends Controller{
 		frontPageTopic.description = form.get("ds");
 		frontPageTopic.image = form.get("img");
 		frontPageTopic.url = form.get("url");
+		frontPageTopic.attribute = form.get("attribute");
 		frontPageTopic.merge();
 		return ok();
 	}

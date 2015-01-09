@@ -33,6 +33,7 @@
                             <th style="width:auto;"><a>Description</a></th>
                             <th style="width:100px;"><a>Image</a></th>
                             <th style="width:100px;"><a>URL</a></th>
+                            <th style="width:100px;"><a>Attribute</a></th>
                             <th style="width:80px;"><a>Published</a></th>
                             <th><a></a></th>
                         <tr>
@@ -52,6 +53,7 @@
                             <td style="word-wrap:break-word;word-break:break-all;">{{frontPageTopic.ds}}</td>
                             <td style="word-wrap:break-word;word-break:break-all;">{{frontPageTopic.img}}</td>
                             <td style="word-wrap:break-word;word-break:break-all;">{{frontPageTopic.url}}</td>
+                            <td style="word-wrap:break-word;word-break:break-all;">{{frontPageTopic.attr}}</td>
                             <td>{{frontPageTopic.pd | date:'M/dd/yyyy HH:mm'}}</td>
                             <td>
                                 <input type="button" value="Update" ng-click="setData(frontPageTopic)" data-toggle="modal" data-target="#myModal2" style="margin-bottom:5px;"/>
@@ -94,6 +96,7 @@
                                 <option disabled="true" value="">--Select--</option>
                                 <option value="SLIDER">SLIDER</option>
                                 <option value="PROMO">PROMO</option>
+                                <option value="PROMO_2">PROMO_2</option>
                                 <option value="FEATURED">FEATURED</option>
                                 <option value="GAME">GAME</option>
                             </select>
@@ -108,6 +111,8 @@
                                 <option value="NONE">NONE</option>
                                 <option value="FLASH">FLASH</option>
                                 <option value="IMAGE">IMAGE</option>
+                                <option value="HOT_COMM">HOT_COMM</option>
+                                <option value="PK_VIEW">PK_VIEW</option>
                             </select>
                         </td>
                         <label class="control-label error" data-ng-show="subTypeNotChoose==true" style="color: red;">Please select Topic SubType</label>
@@ -135,6 +140,10 @@
                     <tr>
                         <td><label>URL</label></td>
                         <td style="height: 50px;"><input type="text" name="url" style="width:300%;" data-ng-model="formData.url"></td>
+                    </tr>
+                    <tr>
+                        <td><label>Attribute</label></td>
+                        <td style="height: 50px;"><input type="text" name="attribute" style="width:300%;" data-ng-model="formData.attribute"></td>
                     </tr>
                 </table>
               </div>
@@ -164,6 +173,7 @@
                             <select name="topicType" data-ng-model="frontPageTopicData.ty" style="width:100%;" required>
                                 <option value="SLIDER">SLIDER</option>
                                 <option value="PROMO">PROMO</option>
+                                <option value="PROMO_2">PROMO_2</option>
                                 <option value="FEATURED">FEATURED</option>
                                 <option value="GAME">GAME</option>
                             </select>
@@ -176,6 +186,8 @@
                                 <option value="NONE">NONE</option>
                                 <option value="FLASH">FLASH</option>
                                 <option value="IMAGE">IMAGE</option>
+                                <option value="HOT_COMM">HOT_COMM</option>
+                                <option value="PK_VIEW">PK_VIEW</option>
                             </select>
                         </td>
                     </tr>
@@ -202,6 +214,10 @@
                     <tr>
                         <td><label>URL</label></td>
                         <td style="height: 50px;"><input type="text" name="url" style="width:300%;" data-ng-model="frontPageTopicData.url"></td>
+                    </tr>
+                    <tr>
+                        <td><label>Attribute</label></td>
+                        <td style="height: 50px;"><input type="text" name="attribute" style="width:300%;" data-ng-model="frontPageTopicData.attribute"></td>
                     </tr>
                 </table>
               </div>
