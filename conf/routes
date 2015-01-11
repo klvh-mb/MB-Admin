@@ -16,6 +16,7 @@ GET     /                           controllers.Application.index
 POST	/							controllers.Application.login
 GET		/logout						controllers.Application.logout
 
+# Article
 POST	/create-article				controllers.ArticleController.addArticle
 POST	/edit-article				controllers.ArticleController.updateArticle
 GET     /get-all-districts          controllers.ArticleController.getAllDistricts
@@ -27,6 +28,7 @@ GET		/delete-article/:id			controllers.ArticleController.deleteArticle(id :Long)
 GET		/get-article/:id			controllers.ArticleController.getArticle(id :Long)
 POST    /image/article/upload       controllers.ArticleController.uploadImage
 
+# Campaign
 POST    /change-winner-state        controllers.CampaignController.changeWinnerState
 GET     /get-campaign-winners/:id   controllers.CampaignController.getCampaignWinners(id:Long)
 GET     /search-campaign-winners/:id/:positions     controllers.CampaignController.searchCampaignWinners(id:Long,positions:String)
@@ -42,18 +44,21 @@ GET     /get-campaign/:id           controllers.CampaignController.getCampaign(i
 GET     /get-campaign-info/:id      controllers.CampaignController.infoCampaign(id:Long)
 POST    /image/campaign/upload      controllers.CampaignController.uploadImage
 
+# FrontPage
 POST    /saveFrontPageTopic         controllers.FrontPageTopicController.saveFrontPageTopic
 POST    /updateFrontPageTopic       controllers.FrontPageTopicController.updateFrontPageTopic
 GET     /getFrontPageTopics/:name/:currentPage  controllers.FrontPageTopicController.getFrontPageTopics(name :String,currentPage :Integer)
 GET     /deleteFrontPageTopic/:id    controllers.FrontPageTopicController.deleteFrontPageTopic(id :Long)
 GET     /toggleActiveFrontPageTopic/:id         controllers.FrontPageTopicController.toggleActiveFrontPageTopic(id :Long)
 
+# Announcement
 POST	/saveAnnouncement		    controllers.AnnouncementController.saveAnnouncement
 POST	/updateAnnouncement		    controllers.AnnouncementController.updateAnnouncement
 GET		/getAnnouncements/:title/:currentPage			controllers.AnnouncementController.getAnnouncements(title :String,currentPage :Integer)
 GET		/deleteAnnouncement/:id		controllers.AnnouncementController.deleteAnnouncement(id :Long)
 GET		/getAllAnnouncementIcons	controllers.AnnouncementController.getAllAnnouncementIcons
 
+# User
 GET		/getUsers/:title/:userStatus/:currentPage		controllers.UserController.getUsers(title :String,userStatus :String,currentPage :Integer)
 GET		/suspendUser/:id			controllers.UserController.suspendUser(id: Long)
 GET		/activateUser/:id			controllers.UserController.activateUser(id: Long)
@@ -62,9 +67,15 @@ GET		/deleteReportedObject/:id/:postId		controllers.ReportsController.deleteRepo
 GET		/getDeletedPosts/:currentPage/:communityId			controllers.ReportsController.getDeletedPosts(currentPage: Integer,communityId: String)
 GET		/deletedInfoUnDelete/:id/:postId		controllers.ReportsController.deletedInfoUnDelete(id: Long,postId :Long)
 
+# Post
 GET		/getAllPosts/:currentPage/:title		controllers.ReportsController.getAllPosts(currentPage: Integer,title: String)
 GET		/deletePosts/:id						controllers.ReportsController.setDeletePost(id: Long)
 GET		/unDeletePosts/:id						controllers.ReportsController.setUnDeletePost(id: Long)
+
+# PKView
+POST    /create-pkview                          controllers.PKViewController.createPKView
+POST    /update-pkview                          controllers.PKViewController.updatePKView
+GET     /delete-pkview/:id                      controllers.PKViewController.deletePKView(id:Long)
 
 GET		/getReportedComments/:currentPage		controllers.ReportsController.getReportedComments(currentPage: Integer)
 GET		/deleteReportedObjectComment/:id/:commentId		controllers.ReportsController.deleteReportedObjectComment(id: Long,commentId :Long)	

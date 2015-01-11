@@ -22,11 +22,37 @@ import domain.SocialObjectType;
  * A Comment by an User on a SocialObject 
  *
  */
-
 @Entity
 public class Comment extends SocialObject {
     private static final play.api.Logger logger = play.api.Logger.apply(Comment.class);
 
+    @Required
+    public Long socialObject;       // e.g. Post Id
+
+    @Required
+    public Date date = new Date();
+
+    @Required
+    @Column(length=2000)
+    public String body;
+
+    @Required
+    public CommentType commentType;
+
+    public int noOfLikes=0;
+
+    private String attribute;
+
+    @ManyToOne(cascade = CascadeType.REMOVE)
+  	public Folder folder;
+
+    @Enumerated(EnumType.STRING)
+   	public SocialObjectType objectType;
+
+
+    /**
+     * Ctor
+     */
     public Comment() {}
     
     public Comment(SocialObject socialObject, User user, String body) {
@@ -35,28 +61,6 @@ public class Comment extends SocialObject {
         this.body = body;
     }
 
-    @Required
-    public Long socialObject;
-    
-    @Required
-    public Date date = new Date();
-    
-   
-    @Required
-    @Column(length=2000)
-    public String body;
-    
-    @Required
-    public CommentType commentType;
-    
-    public int noOfLikes=0;
-      
-    @ManyToOne(cascade = CascadeType.REMOVE)
-  	public Folder folder;
-    
-    @Enumerated(EnumType.STRING)
-   	public SocialObjectType objectType;
-  
     @Transactional
     public static long getAllCommentsTotal(int rowsPerPage,String title) {
 		long totalPages = 0, size;
@@ -172,5 +176,4 @@ public class Comment extends SocialObject {
         q.setParameter(1, id);
         return (Comment) q.getSingleResult();
     }
-    
 }
