@@ -14,6 +14,7 @@ public class FrontPageTopicVM {
 	@JsonProperty("img") public String image;
 	@JsonProperty("url") public String url;
 	@JsonProperty("attr") public String attribute;
+	@JsonProperty("obj") public Object obj;
 	@JsonProperty("seq") public int seq;
 	@JsonProperty("nc") public int noClicks;
 	@JsonProperty("ty") public String topicType;

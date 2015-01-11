@@ -109,7 +109,7 @@ public class FrontPageTopicController extends Controller{
 		frontPageTopic.description = form.get("ds");
 		frontPageTopic.image = form.get("img");
 		frontPageTopic.url = form.get("url");
-		frontPageTopic.attribute = form.get("attribute");
+		frontPageTopic.attribute = form.get("attr");
 		frontPageTopic.merge();
 		return ok();
 	}
