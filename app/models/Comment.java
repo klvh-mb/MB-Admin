@@ -176,4 +176,12 @@ public class Comment extends SocialObject {
         q.setParameter(1, id);
         return (Comment) q.getSingleResult();
     }
+    
+    public String getAttribute() {
+        return attribute;
+    }
+
+    public void setAttribute(String attribute) {
+        this.attribute = attribute;
+    }
 }

@@ -53,6 +53,10 @@ angular.module('minibean', [
         templateUrl: '/assets/app/views/manageFrontPageTopicsPage.html',
         controller : 'ManageFrontPageTopicsController'
       })
+      .when('/managePKViews',{
+        templateUrl: '/assets/app/views/managePKViewsPage.html',
+        controller : 'ManagePKViewsController'
+      })
       .when('/manageAnnouncements',{
     	templateUrl: '/assets/app/views/manageAnnouncements.html',
     	controller : 'ManageAnnouncementsController'  

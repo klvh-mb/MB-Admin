@@ -574,6 +574,62 @@ minibean.controller('EditArticleController',function($scope, $http, $routeParams
     }
 });
 
+minibean.controller('ManagePKViewsController',function($scope, $modal, $http, $filter, pkViewsService){
+    $scope.name = " ";
+    $scope.formData = "";
+    
+    $scope.pkviews = pkViewsService.PKViews.get();
+    
+    $scope.setData = function(pkview) {
+        $scope.pkviewData = pkview;
+    };
+    $scope.resetData = function() {
+        $scope.formData = "";
+    }
+    $scope.setDeleteId = function(Id) {
+        $scope.deleteId = Id;
+    };
+    $scope.savePKView = function() {
+        $http.post('/savePKView', $scope.formData).success(function(data){
+            $scope.searchPKViews(currentPage);
+            $('#myModal').modal('hide');
+        }).error(function(data, status, headers, config) {
+        });
+    };
+    
+    $scope.updatePKView = function() {
+        $http.post('/updatePKView', $scope.pkviewData).success(function(data){
+            $scope.searchPKViews(currentPage);
+            $('#myModal2').modal('hide');
+        }).error(function(data, status, headers, config) {
+        });
+    };
+    
+    $scope.deletePKView = function(idData) {
+        pkViewsService.DeletePKView.get({id :idData.id}, function(data){
+            $scope.searchPKViews(currentPage);
+            $('#myModal3').modal('hide');
+        });    
+    };
+});
+
+minibean.service('pkViewsService',function($resource){
+    this.PKViews = $resource(
+            '/getPKViews',
+            {alt:'json',callback:'JSON_CALLBACK'},
+            {
+                get: {method:'get'}
+            }
+    );
+    this.DeletePKView = $resource(
+            '/deletePKView/:id',
+            {alt:'json',callback:'JSON_CALLBACK'},
+            {
+                get: {method:'get'}
+            }
+    );
+});
+
 minibean.controller('ManageFrontPageTopicsController',function($scope, $modal, $http, $filter, frontPageTopicsService){
     $scope.name = " ";
     $scope.pageNumber;
@@ -583,7 +639,7 @@ minibean.controller('ManageFrontPageTopicsController',function($scope, $modal, $
     var totalPages;
     $scope.isChosen = false;
     
-    $scope.frontPageTopics = frontPageTopicsService.FrontPageTopicInfo.get({name:$scope.name,currentPage:currentPage},function(response) {
+    $scope.frontPageTopics = frontPageTopicsService.FrontPageTopics.get({name:$scope.name,currentPage:currentPage},function(response) {
         totalPages = $scope.frontPageTopics.totalPages;
         currentPage = $scope.frontPageTopics.currentPage;
         $scope.pageNumber = $scope.frontPageTopics.currentPage;
@@ -598,7 +654,7 @@ minibean.controller('ManageFrontPageTopicsController',function($scope, $modal, $
             $scope.name = " ";
         }
         currentPage = page;
-        $scope.frontPageTopics = frontPageTopicsService.FrontPageTopicInfo.get({name:$scope.name,currentPage:currentPage},function(response) {
+        $scope.frontPageTopics = frontPageTopicsService.FrontPageTopics.get({name:$scope.name,currentPage:currentPage},function(response) {
             totalPages = $scope.frontPageTopics.totalPages;
             currentPage = $scope.frontPageTopics.currentPage;
             $scope.pageNumber = $scope.frontPageTopics.currentPage;
@@ -612,7 +668,7 @@ minibean.controller('ManageFrontPageTopicsController',function($scope, $modal, $
     $scope.setData = function(frontPageTopic) {
         $scope.frontPageTopicData = frontPageTopic;
     };
-    $scope.setDates = function() {
+    $scope.resetData = function() {
         $scope.formData = "";
         $scope.isChosen = false;
     }
@@ -668,7 +724,7 @@ minibean.controller('ManageFrontPageTopicsController',function($scope, $modal, $
 });
 
 minibean.service('frontPageTopicsService',function($resource){
-    this.FrontPageTopicInfo = $resource(
+    this.FrontPageTopics = $resource(
             '/getFrontPageTopics/:name/:currentPage',
             {alt:'json',callback:'JSON_CALLBACK'},
             {
@@ -758,7 +814,7 @@ minibean.controller('ManageAnnouncementsController',function($scope, $modal, $ht
 		$scope.searchForm.from = $filter('date')(new Date(ancmt.fd),'MMMM-dd-yyyy');
 		$scope.searchForm.to = $filter('date')(new  Date(ancmt.td),'MMMM-dd-yyyy');
 	};
-	$scope.setDates = function() {
+	$scope.resetData = function() {
 		$scope.searchForm.from = new Date();
 		$scope.searchForm.to = new Date();
 		$scope.icon_id = "";

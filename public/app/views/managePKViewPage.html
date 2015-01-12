@@ -2,16 +2,16 @@
     <div data-ng-include data-src="'../assets/app/views/header.html'"></div>
 </head>
 
-<body ng-init="searchFrontPageTopics()">
+<body ng-init="searchPKViews()">
    <!--container begin-->
     <section id="container">
         <section class="contentpanel">
-            <h4>Manage FrontPage Topics</h4>
+            <h4>Manage PK Views Topics</h4>
             <!--Advance search fildes begin-->
             <section class="dadsrch">
                 <section class="heading"><h2></h2></section>
                 <section class="dadsrchdiv">
-                    <input name="title" type="text" ng-model="title" class="" style="height:1%;" ng-keyup="$event.keyCode == 13 ? searchFrontPageTopics(1) : null"><input name="" type="button" class="btngray" value="Search" ng-click="searchFrontPageTopics(1)">
+                    <input name="title" type="text" ng-model="title" class="" style="height:1%;" ng-keyup="$event.keyCode == 13 ? searchPKViews(1) : null"><input name="" type="button" class="btngray" value="Search" ng-click="searchPKViews(1)">
                 </section>
             </section>
             <!--Advance search fildes end-->
@@ -39,26 +39,26 @@
                         <tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="frontPageTopic in frontPageTopics.results">
+                        <tr ng-repeat="pkview in pkviews.results">
                             <td>
-                                <span ng-show="{{frontPageTopic.ac}}" style="color:green;">YES</span>
-                                <span ng-show="{{!frontPageTopic.ac}}" style="color:gray;">NO</span>
+                                <span ng-show="{{pkview.ac}}" style="color:green;">YES</span>
+                                <span ng-show="{{!pkview.ac}}" style="color:gray;">NO</span>
                             </td>
                             <td>
-                                <span style="color:purple;font-weight:bold;">{{frontPageTopic.ty}}</span>
+                                <span style="color:purple;font-weight:bold;">{{pkview.ty}}</span>
                             </td>
-                            <td>{{frontPageTopic.sty}}</td>
-                            <td>{{frontPageTopic.seq}}</td>
-                            <td style="word-wrap:break-word;word-break:break-all;">{{frontPageTopic.nm}}</td>
-                            <td style="word-wrap:break-word;word-break:break-all;">{{frontPageTopic.ds}}</td>
-                            <td style="word-wrap:break-word;word-break:break-all;">{{frontPageTopic.img}}</td>
-                            <td style="word-wrap:break-word;word-break:break-all;">{{frontPageTopic.url}}</td>
-                            <td style="word-wrap:break-word;word-break:break-all;">{{frontPageTopic.attr}}</td>
-                            <td>{{frontPageTopic.pd | date:'M/dd/yyyy HH:mm'}}</td>
+                            <td>{{pkview.sty}}</td>
+                            <td>{{pkview.seq}}</td>
+                            <td style="word-wrap:break-word;word-break:break-all;">{{pkview.nm}}</td>
+                            <td style="word-wrap:break-word;word-break:break-all;">{{pkview.ds}}</td>
+                            <td style="word-wrap:break-word;word-break:break-all;">{{pkview.img}}</td>
+                            <td style="word-wrap:break-word;word-break:break-all;">{{pkview.url}}</td>
+                            <td style="word-wrap:break-word;word-break:break-all;">{{pkview.attr}}</td>
+                            <td>{{pkview.pd | date:'M/dd/yyyy HH:mm'}}</td>
                             <td>
-                                <input type="button" value="Update" ng-click="setData(frontPageTopic)" data-toggle="modal" data-target="#myModal2" style="margin-bottom:5px;"/>
-                                <input type="button" value="Delete" ng-click="setDeleteId(frontPageTopic)" data-toggle="modal" data-target="#myModal3" style="margin-bottom:5px;"/>
-                                <input type="button" value="Toggle" ng-click="setToggleActiveId(frontPageTopic)" data-toggle="modal" data-target="#myModal4" style="margin-bottom:5px;"/>
+                                <input type="button" value="Update" ng-click="setData(pkview)" data-toggle="modal" data-target="#myModal2" style="margin-bottom:5px;"/>
+                                <input type="button" value="Delete" ng-click="setDeleteId(pkview)" data-toggle="modal" data-target="#myModal3" style="margin-bottom:5px;"/>
+                                <input type="button" value="Toggle" ng-click="setToggleActiveId(pkview)" data-toggle="modal" data-target="#myModal4" style="margin-bottom:5px;"/>
                             </td>
                         </tr>
                         </tbody>
@@ -86,7 +86,7 @@
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 <h4 class="modal-title" id="myModalLabel">Create FrontPage Topic</h4>
               </div>
-              <form method="post" ng-submit="saveFrontPageTopic()">
+              <form method="post" ng-submit="savePKView()">
               <div class="modal-body">
               <table>
                     <tr>
@@ -164,13 +164,13 @@
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 <h4 class="modal-title" id="myModalLabel">Update FrontPage Topic</h4>
               </div>
-              <form method="post" ng-submit="updateFrontPageTopic()">
+              <form method="post" ng-submit="updatePKView()">
               <div class="modal-body">
               <table>
                     <tr>
                         <td><label>Topic Type</label></td>
                         <td style="height: 50px;">
-                            <select name="topicType" data-ng-model="frontPageTopicData.ty" style="width:100%;" required>
+                            <select name="topicType" data-ng-model="pkviewData.ty" style="width:100%;" required>
                                 <option value="SLIDER">SLIDER</option>
                                 <option value="PROMO">PROMO</option>
                                 <option value="PROMO_2">PROMO_2</option>
@@ -182,7 +182,7 @@
                     <tr>
                         <td><label>Topic SubType</label></td>
                         <td style="height: 50px;">
-                            <select name="topicSubType" data-ng-model="frontPageTopicData.sty" style="width:100%;" required>
+                            <select name="topicSubType" data-ng-model="pkviewData.sty" style="width:100%;" required>
                                 <option value="NONE">NONE</option>
                                 <option value="FLASH">FLASH</option>
                                 <option value="IMAGE">IMAGE</option>
@@ -197,27 +197,27 @@
                     </tr>
                     <tr>
                         <td><label>Seq</label></td>
-                        <td style="height: 50px;"><input type="text" name="seq" style="width:50%;" data-ng-model="frontPageTopicData.seq"></td>
+                        <td style="height: 50px;"><input type="text" name="seq" style="width:50%;" data-ng-model="pkviewData.seq"></td>
                     </tr>
                     <tr>
                         <td><label>Name</label></td>
-                        <td style="height: 50px;"><input type="text" name="name" style="width:300%;" data-ng-model="frontPageTopicData.nm"></td>
+                        <td style="height: 50px;"><input type="text" name="name" style="width:300%;" data-ng-model="pkviewData.nm"></td>
                     </tr>
                     <tr>
                         <td><label>Description</label></td>
-                        <td style="height: 50px;"><textarea type="text" name="description" style="width:300%;" data-ng-model="frontPageTopicData.ds" rows="5"></textarea></td>
+                        <td style="height: 50px;"><textarea type="text" name="description" style="width:300%;" data-ng-model="pkviewData.ds" rows="5"></textarea></td>
                     </tr>
                     <tr>
                         <td><label>Image</label></td>
-                        <td style="height: 50px;"><input type="text" name="image" style="width:300%;" data-ng-model="frontPageTopicData.img"></td>
+                        <td style="height: 50px;"><input type="text" name="image" style="width:300%;" data-ng-model="pkviewData.img"></td>
                     </tr>
                     <tr>
                         <td><label>URL</label></td>
-                        <td style="height: 50px;"><input type="text" name="url" style="width:300%;" data-ng-model="frontPageTopicData.url"></td>
+                        <td style="height: 50px;"><input type="text" name="url" style="width:300%;" data-ng-model="pkviewData.url"></td>
                     </tr>
                     <tr>
                         <td><label>Attribute</label></td>
-                        <td style="height: 50px;"><input type="text" name="attribute" style="width:300%;" data-ng-model="frontPageTopicData.attr"></td>
+                        <td style="height: 50px;"><input type="text" name="attribute" style="width:300%;" data-ng-model="pkviewData.attr"></td>
                     </tr>
                 </table>
               </div>
@@ -242,26 +242,7 @@
                 Are you sure you want to delete?
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-ng-click="deleteFrontPageTopic(deleteId)">Yes</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Inactive Modal -->
-        <div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">FrontPage Topic Toggle Active</h4>
-              </div>
-              <div class="modal-body">
-                Are you sure you want to toggle active?
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-ng-click="toggleActiveFrontPageTopic(toggleActiveId)">Yes</button>
+                <button type="button" class="btn btn-primary" data-ng-click="deletePKView(deleteId)">Yes</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
               </div>
             </div>

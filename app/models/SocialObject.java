@@ -1,6 +1,5 @@
 package models;
 
-
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,9 +8,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
-
-import play.data.validation.Constraints.Required;
-
 
 import domain.AuditListener;
 

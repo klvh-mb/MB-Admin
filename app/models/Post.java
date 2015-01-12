@@ -1,21 +1,17 @@
 package models;
 
-
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
 
-
 import play.data.validation.Constraints.Required;
 import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
 
-
 import models.Comment;
 import models.Community;
-import domain.CommentType;
 import domain.PostType;
 import domain.SocialObjectType;
 
@@ -171,7 +167,6 @@ public class Post extends SocialObject {
         }
     }
 	
-	
 	@Transactional
     public static long getAllQuestionsTotal(int rowsPerPage,String title) {
 		long totalPages = 0, size;
@@ -200,9 +195,12 @@ public class Post extends SocialObject {
     	return totalPages;
 	}
 	
-	
 	@Override
 	public void merge() {
 		super.merge();
 	}
+	
+	public Date getSocialUpdatedDate() {
+        return socialUpdatedDate;
+    }
 }

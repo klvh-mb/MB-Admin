@@ -3,19 +3,18 @@ package controllers;
 import java.util.*;
 
 import common.collection.Pair;
-import common.utils.ImageUploadUtil;
 import common.utils.StringUtil;
 import domain.PostType;
 import domain.SocialObjectType;
 import models.Community;
 import models.Post;
 import models.PKViewMeta;
-
 import play.data.DynamicForm;
 import play.db.jpa.Transactional;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
+import viewmodel.PKViewVM;
 
 /**
  * Controller for PKView
@@ -23,14 +22,30 @@ import play.mvc.Result;
 public class PKViewController extends Controller {
     private static play.api.Logger logger = play.api.Logger.apply(PKViewController.class);
 
-    private static final ImageUploadUtil imageUploadUtil = new ImageUploadUtil("pkview");
-
+    @Transactional
+    public static Result getPKViews() {
+        final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
+        }
+        
+        List<Pair<PKViewMeta, Post>> allPKViewMeta = PKViewMeta.getAllPKViewMeta();
+        List<PKViewVM> vms = new ArrayList<>();
+        for (Pair<PKViewMeta, Post> pkViewMeta : allPKViewMeta) {
+            PKViewVM vm = new PKViewVM(pkViewMeta.first, pkViewMeta.second);
+            vms.add(vm);
+        }
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("results", vms);
+        return ok(Json.toJson(map));
+    }
+    
     /**
      * For Admin purpose (Create)
      * @return
      */
     @Transactional
-    public static Result createPKView() {
+    public static Result savePKView() {
         final String loggedInUser = Application.getLoggedInUser();
         if (loggedInUser == null) {
             return ok(views.html.login.render());
