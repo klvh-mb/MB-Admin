@@ -82,17 +82,7 @@ public class PKViewController extends Controller {
 
         logger.underlyingLogger().info("[c="+communityId+"] postPKOnCommunity");
 
-        Map<String,String> map = new HashMap<>();
-        map.put("id", post.id.toString());
-
-        if (post.shortBodyCount > 0) {
-            map.put("text", post.body.substring(0, post.shortBodyCount));
-            map.put("showM", "true");
-        } else{
-            map.put("text", post.body);
-            map.put("showM", "false");
-        }
-        return ok(Json.toJson(map));
+        return ok();
     }
 
     /**
@@ -115,7 +105,7 @@ public class PKViewController extends Controller {
             return status(501);
         }
 
-        Long communityId = Long.parseLong(form.get("community_id"));
+        Long communityId = Long.parseLong(form.get("cid"));
 
         Community community = Community.findById(communityId);
         if (community == null) {
@@ -126,14 +116,14 @@ public class PKViewController extends Controller {
         PKViewMeta meta = pkViewMeta.getFirst();
         Post post = pkViewMeta.getSecond();
 
-        String pkTitle = form.get("pkTitle");
-        String pkText = form.get("pkText");
-        String pkImage = form.get("pkImage");
+        String pkTitle = form.get("ptl");
+        String pkText = form.get("pt");
+        String pkImage = form.get("img");
 
-        String pkYesText = form.get("pkYesText");
-        String pkNoText = form.get("pkNoText");
-        String pkYesImage = form.get("pkYesImage");
-        String pkNoImage = form.get("pkNoImage");
+        String pkYesText = form.get("red_ds");
+        String pkNoText = form.get("blue_ds");
+        String pkYesImage = form.get("red_img");
+        String pkNoImage = form.get("blue_img");
 
         post.title = pkTitle;
         post.body = pkText;

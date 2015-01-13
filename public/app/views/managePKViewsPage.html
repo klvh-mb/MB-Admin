@@ -134,56 +134,36 @@
               <div class="modal-body">
               <table>
                     <tr>
-                        <td><label>Topic Type</label></td>
-                        <td style="height: 50px;">
-                            <select name="topicType" data-ng-model="pkviewData.ty" style="width:100%;" required>
-                                <option value="SLIDER">SLIDER</option>
-                                <option value="PROMO">PROMO</option>
-                                <option value="PROMO_2">PROMO_2</option>
-                                <option value="FEATURED">FEATURED</option>
-                                <option value="GAME">GAME</option>
-                            </select>
-                        </td>
+                        <td><label>Community ID</label></td>
+                        <td style="height: 50px;"><input type="text" name="community_id" style="width:50%;" data-ng-model="pkviewData.cid"></td>
                     </tr>
                     <tr>
-                        <td><label>Topic SubType</label></td>
-                        <td style="height: 50px;">
-                            <select name="topicSubType" data-ng-model="pkviewData.sty" style="width:100%;" required>
-                                <option value="NONE">NONE</option>
-                                <option value="FLASH">FLASH</option>
-                                <option value="IMAGE">IMAGE</option>
-                                <option value="HOT_COMM">HOT_COMM</option>
-                                <option value="PK_VIEW">PK_VIEW</option>
-                            </select>
-                        </td>
+                        <td><label>Title</label></td>
+                        <td style="height: 50px;"><input type="text" name="title" style="width:200%;" data-ng-model="pkviewData.ptl"></td>
                     </tr>
                     <tr>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td><label>Seq</label></td>
-                        <td style="height: 50px;"><input type="text" name="seq" style="width:50%;" data-ng-model="pkviewData.seq"></td>
-                    </tr>
-                    <tr>
-                        <td><label>Name</label></td>
-                        <td style="height: 50px;"><input type="text" name="name" style="width:200%;" data-ng-model="pkviewData.nm"></td>
-                    </tr>
-                    <tr>
-                        <td><label>Description</label></td>
-                        <td style="height: 50px;"><textarea type="text" name="description" style="width:200%;" data-ng-model="pkviewData.ds" rows="5"></textarea></td>
+                        <td><label>Text</label></td>
+                        <td style="height: 50px;"><textarea type="text" name="text" style="width:200%;" data-ng-model="pkviewData.pt" rows="3"></textarea></td>
                     </tr>
                     <tr>
                         <td><label>Image</label></td>
                         <td style="height: 50px;"><input type="text" name="image" style="width:200%;" data-ng-model="pkviewData.img"></td>
                     </tr>
                     <tr>
-                        <td><label>URL</label></td>
-                        <td style="height: 50px;"><input type="text" name="url" style="width:200%;" data-ng-model="pkviewData.url"></td>
+                        <td><label>Yes Text</label></td>
+                        <td style="height: 50px;"><textarea type="text" name="yes_text" style="width:200%;" data-ng-model="pkviewData.red_ds" rows="2"></textarea></td>
                     </tr>
                     <tr>
-                        <td><label>Attribute</label></td>
-                        <td style="height: 50px;"><input type="text" name="attribute" style="width:200%;" data-ng-model="pkviewData.attr"></td>
+                        <td><label>Yes Image</label></td>
+                        <td style="height: 50px;"><input type="text" name="yes_image" style="width:200%;" data-ng-model="pkviewData.red_img"></td>
+                    </tr>
+                    <tr>
+                        <td><label>No Text</label></td>
+                        <td style="height: 50px;"><textarea type="text" name="no_text" style="width:200%;" data-ng-model="pkviewData.blue_ds" rows="2"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td><label>No Image</label></td>
+                        <td style="height: 50px;"><input type="text" name="yes_image" style="width:200%;" data-ng-model="pkviewData.blue_img"></td>
                     </tr>
                 </table>
               </div>

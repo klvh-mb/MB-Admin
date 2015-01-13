@@ -12,7 +12,7 @@ public class PKViewVM {
 	
     @JsonProperty("id") public Long id;
     @JsonProperty("pid") public Long postId;
-    @JsonProperty("im") public String postImage;
+    @JsonProperty("img") public String postImage;
 
     @JsonProperty("oid") public Long ownerId;
     @JsonProperty("p") public String postedBy;
@@ -27,11 +27,11 @@ public class PKViewVM {
     @JsonProperty("cid") public Long communityId;
     
 	@JsonProperty("red_ds") public String redDescription;
-    @JsonProperty("red_im") public String redImage;
+    @JsonProperty("red_img") public String redImage;
 	@JsonProperty("n_rv") public long noOfRedVotes;
 	
 	@JsonProperty("blue_ds") public String blueDescription;
-    @JsonProperty("blue_im") public String blueImage;
+    @JsonProperty("blue_img") public String blueImage;
 	@JsonProperty("n_bv") public long noOfBlueVotes;
 	
 	public static final long MIN_BAR_WIDTH = 12;
