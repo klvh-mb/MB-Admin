@@ -1,9 +1,7 @@
 package models;
 
-
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,16 +25,18 @@ import play.data.DynamicForm;
 import play.data.format.Formats;
 import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
-
 import common.utils.DateTimeUtil;
-
 import domain.SocialObjectType;
 
 @Entity
 public class User extends SocialObject {
     private static final play.api.Logger logger = play.api.Logger.apply(User.class);
 
-    private static User SUPER_ADMIN;
+    private static User MB_ADMIN;
+    private static User MB_EDITOR;
+    
+    public static final String MB_ADMIN_NAME = "小萌豆 管理員";
+    public static final String MB_EDITOR_NAME = "小萌豆 編輯";
     
     public String firstName;
     public String lastName;
@@ -585,18 +585,74 @@ public class User extends SocialObject {
 		return filteredUser;
 	}
 
-	 public static User findByEmail(final String email) {
-	        try {
-	            Query q = JPA.em().createQuery(
-	                    "SELECT u FROM User u where active = ?1 and email = ?2 and deleted = false");
-	            q.setParameter(1, true);
-	            q.setParameter(2, email);
-	            return (User) q.getSingleResult();
-	        } catch (NoResultException e) {
-	            return null;
-	        } catch (Exception e) {
-	            logger.underlyingLogger().error("Error in findByEmail", e);
-	            return null;
-	        }
-	    }
+	public static User findByEmail(final String email) {
+        try {
+            Query q = JPA.em().createQuery(
+                    "SELECT u FROM User u where active = ?1 and email = ?2 and deleted = false");
+            q.setParameter(1, true);
+            q.setParameter(2, email);
+            return (User) q.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        } catch (Exception e) {
+            logger.underlyingLogger().error("Error in findByEmail", e);
+            return null;
+        }
+    }
+	 
+	@Transactional
+    public static User getMBAdmin() {
+        if (MB_ADMIN != null)
+            return MB_ADMIN;
+        User superAdmin = getSuperAdmin(MB_ADMIN_NAME);
+        if (superAdmin == null) {
+            superAdmin = getSuperAdmin();
+        }
+        MB_ADMIN = superAdmin;
+        return superAdmin;
+    }
+    
+    @Transactional
+    public static User getMBEditor() {
+        if (MB_EDITOR != null)
+            return MB_EDITOR;
+        User superAdmin = getSuperAdmin(MB_EDITOR_NAME);
+        if (superAdmin == null) {
+            superAdmin = getSuperAdmin();
+        }
+        MB_EDITOR = superAdmin;
+        return superAdmin;
+    }
+    
+    @Transactional
+    public static User getSuperAdmin(String name) {
+        Query q = JPA.em().createQuery(
+                "SELECT u FROM User u where name = ?1 and active = ?2 and system = ?3 and deleted = false");
+        q.setParameter(1, name);
+        q.setParameter(2, true);
+        q.setParameter(3, true);
+        try {
+            User sysUser = (User)q.getSingleResult();
+            return sysUser;
+        } catch (NoResultException e) {
+            logger.underlyingLogger().error("SuperAdmin not found - "+name, e);
+            return null;
+        }
+    }
+    
+    @Transactional
+    public static User getSuperAdmin() {
+        Query q = JPA.em().createQuery(
+                "SELECT u FROM User u where id = ?1 and active = ?2 and system = ?3 and deleted = false");
+        q.setParameter(1, 1);
+        q.setParameter(2, true);
+        q.setParameter(3, true);
+        try {
+            User sysUser = (User)q.getSingleResult();
+            return sysUser;
+        } catch (NoResultException e) {
+            logger.underlyingLogger().error("SuperAdmin not found", e);
+            return null;
+        }
+    }
 }

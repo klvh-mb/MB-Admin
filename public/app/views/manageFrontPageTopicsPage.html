@@ -57,8 +57,8 @@
                             <td>{{frontPageTopic.pd | date:'M/dd/yyyy HH:mm'}}</td>
                             <td>
                                 <input type="button" value="Update" ng-click="setData(frontPageTopic)" data-toggle="modal" data-target="#myModal2" style="margin-bottom:5px;"/>
-                                <input type="button" value="Delete" ng-click="setDeleteId(frontPageTopic)" data-toggle="modal" data-target="#myModal3" style="margin-bottom:5px;"/>
-                                <input type="button" value="Toggle" ng-click="setToggleActiveId(frontPageTopic)" data-toggle="modal" data-target="#myModal4" style="margin-bottom:5px;"/>
+                                <input type="button" value="Delete" ng-click="setDeleteId(frontPageTopic.id)" data-toggle="modal" data-target="#myModal3" style="margin-bottom:5px;"/>
+                                <input type="button" value="Toggle" ng-click="setToggleActiveId(frontPageTopic.id)" data-toggle="modal" data-target="#myModal4" style="margin-bottom:5px;"/>
                             </td>
                         </tr>
                         </tbody>
@@ -78,7 +78,7 @@
     </section>
     <!--container end-->
   </div>
-          <!-- Create Modal -->
+        <!-- Create Modal -->
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -236,7 +236,7 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">FrontPage Topic Delete</h4>
+                <h4 class="modal-title" id="myModalLabel">Delete FrontPage Topic</h4>
               </div>
               <div class="modal-body">
                 Are you sure you want to delete?

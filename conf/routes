@@ -47,7 +47,7 @@ POST    /image/campaign/upload      controllers.CampaignController.uploadImage
 # PKView
 POST    /savePKView                 controllers.PKViewController.savePKView
 POST    /updatePKView               controllers.PKViewController.updatePKView
-GET     /getPKViews                 controllers.PKViewController.getPKViews()
+GET     /getPKViews                 controllers.PKViewController.getPKViews
 GET     /deletePKView/:id           controllers.PKViewController.deletePKView(id:Long)
 
 # FrontPage

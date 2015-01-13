@@ -167,8 +167,8 @@ minibean.controller('ManageCampaignsController',function($scope, $http, $modal, 
         });
     };
     
-    $scope.deleteCampaign = function (id){
-        campaignService.deleteCampaign.get({id :id}, function(data){
+    $scope.deleteCampaign = function(id) {
+        campaignService.deleteCampaign.get({id:id}, function(data){
             $('#myModal').modal('hide');
             angular.forEach($scope.campaigns, function(request, key){
                 if(request.id == id) {
@@ -178,12 +178,12 @@ minibean.controller('ManageCampaignsController',function($scope, $http, $modal, 
         });
     }
 
-    $scope.assignDeleteId = function(id) {
-        $scope.deleteID = id;
+    $scope.setDeleteId = function(id) {
+        $scope.deleteId = id;
     }
     
     $scope.notifyWinners = function (id){
-        campaignService.notifyWinners.get({id :id}, function(data){
+        campaignService.notifyWinners.get({id:id}, function(data){
             $('#notifyModal').modal('hide');
             alert(data.status+" - "+data.message);
         });
@@ -402,8 +402,8 @@ minibean.controller('ManageArticlesController',function($scope, $modal, articleS
     	  $scope.result = articleService.searchArticles.get({id:$scope.searchById,name:$scope.searchByName});
       };
       
-      $scope.deleteArticle = function (id){
-          articleService.deleteArticle.get({id :id}, function(data){
+      $scope.deleteArticle = function(id) {
+          articleService.deleteArticle.get({id:id}, function(data){
               $('#myModal').modal('hide');
               angular.forEach($scope.result, function(request, key){
                     if(request.id == id) {
@@ -414,10 +414,9 @@ minibean.controller('ManageArticlesController',function($scope, $modal, articleS
           });
       }
       
-      $scope.assignDeleteId = function(id) {
-          $scope.deleteID = id;
+      $scope.setDeleteId = function(id) {
+          $scope.deleteId = id;
       }
-      
 });
 
 minibean.controller('CreateArticleController', function($scope, $http, $location, articleService, locationService, usSpinnerService){
@@ -586,12 +585,12 @@ minibean.controller('ManagePKViewsController',function($scope, $modal, $http, $f
     $scope.resetData = function() {
         $scope.formData = "";
     }
-    $scope.setDeleteId = function(Id) {
-        $scope.deleteId = Id;
+    $scope.setDeleteId = function(id) {
+        $scope.deleteId = id;
     };
     $scope.savePKView = function() {
         $http.post('/savePKView', $scope.formData).success(function(data){
-            $scope.searchPKViews(currentPage);
+            $scope.pkviews = pkViewsService.PKViews.get();
             $('#myModal').modal('hide');
         }).error(function(data, status, headers, config) {
         });
@@ -599,15 +598,15 @@ minibean.controller('ManagePKViewsController',function($scope, $modal, $http, $f
     
     $scope.updatePKView = function() {
         $http.post('/updatePKView', $scope.pkviewData).success(function(data){
-            $scope.searchPKViews(currentPage);
+            $scope.pkviews = pkViewsService.PKViews.get();
             $('#myModal2').modal('hide');
         }).error(function(data, status, headers, config) {
         });
     };
     
-    $scope.deletePKView = function(idData) {
-        pkViewsService.DeletePKView.get({id :idData.id}, function(data){
-            $scope.searchPKViews(currentPage);
+    $scope.deletePKView = function(id) {
+        pkViewsService.DeletePKView.get({id:id}, function(data){
+            $scope.pkviews = pkViewsService.PKViews.get();
             $('#myModal3').modal('hide');
         });    
     };
@@ -672,11 +671,11 @@ minibean.controller('ManageFrontPageTopicsController',function($scope, $modal, $
         $scope.formData = "";
         $scope.isChosen = false;
     }
-    $scope.setDeleteId = function(Id) {
-        $scope.deleteId = Id;
+    $scope.setDeleteId = function(id) {
+        $scope.deleteId = id;
     };
-    $scope.setToggleActiveId = function(Id) {
-        $scope.toggleActiveId = Id;
+    $scope.setToggleActiveId = function(id) {
+        $scope.toggleActiveId = id;
     };
     $scope.saveFrontPageTopic = function() {
         $http.post('/saveFrontPageTopic', $scope.formData).success(function(data){
@@ -694,15 +693,15 @@ minibean.controller('ManageFrontPageTopicsController',function($scope, $modal, $
         });
     };
     
-    $scope.deleteFrontPageTopic = function(idData) {
-        frontPageTopicsService.DeleteFrontPageTopic.get({id :idData.id}, function(data){
+    $scope.deleteFrontPageTopic = function(id) {
+        frontPageTopicsService.DeleteFrontPageTopic.get({id:id}, function(data){
             $scope.searchFrontPageTopics(currentPage);
             $('#myModal3').modal('hide');
         });    
     };
     
-    $scope.toggleActiveFrontPageTopic = function(idData) {
-        frontPageTopicsService.ToggleActiveFrontPageTopic.get({id :idData.id}, function(data){
+    $scope.toggleActiveFrontPageTopic = function(id) {
+        frontPageTopicsService.ToggleActiveFrontPageTopic.get({id:id}, function(data){
             $scope.searchFrontPageTopics(currentPage);
             $('#myModal4').modal('hide');
         });    
@@ -823,8 +822,8 @@ minibean.controller('ManageAnnouncementsController',function($scope, $modal, $ht
 		$scope.formData = "";
 		$scope.isChosen = false;
 	}
-	$scope.setDeleteId = function(Id) {
-		$scope.deleteId = Id;
+	$scope.setDeleteId = function(id) {
+		$scope.deleteId = id;
 	};
 	$scope.saveAnnouncement = function() {
 		$scope.formData.fromDate = $filter('date')(new Date($scope.searchForm.from),'yyyy-MM-dd');
@@ -844,8 +843,8 @@ minibean.controller('ManageAnnouncementsController',function($scope, $modal, $ht
 		});
 	};
 	
-	$scope.deleteAnnouncement = function(idData) {
-		deleteAnnouncementService.DeleteAnnouncement.get({id :idData.id}, function(data){
+	$scope.deleteAnnouncement = function(id) {
+		deleteAnnouncementService.DeleteAnnouncement.get({id:id}, function(data){
 			$scope.searchAnnouncements(currentPage);
             $('#myModal3').modal('hide');
 		});    

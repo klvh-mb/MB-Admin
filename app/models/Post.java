@@ -66,6 +66,7 @@ public class Post extends SocialObject {
         this.title = title;
         this.body = post;
         this.community = community;
+        this.owner = User.getMBEditor();
     }
 
 	@Transactional

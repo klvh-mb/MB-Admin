@@ -6,7 +6,7 @@
    <!--container begin-->
     <section id="container">
         <section class="contentpanel">
-            <h4>Manage PK Views Topics</h4>
+            <h4>Manage PK Views</h4>
             <!--Advance search fildes begin-->
             <section class="dadsrch">
                 <section class="heading"><h2></h2></section>
@@ -25,125 +25,91 @@
                 <table ng-table="tableParams">
                     <thead>
                         <tr>
-                            <th style="width:50px;"><a>Active?</a></th>
-                            <th style="width:80px;"><a>Type</a></th>
-                            <th style="width:80px;"><a>SubType</a></th>
-                            <th style="width:30px;"><a>Seq</a></th>
-                            <th style="width:120px;"><a>Name</a></th>
-                            <th style="width:auto;"><a>Description</a></th>
-                            <th style="width:100px;"><a>Image</a></th>
-                            <th style="width:100px;"><a>URL</a></th>
-                            <th style="width:100px;"><a>Attribute</a></th>
-                            <th style="width:80px;"><a>Published</a></th>
+                            <th style="width:30px;"><a>ID</a></th>
+                            <th style="width:80px;"><a>Community</a></th>
+                            <th style="width:auto;"><a>Title</a></th>
+                            <th style="width:120px;"><a>Text</a></th>
+                            <th style="width:80px;"><a>Image</a></th>
+                            <th style="width:100px;"><a>[Yes Text</a></th>
+                            <th style="width:80px;"><a>Image</a></th>
+                            <th style="width:30px;"><a>Vote]</a></th>
+                            <th style="width:100px;"><a>[No Text</a></th>
+                            <th style="width:80px;"><a>Image</a></th>
+                            <th style="width:30px;"><a>Vote]</a></th>
+                            <th style="width:80px;"><a>Posted On</a></th>
                             <th><a></a></th>
                         <tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="pkview in pkviews.results">
-                            <td>
-                                <span ng-show="{{pkview.ac}}" style="color:green;">YES</span>
-                                <span ng-show="{{!pkview.ac}}" style="color:gray;">NO</span>
-                            </td>
-                            <td>
-                                <span style="color:purple;font-weight:bold;">{{pkview.ty}}</span>
-                            </td>
-                            <td>{{pkview.sty}}</td>
-                            <td>{{pkview.seq}}</td>
-                            <td style="word-wrap:break-word;word-break:break-all;">{{pkview.nm}}</td>
-                            <td style="word-wrap:break-word;word-break:break-all;">{{pkview.ds}}</td>
-                            <td style="word-wrap:break-word;word-break:break-all;">{{pkview.img}}</td>
-                            <td style="word-wrap:break-word;word-break:break-all;">{{pkview.url}}</td>
-                            <td style="word-wrap:break-word;word-break:break-all;">{{pkview.attr}}</td>
-                            <td>{{pkview.pd | date:'M/dd/yyyy HH:mm'}}</td>
+                            <td>{{pkview.id}}</td>
+                            <td>{{pkview.cn}} ({{pkview.cid}})</td>
+                            <td style="word-wrap:break-word;word-break:break-all;">{{pkview.ptl}}</td>
+                            <td style="word-wrap:break-word;word-break:break-all;">{{pkview.pt}}</td>
+                            <td style="word-wrap:break-word;word-break:break-all;">{{pkview.im}}</td>
+                            <td style="word-wrap:break-word;word-break:break-all;">{{pkview.red_ds}}</td>
+                            <td style="word-wrap:break-word;word-break:break-all;">{{pkview.red_img}}</td>
+                            <td>{{pkview.n_rv}}</td>
+                            <td style="word-wrap:break-word;word-break:break-all;">{{pkview.blue_ds}}</td>
+                            <td style="word-wrap:break-word;word-break:break-all;">{{pkview.blue_img}}</td>
+                            <td>{{pkview.n_bv}}</td>
+                            <td>{{pkview.t | date:'M/dd/yyyy HH:mm'}}</td>
                             <td>
                                 <input type="button" value="Update" ng-click="setData(pkview)" data-toggle="modal" data-target="#myModal2" style="margin-bottom:5px;"/>
-                                <input type="button" value="Delete" ng-click="setDeleteId(pkview)" data-toggle="modal" data-target="#myModal3" style="margin-bottom:5px;"/>
-                                <input type="button" value="Toggle" ng-click="setToggleActiveId(pkview)" data-toggle="modal" data-target="#myModal4" style="margin-bottom:5px;"/>
+                                <input type="button" value="Delete" ng-click="setDeleteId(pkview.id)" data-toggle="modal" data-target="#myModal3" style="margin-bottom:5px;"/>
                             </td>
                         </tr>
                         </tbody>
                 </table>
             </section>
             <!--grid end-->
-            
-            <section class="dpaging">
-                <h4>{{pageNumber}}/{{pageSize}}</h4>
-                <span class="dpagingright">
-                    <a href="" class="dpagingprv" ng-click="onPrev()">Prev</a>
-                    <a href="" class="dpagingnxt" ng-click="onNext()">Next</a>
-                </span>
-            </section>
         </div>     
         </section>
     </section>
     <!--container end-->
   </div>
-          <!-- Create Modal -->
+        <!-- Create Modal -->
         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="myModalLabel">Create FrontPage Topic</h4>
+                <h4 class="modal-title" id="myModalLabel">Create PK View</h4>
               </div>
               <form method="post" ng-submit="savePKView()">
               <div class="modal-body">
               <table>
                     <tr>
-                        <td><label>Topic Type</label></td>
-                        <td style="height: 50px;">
-                            <select name="topicType" data-ng-model="formData.topicType" style="width:100%;" required>
-                                <option disabled="true" value="">--Select--</option>
-                                <option value="SLIDER">SLIDER</option>
-                                <option value="PROMO">PROMO</option>
-                                <option value="PROMO_2">PROMO_2</option>
-                                <option value="FEATURED">FEATURED</option>
-                                <option value="GAME">GAME</option>
-                            </select>
-                        </td>
-                        <label class="control-label error" data-ng-show="typeNotChoose==true" style="color: red;">Please select Topic Type</label>
+                        <td><label>Community ID</label></td>
+                        <td style="height: 50px;"><input type="text" name="community_id" style="width:50%;" data-ng-model="formData.community_id"></td>
                     </tr>
                     <tr>
-                        <td><label>Topic SubType</label></td>
-                        <td style="height: 50px;">
-                            <select name="topicSubType" data-ng-model="formData.topicSubType" style="width:100%;" required>
-                                <option disabled="true" value="">--Select--</option>
-                                <option value="NONE">NONE</option>
-                                <option value="FLASH">FLASH</option>
-                                <option value="IMAGE">IMAGE</option>
-                                <option value="HOT_COMM">HOT_COMM</option>
-                                <option value="PK_VIEW">PK_VIEW</option>
-                            </select>
-                        </td>
-                        <label class="control-label error" data-ng-show="subTypeNotChoose==true" style="color: red;">Please select Topic SubType</label>
+                        <td><label>Title</label></td>
+                        <td style="height: 50px;"><input type="text" name="title" style="width:200%;" data-ng-model="formData.title"></td>
                     </tr>
                     <tr>
-                    <td></td>
-                    <td></td>
-                    </tr>
-                    <tr>
-                        <td><label>Seq</label></td>
-                        <td style="height: 50px;"><input type="text" name="seq" style="width:50%;" data-ng-model="formData.seq"></td>
-                    </tr>
-                    <tr>
-                        <td><label>Name</label></td>
-                        <td style="height: 50px;"><input type="text" name="name" style="width:300%;" data-ng-model="formData.name"></td>
-                    </tr>
-                    <tr>
-                        <td><label>Description</label></td>
-                        <td style="height: 50px;"><textarea type="text" name="description" style="width:300%;" data-ng-model="formData.description" rows="5"></textarea></td>
+                        <td><label>Text</label></td>
+                        <td style="height: 50px;"><textarea type="text" name="text" style="width:200%;" data-ng-model="formData.text" rows="3"></textarea></td>
                     </tr>
                     <tr>
                         <td><label>Image</label></td>
-                        <td style="height: 50px;"><input type="text" name="image" style="width:300%;" data-ng-model="formData.image"></td>
+                        <td style="height: 50px;"><input type="text" name="image" style="width:200%;" data-ng-model="formData.image"></td>
                     </tr>
                     <tr>
-                        <td><label>URL</label></td>
-                        <td style="height: 50px;"><input type="text" name="url" style="width:300%;" data-ng-model="formData.url"></td>
+                        <td><label>Yes Text</label></td>
+                        <td style="height: 50px;"><textarea type="text" name="yes_text" style="width:200%;" data-ng-model="formData.yes_text" rows="2"></textarea></td>
                     </tr>
                     <tr>
-                        <td><label>Attribute</label></td>
-                        <td style="height: 50px;"><input type="text" name="attribute" style="width:300%;" data-ng-model="formData.attribute"></td>
+                        <td><label>Yes Image</label></td>
+                        <td style="height: 50px;"><input type="text" name="yes_image" style="width:200%;" data-ng-model="formData.yes_image"></td>
+                    </tr>
+                    <tr>
+                        <td><label>No Text</label></td>
+                        <td style="height: 50px;"><textarea type="text" name="no_text" style="width:200%;" data-ng-model="formData.no_text" rows="2"></textarea></td>
+                    </tr>
+                    <tr>
+                        <td><label>No Image</label></td>
+                        <td style="height: 50px;"><input type="text" name="yes_image" style="width:200%;" data-ng-model="formData.no_image"></td>
                     </tr>
                 </table>
               </div>
@@ -162,7 +128,7 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="myModalLabel">Update FrontPage Topic</h4>
+                <h4 class="modal-title" id="myModalLabel">Update PK View</h4>
               </div>
               <form method="post" ng-submit="updatePKView()">
               <div class="modal-body">
@@ -201,23 +167,23 @@
                     </tr>
                     <tr>
                         <td><label>Name</label></td>
-                        <td style="height: 50px;"><input type="text" name="name" style="width:300%;" data-ng-model="pkviewData.nm"></td>
+                        <td style="height: 50px;"><input type="text" name="name" style="width:200%;" data-ng-model="pkviewData.nm"></td>
                     </tr>
                     <tr>
                         <td><label>Description</label></td>
-                        <td style="height: 50px;"><textarea type="text" name="description" style="width:300%;" data-ng-model="pkviewData.ds" rows="5"></textarea></td>
+                        <td style="height: 50px;"><textarea type="text" name="description" style="width:200%;" data-ng-model="pkviewData.ds" rows="5"></textarea></td>
                     </tr>
                     <tr>
                         <td><label>Image</label></td>
-                        <td style="height: 50px;"><input type="text" name="image" style="width:300%;" data-ng-model="pkviewData.img"></td>
+                        <td style="height: 50px;"><input type="text" name="image" style="width:200%;" data-ng-model="pkviewData.img"></td>
                     </tr>
                     <tr>
                         <td><label>URL</label></td>
-                        <td style="height: 50px;"><input type="text" name="url" style="width:300%;" data-ng-model="pkviewData.url"></td>
+                        <td style="height: 50px;"><input type="text" name="url" style="width:200%;" data-ng-model="pkviewData.url"></td>
                     </tr>
                     <tr>
                         <td><label>Attribute</label></td>
-                        <td style="height: 50px;"><input type="text" name="attribute" style="width:300%;" data-ng-model="pkviewData.attr"></td>
+                        <td style="height: 50px;"><input type="text" name="attribute" style="width:200%;" data-ng-model="pkviewData.attr"></td>
                     </tr>
                 </table>
               </div>
@@ -236,7 +202,7 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">FrontPage Topic Delete</h4>
+                <h4 class="modal-title" id="myModalLabel">Delete PK View</h4>
               </div>
               <div class="modal-body">
                 Are you sure you want to delete?

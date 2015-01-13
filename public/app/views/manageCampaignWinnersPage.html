@@ -19,12 +19,24 @@
             <div class="col-md-9 col-lg-9">
                 <div class="row tm">
                     <div class="col-md-4">
+                        <span style="float:left;color:lightcoral;font-weight:bold;" ng-show="winner.id != -1">WINNER</span>
                         <div class="pull-right">
-                            <label>Winner ID: </label>
+                            <label>ID: </label>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6"> {{winner.id}} <span style="margin-left:10px;color:lightcoral;font-weight:bold;" ng-show="winner.id != -1">[WINNER]</span></div>
+                        <div class="col-md-6"> 
+                            {{winner.id}} 
+                            <span style="float:right;" ng-switch="winner.winnerState">
+                                <span style="color:orange;font-weight:bold;" ng-switch-when="SELECTED">[{{winner.winnerState}}]</span>
+                                <span style="color:orange;font-weight:bold;" ng-switch-when="ANNOUNCED">[{{winner.winnerState}}]</span>
+                                <span style="color:green;font-weight:bold;" ng-switch-when="ACCEPTED">[{{winner.winnerState}}]</span>
+                                <span style="color:blue;font-weight:bold;" ng-switch-when="DELIVERED">[{{winner.winnerState}}]</span>
+                                <span style="color:red;font-weight:bold;" ng-switch-when="PROBLEM">[{{winner.winnerState}}]</span>
+                                <span style="color:gray;font-weight:bold;" ng-switch-when="REMOVED">[{{winner.winnerState}}]</span>
+                                <span ng-switch-default>[{{winner.winnerState}}]</span>
+                            </span>
+                        </div>
                     </div>
                     
                     <div class="col-md-4">
@@ -54,7 +66,7 @@
                         <div class="col-md-6"> {{winner.email}} </div>
                     </div>
     
-                    <div class="col-md-4">
+                    <!--div class="col-md-4">
                         <div class="pull-right">
                             <label>Winner State: </label>
                         </div>
@@ -71,7 +83,7 @@
                                 <span ng-switch-default>{{winner.winnerState}}</span>
                             </div>
                         </div>
-                    </div>
+                    </div-->
                     
                     <div class="col-md-4">
                         <div class="pull-right">

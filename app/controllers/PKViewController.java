@@ -53,15 +53,15 @@ public class PKViewController extends Controller {
 
         DynamicForm form = DynamicForm.form().bindFromRequest();
         Long communityId = Long.parseLong(form.get("community_id"));
-        String pkTitle = form.get("pkTitle");
-        String pkText = form.get("pkText");
-        String pkImage = form.get("pkImage");
+        String pkTitle = form.get("title");
+        String pkText = form.get("text");
+        String pkImage = form.get("image");
         int shortBodyCount = StringUtil.computePostShortBodyCount(pkText);
 
-        String pkYesText = form.get("pkYesText");
-        String pkNoText = form.get("pkNoText");
-        String pkYesImage = form.get("pkYesImage");
-        String pkNoImage = form.get("pkNoImage");
+        String pkYesText = form.get("yes_text");
+        String pkYesImage = form.get("yes_image");
+        String pkNoText = form.get("no_text");
+        String pkNoImage = form.get("no_image");
 
         Community community = Community.findById(communityId);
         if (community == null) {
@@ -77,7 +77,7 @@ public class PKViewController extends Controller {
         post.setUpdatedDate(new Date());
         post.save();
         // create PKViewMeta
-        PKViewMeta pkViewMeta = new PKViewMeta(post.id, pkYesText, pkImage, pkNoText, pkYesImage, pkNoImage);
+        PKViewMeta pkViewMeta = new PKViewMeta(post.id, pkImage, pkYesText, pkNoText, pkYesImage, pkNoImage);
         pkViewMeta.save();
 
         logger.underlyingLogger().info("[c="+communityId+"] postPKOnCommunity");
@@ -163,8 +163,10 @@ public class PKViewController extends Controller {
 
         Pair<PKViewMeta,Post> pkViewMeta = PKViewMeta.getPKViewById(id);
         if (pkViewMeta != null) {
-            pkViewMeta.getFirst().delete();
-            pkViewMeta.getSecond().delete();
+            pkViewMeta.getFirst().deleted = true;
+            pkViewMeta.getFirst().save();
+            pkViewMeta.getSecond().deleted = true;
+            pkViewMeta.getSecond().save();
             logger.underlyingLogger().info(loggedInUser+" deleted PKView ["+id+"]");
         }
         else {

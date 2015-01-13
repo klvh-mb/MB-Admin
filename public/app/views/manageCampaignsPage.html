@@ -133,7 +133,7 @@
                 </div>
                 
                 <div class="innerAll pull-right border-right ng-scope">
-                    <button class="btn btn-primary" data-toggle="modal" data-ng-click="assignDeleteId(campaign.id)" data-target="#myModal"><span class="glyphicon glyphicon-remove-circle"></span> Delete </button>
+                    <button class="btn btn-primary" data-toggle="modal" data-ng-click="setDeleteId(campaign.id)" data-target="#myModal"><span class="glyphicon glyphicon-remove-circle"></span> Delete </button>
                 </div>
                 
                 <div class="innerAll pull-right border-right ng-scope">
@@ -161,7 +161,7 @@
                         Are you sure you want to delete campaign?
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-ng-click="deleteCampaign(deleteID)">Yes</button>
+                        <button type="button" class="btn btn-primary" data-ng-click="deleteCampaign(deleteId)">Yes</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
                     </div>
                 </div>

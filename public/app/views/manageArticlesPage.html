@@ -113,7 +113,7 @@
                 </div>
                 
                 <div class="innerAll pull-right border-right ng-scope">
-                	<button class="btn btn-primary" data-toggle="modal" data-ng-click="assignDeleteId(article.id)" data-target="#myModal" ><span class="glyphicon glyphicon-remove-circle"></span> Delete </button>
+                	<button class="btn btn-primary" data-toggle="modal" data-ng-click="setDeleteId(article.id)" data-target="#myModal" ><span class="glyphicon glyphicon-remove-circle"></span> Delete </button>
                 </div>
                 
                 <div class="innerAll pull-right border-right">
@@ -136,7 +136,7 @@
                         Are you sure you want to delete article?
                     </div>
                     <div class="modal-footer">
-          	            <button type="button" class="btn btn-primary" data-ng-click="deleteArticle(deleteID)">Yes</button>
+          	            <button type="button" class="btn btn-primary" data-ng-click="deleteArticle(deleteId)">Yes</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
                     </div>
                 </div>
