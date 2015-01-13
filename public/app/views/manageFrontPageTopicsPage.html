@@ -33,7 +33,7 @@
                             <th style="width:auto;"><a>Description</a></th>
                             <th style="width:100px;"><a>Image</a></th>
                             <th style="width:100px;"><a>URL</a></th>
-                            <th style="width:100px;"><a>Attribute</a></th>
+                            <th style="width:30px;"><a>Attribute</a></th>
                             <th style="width:80px;"><a>Published</a></th>
                             <th><a></a></th>
                         <tr>
@@ -50,7 +50,7 @@
                             <td>{{frontPageTopic.sty}}</td>
                             <td>{{frontPageTopic.seq}}</td>
                             <td style="word-wrap:break-word;word-break:break-all;">{{frontPageTopic.nm}}</td>
-                            <td style="word-wrap:break-word;word-break:break-all;">{{frontPageTopic.ds}}</td>
+                            <td style="word-wrap:break-word;word-break:break-all;">{{frontPageTopic.ds | limitTo:250}}</td>
                             <td style="word-wrap:break-word;word-break:break-all;">{{frontPageTopic.img}}</td>
                             <td style="word-wrap:break-word;word-break:break-all;">{{frontPageTopic.url}}</td>
                             <td style="word-wrap:break-word;word-break:break-all;">{{frontPageTopic.attr}}</td>
