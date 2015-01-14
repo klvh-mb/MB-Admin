@@ -20,6 +20,7 @@ public class FrontPageTopicVM {
 	@JsonProperty("ty") public String topicType;
 	@JsonProperty("sty") public String topicSubType;
 	@JsonProperty("ac") public boolean active;
+	@JsonProperty("m") public boolean mobile;
 
 	public FrontPageTopicVM(FrontPageTopic topic) {
 		this.id = topic.id;
@@ -34,5 +35,6 @@ public class FrontPageTopicVM {
 		this.topicType = topic.topicType.name();
 		this.topicSubType = topic.topicSubType.name();
 		this.active = topic.active;
+		this.mobile = topic.mobile;
 	}
 }

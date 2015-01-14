@@ -55,6 +55,7 @@ public class FrontPageTopicController extends Controller{
 		FrontPageTopic frontPageTopic = new FrontPageTopic();
 		frontPageTopic.topicType = TopicType.valueOf(form.get("topicType"));
 		frontPageTopic.topicSubType = TopicSubType.valueOf(form.get("topicSubType"));
+		frontPageTopic.mobile = Boolean.parseBoolean(form.get("mobile"));
 		frontPageTopic.seq = Integer.parseInt(form.get("seq"));
 		frontPageTopic.name = form.get("name");
 		frontPageTopic.description = form.get("description");
@@ -66,6 +67,28 @@ public class FrontPageTopicController extends Controller{
 		frontPageTopic.save();
 		return ok();
 	}
+	
+	@Transactional
+    public static Result updateFrontPageTopic() {
+        final String loggedInUser = Application.getLoggedInUser();
+        if (loggedInUser == null) {
+            return ok(views.html.login.render());
+        }
+        
+        DynamicForm form = DynamicForm.form().bindFromRequest();
+        FrontPageTopic frontPageTopic = FrontPageTopic.findById(Long.parseLong(form.get("id")));
+        frontPageTopic.topicType = TopicType.valueOf(form.get("ty"));
+        frontPageTopic.topicSubType = TopicSubType.valueOf(form.get("sty"));
+        frontPageTopic.mobile = Boolean.parseBoolean(form.get("m"));
+        frontPageTopic.seq = Integer.parseInt(form.get("seq"));
+        frontPageTopic.name = form.get("nm");
+        frontPageTopic.description = form.get("ds");
+        frontPageTopic.image = form.get("img");
+        frontPageTopic.url = form.get("url");
+        frontPageTopic.attribute = form.get("attr");
+        frontPageTopic.merge();
+        return ok();
+    }
 	
 	@Transactional
 	public static Result deleteFrontPageTopic(Long id) {
@@ -92,25 +115,4 @@ public class FrontPageTopicController extends Controller{
         frontPageTopic.save();
         return ok();
     }
-	
-	@Transactional
-	public static Result updateFrontPageTopic() {
-	    final String loggedInUser = Application.getLoggedInUser();
-        if (loggedInUser == null) {
-            return ok(views.html.login.render());
-        }
-        
-		DynamicForm form = DynamicForm.form().bindFromRequest();
-		FrontPageTopic frontPageTopic = FrontPageTopic.findById(Long.parseLong(form.get("id")));
-		frontPageTopic.topicType = TopicType.valueOf(form.get("ty"));
-		frontPageTopic.topicSubType = TopicSubType.valueOf(form.get("sty"));
-		frontPageTopic.seq = Integer.parseInt(form.get("seq"));
-		frontPageTopic.name = form.get("nm");
-		frontPageTopic.description = form.get("ds");
-		frontPageTopic.image = form.get("img");
-		frontPageTopic.url = form.get("url");
-		frontPageTopic.attribute = form.get("attr");
-		frontPageTopic.merge();
-		return ok();
-	}
 }

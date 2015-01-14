@@ -25,7 +25,8 @@
                 <table ng-table="tableParams">
                     <thead>
                         <tr>
-                            <th style="width:50px;"><a>Active?</a></th>
+                            <th style="width:30px;"><a>Active</a></th>
+                            <th style="width:30px;"><a>Mobile</a></th>
                             <th style="width:80px;"><a>Type</a></th>
                             <th style="width:80px;"><a>SubType</a></th>
                             <th style="width:30px;"><a>Seq</a></th>
@@ -43,6 +44,10 @@
                             <td>
                                 <span ng-show="{{frontPageTopic.ac}}" style="color:green;">YES</span>
                                 <span ng-show="{{!frontPageTopic.ac}}" style="color:gray;">NO</span>
+                            </td>
+                            <td>
+                                <span ng-show="{{frontPageTopic.m}}" style="color:green;">YES</span>
+                                <span ng-show="{{!frontPageTopic.m}}" style="color:gray;">NO</span>
                             </td>
                             <td>
                                 <span style="color:purple;font-weight:bold;">{{frontPageTopic.ty}}</span>
@@ -118,8 +123,8 @@
                         <label class="control-label error" data-ng-show="subTypeNotChoose==true" style="color: red;">Please select Topic SubType</label>
                     </tr>
                     <tr>
-                    <td></td>
-                    <td></td>
+                        <td><label>Mobile</label></td>
+                        <td style="height: 50px;"><input type="checkbox" name="mobile" data-ng-model="formData.mobile" style="width:50%;"></td>
                     </tr>
                     <tr>
                         <td><label>Seq</label></td>
@@ -192,8 +197,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <td></td>
-                        <td></td>
+                        <td><label>Mobile</label></td>
+                        <td style="height: 50px;"><input type="checkbox" name="mobile" data-ng-model="frontPageTopicData.m" style="width:50%;"></td>
                     </tr>
                     <tr>
                         <td><label>Seq</label></td>

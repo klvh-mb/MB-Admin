@@ -43,6 +43,8 @@ public class FrontPageTopic extends domain.Entity {
 
     public Boolean active = false;
     
+    public Boolean mobile = false;
+    
     public Boolean deleted = false; 
     
     @Enumerated(EnumType.STRING)
