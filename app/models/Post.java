@@ -9,7 +9,6 @@ import javax.persistence.*;
 import play.data.validation.Constraints.Required;
 import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
-
 import models.Comment;
 import models.Community;
 import domain.PostType;
@@ -43,6 +42,8 @@ public class Post extends SocialObject {
     public int noOfViews = 0;
     public int shortBodyCount = 0;
 
+    @ManyToOne
+    public User socialUpdatedBy;
 	public Date socialUpdatedDate = new Date();
 
     @Enumerated(EnumType.STRING)
