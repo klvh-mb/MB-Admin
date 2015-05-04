@@ -4,8 +4,6 @@ import java.util.Date;
 
 import javax.persistence.NoResultException;
 
-import org.apache.commons.lang.StringUtils;
-
 import models.AdminUser;
 import play.Play;
 import play.data.DynamicForm;

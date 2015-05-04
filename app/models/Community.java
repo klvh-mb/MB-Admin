@@ -1,10 +1,5 @@
 package models;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,10 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NoResultException;
 import javax.persistence.OneToMany;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 
@@ -30,9 +21,7 @@ import play.Play;
 import play.data.format.Formats;
 import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
-import play.i18n.Messages;
 
-import domain.PostType;
 import domain.SocialObjectType;
 
 @Entity

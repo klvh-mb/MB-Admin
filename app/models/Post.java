@@ -11,6 +11,7 @@ import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
 import models.Comment;
 import models.Community;
+import domain.PostSubType;
 import domain.PostType;
 import domain.SocialObjectType;
 
@@ -32,6 +33,9 @@ public class Post extends SocialObject {
 
     @Required
     public PostType postType;
+
+    @Required
+    public PostSubType postSubType;
 
     @ManyToOne(cascade = CascadeType.REMOVE)
     public Folder folder;
