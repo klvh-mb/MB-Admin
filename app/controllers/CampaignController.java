@@ -54,8 +54,6 @@ public class CampaignController extends Controller {
             // TODO
         } else if (CampaignType.VOTING == campaign.campaignType) {
             // TODO
-        } else if (CampaignType.PHOTO_CONTEST == campaign.campaignType) {
-            // TODO
         }
         
         return count;
@@ -126,9 +124,7 @@ public class CampaignController extends Controller {
             // TODO
         } else if (CampaignType.VOTING == campaign.campaignType) {
             // TODO
-        } else if (CampaignType.PHOTO_CONTEST == campaign.campaignType) {
-            // TODO
-        }
+        } 
         
         return ok(Json.toJson(vms));
     }

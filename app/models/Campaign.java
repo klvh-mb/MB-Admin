@@ -48,10 +48,10 @@ public class Campaign extends SocialObject {
     public CampaignType campaignType;
     
     public static enum CampaignType {
+    	INFO,
         ACTIONS,
         QUESTIONS,
-        VOTING,
-        PHOTO_CONTEST
+        VOTING
     }
 	
     @Lob
