@@ -35,6 +35,7 @@ public class DefaultValues {
 
     public static int MAX_ARTICLES_COUNT = 100;
     public static int MAX_CAMPAIGN_COUNT = 100;
+    public static int MAX_GAME_GIFT_COUNT = 100;
 
 
 

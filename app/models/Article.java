@@ -5,13 +5,15 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Query;
 import javax.persistence.NoResultException;
 
 import domain.DefaultValues;
-import play.data.format.Formats;
+import domain.SocialObjectType;
 import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
 
@@ -27,7 +29,8 @@ public class Article extends SocialObject {
     
 	public Date publishedDate;
 	
-	public String objectType = "ARTICLE";
+	@Enumerated(EnumType.STRING)
+	public SocialObjectType objectType = SocialObjectType.ARTICLE;
 	
 	@ManyToOne
 	public ArticleCategory category;

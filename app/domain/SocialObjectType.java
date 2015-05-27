@@ -1,6 +1,6 @@
 package domain;
 
-public enum  SocialObjectType {
+public enum SocialObjectType {
      USER,
      COMMUNITY,
      POST,
@@ -18,5 +18,9 @@ public enum  SocialObjectType {
      ANSWER,
      TAGWORD,
      CAMPAIGN,
-     PK_VIEW
+     GAME_GIFT,
+     PK_VIEW,           // PK - Question with 2 sides
+     PRE_NURSERY,       // School
+     KINDY,             // School
+     PLAYROOM           // Playroom venue
 }

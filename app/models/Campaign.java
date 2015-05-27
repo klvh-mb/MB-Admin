@@ -11,6 +11,7 @@ import javax.persistence.Query;
 import javax.persistence.NoResultException;
 
 import domain.DefaultValues;
+import domain.SocialObjectType;
 import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
 
@@ -30,7 +31,8 @@ public class Campaign extends SocialObject {
 	
     public Date endDate;
     
-	public String objectType = "CAMPAIGN";
+	@Enumerated(EnumType.STRING)
+	public SocialObjectType objectType = SocialObjectType.CAMPAIGN;
 	
 	@Enumerated(EnumType.STRING)
     public CampaignState campaignState = CampaignState.NEW;
