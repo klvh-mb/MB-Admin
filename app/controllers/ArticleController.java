@@ -1,7 +1,5 @@
 package controllers;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -11,26 +9,22 @@ import java.util.Map;
 import models.Article;
 import models.ArticleCategory;
 import models.Location;
-
-import org.apache.commons.io.FileUtils;
-import org.joda.time.DateTime;
-
 import common.utils.ImageUploadUtil;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.db.jpa.Transactional;
 import play.libs.Json;
-import play.mvc.Controller;
-import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
 import viewmodel.ArticleCategoryVM;
 import viewmodel.ArticleVM;
 import viewmodel.LocationVM;
 
-public class ArticleController extends Controller {
+public class ArticleController extends ImageUploadController {
     private static play.api.Logger logger = play.api.Logger.apply(ArticleController.class);
 
-    private static final ImageUploadUtil imageUploadUtil = new ImageUploadUtil("article");
+    static {
+    	setImageUploadUtil(new ImageUploadUtil("article"));
+    }
     
     @Transactional
     public static Result addArticle() {
@@ -227,37 +221,11 @@ public class ArticleController extends Controller {
     
     @Transactional
     public static Result uploadImage() {
-        final String loggedInUser = Application.getLoggedInUser();
-        if (loggedInUser == null) {
-            return ok(views.html.login.render());
-        }
-        
-        FilePart picture = request().body().asMultipartFormData().getFile("url-photo0");
-        String fileName = picture.getFilename();
-        logger.underlyingLogger().info("uploadImage. fileName=" + fileName);
-
-        DateTime  now = new DateTime();
-        File file = picture.getFile();
-        try {
-            String imagePath = imageUploadUtil.getImagePath(now, fileName);
-            FileUtils.copyFile(file, new File(imagePath));
-        } catch (IOException e) {
-            logger.underlyingLogger().error(loggedInUser+" failed to upload photo", e);
-            return status(500);
-        }
-
-        String imageUrl = imageUploadUtil.getImageUrl(now, fileName);
-        logger.underlyingLogger().info("uploadImage. imageUrl=" + imageUrl);
-
-        Map<String, String> map = new HashMap<>();
-        map.put("URL", imageUrl);
-        logger.underlyingLogger().info(loggedInUser+" uploaded photo - "+imageUrl);
-        return ok(Json.toJson(map));
+        return ImageUploadController.uploadImage();
     }
 
     @Transactional
     public static Result getImage(Long year, Long month, Long date, String name) {
-        String path = imageUploadUtil.getImagePath(year, month, date, name);
-        return ok(new File(path));
+        return ImageUploadController.getImage(year, month, date, name);
     }
 }

@@ -1,23 +1,14 @@
 package controllers;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import models.Campaign;
-import models.Campaign.AnnouncementType;
-import models.CampaignActionsUser;
-import models.Campaign.CampaignState;
-import models.Campaign.CampaignType;
-import models.CampaignWinner;
-import models.CampaignWinner.WinnerState;
-import models.Notification;
-import models.User;
+import models.GameGift;
+import models.GameGift.GiftState;
+import models.GameGift.GiftType;
+import models.GameGift.RedeemType;
 
 import org.apache.commons.lang.StringUtils;
 import org.joda.time.DateTime;
@@ -28,34 +19,26 @@ import play.data.Form;
 import play.db.jpa.Transactional;
 import play.libs.Json;
 import play.mvc.Result;
-import viewmodel.CampaignVM;
-import viewmodel.CampaignWinnerVM;
+import viewmodel.GameGiftVM;
 
-public class CampaignController extends ImageUploadController {
-    private static play.api.Logger logger = play.api.Logger.apply(CampaignController.class);
+public class GameController extends ImageUploadController {
+    private static play.api.Logger logger = play.api.Logger.apply(GameController.class);
 
     static {
-    	setImageUploadUtil(new ImageUploadUtil("campaign"));
+    	setImageUploadUtil(new ImageUploadUtil("game"));
     }
     
-    public static Long getJoinedUsersCount(Long campaignId) {
-        Campaign campaign = Campaign.findById(campaignId);
-        if (campaign == null) {
+    public static Long getRedeemedUsersCount(Long giftId) {
+    	GameGift gameGift = GameGift.findById(giftId);
+        if (gameGift == null) {
             return -1L;
         }
         
-        Long count = -1L;
-        if (CampaignType.ACTIONS == campaign.campaignType) {
-            count = CampaignActionsUser.getJoinedUsersCount(campaignId);
-        } else if (CampaignType.QUESTIONS == campaign.campaignType) {
-            // TODO
-        } else if (CampaignType.VOTING == campaign.campaignType) {
-            // TODO
-        }
-        
-        return count;
+        //return RedeemTransaction.getRedeemedUsersCount(giftId);
+        return -1L;
     }
     
+    /*
     @Transactional
     public static Result getCampaignWinners(Long campaignId) {
         List<CampaignWinner> winners = CampaignWinner.getWinners(campaignId);
@@ -246,60 +229,57 @@ public class CampaignController extends ImageUploadController {
         logger.underlyingLogger().info(loggedInUser+" changed winner state ["+winner.id+"|"+winner.winnerState.name()+"]");
         return ok(Json.toJson(new CampaignWinnerVM(winner)));
     }
+    */
     
     @Transactional
-    public static Result addCampaign() {
+    public static Result addGameGift() {
         final String loggedInUser = Application.getLoggedInUser();
         if (loggedInUser == null) {
             return ok(views.html.login.render());
         }
         
-        Form<Campaign> campaignForm = DynamicForm.form(Campaign.class).bindFromRequest();
+        Form<GameGift> gameGiftForm = DynamicForm.form(GameGift.class).bindFromRequest();
         DynamicForm form = DynamicForm.form().bindFromRequest();
         
-        Campaign campaign = campaignForm.get();
-        if (!Campaign.checkTitleExists(campaign.name)) {
-            return status(505, "PLEASE CHOOSE OTHER NAME");
+        GameGift gameGift = gameGiftForm.get();
+        try {
+        	gameGift.redeemType = RedeemType.valueOf(form.get("redeemType"));
+        } catch(Exception e) {
+            return status(505, "PLEASE CHOOSE REDEEM TYPE");
         }
         
         try {
-            campaign.campaignType = CampaignType.valueOf(form.get("campaignType"));
+        	gameGift.giftType = GiftType.valueOf(form.get("giftType"));
         } catch(Exception e) {
-            return status(506, "PLEASE CHOOSE CAMPAIGN TYPE");
+            return status(506, "PLEASE CHOOSE GIFT TYPE");
         }
         
         try {
             String sd = form.get("startDate");
-            campaign.startDate = DateTime.parse(sd).toDate();
+            gameGift.startDate = DateTime.parse(sd).toDate();
         } catch (Exception e) {
             return status(507, "PLEASE ENTER START DATE");
         }
         
         try {
             String ed = form.get("endDate");
-            campaign.endDate = DateTime.parse(ed).toDate();
+            gameGift.endDate = DateTime.parse(ed).toDate();
         } catch (Exception e) {
             return status(507, "PLEASE ENTER END DATE");
         }
         
-        if (campaign.startDate.after(campaign.endDate)) {
+        if (gameGift.startDate.after(gameGift.endDate)) {
             return status(508, "START DATE AFTER END DATE");
         }
         
-        try {
-            campaign.announcementType = AnnouncementType.valueOf(form.get("announcementType"));
-        } catch(Exception e) {
-            return status(509, "PLEASE CHOOSE ANNOUNCEMENT TYPE");
-        }
+        gameGift.save();
         
-        campaign.save();
-        
-        logger.underlyingLogger().info(loggedInUser+" saved campaign ["+campaign.id+"|"+campaign.name+"]");
+        logger.underlyingLogger().info(loggedInUser+" saved gameGift ["+gameGift.id+"|"+gameGift.name+"]");
         return ok();
     }
     
     @Transactional
-    public static Result updateCampaign() {
+    public static Result updateGameGift() {
         final String loggedInUser = Application.getLoggedInUser();
         if (loggedInUser == null) {
             return ok(views.html.login.render());
@@ -308,56 +288,56 @@ public class CampaignController extends ImageUploadController {
         DynamicForm form = DynamicForm.form().bindFromRequest();
         
         Long id = Long.parseLong(form.get("id"));
-        Campaign campaign = Campaign.findById(id);
-        campaign.name = form.get("name");
-        campaign.image = form.get("image");
+        GameGift gameGift = GameGift.findById(id);
+        gameGift.name = form.get("name");
+        gameGift.image = form.get("image");
         String description = form.get("description");
         if (!StringUtils.isEmpty(description)) {
-            campaign.description = description;
+        	gameGift.description = description;
         }
-        String announcement = form.get("announcement");
-        if (!StringUtils.isEmpty(announcement)) {
-            campaign.announcement = announcement;
+        String redeemInfo = form.get("redeemInfo");
+        if (!StringUtils.isEmpty(redeemInfo)) {
+        	gameGift.redeemInfo = redeemInfo;
         }
         
         try {
-            campaign.campaignType = CampaignType.valueOf(form.get("campaignType"));
+        	gameGift.redeemType = RedeemType.valueOf(form.get("redeemType"));
         } catch(Exception e) {
-            return status(506, "PLEASE CHOOSE CAMPAIGN TYPE");
+            return status(505, "PLEASE CHOOSE REDEEM TYPE");
+        }
+        
+        try {
+        	gameGift.giftType = GiftType.valueOf(form.get("giftType"));
+        } catch(Exception e) {
+            return status(506, "PLEASE CHOOSE GIFT TYPE");
         }
         
         try {
             String sd = form.get("startDate");
-            campaign.startDate = DateTime.parse(sd).toDate();
+            gameGift.startDate = DateTime.parse(sd).toDate();
         } catch (Exception e) {
             ;
         }
         
         try {
             String ed = form.get("endDate");
-            campaign.endDate = DateTime.parse(ed).toDate();
+            gameGift.endDate = DateTime.parse(ed).toDate();
         } catch (Exception e) {
             ;
         }
         
-        if (campaign.startDate.after(campaign.endDate)) {
+        if (gameGift.startDate.after(gameGift.endDate)) {
             return status(508, "START DATE AFTER END DATE");
         }
         
-        try {
-            campaign.announcementType = AnnouncementType.valueOf(form.get("announcementType"));
-        } catch(Exception e) {
-            return status(509, "PLEASE CHOOSE ANNOUNCEMENT TYPE");
-        }
+        gameGift.update();
         
-        campaign.update();
-        
-        logger.underlyingLogger().info(loggedInUser+" updated campaign ["+campaign.id+"|"+campaign.name+"]");
+        logger.underlyingLogger().info(loggedInUser+" updated gameGift ["+gameGift.id+"|"+gameGift.name+"]");
         return ok();
     }
     
     @Transactional
-    public static Result changeCampaignState() {
+    public static Result changeGameGiftState() {
         final String loggedInUser = Application.getLoggedInUser();
         if (loggedInUser == null) {
             return ok(views.html.login.render());
@@ -366,96 +346,96 @@ public class CampaignController extends ImageUploadController {
         DynamicForm form = DynamicForm.form().bindFromRequest();
         
         Long id = Long.parseLong(form.get("id"));
-        Campaign campaign = Campaign.findById(id);
+        GameGift gameGift = GameGift.findById(id);
         
         try {
-            String campaignState = form.get("campaignState");
-            campaign.campaignState = CampaignState.valueOf(campaignState);
+            String giftState = form.get("giftState");
+            gameGift.giftState = GiftState.valueOf(giftState);
         } catch(Exception e) {
-            return status(509, "CAMPAIGN STATE INCORRECT");
+            return status(509, "GIFT STATE INCORRECT");
         }
         
-        campaign.update();
+        gameGift.update();
         
-        logger.underlyingLogger().info(loggedInUser+" changed campaign state ["+campaign.id+"|"+campaign.name+"|"+campaign.campaignState.name()+"]");
-        return ok(Json.toJson(new CampaignVM(campaign)));
+        logger.underlyingLogger().info(loggedInUser+" changed gameGift state ["+gameGift.id+"|"+gameGift.name+"|"+gameGift.giftState.name()+"]");
+        return ok(Json.toJson(new GameGiftVM(gameGift)));
     }
     
     @Transactional
-    public static Result getLatestCampaigns() {
-        List<Campaign> allCampaigns = Campaign.getLatestCampaigns();
-        List<CampaignVM> listOfCampaigns = new ArrayList<>();
-        for (Campaign campaign:allCampaigns) {
-            CampaignVM vm = new CampaignVM(campaign);
-            listOfCampaigns.add(vm);
+    public static Result getLatestGameGifts() {
+        List<GameGift> gameGifts = GameGift.getLatestGameGifts();
+        List<GameGiftVM> vms = new ArrayList<>();
+        for (GameGift gameGift : gameGifts) {
+            GameGiftVM vm = new GameGiftVM(gameGift);
+            vms.add(vm);
         }
-        return ok(Json.toJson(listOfCampaigns));
+        return ok(Json.toJson(vms));
     }
 
     @Transactional
-    public static Result searchCampaigns(String id, String name) {
+    public static Result searchGameGifts(String id, String name) {
         final String loggedInUser = Application.getLoggedInUser();
         if (loggedInUser == null) {
             return ok(views.html.login.render());
         }
 
-        List<Campaign> allCampaigns = Campaign.getCampaigns(id, name);
-        List<CampaignVM> listOfCampaigns = new ArrayList<>();
-        for (Campaign campaign:allCampaigns) {
-            CampaignVM vm = new CampaignVM(campaign);
-            listOfCampaigns.add(vm);
+        List<GameGift> gameGifts = GameGift.getGameGifts(id, name);
+        List<GameGiftVM> vms = new ArrayList<>();
+        for (GameGift gameGift : gameGifts) {
+        	GameGiftVM vm = new GameGiftVM(gameGift);
+            vms.add(vm);
         }
-        return ok(Json.toJson(listOfCampaigns));
+        return ok(Json.toJson(vms));
     }
     
     @Transactional
-    public static Result getDescriptionOfCampaign(Long id) {
+    public static Result getDescriptionOfGameGift(Long id) {
         final String loggedInUser = Application.getLoggedInUser();
         if (loggedInUser == null) {
             return ok(views.html.login.render());
         }
         
-        Campaign campaign = Campaign.findById(id);
+        GameGift gameGift = GameGift.findById(id);
         Map<String, String> description = new HashMap<>();
-        description.put("description", campaign.description);
+        description.put("description", gameGift.description);
         return ok(Json.toJson(description));
     }
     
     @Transactional
-    public static Result deleteCampaign(Long id) {
+    public static Result deleteGameGift(Long id) {
         final String loggedInUser = Application.getLoggedInUser();
         if (loggedInUser == null) {
             return ok(views.html.login.render());
         }
         
-        Campaign campaign = Campaign.findById(id);
-        if (campaign != null) {
-            campaign.delete();
+        GameGift gameGift = GameGift.findById(id);
+        if (gameGift != null) {
+        	gameGift.delete();
         }
-        logger.underlyingLogger().info(loggedInUser+" deleted campaign ["+id+"]");
+        logger.underlyingLogger().info(loggedInUser+" deleted gameGift ["+id+"]");
         return ok();
     }
     
     @Transactional
-    public static Result getCampaign(Long id) {
+    public static Result getGameGift(Long id) {
         final String loggedInUser = Application.getLoggedInUser();
         if (loggedInUser == null) {
             return ok(views.html.login.render());
         }
         
-        Campaign campaign = Campaign.findById(id);
-        return ok(Json.toJson(campaign));
+        GameGift gameGift = GameGift.findById(id);
+        return ok(Json.toJson(gameGift));
     }
     
     @Transactional
-    public static Result infoCampaign(Long id) {
+    public static Result infoGameGift(Long id) {
         final String loggedInUser = Application.getLoggedInUser();
         if (loggedInUser == null) {
             return ok(views.html.login.render());
         }
         
-        Campaign campaign = Campaign.findById(id);
-        return ok(Json.toJson(new CampaignVM(campaign)));
+        GameGift gameGift = GameGift.findById(id);
+        return ok(Json.toJson(new GameGiftVM(gameGift)));
     }
     
     @Transactional

@@ -44,6 +44,18 @@ GET     /get-campaign/:id           controllers.CampaignController.getCampaign(i
 GET     /get-campaign-info/:id      controllers.CampaignController.infoCampaign(id:Long)
 POST    /image/campaign/upload      controllers.CampaignController.uploadImage
 
+# Game
+POST    /create-game-gift           controllers.GameController.addGameGift
+POST    /edit-game-gift             controllers.GameController.updateGameGift
+POST    /change-game-gift-state     controllers.GameController.changeGameGiftState
+GET     /get-latest-game-gifts      controllers.GameController.getLatestGameGifts
+GET     /search-game-gifts/:id/:name    controllers.GameController.searchGameGifts(id:String,name:String)
+GET     /get-game-gift-description/:id  controllers.GameController.getDescriptionOfGameGift(id:Long)
+GET     /delete-game-gift/:id       controllers.GameController.deleteGameGift(id:Long)
+GET     /get-game-gift/:id          controllers.GameController.getGameGift(id:Long)
+GET     /get-game-gift-info/:id     controllers.GameController.infoGameGift(id:Long)
+POST    /image/game/upload          controllers.GameController.uploadImage
+
 # PKView
 POST    /savePKView                 controllers.PKViewController.savePKView
 POST    /updatePKView               controllers.PKViewController.updatePKView
@@ -115,10 +127,11 @@ GET		/getAllUsers/:currentPage/:title		controllers.ReportsController.getAllUsers
 GET 	/image/get-post-image-by-id/:id 	controllers.ReportsController.getPostImageById(id : Long)
 GET     /image/get-thumbnail-image-by-id/:id    controllers.UserController.getThumbnailVersionImageByID(id :Long)
 
-POST    /photoUpload                            controllers.ReportsController.photoUpload
+POST    /uploadPhoto                            controllers.ImageUploadController.uploadPhoto
 
 GET     /image/article/:year/:month/:date/:name     controllers.ArticleController.getImage(year :Long, month :Long, date :Long, name : String)
 GET     /image/campaign/:year/:month/:date/:name    controllers.CampaignController.getImage(year :Long, month :Long, date :Long, name : String)
+GET     /image/game/:year/:month/:date/:name        controllers.GameController.getImage(year :Long, month :Long, date :Long, name : String)
 
 # Edm
 GET     /get-all-edm-templates                  controllers.ReportsController.getAllEdmTemplates

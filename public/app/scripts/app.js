@@ -33,6 +33,10 @@ angular.module('minibean', [
     	templateUrl: '/assets/app/views/editArticlePage.html',
     	controller : 'EditArticleController'  
       })
+      .when('/manageFrontPageTopics',{
+        templateUrl: '/assets/app/views/manageFrontPageTopicsPage.html',
+        controller : 'ManageFrontPageTopicsController'
+      })
       .when('/manageCampaigns',{
         templateUrl: '/assets/app/views/manageCampaignsPage.html',
         controller : 'ManageCampaignsController'  
@@ -49,9 +53,21 @@ angular.module('minibean', [
         templateUrl: '/assets/app/views/manageCampaignWinnersPage.html',
         controller : 'ManageCampaignWinnersController'  
       })
-      .when('/manageFrontPageTopics',{
-        templateUrl: '/assets/app/views/manageFrontPageTopicsPage.html',
-        controller : 'ManageFrontPageTopicsController'
+      .when('/manageGameGifts',{
+        templateUrl: '/assets/app/views/manageGameGiftsPage.html',
+        controller : 'ManageGameGiftsController'  
+      })
+      .when('/game-gift/create',{
+        templateUrl: '/assets/app/views/createGameGiftPage.html',
+        controller : 'CreateGameGiftController'  
+      })
+      .when('/game-gift/edit/:id',{
+        templateUrl: '/assets/app/views/editGameGiftPage.html',
+        controller : 'EditGameGiftController'  
+      })
+      .when('/game-gift/redemptions',{
+        templateUrl: '/assets/app/views/manageGameGiftRedemptionsPage.html',
+        controller : 'ManageGameGiftRedemptionsController'  
       })
       .when('/managePKViews',{
         templateUrl: '/assets/app/views/managePKViewsPage.html',

@@ -3,33 +3,45 @@
 </head>
 
 <body>
-    <h4>Edit Campaign</h4>
-    <form method="post" editable-form name="campaign_data" onaftersave="updateCampaignData($data)">
+    <h4>Edit Game Gift</h4>
+    <form method="post" editable-form name="game_gift_data" onaftersave="updateGameGiftData($data)">
         <table class="table" style="width: 60%;margin-left: 15%;">
             <tr>
                 <td>
     		 		<label> Title	: </label>
     		 	</td>
     		 	<td>
-    	    		<input type="text" class="form-control ng-pristine ng-invalid ng-invalid-required" data-ng-model="campaign.name">
-    	    		<input type="hidden" data-ng-model="campaign.id" name="id">
+    	    		<input type="text" class="form-control ng-pristine ng-invalid ng-invalid-required" data-ng-model="gameGift.name">
+    	    		<input type="hidden" data-ng-model="gameGift.id" name="id">
     	    	</td>
         	</tr>
         	<tr>
                 <td>
-                    <label> Campaign Type  : </label>
+                    <label> Redeem Type  : </label>
                 </td>
                 <td>
                     <span style="float:left;margin-left: 4%;">
-                        <select class="form-control" data-ng-model="campaign.campaignType" name="campaignType">
-                            <option value='INFO'>INFO</option>
-                            <option value='ACTIONS'>ACTIONS</option>
-                            <option value='QUESTIONS'>QUESTIONS</option>
-                            <option value='VOTING'>VOTING</option>
+                        <select class="form-control" data-ng-model="gameGift.redeemType" name="redeemType">
+                            <option value='POINTS'>POINTS</option>
+                            <option value='LEVEL'>LEVEL</option>
                         </select>
                     </span>
                 </td>
-                <td><label class="control-label error" data-ng-show="campaignTypeNotChoose==true" style="color: red;">Please Select Campaign Type.</label></td>
+                <td><label class="control-label error" data-ng-show="redeemTypeNotChoose==true" style="color: red;">Please Select Redeem Type.</label></td>
+            </tr>
+            <tr>
+                <td>
+                    <label> Gift Type  : </label>
+                </td>
+                <td>
+                    <span style="float:left;margin-left: 4%;">
+                        <select class="form-control" data-ng-model="gameGift.giftType" name="giftType">
+                            <option value='EXPIRATION'>EXPIRATION</option>
+                            <option value='QUANTITY'>QUANTITY</option>
+                        </select>
+                    </span>
+                </td>
+                <td><label class="control-label error" data-ng-show="giftTypeNotChoose==true" style="color: red;">Please Select Gift Type.</label></td>
             </tr>
             <tr>
                 <td><label>Start Date</label></td>
@@ -38,10 +50,10 @@
                         <input type="text" name="startDate"
                             class="input-sm form-control dropdown-toggle textStyle"
                             data-toggle="dropdown"  
-                            value="{{campaign.startDate | date:'MM-dd-yyyy hh:mm a' || 'Start'}}"
+                            value="{{gameGift.startDate | date:'MM-dd-yyyy hh:mm a' || 'Start'}}"
                             placeholder="Start">
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                            <datetimepicker data-ng-model="campaign.startDate" data-datetimepicker-config="{ dropdownSelector: '.dropdown-toggle',minView: 'minute' }"></datetimepicker>
+                            <datetimepicker data-ng-model="gameGift.startDate" data-datetimepicker-config="{ dropdownSelector: '.dropdown-toggle',minView: 'minute' }"></datetimepicker>
                         </ul>
                     </div>
                 </td>
@@ -53,10 +65,10 @@
                         <input type="text" name="endDate"
                             class="input-sm form-control dropdown-toggle textStyle"
                             data-toggle="dropdown"  
-                            value="{{campaign.endDate | date:'MM-dd-yyyy hh:mm a' || 'End'}}"
+                            value="{{gameGift.endDate | date:'MM-dd-yyyy hh:mm a' || 'End'}}"
                             placeholder="End">
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                            <datetimepicker data-ng-model="campaign.endDate" data-datetimepicker-config="{ dropdownSelector: '.dropdown-toggle',minView: 'minute' }"></datetimepicker>
+                            <datetimepicker data-ng-model="gameGift.endDate" data-datetimepicker-config="{ dropdownSelector: '.dropdown-toggle',minView: 'minute' }"></datetimepicker>
                         </ul>
                     </div>
                 </td>
@@ -71,24 +83,10 @@
             </tr>
             <tr>
                 <td>
-                    <label> Announcement Type  : </label>
-                </td>
-                <td>
-                    <span style="float:left;margin-left: 4%;">
-                        <select class="form-control" data-ng-model="campaign.announcementType" name="announcementType">
-                            <option value='WINNERS'>WINNERS</option>
-                            <option value='CUSTOM'>CUSTOM</option>
-                        </select>
-                    </span>
-                </td>
-                <td><label class="control-label error" data-ng-show="announcementTypeNotChoose==true" style="color: red;">Please Select Announcement Type.</label></td>
-            </tr>
-            <tr>
-                <td>
                     <label> Image   : </label>
                 </td>
                 <td>
-                    <input type="text" class="form-control ng-pristine ng-invalid ng-invalid-required" data-ng-model="campaign.image" required>
+                    <input type="text" class="form-control ng-pristine ng-invalid ng-invalid-required" data-ng-model="gameGift.image" required>
                 </td>
             </tr>
         </table>
@@ -97,12 +95,12 @@
             <p>{{path}}</p>
         </div>
 		<div style=" width: 70%;margin-left: 15%;">
-            <div style="font-weight:bold;margin:15px 0;">Details:</div>
-			<textarea name="description" id="description" class="editor" data-ui-tinymce='tinymceOptions' data-ng-model="campaign.description" style="height: 300px;"></textarea>
+            <div style="font-weight:bold;margin:15px 0;">Description:</div>
+			<textarea name="description" id="description" data-ng-model="gameGift.description" style="width:100%;height:100px;"></textarea>
 		</div>
 		<div style=" width: 70%;margin-left: 15%;">
-            <div style="font-weight:bold;margin:15px 0;">Winners Announcement:</div>
-            <textarea name="announcement" id="announcement" data-ng-model="campaign.announcement" style="width:100%;height:300px;"></textarea>
+            <div style="font-weight:bold;margin:15px 0;">Redeem Info:</div>
+            <textarea name="redeemInfo" id="redeemInfo" data-ng-model="gameGift.redeemInfo" style="width:100%;height:100px;"></textarea>
         </div>
 		<div style="margin-top: 4%;margin-left: 70%;">
             <button type="submit" class="btn btn-primary ng-binding">

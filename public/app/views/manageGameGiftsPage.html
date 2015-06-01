@@ -1,0 +1,239 @@
+<head>
+    <div data-ng-include data-src="'../assets/app/views/header.html'"></div>
+</head>
+
+<body style="margin:0; background-color:#F4FBFF;">
+    <h4>Manage Game Gifts</h4>
+    <a href="/#/game-gift/create"><button class="btn btn-primary" ><i class="fa fa-fw fa-group"></i> Create new Game Gift </button></a>
+    <div style="margin-left: 25%;">
+        <label>Search By Id</label>
+        <input type="text" ng-model="searchById" ng-keyup="$event.keyCode == 13 ? searchGameGifts() : null">
+        <label>Search By Name</label>
+        <input type="text" ng-model="searchByName" ng-keyup="$event.keyCode == 13 ? searchGameGifts() : null">
+        <input name="" type="button" class="" value="Search" ng-click="searchGameGifts(searchById,searchByName)">
+    </div>
+    
+    <div  data-ng-repeat="gameGift in gameGifts"  class="row tm">
+        <div class="col-md-3 col-lg-3"></div>
+    
+            <div class="col-md-6 col-lg-6 bg-white border-bottom" >
+            <div class="col-md-9 col-lg-9">
+                <div class="row tm">
+                    <div class="col-md-4">
+                        <div class="pull-right">
+                            <label>ID: </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6"> {{gameGift.id}} </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="pull-right">
+                            <label>Title: </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6"> {{gameGift.nm}} </div>
+                    </div>
+    
+                    <div class="col-md-4">
+                        <div class="pull-right">
+                            <label>Redeem Type: </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="col-md-10">  {{gameGift.rt}} </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="pull-right">
+                            <label>Gift Type: </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="col-md-10">  {{gameGift.gt}} </div>
+                        </div>
+                    </div>
+    
+                    <div class="col-md-4">
+                        <div class="pull-right">
+                            <label>Gift State: </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="col-md-10" ng-switch="gameGift.gs">
+                                <span style="color:orange;font-weight:bold;" ng-switch-when="PUBLISHED">{{gameGift.gs}}</span>
+                                <span style="color:green;font-weight:bold;" ng-switch-when="STARTED">{{gameGift.gs}}</span>
+                                <span style="color:blue;font-weight:bold;" ng-switch-when="ENDED">{{gameGift.gs}}</span>
+                                <span style="color:gray;font-weight:bold;" ng-switch-when="CLOSED">{{gameGift.gs}}</span>
+                                <span style="font-weight:bold;" ng-switch-default>{{gameGift.gs}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="pull-right">
+                            <label>Start Date: </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="col-md-10">  {{gameGift.sd}} </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="pull-right">
+                            <label>End Date: </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="col-md-10">  {{gameGift.ed}} </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="pull-right">
+                            <label>Redeemed Users: </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="col-md-10" style="color:purple;">  <b>{{gameGift.rc}}</b> </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="pull-right">
+                            <label>Created Date: </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="col-md-10">  {{gameGift.cd  | date:'M/dd/yyyy HH:mm'}} </div>
+                        </div>
+                    </div>
+    
+                    <div class="col-md-4">
+                        <div class="pull-right">
+                            <label>Created By: </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="col-md-10">  {{gameGift.cb}} </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="col-md-3 col-lg-3">
+                <div class="innerAll pull-right border-right ng-scope">
+                    <a href="" ng-click="popupGameGiftStateModal(gameGift)" data-toggle="modal" data-target="#changeGameGiftStateModal"><button class="btn btn-primary"><i class="fa fa-fw fa-edit"></i> State </button></a>
+                </div>
+                
+                <div class="innerAll pull-right border-right ng-scope">
+                    <a data-ng-href="#/game-gift/edit/{{gameGift.id}}"><button class="btn btn-primary"><i class="fa fa-fw fa-edit"></i> Edit </button></a>
+                </div>
+                
+                <div class="innerAll pull-right border-right ng-scope">
+                    <button class="btn btn-primary" data-toggle="modal" data-ng-click="setDeleteId(gameGift.id)" data-target="#myModal"><span class="glyphicon glyphicon-remove-circle"></span> Delete </button>
+                </div>
+                
+                <!--div class="innerAll pull-right border-right">
+                      <button data-ng-click="open(gameGift.id)" class="btn btn-primary"><i class="fa fa-fw fa-group"></i> Show </button>
+                </div-->
+            </div>
+        </div>
+        
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Delete Game Gift</h4>
+                    </div>
+                    <div class="modal-body" id="deleteGameGiftBody">
+                        Are you sure you want to delete game gift?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-ng-click="deleteGameGift(deleteId)">Yes</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="modal fade" id="notifyModal" tabindex="-1" role="dialog" aria-labelledby="notifyModalLabel" aria-hidden="true" data-backdrop="false">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="notifyModalLabel">Notify Winners</h4>
+                    </div>
+                    <div class="modal-body" id="notifyWinnersBody">
+                        Send notifications to Selected Winners? <br/>
+                        (Note: only winners in "SELECTED" state will be notified)
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-ng-click="notifyWinners(notifyID)">Yes</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script type="text/ng-template" id="myModalContent.html">
+    <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Game Gift Description</h4>
+    </div>
+       
+    <div class="modal-body" id="showDescription"></div>
+
+    <div class="modal-footer"></div>
+</script>
+
+<!-- Update Modal -->
+<div class="modal fade" id="changeGameGiftStateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Change Game Gift State</h4>
+        <h5>ID: {{gameGiftInModal.id}}</h5>
+        <h5>Title: {{gameGiftInModal.nm}}</h5>
+      </div>
+      <form method="post" ng-submit="changeGameGiftState()">
+          <div class="modal-body">
+          <table>
+            <tr>
+                <td><label>Gift State: </label></td>
+                <td style="padding-left:20px;">
+                    <select name="giftState" data-ng-model="giftStateInModal" style="width:100%;">
+                        <option disabled="true" value="">--Select--</option>
+                        <option value="NEW">NEW</option>
+                        <option value="PUBLISHED">PUBLISHED</option>
+                        <option value="STARTED">STARTED</option>
+                        <option value="ENDED">ENDED</option>
+                        <option value="CLOSED">CLOSED</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Update</button>
+      </div>
+     </form>
+    </div>
+  </div>
+</div>

@@ -29,7 +29,7 @@ public class GameGift extends SocialObject {
     
     public String image;
     
-    public int quantity = 0;
+    public long quantity = 0;
     
     public int noOfLikes = 0;
     
@@ -53,7 +53,7 @@ public class GameGift extends SocialObject {
     }
     
     @Enumerated(EnumType.STRING)
-    public GiftState giftState;
+    public GiftState giftState = GiftState.NEW;
 	
 	public static enum GiftState {
         NEW,

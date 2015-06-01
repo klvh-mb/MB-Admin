@@ -68,6 +68,51 @@ minibean.service('campaignService',function($resource){
     );
 });
 
+minibean.service('gameGiftService',function($resource){
+    this.latestGameGifts = $resource(
+            '/get-latest-game-gifts',
+            {alt:'json',callback:'JSON_CALLBACK'},
+            {
+                get: {method:'get',isArray:true}
+            }
+    );
+    this.searchGameGifts = $resource(
+            '/search-game-gifts/:id/:name',
+            {alt:'json',callback:'JSON_CALLBACK'},
+            {
+                get: {method:'get',isArray:true}
+            }
+    );
+    this.getGameGift = $resource(
+            '/get-game-gift/:id',
+            {alt:'json',callback:'JSON_CALLBACK'},
+            {
+                get: {method:'get'}
+            }
+    );
+    this.gameGiftInfo = $resource(
+            '/get-game-gift-info/:id',
+            {alt:'json',callback:'JSON_CALLBACK'},
+            {
+                get: {method:'get'}
+            }
+    );
+    this.getDescription = $resource(
+            '/get-game-gift-description/:id',
+            {alt:'json',callback:'JSON_CALLBACK'},
+            {
+                get: {method:'get'}
+            }
+    );
+    this.deleteGameGift = $resource(
+            '/delete-game-gift/:id',
+            {alt:'json',callback:'JSON_CALLBACK'},
+            {
+                get: {method:'get'}
+            }
+    );
+});
+
 minibean.controller('ManageCampaignWinnersController',function($scope, $routeParams, $http, $modal, campaignService){
 
     $scope.positions = "";
@@ -195,7 +240,6 @@ minibean.controller('ManageCampaignsController',function($scope, $http, $modal, 
 });
 
 minibean.controller('CreateCampaignController', function($scope, $http, $location, usSpinnerService){
-    $scope.article;
     $scope.submitBtn = "Save";
     
     //Refer to http://www.tinymce.com/
@@ -317,6 +361,181 @@ minibean.controller('EditCampaignController',function($scope, $http, $filter, $r
     }
 });
 
+minibean.controller('ManageGameGiftsController',function($scope, $http, $modal, gameGiftService){
+    $scope.searchById = "";
+    $scope.searchByName = "";
+    
+    $scope.gameGifts = gameGiftService.latestGameGifts.get();
+    
+    $scope.open = function (id) {
+        var modalInstance = $modal.open({
+            templateUrl: 'myModalContent.html',
+        });
+        var msg = gameGiftService.getDescription.get({id:id}, 
+            function(data) {
+                $('#showDescription').html(data.description);
+            });
+    };
+
+    $scope.searchGameGifts = function(searchById,searchByName) {
+        $scope.searchById = searchById;
+        $scope.searchByName = searchByName;
+          
+        if(angular.isUndefined($scope.searchById) || $scope.searchById=="") {
+            $scope.searchById = " ";
+        }
+          
+        if(angular.isUndefined($scope.searchByName) || $scope.searchByName=="") {
+            $scope.searchByName = " ";
+        }
+          
+        $scope.gameGifts = gameGiftService.searchGameGifts.get({id:$scope.searchById,name:$scope.searchByName});
+    };
+    
+    $scope.popupGameGiftStateModal = function(gameGift) {
+        $scope.gameGiftInModal = gameGift;
+        $scope.giftStateInModal = gameGift.gs;
+    };
+    
+    $scope.changeGameGiftState = function() {
+        var formData = {
+            "id" : $scope.gameGiftInModal.id,
+            "giftState" : $scope.giftStateInModal
+        };
+        var thisFormData = formData;
+        
+        $http.post('/change-game-gift-state', formData).success(function(data){
+            $('#changeGameGiftStateModal').modal('hide');
+            $scope.gameGiftInModal.gs = data.gs;
+        }).error(function(data, status, headers, config) {
+            alert('Failed to change state for gameGift ['+$scope.gameGiftInModal.id+'|'+$scope.gameGiftInModal.nm+'] from '+$scope.gameGiftInModal.gs+' to '+$scope.giftStateInModal);
+        });
+    };
+    
+    $scope.deleteGameGift = function(id) {
+    	gameGiftService.deleteGameGift.get({id:id}, function(data){
+            $('#myModal').modal('hide');
+            angular.forEach($scope.gameGifts, function(request, key){
+                if(request.id == id) {
+                    $scope.gameGifts.splice($scope.gameGifts.indexOf(request),1);
+                }
+            });
+        });
+    }
+
+    $scope.setDeleteId = function(id) {
+        $scope.deleteId = id;
+    }
+    
+    $scope.notifyWinners = function (id){
+    	gameGiftService.notifyWinners.get({id:id}, function(data){
+            $('#notifyModal').modal('hide');
+            alert(data.status+" - "+data.message);
+        });
+    }
+      
+    $scope.assignNotifyId = function(id) {
+        $scope.notifyID = id;
+    }
+});
+
+minibean.controller('CreateGameGiftController', function($scope, $http, $location, usSpinnerService){
+    $scope.submitBtn = "Save";
+    
+    $scope.createGameGift = function() {
+        $scope.redeemTypeNotChoose = false;
+        $scope.giftTypeNotChoose = false;
+        $scope.startEndDateNotEntered = false
+        $scope.startEndDateCondition = false;
+        usSpinnerService.spin('loading...');
+                $http.post('/create-game-gift', $scope.formData).success(function(data){
+                    $scope.submitBtn = "Done";
+                    usSpinnerService.stop('loading...');
+                    $location.path('/manageGameGifts');
+                }).error(function(data, status, headers, config) {
+                    if(status == 505) {
+                    	$scope.redeemTypeNotChoose = true;
+                        usSpinnerService.stop('loading...');
+                    }  
+                    if(status == 506) {
+                        $scope.giftTypeNotChoose = true;
+                        usSpinnerService.stop('loading...');
+                    }
+                    if(status == 507){
+                        $scope.startEndDateNotEntered = true;
+                        usSpinnerService.stop('loading...');
+                    }
+                    if(status == 508){
+                        $scope.startEndDateCondition = true;
+                        usSpinnerService.stop('loading...');
+                    }
+                });
+    }
+});
+
+minibean.controller('EditGameGiftController',function($scope, $http, $filter, $routeParams, $location, $upload, gameGiftService, usSpinnerService){
+    $scope.submitBtn = "Save";
+    $scope.gameGift = gameGiftService.getGameGift.get({id:$routeParams.id},
+        function(data) {
+            //$scope.startDateStr = $filter('date')($scope.gameGift.startDate, 'MM-dd-yyyy hh:mm a');
+            //$scope.endDateStr = $filter('date')($scope.gameGift.endDate, 'MM-dd-yyyy hh:mm a');
+        });
+    
+    $scope.updateGameGiftData = function(data) {
+        $scope.startEndDateCondition = false;
+        $scope.startEndDateNotEntered = false
+        usSpinnerService.spin('loading...');
+        return $http.post('/edit-game-gift', $scope.gameGift).success(function(data){
+            $scope.submitBtn = "Done";
+            usSpinnerService.stop('loading...');
+            $location.path('/manageGameGifts');
+        }).error(function(data, status, headers, config) {
+            if(status == 507){
+                $scope.startEndDateNotEntered = true;
+                usSpinnerService.stop('loading...');
+            }
+            if(status == 508){
+                $scope.startEndDateCondition = true;
+                usSpinnerService.stop('loading...');
+            }
+        });
+    }
+    
+    $scope.selectedFiles;
+    $scope.dataUrls;
+    $scope.path;
+    $scope.tempSelectedFiles;
+    $scope.onFileSelect = function($files) {
+        if($scope.selectedFiles == 0) {
+            $scope.tempSelectedFiles = 0;
+        }
+        
+        $scope.selectedFiles = $files;
+        $scope.tempSelectedFiles = $files;
+        var $file = $files;
+        if (window.FileReader && $file.type > -1) {
+            var fileReader = new FileReader();
+            fileReader.readAsDataURL($files);
+            var loadFile = function(fileReader, index) {
+                fileReader.onload = function(e) {
+                    $timeout(function() {
+                        $scope.dataUrls = e.target.result;
+                    });
+                }
+            }(fileReader, 0);
+        }
+        $upload.upload({
+            url : '/image/game/upload',
+            method: $scope.httpMethod,
+            file: $scope.tempSelectedFiles,
+            fileFormDataName: 'url-photo'
+        }).success(function(data, status, headers, config) {
+            usSpinnerService.stop('loading...');
+            $scope.path = data.URL;
+        });
+    }
+});
+
 minibean.service('locationService',function($resource){
     this.getAllDistricts = $resource(
             '/get-all-districts',
@@ -421,7 +640,6 @@ minibean.controller('ManageArticlesController',function($scope, $modal, articleS
 
 minibean.controller('CreateArticleController', function($scope, $http, $location, articleService, locationService, usSpinnerService){
     $scope.submitBtn = "Save";
-    $scope.article;
     $scope.articleCategories = articleService.getAllArticleCategories.get();
     $scope.targetLocations = locationService.getAllDistricts.get();
     
@@ -2620,7 +2838,6 @@ minibean.controller('ManageRedemptionController',function($scope, $http, $routeP
 		}).error(function(data, status, headers, config) {
 		});
 	}
-	
 });
 
 minibean.controller('ManagePhotoUploadController',function($scope, $http, $routeParams, $upload){
@@ -2636,7 +2853,7 @@ minibean.controller('ManagePhotoUploadController',function($scope, $http, $route
 	$scope.uploadPhoto = function() {
 		
 		$upload.upload({
-			url: '/photoUpload',
+			url: '/uploadPhoto',
 			method: 'POST',
 			file: $scope.selectedFiles[0],
 			data: $scope.formData,
@@ -2649,10 +2866,7 @@ minibean.controller('ManagePhotoUploadController',function($scope, $http, $route
 	    }).error(function(data, status, headers, config) {
 	    	
 	    });
-		
 	}
-	
-	
 });
 
 

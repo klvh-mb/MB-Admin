@@ -3,8 +3,8 @@
 </head>
 
 <body>
-    <h4>Create Campaign</h4>
-    <form method="post" ng-submit="createCampaign()">
+    <h4>Create Game Gift</h4>
+    <form method="post" ng-submit="createGameGift()">
         <table class="table" style="width: 60%;margin-left: 15%;">
             <tr>
                 <td>
@@ -17,19 +17,31 @@
             </tr>
             <tr>
                 <td>
-                    <label> Campaign Type  : </label>
+                    <label> Redeem Type  : </label>
                 </td>
                 <td>
                     <span style="float:left;margin-left: 4%;">
-                        <select class="form-control" data-ng-model="formData.campaignType" name="campaignType">
-                            <option value='INFO'>INFO</option>
-                            <option value='ACTIONS'>ACTIONS</option>
-                            <option value='QUESTIONS'>QUESTIONS</option>
-                            <option value='VOTING'>VOTING</option>
+                        <select class="form-control" data-ng-model="formData.redeemType" name="redeemType">
+                            <option value='POINTS'>POINTS</option>
+                            <option value='LEVEL'>LEVEL</option>
                         </select>
                     </span>
                 </td>
-                <td><label class="control-label error" data-ng-show="campaignTypeNotChoose==true" style="color: red;">Please Select Campaign Type.</label></td>
+                <td><label class="control-label error" data-ng-show="redeemTypeNotChoose==true" style="color: red;">Please Select Redeem Type.</label></td>
+            </tr>
+            <tr>
+                <td>
+                    <label> Gift Type  : </label>
+                </td>
+                <td>
+                    <span style="float:left;margin-left: 4%;">
+                        <select class="form-control" data-ng-model="formData.giftType" name="giftType">
+                            <option value='EXPIRATION'>EXPIRATION</option>
+                            <option value='QUANTITY'>QUANTITY</option>
+                        </select>
+                    </span>
+                </td>
+                <td><label class="control-label error" data-ng-show="giftTypeNotChoose==true" style="color: red;">Please Select Gift Type.</label></td>
             </tr>
             <tr>
                 <td><label>Start Date</label></td>
@@ -71,20 +83,6 @@
             </tr>
             <tr>
                 <td>
-                    <label> Announcement Type  : </label>
-                </td>
-                <td>
-                    <span style="float:left;margin-left: 4%;">
-                        <select class="form-control" data-ng-model="formData.announcementType" name="announcementType">
-                            <option value='WINNERS'>WINNERS</option>
-                            <option value='CUSTOM'>CUSTOM</option>
-                        </select>
-                    </span>
-                </td>
-                <td><label class="control-label error" data-ng-show="announcementTypeNotChoose==true" style="color: red;">Please Select Announcement Type.</label></td>
-            </tr>
-            <tr>
-                <td>
                     <label> Image   : </label>
                 </td>
                 <td>
@@ -92,13 +90,17 @@
                 </td>
             </tr>
         </table>
-        <div style="margin-left: 15%;width: 70%" data-ng-controller="EditCampaignController">
+        <div style="margin-left: 15%;width: 70%" data-ng-controller="EditGameGiftController">
 	        <input type="file" name="url-photo" ng-file-select="onFileSelect($files)"/>
             <p>{{path}}</p>
         </div>
         <div style=" width: 70%;margin-left: 15%;">
-            <div style="font-weight:bold;margin:15px 0;">Details:</div>
-            <textarea name="description" id="description" class="editor" data-ui-tinymce='tinymceOptions' data-ng-model="formData.description" style="height: 300px;"></textarea>
+            <div style="font-weight:bold;margin:15px 0;">Description:</div>
+            <textarea name="description" id="description" data-ng-model="formData.description" style="width:100%;height:100px;"></textarea>
+        </div>
+        <div style=" width: 70%;margin-left: 15%;">
+            <div style="font-weight:bold;margin:15px 0;">Redeem Info:</div>
+            <textarea name="redeemInfo" id="redeemInfo" data-ng-model="formData.redeemInfo" style="width:100%;height:100px;"></textarea>
         </div>
         <div style="margin-top: 4%;margin-left: 70%;">
             <button type="submit" class="btn btn-primary ng-binding">
