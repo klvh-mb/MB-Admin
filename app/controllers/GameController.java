@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import models.GameGift;
+import models.GameGift.FeatureType;
 import models.GameGift.GiftState;
 import models.GameGift.GiftType;
 import models.GameGift.RedeemType;
@@ -34,7 +35,7 @@ public class GameController extends ImageUploadController {
             return -1L;
         }
         
-        //return RedeemTransaction.getRedeemedUsersCount(giftId);
+        //return GameGiftRedeemTransaction.getRedeemedUsersCount(giftId);
         return -1L;
     }
     
@@ -243,6 +244,12 @@ public class GameController extends ImageUploadController {
         
         GameGift gameGift = gameGiftForm.get();
         try {
+        	gameGift.featureType = FeatureType.valueOf(form.get("featureType"));
+        } catch(Exception e) {
+            return status(504, "PLEASE CHOOSE FEATURE TYPE");
+        }
+        
+        try {
         	gameGift.redeemType = RedeemType.valueOf(form.get("redeemType"));
         } catch(Exception e) {
             return status(505, "PLEASE CHOOSE REDEEM TYPE");
@@ -298,6 +305,12 @@ public class GameController extends ImageUploadController {
         String redeemInfo = form.get("redeemInfo");
         if (!StringUtils.isEmpty(redeemInfo)) {
         	gameGift.redeemInfo = redeemInfo;
+        }
+        
+        try {
+        	gameGift.featureType = FeatureType.valueOf(form.get("featureType"));
+        } catch(Exception e) {
+            return status(504, "PLEASE CHOOSE FEATURE TYPE");
         }
         
         try {

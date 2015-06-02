@@ -16,6 +16,7 @@ public class GameGiftVM {
 	@JsonProperty("ds") public String description;
 	@JsonProperty("ri") public String redeemInfo;
 	@JsonProperty("furl") public String formUrl;
+	@JsonProperty("ft") public String featureType;
 	@JsonProperty("rt") public String redeemType;
 	@JsonProperty("gt") public String giftType;
 	@JsonProperty("gs") public String giftState;
@@ -33,6 +34,7 @@ public class GameGiftVM {
 	    this.description = gameGift.description;
 	    this.redeemInfo = gameGift.redeemInfo;
 	    this.formUrl = gameGift.formUrl;
+	    this.featureType = gameGift.featureType.name();
 	    this.redeemType = gameGift.redeemType.name();
 		this.giftType = gameGift.giftType.name();
 		this.giftState = gameGift.giftState.name();

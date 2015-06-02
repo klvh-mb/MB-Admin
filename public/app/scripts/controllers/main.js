@@ -443,6 +443,7 @@ minibean.controller('CreateGameGiftController', function($scope, $http, $locatio
     $scope.submitBtn = "Save";
     
     $scope.createGameGift = function() {
+        $scope.featureTypeNotChoose = false;
         $scope.redeemTypeNotChoose = false;
         $scope.giftTypeNotChoose = false;
         $scope.startEndDateNotEntered = false
@@ -453,10 +454,14 @@ minibean.controller('CreateGameGiftController', function($scope, $http, $locatio
                     usSpinnerService.stop('loading...');
                     $location.path('/manageGameGifts');
                 }).error(function(data, status, headers, config) {
+                    if(status == 504) {
+                    	$scope.featureTypeNotChoose = true;
+                        usSpinnerService.stop('loading...');
+                    }
                     if(status == 505) {
                     	$scope.redeemTypeNotChoose = true;
                         usSpinnerService.stop('loading...');
-                    }  
+                    }
                     if(status == 506) {
                         $scope.giftTypeNotChoose = true;
                         usSpinnerService.stop('loading...');

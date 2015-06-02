@@ -45,16 +45,33 @@ public class GameGift extends SocialObject {
 	public SocialObjectType objectType = SocialObjectType.GAME_GIFT;
 	
     @Enumerated(EnumType.STRING)
+	public FeatureType featureType;
+	
+    @Enumerated(EnumType.STRING)
     public RedeemType redeemType;
 	
+    @Enumerated(EnumType.STRING)
+	public GiftType giftType;
+	
+    @Enumerated(EnumType.STRING)
+    public GiftState giftState = GiftState.NEW;
+	
+    public static enum FeatureType {
+        NONE,
+        RECOMMEND,
+        SPONSORED
+    }
+    
 	public static enum RedeemType {
         POINTS,
         LEVEL
     }
     
-    @Enumerated(EnumType.STRING)
-    public GiftState giftState = GiftState.NEW;
-	
+    public static enum GiftType {
+    	EXPIRATION,
+        QUANTITY
+    }
+    
 	public static enum GiftState {
         NEW,
         PUBLISHED,
@@ -63,14 +80,6 @@ public class GameGift extends SocialObject {
         CLOSED
     }
 	
-    @Enumerated(EnumType.STRING)
-	public GiftType giftType;
-	
-    public static enum GiftType {
-    	EXPIRATION,
-        QUANTITY
-    }
-    
     public GameGift() {}
     
     public static List<GameGift> getLatestGameGifts() {

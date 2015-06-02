@@ -17,6 +17,21 @@
         	</tr>
         	<tr>
                 <td>
+                    <label> Feature Type  : </label>
+                </td>
+                <td>
+                    <span style="float:left;margin-left: 4%;">
+                        <select class="form-control" data-ng-model="gameGift.featureType" name="featureType">
+                            <option value='NONE'>NONE</option>
+                            <option value='RECOMMEND'>RECOMMEND</option>
+                            <option value='SPONSORED'>SPONSORED</option>
+                        </select>
+                    </span>
+                </td>
+                <td><label class="control-label error" data-ng-show="featureTypeNotChoose==true" style="color: red;">Please Select Feature Type.</label></td>
+            </tr>
+            <tr>
+                <td>
                     <label> Redeem Type  : </label>
                 </td>
                 <td>
