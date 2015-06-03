@@ -4,6 +4,7 @@ import java.util.Date;
 
 import models.GameGift;
 
+import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 import common.utils.DateTimeUtil;
@@ -13,6 +14,7 @@ public class GameGiftVM {
 	@JsonProperty("id") public long id;
 	@JsonProperty("nm") public String name;
 	@JsonProperty("im") public String image;
+	@JsonProperty("imt") public String imageThumb;
 	@JsonProperty("ds") public String description;
 	@JsonProperty("ri") public String redeemInfo;
 	@JsonProperty("ei") public String expirationInfo;
@@ -37,6 +39,7 @@ public class GameGiftVM {
 	    this.id = gameGift.id;
 	    this.name = gameGift.name;
 	    this.image = gameGift.image;
+	    this.imageThumb = StringUtils.isEmpty(gameGift.imageThumb)? this.image : this.imageThumb;
 	    this.description = gameGift.description;
 	    this.redeemInfo = gameGift.redeemInfo;
 	    this.expirationInfo = gameGift.expirationInfo;

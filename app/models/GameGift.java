@@ -21,6 +21,8 @@ public class GameGift extends SocialObject {
     
     public String image;
     
+    public String imageThumb;
+    
     @Column(length = 1024)
 	public String description;
 	
