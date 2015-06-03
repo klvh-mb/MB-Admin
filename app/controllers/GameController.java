@@ -298,6 +298,7 @@ public class GameController extends ImageUploadController {
         GameGift gameGift = GameGift.findById(id);
         gameGift.name = form.get("name");
         gameGift.image = form.get("image");
+        gameGift.imageThumb = form.get("imageThumb");
 
         String requiredPoints = form.get("requiredPoints");
         if (!StringUtils.isEmpty(requiredPoints)) {
