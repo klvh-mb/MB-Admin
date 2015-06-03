@@ -8,7 +8,7 @@
         <table class="table" style="width: 60%;margin-left: 15%;">
             <tr>
                 <td>
-    		 		<label> Title	: </label>
+    		 		<label> Title : </label>
     		 	</td>
     		 	<td>
     	    		<input type="text" class="form-control ng-pristine ng-invalid ng-invalid-required" data-ng-model="gameGift.name">
@@ -17,7 +17,39 @@
         	</tr>
         	<tr>
                 <td>
-                    <label> Feature Type  : </label>
+                    <label> Points : </label>
+                </td>
+                <td>
+                    <input type="text" class="form-control ng-pristine ng-invalid" data-ng-model="gameGift.requiredPoints">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label> Level : </label>
+                </td>
+                <td>
+                    <input type="text" class="form-control ng-pristine ng-invalid" data-ng-model="gameGift.requiredLevel">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label> Quantity Total : </label>
+                </td>
+                <td>
+                    <input type="text" class="form-control ng-pristine ng-invalid" data-ng-model="gameGift.quantityTotal">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label> Quantity Available : </label>
+                </td>
+                <td>
+                    <input type="text" class="form-control ng-pristine ng-invalid" data-ng-model="gameGift.quantityAvailable">
+                </td>
+            </tr>
+        	<tr>
+                <td>
+                    <label> Feature Type : </label>
                 </td>
                 <td>
                     <span style="float:left;margin-left: 4%;">
@@ -32,7 +64,7 @@
             </tr>
             <tr>
                 <td>
-                    <label> Redeem Type  : </label>
+                    <label> Redeem Type : </label>
                 </td>
                 <td>
                     <span style="float:left;margin-left: 4%;">
@@ -46,7 +78,7 @@
             </tr>
             <tr>
                 <td>
-                    <label> Gift Type  : </label>
+                    <label> Gift Type : </label>
                 </td>
                 <td>
                     <span style="float:left;margin-left: 4%;">
@@ -98,24 +130,40 @@
             </tr>
             <tr>
                 <td>
-                    <label> Image   : </label>
+                    <label> Image : </label>
                 </td>
                 <td>
                     <input type="text" class="form-control ng-pristine ng-invalid ng-invalid-required" data-ng-model="gameGift.image" required>
                 </td>
             </tr>
         </table>
-        <div style=" width: 70%;margin-left: 15%;"> 
+        <div style="width:70%;margin-left:15%;margin-bottom:50px;"> 
             <input type="file" name="url-photo" ng-file-select="onFileSelect($files)"/>
             <p>{{path}}</p>
         </div>
-		<div style=" width: 70%;margin-left: 15%;">
-            <div style="font-weight:bold;margin:15px 0;">Description:</div>
-			<textarea name="description" id="description" data-ng-model="gameGift.description" style="width:100%;height:100px;"></textarea>
+		<div style="width:70%;margin-left:15%;margin-bottom:10px;">
+            <div style="width:35%;display:inline-block;font-weight:bold;">Description:</div>
+			<textarea name="description" id="description" data-ng-model="gameGift.description" style="width:50%;height:80px;"></textarea>
 		</div>
-		<div style=" width: 70%;margin-left: 15%;">
-            <div style="font-weight:bold;margin:15px 0;">Redeem Info:</div>
-            <textarea name="redeemInfo" id="redeemInfo" data-ng-model="gameGift.redeemInfo" style="width:100%;height:100px;"></textarea>
+		<div style="width:70%;margin-left:15%;margin-bottom:10px;">
+            <div style="width:35%;display:inline-block;font-weight:bold;">Redeem Info:</div>
+            <textarea name="redeemInfo" id="redeemInfo" data-ng-model="gameGift.redeemInfo" style="width:50%;height:80px;"></textarea>
+        </div>
+        <div style="width:70%;margin-left:15%;margin-bottom:10px;">
+            <div style="width:35%;display:inline-block;font-weight:bold;">Expiration Info:</div>
+            <textarea name="expirationInfo" id="expirationInfo" data-ng-model="gameGift.expirationInfo" style="width:50%;height:80px;"></textarea>
+        </div>
+        <div style="width:70%;margin-left:15%;margin-bottom:10px;">
+            <div style="width:35%;display:inline-block;font-weight:bold;">Shipping Info:</div>
+            <textarea name="shippingInfo" id="shippingInfo" data-ng-model="gameGift.shippingInfo" style="width:50%;height:80px;"></textarea>
+        </div>
+        <div style="width:70%;margin-left:15%;margin-bottom:10px;">
+            <div style="width:35%;display:inline-block;font-weight:bold;">Customer Care Info:</div>
+            <textarea name="customerCareInfo" id="customerCareInfo" data-ng-model="gameGift.customerCareInfo" style="width:50%;height:80px;"></textarea>
+        </div>
+        <div style="width:70%;margin-left:15%;margin-bottom:10px;">
+            <div style="width:35%;display:inline-block;font-weight:bold;">More Info:</div>
+            <textarea name="moreInfo" id="moreInfo" data-ng-model="gameGift.moreInfo" style="width:50%;height:80px;"></textarea>
         </div>
 		<div style="margin-top: 4%;margin-left: 70%;">
             <button type="submit" class="btn btn-primary ng-binding">

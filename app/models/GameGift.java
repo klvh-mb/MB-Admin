@@ -3,10 +3,10 @@ package models;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.Lob;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
@@ -19,24 +19,34 @@ import play.db.jpa.Transactional;
 public class GameGift extends SocialObject {
     private static play.api.Logger logger = play.api.Logger.apply(GameGift.class);
     
-    @Lob
-	public String description;
-	
-    @Lob
-    public String redeemInfo;
-    
-    public String formUrl;
-    
     public String image;
     
-    public long quantity = 0;
-    
-    public int noOfLikes = 0;
-    
-	public int noOfViews = 0;
+    @Column(length = 1024)
+	public String description;
 	
-	public int noOfRedeems = 0;
-	
+    @Column(length = 1024)
+    public String redeemInfo;
+    
+    @Column(length = 1024)
+    public String expirationInfo;
+    
+    @Column(length = 1024)
+    public String shippingInfo;
+    
+    @Column(length = 1024)
+    public String customerCareInfo;
+    
+    @Column(length = 1024)
+    public String moreInfo;
+    
+    public long requiredPoints = 0L;
+    
+    public long requiredLevel = 0L;
+    
+    public long quantityTotal = 0L;
+    
+    public long quantityAvailable = 0L;
+    
 	public Date startDate;
 
     public Date endDate;
@@ -80,6 +90,12 @@ public class GameGift extends SocialObject {
         CLOSED
     }
 	
+    public int noOfLikes = 0;
+    
+	public int noOfViews = 0;
+	
+	public int noOfRedeems = 0;
+	
     public GameGift() {}
     
     public static List<GameGift> getLatestGameGifts() {
@@ -96,15 +112,15 @@ public class GameGift extends SocialObject {
 		}
 		
 		if(id.trim().equals("") && !name.trim().equals("")) {
-			sql="Select c from GameGift g where g.deleted = false and g.name LIKE ?1 order by startDate desc";
+			sql="Select g from GameGift g where g.deleted = false and g.name LIKE ?1 order by startDate desc";
 		}
 		
 		if(!id.trim().equals("") && name.trim().equals("")) {
-			sql="Select c from GameGift g where g.deleted = false and g.id = ?2 order by startDate desc";
+			sql="Select g from GameGift g where g.deleted = false and g.id = ?2 order by startDate desc";
 		}
 		
 		if(!id.trim().equals("") && !name.trim().equals("")) {
-			sql="Select c from GameGift g where g.deleted = false and g.name LIKE ?1 and g.id = ?2 order by startDate desc";
+			sql="Select g from GameGift g where g.deleted = false and g.name LIKE ?1 and g.id = ?2 order by startDate desc";
 		}
 		
 		Query q = JPA.em().createQuery(sql);
@@ -132,7 +148,7 @@ public class GameGift extends SocialObject {
         q.setParameter(1, id);
         return q.executeUpdate();
     }
-	   
+
 	public static boolean checkTitleExists(String title) {
 		Query q = JPA.em().createQuery("Select g from GameGift g where g.name = ?1 and g.deleted = false");
 		q.setParameter(1, title);

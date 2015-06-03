@@ -298,6 +298,27 @@ public class GameController extends ImageUploadController {
         GameGift gameGift = GameGift.findById(id);
         gameGift.name = form.get("name");
         gameGift.image = form.get("image");
+
+        String requiredPoints = form.get("requiredPoints");
+        if (!StringUtils.isEmpty(requiredPoints)) {
+        	gameGift.requiredPoints = Long.parseLong(requiredPoints);
+        }
+        
+        String requiredLevel = form.get("requiredLevel");
+        if (!StringUtils.isEmpty(requiredLevel)) {
+        	gameGift.requiredLevel = Long.parseLong(requiredLevel);
+        }
+        
+        String quantityTotal = form.get("quantityTotal");
+        if (!StringUtils.isEmpty(quantityTotal)) {
+        	gameGift.quantityTotal = Long.parseLong(quantityTotal);
+        }
+        
+        String quantityAvailable = form.get("quantityAvailable");
+        if (!StringUtils.isEmpty(quantityAvailable)) {
+        	gameGift.quantityAvailable = Long.parseLong(quantityAvailable);
+        }
+        
         String description = form.get("description");
         if (!StringUtils.isEmpty(description)) {
         	gameGift.description = description;
@@ -305,6 +326,22 @@ public class GameController extends ImageUploadController {
         String redeemInfo = form.get("redeemInfo");
         if (!StringUtils.isEmpty(redeemInfo)) {
         	gameGift.redeemInfo = redeemInfo;
+        }
+        String expirationInfo = form.get("expirationInfo");
+        if (!StringUtils.isEmpty(expirationInfo)) {
+        	gameGift.expirationInfo = expirationInfo;
+        }
+        String shippingInfo = form.get("shippingInfo");
+        if (!StringUtils.isEmpty(shippingInfo)) {
+        	gameGift.shippingInfo = shippingInfo;
+        }
+        String customerCareInfo = form.get("customerCareInfo");
+        if (!StringUtils.isEmpty(customerCareInfo)) {
+        	gameGift.customerCareInfo = customerCareInfo;
+        }
+        String moreInfo = form.get("moreInfo");
+        if (!StringUtils.isEmpty(moreInfo)) {
+        	gameGift.moreInfo = moreInfo;
         }
         
         try {
