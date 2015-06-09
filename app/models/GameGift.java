@@ -43,8 +43,6 @@ public class GameGift extends SocialObject {
     
     public long requiredPoints = 0L;
     
-    public long requiredLevel = 0L;
-    
     public long quantityTotal = 0L;
     
     public long quantityAvailable = 0L;
@@ -75,8 +73,7 @@ public class GameGift extends SocialObject {
     }
     
 	public static enum RedeemType {
-        POINTS,
-        LEVEL
+        POINTS
     }
     
     public static enum GiftType {

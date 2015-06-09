@@ -2805,46 +2805,6 @@ minibean.controller('ManageGameAccountController',function($scope, $http, $route
 	}
 });
 
-
-//////////////Manage Game redemption //////////////////
-
-minibean.service('getRedemptionRequestService',function($resource){
-    this.getAllUsers = $resource(
-            '/getRedemptionRequests',
-            {alt:'json',callback:'JSON_CALLBACK'},
-            {
-                get: {method:'get',isArray:true}
-            }
-    );
-});
-
-minibean.controller('ManageRedemptionController',function($scope, $http, $routeParams, getRedemptionRequestService){
-	$scope.pageNumber;
-	$scope.pageSize;
-	var currentPage = 1;
-	var totalPages;
-	$scope.userIds;
-	
-	$scope.allUsers = getRedemptionRequestService.getAllUsers.get(function(response) {
-		console.log(response);
-		if(totalPages == 0) {
-			$scope.pageNumber = 0;
-		}
-	});
-	
-	$scope.setResult = function(user) {
-		$scope.addPointsUser = user;
-	}
-	
-	$scope.confirmRedemption = function() {
-		console.log($scope.addPointsUser);
-		$http.post('/confirmRedemption', $scope.addPointsUser).success(function(data){
-			$('#confermation').modal('hide');
-		}).error(function(data, status, headers, config) {
-		});
-	}
-});
-
 minibean.controller('ManagePhotoUploadController',function($scope, $http, $routeParams, $upload){
 
 	$scope.formData = {};
@@ -2873,5 +2833,3 @@ minibean.controller('ManagePhotoUploadController',function($scope, $http, $route
 	    });
 	}
 });
-
-

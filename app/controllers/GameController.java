@@ -39,6 +39,11 @@ public class GameController extends ImageUploadController {
         return -1L;
     }
     
+    // Manage redeem
+    // - deduct pts
+    // - record transaction
+    // - notify user
+    
     /*
     @Transactional
     public static Result getCampaignWinners(Long campaignId) {
@@ -305,11 +310,6 @@ public class GameController extends ImageUploadController {
         	gameGift.requiredPoints = Long.parseLong(requiredPoints);
         }
         
-        String requiredLevel = form.get("requiredLevel");
-        if (!StringUtils.isEmpty(requiredLevel)) {
-        	gameGift.requiredLevel = Long.parseLong(requiredLevel);
-        }
-        
         String quantityTotal = form.get("quantityTotal");
         if (!StringUtils.isEmpty(quantityTotal)) {
         	gameGift.quantityTotal = Long.parseLong(quantityTotal);
@@ -320,30 +320,12 @@ public class GameController extends ImageUploadController {
         	gameGift.quantityAvailable = Long.parseLong(quantityAvailable);
         }
         
-        String description = form.get("description");
-        if (!StringUtils.isEmpty(description)) {
-        	gameGift.description = description;
-        }
-        String redeemInfo = form.get("redeemInfo");
-        if (!StringUtils.isEmpty(redeemInfo)) {
-        	gameGift.redeemInfo = redeemInfo;
-        }
-        String expirationInfo = form.get("expirationInfo");
-        if (!StringUtils.isEmpty(expirationInfo)) {
-        	gameGift.expirationInfo = expirationInfo;
-        }
-        String shippingInfo = form.get("shippingInfo");
-        if (!StringUtils.isEmpty(shippingInfo)) {
-        	gameGift.shippingInfo = shippingInfo;
-        }
-        String customerCareInfo = form.get("customerCareInfo");
-        if (!StringUtils.isEmpty(customerCareInfo)) {
-        	gameGift.customerCareInfo = customerCareInfo;
-        }
-        String moreInfo = form.get("moreInfo");
-        if (!StringUtils.isEmpty(moreInfo)) {
-        	gameGift.moreInfo = moreInfo;
-        }
+        gameGift.description = form.get("description");
+        gameGift.redeemInfo = form.get("redeemInfo");
+        gameGift.expirationInfo = form.get("expirationInfo");
+        gameGift.shippingInfo = form.get("shippingInfo");
+        gameGift.customerCareInfo = form.get("customerCareInfo");
+        gameGift.moreInfo = form.get("moreInfo");
         
         try {
         	gameGift.featureType = FeatureType.valueOf(form.get("featureType"));

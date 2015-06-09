@@ -18,7 +18,6 @@ import models.DeletedInfo;
 import models.EdmJob;
 import models.EdmTemplate;
 import models.GameAccount;
-import models.GameRedemption;
 import models.Post;
 import models.ReportedObject;
 import models.Resource;
@@ -41,7 +40,6 @@ import viewmodel.CommunityVM;
 import viewmodel.DeletedInfoVM;
 import viewmodel.EdmTemplateVM;
 import viewmodel.GameAccountVM;
-import viewmodel.GameRedemptionVM;
 import viewmodel.PostVM;
 import viewmodel.ReportedObjectVM;
 import viewmodel.UserVM;
@@ -901,26 +899,6 @@ public class ReportsController extends Controller {
 	    System.out.println("id :::: "+id+"\n bonus :::: "+bonus+"\n detail ::::: "+detail+"\n uId :::::"+uId);
         return ok();
     }
-	
-	@Transactional
-    public static Result getRedemptionRequests() {
-		List<GameRedemption> redemptions = GameRedemption.getAllGameRedemption();
-		List<GameRedemptionVM> redemptionVMs = new ArrayList<>();
-		for(GameRedemption r : redemptions) {
-			GameRedemptionVM vm = new GameRedemptionVM(r);
-			redemptionVMs.add(vm);
-		}
-		return ok(Json.toJson(redemptionVMs));
-	}
-	
-	@Transactional
-    public static Result confirmRedemptionRequests() {
-		DynamicForm form = DynamicForm.form().bindFromRequest();
-	    String id = form.get("id");
-	    GameRedemption.confirmRedemptionRequest(id);
-		return ok();
-	}
-	
 	
 	@Transactional
 	public static Result sendTestEDM() {
