@@ -1,7 +1,6 @@
 package models;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -18,7 +17,6 @@ import javax.persistence.Query;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 import play.Play;
-import play.data.format.Formats;
 import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
 
@@ -56,9 +54,6 @@ public class Community extends TargetingSocialObject {
 	@Column(length=2000)
 	public String description;
 	
-	@Formats.DateTime(pattern = "yyyy-MM-dd")
-	public Date createDate;
-
 	public boolean adminPostOnly = false;
 	
 	public boolean excludeFromNewsfeed = false;
@@ -113,14 +108,6 @@ public class Community extends TargetingSocialObject {
 
 	public void setAlbumPhotoProfile(Folder albumPhotoProfile) {
 		this.albumPhotoProfile = albumPhotoProfile;
-	}
-
-	public Date getCreateDate() {
-		return createDate;
-	}
-
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
 	}
 
 	public List<Folder> getFolders() {
