@@ -320,6 +320,11 @@ public class GameController extends ImageUploadController {
         	gameGift.quantityAvailable = Long.parseLong(quantityAvailable);
         }
         
+        String limitPerUser = form.get("limitPerUser");
+        if (!StringUtils.isEmpty(limitPerUser)) {
+        	gameGift.limitPerUser = Long.parseLong(limitPerUser);
+        }
+        
         gameGift.description = form.get("description");
         gameGift.redeemInfo = form.get("redeemInfo");
         gameGift.expirationInfo = form.get("expirationInfo");

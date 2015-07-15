@@ -47,6 +47,8 @@ public class GameGift extends SocialObject {
     
     public long quantityAvailable = 0L;
     
+    public long limitPerUser = 0L;
+    
 	public Date startDate;
 
     public Date endDate;

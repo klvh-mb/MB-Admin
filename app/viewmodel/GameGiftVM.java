@@ -30,6 +30,7 @@ public class GameGiftVM {
 	@JsonProperty("rp") public Long requiredPoints;
 	@JsonProperty("qt") public Long quantityTotal;
 	@JsonProperty("qa") public Long quantityAvailable;
+	@JsonProperty("lpu") public Long limitPerUser;
 	@JsonProperty("rc") public Long redeemedUsersCount;
 	@JsonProperty("cd") public Date createdDate;
     @JsonProperty("cb") public String createdBy;
@@ -54,6 +55,7 @@ public class GameGiftVM {
 		this.requiredPoints = gameGift.requiredPoints;
 		this.quantityTotal = gameGift.quantityTotal;
 		this.quantityAvailable = gameGift.quantityAvailable;
+		this.limitPerUser = gameGift.limitPerUser;
 		this.redeemedUsersCount = GameController.getRedeemedUsersCount(gameGift.id);
 		this.createdDate = gameGift.getCreatedDate();
 		this.createdBy = gameGift.getCreatedBy();
